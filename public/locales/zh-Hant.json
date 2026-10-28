@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "角色「{{role}}」鎖定：{{modules}}。",
             "presetHintUnavailable": "目前無法顯示確切效果。模板仍然生效。",
             "presetHintRoleChild": "角色「{{role}}」不封鎖任何模組。另外適用上方的兒童初始權限。",
-            "presetHintChildExtra": "另外適用上方的兒童初始權限。"
+            "presetHintChildExtra": "另外適用上方的兒童初始權限。",
+            "done": "完成",
+            "untitled": "待處理的邀請"
         },
         "healthCaregiversLabel": "可以記錄健康資料",
         "healthCaregiversHint": "這些人可以為該成員記錄體徵、用藥、化驗結果和活動，並在此過程中看到其私密記錄。經期日記不在此列。",

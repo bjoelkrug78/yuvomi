@@ -3215,7 +3215,9 @@
             "presetHintRoleLimited": "Nila-lock ng papel na {{role}} ang: {{modules}}.",
             "presetHintUnavailable": "Hindi maipakita ngayon ang eksaktong epekto. Gumagana pa rin ang template.",
             "presetHintRoleChild": "Walang hinaharang na module ang papel na {{role}}. Dagdag na nalalapat ang panimulang pahintulot para sa mga bata sa itaas.",
-            "presetHintChildExtra": "Dagdag na nalalapat ang panimulang pahintulot para sa mga bata sa itaas."
+            "presetHintChildExtra": "Dagdag na nalalapat ang panimulang pahintulot para sa mga bata sa itaas.",
+            "done": "Tapos na",
+            "untitled": "Bukas na imbitasyon"
         },
         "healthCaregiversLabel": "Puwedeng magtala ng datos ng kalusugan",
         "healthCaregiversHint": "Puwedeng magtala ang mga taong ito ng vitals, gamot, resulta ng lab at aktibidad para sa miyembrong ito, at makikita rin nila ang mga pribadong tala nito. Hindi kasama ang talaarawan ng siklo.",

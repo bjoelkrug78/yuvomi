@@ -333,12 +333,11 @@ function addMemberFormHtml() {
 function addInviteFormHtml() {
   return `
         <form id="add-invite-form" class="settings-form" novalidate>
+          ${/* DER ERSTFOKUS STEHT AUF DEM NAMEN (R24, Critique G6 P2-1): vorn
+               stand der optionale Benutzername, den die eingeladene Person
+               meist selbst waehlt. Jetzt Anzeigename, Rolle, Startrechte, dann
+               die optionalen Konto-Felder. */ ''}
           ${formRowsHtml([
-            formRowHtml({
-              label: t('settings.usernameLabel'), labelFor: 'invite-username', field: true,
-              description: t('settings.invites.usernameHint'), descriptionId: 'invite-username-hint',
-              control: '<input class="form-input" type="text" id="invite-username" autocomplete="off" aria-describedby="invite-username-hint" />',
-            }),
             formRowHtml({
               label: t('settings.displayNameLabel'), labelFor: 'invite-display-name', field: true,
               control: '<input class="form-input" type="text" id="invite-display-name" maxlength="128" />',
@@ -357,6 +356,11 @@ function addInviteFormHtml() {
               extra: '<p class="form-hint" id="invite-preset-hint"></p>',
             }),
             formRowHtml({
+              label: t('settings.usernameLabel'), labelFor: 'invite-username', field: true,
+              description: t('settings.invites.usernameHint'), descriptionId: 'invite-username-hint',
+              control: '<input class="form-input" type="text" id="invite-username" autocomplete="off" aria-describedby="invite-username-hint" />',
+            }),
+            formRowHtml({
               label: t('settings.memberEmailLabel'), labelFor: 'invite-email', field: true,
               control: '<input class="form-input" type="email" id="invite-email" autocomplete="email" />',
             }),
@@ -369,17 +373,23 @@ function addInviteFormHtml() {
           <label class="form-label" for="invite-link-value">${t('settings.invites.linkTitle')}</label>
           <div class="settings-token-output__row">
             <input class="form-input" id="invite-link-value" type="text" readonly />
-            <button type="button" class="btn btn--secondary btn--sm" id="invite-link-copy">
-              <i data-lucide="copy" class="icon-sm" aria-hidden="true"></i>
-              ${t('settings.invites.copy')}
-            </button>
           </div>
           <p class="form-hint">${t('settings.invites.linkOnce')}</p>
           <p class="form-hint" id="invite-email-note" hidden></p>
+          <p class="form-hint" id="invite-copy-status" role="status"></p>
         </div>
+        ${/* NACH DEM ERSTELLEN IST DER LINK DIE AUFGABE (R24, Critique G6 P2-1).
+             Vorher blieb der Fuss [Abbrechen][Einladung erstellen], und ein
+             zweiter Klick legte eine zweite Einladung an. Jetzt tauscht der Fuss
+             auf [Fertig][Link kopieren]; das Formular tritt ab. */ ''}
         <div class="modal-panel__footer modal-panel__footer--plain">
           <button type="button" class="btn btn--secondary" id="cancel-add-invite">${t('settings.cancelAddMember')}</button>
           <button type="submit" class="btn btn--primary" form="add-invite-form">${t('settings.invites.submit')}</button>
+          <button type="button" class="btn btn--secondary" id="invite-done" hidden>${t('settings.invites.done')}</button>
+          <button type="button" class="btn btn--primary" id="invite-link-copy" hidden>
+            <i data-lucide="copy" class="icon-sm" aria-hidden="true"></i>
+            ${t('settings.invites.copy')}
+          </button>
         </div>`;
 }
 
@@ -682,13 +692,15 @@ function wireMemberOrder(container, currentUser, users) {
 }
 
 function inviteHtml(invite) {
-  // Eine Einladung muss weder Namen noch Adresse tragen: dann benennt sie die
-  // Familienrolle, damit die Zeile nicht namenlos in der Liste steht.
+  // Eine Einladung muss weder Namen noch Adresse tragen.
+  // Ohne beides heisst sie "Offene Einladung"; die Rolle steht in der
+  // Metazeile wie bei jedem Mitglied (R24, Critique G6 P2-1) - als Titel
+  // stand sie groesser als jeder Mitgliedsname darueber.
   const roleLabel = familyRoleLabel(invite.family_role);
-  const primary = invite.display_name || invite.username || invite.email || roleLabel;
+  const primary = invite.display_name || invite.username || invite.email || t('settings.invites.untitled');
   const meta = [
     invite.username && invite.username !== primary ? `@${invite.username}` : '',
-    roleLabel === primary ? '' : roleLabel,
+    roleLabel,
     invite.role === 'admin' ? t('settings.systemAdminBadge') : '',
   ].filter(Boolean).map(esc).join(' · ');
   return `
@@ -864,9 +876,6 @@ function bindInviteEvents(container, initialInvites) {
             const res = await auth.createInvite(payload);
             invites.unshift(res.data.invite);
             renderInviteList(container, invites);
-            form.reset();
-            updatePresetHint();
-            syncChildHint?.();
             // Der Klartext-Token kommt nur aus dieser einen Antwort. Der Dialog
             // bleibt deshalb offen: wuerde er sich wie beim Mitglied-Anlegen
             // schliessen, waere der Link im selben Moment weg, in dem er entsteht.
@@ -880,10 +889,15 @@ function bindInviteEvents(container, initialInvites) {
             } else {
               emailNote.hidden = true;
             }
-            window.lucide?.createIcons({ el: output });
+            // Das Formular tritt ab, der Fuss traegt jetzt den Link. KEIN Toast:
+            // er lag ueber dem Label "Einladungslink", und die Meldung ist der
+            // Link selbst.
+            form.hidden = true;
+            for (const el of panel.querySelectorAll('#cancel-add-invite, .modal-panel__footer [type=submit]')) el.hidden = true;
+            for (const el of panel.querySelectorAll('#invite-done, #invite-link-copy')) el.hidden = false;
+            window.lucide?.createIcons({ el: panel.querySelector('.modal-panel__footer') ?? output });
             outputValue.focus();
             outputValue.select();
-            window.yuvomi?.showToast(t('settings.invites.created'), 'success');
           } catch (err) {
             showError(errorEl, err.message);
           } finally {
@@ -891,13 +905,13 @@ function bindInviteEvents(container, initialInvites) {
           }
         });
 
+        panel.querySelector('#invite-done')?.addEventListener('click', () => closeModal());
         panel.querySelector('#invite-link-copy')?.addEventListener('click', async () => {
           if (!outputValue.value) return;
           const copied = await copyInviteLink(outputValue);
-          window.yuvomi?.showToast(
-            copied ? t('settings.invites.copied') : t('settings.invites.copyFailed'),
-            copied ? 'success' : 'danger',
-          );
+          // Die Rueckmeldung steht am Link, nicht als Toast ueber dem Dialog.
+          const status = panel.querySelector('#invite-copy-status');
+          if (status) status.textContent = copied ? t('settings.invites.copied') : t('settings.invites.copyFailed');
         });
       },
     });

@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "El rol {{role}} bloquea: {{modules}}.",
             "presetHintUnavailable": "Ahora mismo no se puede mostrar el efecto exacto. La plantilla se aplica igualmente.",
             "presetHintRoleChild": "El rol {{role}} no bloquea ningún módulo. Se suman los permisos iniciales para niños de arriba.",
-            "presetHintChildExtra": "Se suman los permisos iniciales para niños de arriba."
+            "presetHintChildExtra": "Se suman los permisos iniciales para niños de arriba.",
+            "done": "Hecho",
+            "untitled": "Invitación pendiente"
         },
         "healthCaregiversLabel": "Puede registrar datos de salud",
         "healthCaregiversHint": "Estas personas pueden registrar constantes, medicamentos, resultados de laboratorio y actividades para este miembro, y ver sus entradas privadas al hacerlo. El diario del ciclo queda excluido.",

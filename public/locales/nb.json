@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "Rollen {{role}} låser: {{modules}}.",
             "presetHintUnavailable": "Den nøyaktige effekten kan ikke vises akkurat nå. Malen gjelder fortsatt.",
             "presetHintRoleChild": "Rollen {{role}} sperrer ingen moduler. Startrettighetene for barn ovenfor kommer i tillegg.",
-            "presetHintChildExtra": "Startrettighetene for barn ovenfor kommer i tillegg."
+            "presetHintChildExtra": "Startrettighetene for barn ovenfor kommer i tillegg.",
+            "done": "Ferdig",
+            "untitled": "Åpen invitasjon"
         },
         "healthCaregiversLabel": "Kan registrere helsedata",
         "healthCaregiversHint": "Disse personene kan registrere vitale tegn, medisiner, laboratorieresultater og aktiviteter for dette medlemmet, og se deres private oppføringer mens de gjør det. Syklusdagboken forblir ekskludert.",

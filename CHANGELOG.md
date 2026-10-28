@@ -32,6 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   menu again, and the next Esc returns to the list as before.
 - **The settings search is visible in dark mode.** The search field in the settings column had the
   same colour as the column itself; the column now uses the card colour, and the field stands out.
+- **Inviting someone ends with the link.** Once the invitation exists, the dialog shows only the link
+  with "Copy link" and "Done" - before, "Create invitation" stayed and a second click made a second
+  invitation, and a toast covered the link's label. The dialog starts at the display name instead of the
+  optional user name, an invitation without a name is listed as "Open invitation" with its role below,
+  and member and invitation names share one size.
 
 ## [2.82.0] - 2026-10-28
 

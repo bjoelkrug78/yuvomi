@@ -3215,7 +3215,9 @@
             "presetHintRoleLimited": "Peran {{role}} mengunci: {{modules}}.",
             "presetHintUnavailable": "Efek persisnya tidak dapat ditampilkan sekarang. Templat tetap berlaku.",
             "presetHintRoleChild": "Peran {{role}} tidak memblokir modul apa pun. Izin awal untuk anak di atas tetap berlaku.",
-            "presetHintChildExtra": "Izin awal untuk anak di atas tetap berlaku."
+            "presetHintChildExtra": "Izin awal untuk anak di atas tetap berlaku.",
+            "done": "Selesai",
+            "untitled": "Undangan terbuka"
         },
         "healthCaregiversLabel": "Boleh mencatat data kesehatan",
         "healthCaregiversHint": "Orang-orang ini boleh mencatat tanda vital, obat, hasil lab, dan aktivitas untuk anggota ini, dan sekaligus melihat catatan pribadinya. Buku harian siklus tetap dikecualikan.",

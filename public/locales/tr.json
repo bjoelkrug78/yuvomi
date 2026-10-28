@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "{{role}} rolü şunları kilitler: {{modules}}.",
             "presetHintUnavailable": "Tam etkisi şu anda gösterilemiyor. Şablon yine de geçerli.",
             "presetHintRoleChild": "{{role}} rolü hiçbir modülü engellemez. Yukarıdaki çocuk başlangıç izinleri de eklenir.",
-            "presetHintChildExtra": "Yukarıdaki çocuk başlangıç izinleri de eklenir."
+            "presetHintChildExtra": "Yukarıdaki çocuk başlangıç izinleri de eklenir.",
+            "done": "Bitti",
+            "untitled": "Bekleyen davet"
         },
         "healthCaregiversLabel": "Sağlık verisi girebilir",
         "healthCaregiversHint": "Bu kişiler bu üye için yaşamsal değerler, ilaçlar, laboratuvar sonuçları ve aktiviteler girebilir ve bunu yaparken özel kayıtlarını da görür. Döngü günlüğü hariç kalır.",

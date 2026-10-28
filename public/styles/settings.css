@@ -2204,7 +2204,10 @@
   padding: 0;
   border: none;
   background: none;
-  font: inherit;
+  /* KEIN `font: inherit` (R24, Critique G6 P2-1): reset.css nimmt dem Knopf
+   * die UA-Schrift schon, und die Kurzschrift setzte die Rolle Zeilentitel
+   * (typography.css) zurueck - Mitglieder standen auf 16/400, die Einladung
+   * darunter (kein Knopf) auf 17/600. Beide sind Zeilen: 16/500. */
   text-align: start;
   cursor: pointer;
 }

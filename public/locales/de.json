@@ -3215,7 +3215,9 @@
             "presetHintRoleLimited": "Die Rolle {{role}} sperrt: {{modules}}.",
             "presetHintUnavailable": "Die genaue Wirkung lässt sich gerade nicht anzeigen. Die Vorlage gilt trotzdem.",
             "presetHintRoleChild": "Die Rolle {{role}} sperrt kein Modul. Dazu kommen die Startrechte für Kinder oben.",
-            "presetHintChildExtra": "Dazu kommen die Startrechte für Kinder oben."
+            "presetHintChildExtra": "Dazu kommen die Startrechte für Kinder oben.",
+            "done": "Fertig",
+            "untitled": "Offene Einladung"
         },
         "healthCaregiversLabel": "Darf Gesundheitsdaten eintragen",
         "healthCaregiversHint": "Diese Personen dürfen für dieses Mitglied Vitalwerte, Medikamente, Laborwerte und Aktivitäten eintragen und dabei auch dessen private Einträge sehen. Das Zyklus-Tagebuch bleibt ausgenommen.",

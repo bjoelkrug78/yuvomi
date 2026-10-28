@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "Il ruolo {{role}} blocca: {{modules}}.",
             "presetHintUnavailable": "L'effetto esatto non è visualizzabile al momento. Il modello vale comunque.",
             "presetHintRoleChild": "Il ruolo {{role}} non blocca nessun modulo. Si aggiungono i permessi iniziali per i bambini qui sopra.",
-            "presetHintChildExtra": "Si aggiungono i permessi iniziali per i bambini qui sopra."
+            "presetHintChildExtra": "Si aggiungono i permessi iniziali per i bambini qui sopra.",
+            "done": "Fatto",
+            "untitled": "Invito in sospeso"
         },
         "healthCaregiversLabel": "Può registrare dati sanitari",
         "healthCaregiversHint": "Queste persone possono registrare parametri vitali, farmaci, esami di laboratorio e attività per questo membro, vedendone anche le voci private. Il diario del ciclo resta escluso.",

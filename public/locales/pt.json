@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "A função {{role}} bloqueia: {{modules}}.",
             "presetHintUnavailable": "O efeito exato não pode ser mostrado agora. O modelo aplica-se mesmo assim.",
             "presetHintRoleChild": "A função {{role}} não bloqueia nenhum módulo. Somam-se as permissões iniciais para crianças acima.",
-            "presetHintChildExtra": "Somam-se as permissões iniciais para crianças acima."
+            "presetHintChildExtra": "Somam-se as permissões iniciais para crianças acima.",
+            "done": "Concluído",
+            "untitled": "Convite pendente"
         },
         "healthCaregiversLabel": "Pode registar dados de saúde",
         "healthCaregiversHint": "Estas pessoas podem registar sinais vitais, medicamentos, análises e atividades para este membro e ver as suas entradas privadas ao fazê-lo. O diário do ciclo permanece excluído.",

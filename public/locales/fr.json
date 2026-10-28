@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "Le rôle {{role}} verrouille : {{modules}}.",
             "presetHintUnavailable": "L'effet exact ne peut pas être affiché pour le moment. Le modèle s'applique quand même.",
             "presetHintRoleChild": "Le rôle {{role}} ne bloque aucun module. Les droits de départ des enfants ci-dessus s’y ajoutent.",
-            "presetHintChildExtra": "Les droits de départ des enfants ci-dessus s’y ajoutent."
+            "presetHintChildExtra": "Les droits de départ des enfants ci-dessus s’y ajoutent.",
+            "done": "Terminé",
+            "untitled": "Invitation en attente"
         },
         "healthCaregiversLabel": "Peut saisir des données de santé",
         "healthCaregiversHint": "Ces personnes peuvent saisir les constantes, médicaments, résultats de laboratoire et activités de ce membre, et voir ses entrées privées à cette occasion. Le journal du cycle reste exclu.",

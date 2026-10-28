@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "Rollen {{role}} låser: {{modules}}.",
             "presetHintUnavailable": "Den exakta effekten kan inte visas just nu. Mallen gäller ändå.",
             "presetHintRoleChild": "Rollen {{role}} spärrar ingen modul. Startbehörigheterna för barn ovan tillkommer.",
-            "presetHintChildExtra": "Startbehörigheterna för barn ovan tillkommer."
+            "presetHintChildExtra": "Startbehörigheterna för barn ovan tillkommer.",
+            "done": "Klar",
+            "untitled": "Öppen inbjudan"
         },
         "healthCaregiversLabel": "Får registrera hälsodata",
         "healthCaregiversHint": "Dessa personer får registrera vitalvärden, mediciner, provsvar och aktiviteter åt den här medlemmen och ser då även dennes privata poster. Cykeldagboken förblir undantagen.",

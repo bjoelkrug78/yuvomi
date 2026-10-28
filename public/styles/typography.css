@@ -278,7 +278,6 @@
  * Ein Blatt ohne Reichweite hat eine Stufe weniger (22 / 20 / 17) - dieselbe
  * Leiter, nur kuerzer. Die Ebene im Baum zieht shell.js nach (`aria-level`). */
 .settings-scope .settings-section__title,
-.settings-member__name,
 .settings-provider__name,
 .settings-sync-info__name,
 /* Dashboard-Widget-Titel eine Stufe über den Zeilen-Titeln (17px vs. 15px, die
@@ -356,6 +355,7 @@
 .agenda-event__title,
 .contact-item__name,
 .subscription-card__name,
+.settings-member__name,
 .rw-standing__name {
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);

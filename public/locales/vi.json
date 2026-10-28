@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "Vai trò {{role}} khóa: {{modules}}.",
             "presetHintUnavailable": "Hiện không thể hiển thị tác dụng chính xác. Mẫu vẫn được áp dụng.",
             "presetHintRoleChild": "Vai trò {{role}} không chặn mô-đun nào. Quyền khởi đầu cho trẻ em ở trên được áp dụng thêm.",
-            "presetHintChildExtra": "Quyền khởi đầu cho trẻ em ở trên được áp dụng thêm."
+            "presetHintChildExtra": "Quyền khởi đầu cho trẻ em ở trên được áp dụng thêm.",
+            "done": "Xong",
+            "untitled": "Lời mời đang mở"
         },
         "healthCaregiversLabel": "Có thể ghi dữ liệu sức khỏe",
         "healthCaregiversHint": "Những người này có thể ghi chỉ số sinh tồn, thuốc, kết quả xét nghiệm và hoạt động cho thành viên này, đồng thời thấy các mục riêng tư của họ. Nhật ký chu kỳ vẫn được loại trừ.",

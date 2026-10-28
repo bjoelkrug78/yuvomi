@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "役割「{{role}}」がロックするもの: {{modules}}。",
             "presetHintUnavailable": "正確な効果は現在表示できません。テンプレートは適用されます。",
             "presetHintRoleChild": "役割「{{role}}」はどのモジュールもブロックしません。上の子ども用初期権限が加わります。",
-            "presetHintChildExtra": "上の子ども用初期権限が加わります。"
+            "presetHintChildExtra": "上の子ども用初期権限が加わります。",
+            "done": "完了",
+            "untitled": "保留中の招待"
         },
         "healthCaregiversLabel": "健康データを記録できる",
         "healthCaregiversHint": "これらの人はこのメンバーのバイタル、薬、検査結果、アクティビティを記録でき、その際に非公開の記録も見えます。周期の記録は対象外です。",

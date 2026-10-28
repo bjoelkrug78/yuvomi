@@ -3419,7 +3419,9 @@
             "presetHintRoleLimited": "Rola {{role}} blokuje: {{modules}}.",
             "presetHintUnavailable": "Dokładnego działania nie da się teraz pokazać. Szablon i tak obowiązuje.",
             "presetHintRoleChild": "Rola {{role}} nie blokuje żadnego modułu. Dochodzą do tego uprawnienia początkowe dla dzieci powyżej.",
-            "presetHintChildExtra": "Dochodzą do tego uprawnienia początkowe dla dzieci powyżej."
+            "presetHintChildExtra": "Dochodzą do tego uprawnienia początkowe dla dzieci powyżej.",
+            "done": "Gotowe",
+            "untitled": "Oczekujące zaproszenie"
         },
         "healthCaregiversLabel": "Może wprowadzać dane zdrowotne",
         "healthCaregiversHint": "Te osoby mogą wprowadzać parametry życiowe, leki, wyniki badań i aktywności dla tego członka rodziny oraz widzieć przy tym jego prywatne wpisy. Dziennik cyklu pozostaje wyłączony.",

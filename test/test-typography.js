@@ -941,6 +941,15 @@ test('der Zeilentitel ist eine Rolle (R16)', () => {
   assert.ok(knopf);
   assert.doesNotMatch(knopf.body, /(?:^|[;\s])font:\s*inherit/, '`font: inherit` setzt das Gewicht der Rolle zurueck');
 
+  // R24 (Critique G6 P2-1): dieselbe Falle am Mitgliedsnamen der Familie - der
+  // Knopf stand auf 16/400, die Einladung darunter (kein Knopf) auf 17/600.
+  assert.ok(sels(rolle).includes('.settings-member__name'), '.settings-member__name nimmt die Rolle Zeilentitel');
+  assert.ok(!headline.flatMap(sels).includes('.settings-member__name'), '.settings-member__name steht nicht mehr in der Headline-Rolle');
+  const settingsCss = [...eachRule(readFileSync(new URL('settings.css', STYLES_DIR), 'utf8'))];
+  const mitglied = settingsCss.find((rule) => rule.selector.trim() === '.settings-member__open');
+  assert.ok(mitglied);
+  assert.doesNotMatch(mitglied.body, /(?:^|[;\s])font:\s*inherit/, '`font: inherit` am Mitgliedsnamen setzt die Rolle zurueck');
+
   // Die Aufgabenzeile traegt die Rolle, nicht mehr die Dichte-Variante der Headline.
   const tasks = readFileSync(new URL('../pages/tasks.js', STYLES_DIR), 'utf8');
   assert.match(tasks, /class="task-card__title u-row-title"/);

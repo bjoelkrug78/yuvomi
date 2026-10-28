@@ -3215,7 +3215,9 @@
             "presetHintRoleLimited": "{{role}} 역할이 잠그는 항목: {{modules}}.",
             "presetHintUnavailable": "지금은 정확한 효과를 표시할 수 없습니다. 템플릿은 그대로 적용됩니다.",
             "presetHintRoleChild": "{{role}} 역할은 어떤 모듈도 막지 않습니다. 위의 자녀 시작 권한이 추가로 적용됩니다.",
-            "presetHintChildExtra": "위의 자녀 시작 권한이 추가로 적용됩니다."
+            "presetHintChildExtra": "위의 자녀 시작 권한이 추가로 적용됩니다.",
+            "done": "완료",
+            "untitled": "대기 중인 초대"
         },
         "healthCaregiversLabel": "건강 데이터를 기록할 수 있음",
         "healthCaregiversHint": "이 사람들은 이 구성원의 활력징후, 약, 검사 결과, 활동을 기록할 수 있으며 그 과정에서 비공개 기록도 볼 수 있습니다. 주기 일기는 제외됩니다.",

@@ -3302,7 +3302,9 @@
             "presetHintRoleLimited": "Role {{role}} zamyká: {{modules}}.",
             "presetHintUnavailable": "Přesný účinek teď nelze zobrazit. Šablona přesto platí.",
             "presetHintRoleChild": "Role {{role}} neblokuje žádný modul. Navíc platí počáteční oprávnění pro děti výše.",
-            "presetHintChildExtra": "Navíc platí počáteční oprávnění pro děti výše."
+            "presetHintChildExtra": "Navíc platí počáteční oprávnění pro děti výše.",
+            "done": "Hotovo",
+            "untitled": "Otevřená pozvánka"
         },
         "healthCaregiversLabel": "Může zadávat zdravotní údaje",
         "healthCaregiversHint": "Tyto osoby mohou za tohoto člena zadávat vitální hodnoty, léky, laboratorní výsledky a aktivity a přitom vidí i jeho soukromé záznamy. Deník cyklu zůstává vyňat.",

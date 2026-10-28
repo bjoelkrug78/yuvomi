@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "A(z) {{role}} szerep zárolja: {{modules}}.",
             "presetHintUnavailable": "A pontos hatás most nem jeleníthető meg. A sablon ettől még érvényes.",
             "presetHintRoleChild": "A(z) {{role}} szerep egyetlen modult sem tilt. Ehhez jönnek még a fenti gyerek kezdő jogosultságok.",
-            "presetHintChildExtra": "Ehhez jönnek még a fenti gyerek kezdő jogosultságok."
+            "presetHintChildExtra": "Ehhez jönnek még a fenti gyerek kezdő jogosultságok.",
+            "done": "Kész",
+            "untitled": "Függőben lévő meghívó"
         },
         "healthCaregiversLabel": "Rögzíthet egészségügyi adatokat",
         "healthCaregiversHint": "Ezek a személyek rögzíthetnek életjeleket, gyógyszereket, laboreredményeket és tevékenységeket ehhez a taghoz, és eközben a privát bejegyzéseit is látják. A ciklusnapló kivétel marad.",

@@ -3197,7 +3197,9 @@
             "presetHintRoleLimited": "De rol {{role}} vergrendelt: {{modules}}.",
             "presetHintUnavailable": "De exacte werking is nu niet te tonen. Het sjabloon geldt toch.",
             "presetHintRoleChild": "De rol {{role}} blokkeert geen enkele module. De startrechten voor kinderen hierboven komen erbij.",
-            "presetHintChildExtra": "De startrechten voor kinderen hierboven komen erbij."
+            "presetHintChildExtra": "De startrechten voor kinderen hierboven komen erbij.",
+            "done": "Klaar",
+            "untitled": "Openstaande uitnodiging"
         },
         "healthCaregiversLabel": "Mag gezondheidsgegevens invoeren",
         "healthCaregiversHint": "Deze personen mogen vitale waarden, medicijnen, labuitslagen en activiteiten voor dit lid invoeren en zien daarbij ook diens privé-invoer. Het cyclusdagboek blijft uitgesloten.",
