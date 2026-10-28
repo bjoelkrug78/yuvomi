@@ -6083,8 +6083,6 @@
         "balance": "잔액",
         "cost": "비용",
         "remaining": "남음",
-        "pointsSigned": "포인트(+/−)",
-        "pointsSignedHint": "양수는 적립, 음수는 차감합니다.",
         "reasonOptional": "사유(선택)",
         "reasonPlaceholder": "예: 많이 도와줌",
         "iconLabel": "아이콘",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "{{name}} 님의 '{{reward}}'을 승인했습니다.",
         "toastRejectedNamed": "{{name}} 님의 '{{reward}}'을 거절했습니다.",
         "toastCancelledNamed": "'{{reward}}' 요청을 취소했습니다.",
-        "ledgerFilterLabel": "사람별 필터"
+        "ledgerFilterLabel": "사람별 필터",
+        "bonusKindCredit": "적립",
+        "bonusKindDebit": "차감",
+        "bonusKindLabel": "적립 또는 차감",
+        "bonusCredit": "적립",
+        "bonusDebit": "차감",
+        "notEnoughPoints": "이 상품에 필요한 포인트가 부족합니다.",
+        "bonusPoints": "포인트"
     },
     "datepicker": {
         "openCalendar": "캘린더 열기",

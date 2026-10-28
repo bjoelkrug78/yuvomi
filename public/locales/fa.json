@@ -6083,8 +6083,6 @@
         "balance": "موجودی",
         "cost": "هزینه",
         "remaining": "باقی‌مانده",
-        "pointsSigned": "امتیاز (+/−)",
-        "pointsSignedHint": "مقدار مثبت اضافه و مقدار منفی کسر می‌کند.",
         "reasonOptional": "دلیل (اختیاری)",
         "reasonPlaceholder": "مثلاً خیلی کمک کرد",
         "iconLabel": "نماد",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "«{{reward}}» برای {{name}} تأیید شد.",
         "toastRejectedNamed": "«{{reward}}» برای {{name}} رد شد.",
         "toastCancelledNamed": "«{{reward}}» پس گرفته شد.",
-        "ledgerFilterLabel": "فیلتر بر اساس شخص"
+        "ledgerFilterLabel": "فیلتر بر اساس شخص",
+        "bonusKindCredit": "افزایش",
+        "bonusKindDebit": "کسر",
+        "bonusKindLabel": "افزایش یا کسر",
+        "bonusCredit": "افزودن",
+        "bonusDebit": "کسر کردن",
+        "notEnoughPoints": "امتیاز کافی برای این جایزه وجود ندارد.",
+        "bonusPoints": "امتیازها"
     },
     "datepicker": {
         "openCalendar": "باز کردن تقویم",

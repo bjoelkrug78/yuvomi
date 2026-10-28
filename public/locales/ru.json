@@ -6377,8 +6377,6 @@
         "balance": "Баланс",
         "cost": "Стоимость",
         "remaining": "Остаток",
-        "pointsSigned": "Баллы (+/−)",
-        "pointsSignedHint": "Положительное значение начисляет, отрицательное списывает.",
         "reasonOptional": "Причина (необязательно)",
         "reasonPlaceholder": "напр. много помог",
         "iconLabel": "Значок",
@@ -6472,7 +6470,14 @@
         "toastApprovedNamed": "«{{reward}}» одобрено для: {{name}}.",
         "toastRejectedNamed": "«{{reward}}» отклонено для: {{name}}.",
         "toastCancelledNamed": "«{{reward}}» отозвано.",
-        "ledgerFilterLabel": "Фильтр по участнику"
+        "ledgerFilterLabel": "Фильтр по участнику",
+        "bonusKindCredit": "Начисление",
+        "bonusKindDebit": "Списание",
+        "bonusKindLabel": "Начисление или списание",
+        "bonusCredit": "Начислить",
+        "bonusDebit": "Списать",
+        "notEnoughPoints": "Недостаточно баллов для этой награды.",
+        "bonusPoints": "Баллы"
     },
     "datepicker": {
         "openCalendar": "Открыть календарь",

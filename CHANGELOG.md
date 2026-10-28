@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **Rewards has two tabs: Points and Rewards.** The history is one level below Points: "History ›"
+  opens it with the person filter, "‹ Points" (or the Points tab) goes back. Before, Points showed the
+  history at its side and History showed the points at its side - the same two blocks on two tabs.
+- **A bonus is a credit or a deduction.** The bonus dialog has a Credit | Deduction switch and a plain
+  number, and its button says "Credit" or "Deduct" instead of "Save"; before, you typed a minus sign
+  to take points away. Redeeming with too few points is no longer a greyed-out button - it says why.
+- **Pocket money is offered for the children.** "Set up pocket money" no longer lists parents and
+  grandparents; members without a family role stay available. "Manage participants" is a button with
+  its name, like "Set up pocket money" next to it, instead of a "..." menu with a single entry.
 - **A task's comment box is one line with the send arrow inside it.** It grows while you type, has no
   resize handle any more, and the separate "Comment" button below it is gone, so on phones it no longer
   sits half under the sheet's buttons. Cmd/Ctrl+Enter sends. The priority in a task's details now reads

@@ -6083,8 +6083,6 @@
         "balance": "Punktestand",
         "cost": "Kosten",
         "remaining": "Verbleibend",
-        "pointsSigned": "Punkte (+/−)",
-        "pointsSignedHint": "Positiver Wert schreibt gut, negativer zieht ab.",
         "reasonOptional": "Grund (optional)",
         "reasonPlaceholder": "z. B. besonders geholfen",
         "iconLabel": "Symbol",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "„{{reward}}“ für {{name}} freigegeben.",
         "toastRejectedNamed": "„{{reward}}“ für {{name}} abgelehnt.",
         "toastCancelledNamed": "„{{reward}}“ zurückgezogen.",
-        "ledgerFilterLabel": "Nach Person filtern"
+        "ledgerFilterLabel": "Nach Person filtern",
+        "bonusKindCredit": "Gutschrift",
+        "bonusKindDebit": "Abzug",
+        "bonusKindLabel": "Gutschrift oder Abzug",
+        "bonusCredit": "Gutschreiben",
+        "bonusDebit": "Abziehen",
+        "notEnoughPoints": "Der Punktestand reicht für diese Prämie nicht.",
+        "bonusPoints": "Punkte"
     },
     "datepicker": {
         "openCalendar": "Kalender öffnen",

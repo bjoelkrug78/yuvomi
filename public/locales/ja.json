@@ -6083,8 +6083,6 @@
         "balance": "残高",
         "cost": "コスト",
         "remaining": "残り",
-        "pointsSigned": "ポイント（+/−）",
-        "pointsSignedHint": "正の値は加算、負の値は減算します。",
         "reasonOptional": "理由（任意）",
         "reasonPlaceholder": "例：とても手伝ってくれた",
         "iconLabel": "アイコン",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "{{name}}さんの「{{reward}}」を承認しました。",
         "toastRejectedNamed": "{{name}}さんの「{{reward}}」を却下しました。",
         "toastCancelledNamed": "「{{reward}}」を取り下げました。",
-        "ledgerFilterLabel": "人で絞り込む"
+        "ledgerFilterLabel": "人で絞り込む",
+        "bonusKindCredit": "加算",
+        "bonusKindDebit": "減算",
+        "bonusKindLabel": "加算または減算",
+        "bonusCredit": "加算する",
+        "bonusDebit": "減算する",
+        "notEnoughPoints": "この景品にはポイントが足りません。",
+        "bonusPoints": "ポイント"
     },
     "datepicker": {
         "openCalendar": "カレンダーを開く",

@@ -6083,8 +6083,6 @@
         "balance": "餘額",
         "cost": "花費",
         "remaining": "剩餘",
-        "pointsSigned": "積分（+/−）",
-        "pointsSignedHint": "正值增加，負值扣除。",
         "reasonOptional": "原因（可選）",
         "reasonPlaceholder": "例如：幫了很多忙",
         "iconLabel": "圖示",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "已為{{name}}批准「{{reward}}」。",
         "toastRejectedNamed": "已為{{name}}拒絕「{{reward}}」。",
         "toastCancelledNamed": "「{{reward}}」已撤回。",
-        "ledgerFilterLabel": "按成員篩選"
+        "ledgerFilterLabel": "按成員篩選",
+        "bonusKindCredit": "增加",
+        "bonusKindDebit": "扣除",
+        "bonusKindLabel": "增加或扣除",
+        "bonusCredit": "增加",
+        "bonusDebit": "扣除",
+        "notEnoughPoints": "積分不足，無法兌換此獎品。",
+        "bonusPoints": "積分"
     },
     "datepicker": {
         "openCalendar": "開啟日曆",

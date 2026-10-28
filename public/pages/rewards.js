@@ -13,14 +13,14 @@ import { esc, REQUIRED_MARK } from '/utils/html.js';
 import { formSwitchRowHtml } from '/settings/components.js';
 import { initials } from '/utils/initials.js';
 import { getReadableTextColor, AVATAR_FALLBACK_COLOR } from '/utils/color.js';
-import { openModal, closeModal, captureModalContext, captureOpenContext, isModalContextCurrent, confirmModal, confirmOverModal, refocusAfterRender } from '/components/modal.js';
+import { openModal, closeModal, captureModalContext, captureOpenContext, isModalContextCurrent, confirmModal, confirmOverModal, refocusAfterRender, dialogInitialFocus, constraintErrors, reportFieldErrors } from '/components/modal.js';
 import { createPageFab, setPageFabAction } from '/utils/fab.js';
 import { rowActionHtml, rowMenuHtml } from '/utils/row-action.js';
-import { installPopoverMenus, popoverMenuHtml } from '/utils/popover-menu.js';
+import { installPopoverMenus } from '/utils/popover-menu.js';
 import { wireTablist } from '/utils/tablist.js';
 import { attachSegmentIndicator } from '/utils/segment-indicator.js';
 import { wireScrollFade, stagger, offerUndo } from '/utils/ux.js';
-import { swapContent } from '/utils/content-swap.js';
+import { swapContent, swapRegion } from '/utils/content-swap.js';
 import { collapseRow } from '/utils/list-motion.js';
 import { renderSkeletonList } from '/utils/skeleton.js';
 import { emptyStateHTML, mountLoadError } from '/utils/empty-state.js';
@@ -36,7 +36,14 @@ import { reloadAfterSave } from '/utils/reload-after-save.js';
 import { personChipsHtml } from '/utils/filter-sheet.js';
 import { errorSentence, isAlreadyDeleted, isGone } from '/utils/friendly-error.js';
 
-const TABS = ['overview', 'catalog', 'ledger'];
+/* ZWEI REITER, DER VERLAUF IST EIN DRILL-DOWN (Critique R24, E8). "Punkte"
+ * zeigte rechts den Verlauf und "Verlauf" rechts die Punktestaende - dieselben
+ * zwei Bloecke auf zwei Reitern. Der Verlauf ist eine Vertiefung der Punkte:
+ * "Verlauf ›" auf "Punkte" fuehrt hinein (`state.tab = 'ledger'`), "‹ Punkte"
+ * und der Reiter fuehren zurueck. Ein Neuaufbau der Seite beginnt wieder auf
+ * dem Reiter. */
+const TABS = ['overview', 'catalog'];
+const LEDGER = 'ledger';
 
 let state = {
   tab: 'overview',
@@ -317,7 +324,7 @@ function balanceOf(userId) {
 // sind Text-Reiter wie im Budget. Die Belohnungen trugen als einziges Modul
 // Pokal, Geschenk und Uhr davor - dieselbe Leiste in zweiter Form.
 function tabButton(tab, label) {
-  const on = state.tab === tab;
+  const on = state.tab === tab || (tab === 'overview' && state.tab === LEDGER);
   return `
     <button class="rw-tab sub-tab${on ? ' sub-tab--active' : ''}" type="button" role="tab"
             data-tab-id="${esc(tab)}" aria-controls="rewards-content"
@@ -338,7 +345,7 @@ function updateRewardsFab() {
   if (readOnly()) { setPageFabAction(fab, { hidden: true, dockLabel: keepNoun() }); return; }
   if (state.tab === 'catalog' && isAdmin()) {
     setPageFabAction(fab, { label: t('rewards.addReward'), dockLabel: t('newLabel.rewards'), onClick: () => openRewardModal(null) });
-  } else if ((state.tab === 'ledger' || (state.tab === 'overview' && balances().length)) && isAdmin()) {
+  } else if ((state.tab === LEDGER || (state.tab === 'overview' && balances().length)) && isAdmin()) {
     // DER BONUS IST DER FAB, AUCH AUF "PUNKTE" (R23 S10, Critique G2 P3:
     // "Kopfpille wechselt", "Bonus doppelt", "zwei Abschnittsaktionen"). Bis
     // R23 stand er dort als Abschnittsknopf neben den Punktestaenden (#1787)
@@ -361,15 +368,19 @@ function renderShell(container) {
         <nav class="rewards-tabs page-toolbar__bar" role="tablist" aria-label="${esc(t('rewards.title'))}">
           ${tabButton('overview', t('rewards.tabPoints'))}
           ${tabButton('catalog', t('rewards.tabCatalog'))}
-          ${tabButton('ledger', t('rewards.tabLedger'))}
         </nav>
       </header>
       <div class="rewards-content" id="rewards-content"></div>
     </div>`);
 
   wireTablist(container.querySelector('.rewards-tabs'), {
-    activeId: state.tab,
+    activeId: state.tab === LEDGER ? 'overview' : state.tab,
     onChange: (id, { direction = 0 } = {}) => { state.tab = id; renderCurrentTab(container, { direction }); },
+  });
+  // Im Verlauf steht "Punkte" schon als aktiver Reiter - ein Tipp darauf ist
+  // fuer die Leiste kein Wechsel. Er fuehrt zurueck wie "‹ Punkte".
+  container.querySelector('.rewards-tabs [data-tab-id="overview"]')?.addEventListener('click', () => {
+    if (state.tab === LEDGER) leaveLedger(container);
   });
   // Geteilte gleitende Kapsel (Re-Critique 2026-09-27, D8); `key`, weil die
   // Seite den Kopf bei jedem Aufruf neu baut.
@@ -405,11 +416,26 @@ function content() {
  *   - Auffrischen nach einer Handlung: Tausch ohne Blende - die Bewegung traegt
  *     dort die betroffene Zeile selbst (`collapseRow` in decideRedemption).
  * `renderSeq` verwirft eine Antwort, die ein spaeterer Wechsel ueberholt hat. */
+/** In den Verlauf (E8): vorwaerts, der Reiter "Punkte" bleibt aktiv. */
+function enterLedger(container) {
+  if (state.tab === LEDGER) return;
+  state.tab = LEDGER;
+  renderCurrentTab(container, { direction: 1, drill: true });
+}
+
+/** Zurueck auf "Punkte"; der Fokus geht an den Weg, der hineingefuehrt hat. */
+async function leaveLedger(container) {
+  if (state.tab !== LEDGER) return;
+  state.tab = 'overview';
+  await renderCurrentTab(container, { direction: -1, drill: true });
+  content()?.querySelector('.rw-section__more')?.focus({ preventScroll: true });
+}
+
 let renderSeq = 0;
 /** Traeger, die schon einmal Inhalt gezeigt haben (ueberlebt keinen Seitenneubau). */
 const filledHosts = new WeakSet();
 
-async function renderCurrentTab(container, { direction = null } = {}) {
+async function renderCurrentTab(container, { direction = null, drill = false } = {}) {
   const el = content();
   if (!el) return;
   const seq = ++renderSeq;
@@ -429,7 +455,11 @@ async function renderCurrentTab(container, { direction = null } = {}) {
       else if (tab === 'catalog') renderCatalog(el);
       else renderLedger(el);
     };
-    swapContent(el, draw, { direction: direction ?? 0, animate: !first && direction !== null });
+    // Der Drill-down in den Verlauf und zurueck ist ein Ebenenwechsel
+    // (swapRegion: die neue Ebene kommt von der Seite, die alte tritt zurueck),
+    // ein Reiterwechsel ein Tausch in Schrittrichtung.
+    if (drill && !first) await swapRegion(el, draw, { direction: direction ?? 0 });
+    else swapContent(el, draw, { direction: direction ?? 0, animate: !first && direction !== null });
     filledHosts.add(el);
     if (first) stagger(el.querySelectorAll('.rw-pending, .rw-standing, .rw-reward-card, .rw-ledger-row'), { host: el });
   } catch (err) {
@@ -725,15 +755,12 @@ function renderOverview(el) {
   // Der Bonus steht seit R23 als FAB auf diesem Reiter (updateRewardsFab,
   // vorher Abschnittsknopf hier, #1787). Im Kopf der Punktestaende bleibt das
   // "..." mit "Teilnehmende verwalten".
+  // EINE HANDLUNG, EIN KNOPF (Critique R24, G2-Belohnungen-P3-3; DESIGN.md
+  // D5, S5-F1): der Kopf trug ein "..." mit genau einem Eintrag, der Kopf
+  // "Taschengeld" daneben seine Handlung als Kapsel mit Wort - zwei Formen
+  // fuer dieselbe Frage auf einer Seite. Beide sind jetzt die Kapsel.
   const adminBar = isAdmin() && !readOnly() ? `
-          <div class="rw-section__actions">
-            ${popoverMenuHtml({
-    id: 'rw-standings-more',
-    label: t('common.moreActions'),
-    items: [{ icon: 'users-round', label: t('rewards.manageParticipants'), action: 'manage-participants' }],
-    triggerClass: 'btn btn--secondary btn--icon btn--sm rw-section-tools',
-  })}
-          </div>` : '';
+          <button class="btn btn--secondary btn--sm" type="button" data-action="manage-participants"><i data-lucide="users-round" aria-hidden="true"></i>${esc(t('rewards.manageParticipants'))}</button>` : '';
   // Anfragen und Punktestaende links, die letzten Buchungen ab der
   // Split-Schwelle rechts daneben (mobil darunter) - `.page-columns`.
   /* DEINE PUNKTE ZUERST (R19, Critique 2026-10-16, Persona Emma, 8): ihre 30
@@ -772,7 +799,7 @@ function renderOverview(el) {
 function wireOverview(el) {
   installPopoverMenus(el);
   el.querySelector('.rw-section__more')?.addEventListener('click', () => {
-    document.querySelector('.rewards-tabs [data-tab-id="ledger"]')?.click();
+    enterLedger(document.querySelector('.rewards-page')?.parentElement || document.body);
   });
   el.querySelector('[data-action="manage-participants"]')?.addEventListener('click', openParticipantsModal);
   el.querySelectorAll('.rw-redeem-open').forEach((btn) => {
@@ -947,36 +974,10 @@ function renderRecentLedger() {
       </section>`;
 }
 
-/* Seitenspalte des Verlaufs: die Punktestaende in Kurzform (Person, Punkte) -
- * dieselbe Zeile wie in der Uebersicht ohne Fortschritt und Einloesen; der
- * Tipp oeffnet dasselbe Mitglieds-Detail. */
-function renderBalancesRail() {
-  const list = balances();
-  if (!list.length) return '';
-  const rows = list.map((member) => `
-          <li class="list-row rw-standing rw-standing--compact">
-            <button class="rw-standing__id" type="button" data-member="${member.id}"
-                    aria-label="${esc(`${member.display_name}, ${pointsLabel(member.balance)}. ${t('rewards.openDetails')}`)}">
-              ${avatar(member, 40)}
-              <span class="rw-standing__idtext">
-                <span class="rw-standing__name">${esc(member.display_name)}</span>
-                <span class="rw-standing__points"><strong>${fmtPoints(member.balance)}</strong> ${esc(t('rewards.pointsUnit'))}</span>
-              </span>
-            </button>
-          </li>`).join('');
-  return `
-      <section class="rw-section">
-        <h2 class="rw-section__title u-section-title">${esc(t('rewards.standings'))}</h2>
-        <ul class="row-carrier rw-standings">${rows}</ul>
-      </section>`;
-}
-
 function renderLedger(el) {
   el.replaceChildren();
   // EINE PERSONENZEILE (personChipsHtml, utils/filter-sheet.js; Critique R24
   // G2-Quer-P2-1): Scheibe + Vorname wie im Aufgaben-Verlauf und im Kalender.
-  // Vorher Chips mit vollem Namen ohne Scheibe (Re-Critique 2026-09-28 P2-6
-  // hatte schon `.rw-chip` durch den Kanon-Chip ersetzt).
   const filterChips = personChipsHtml({
     filter: 'ledger-member',
     label: t('rewards.ledgerFilterLabel'),
@@ -985,31 +986,31 @@ function renderLedger(el) {
     all: { label: t('rewards.all'), active: (state.ledgerFilter ?? null) === null },
     className: 'page-chip-row rw-chips',
   });
-  // Bonus vergeben läuft über den Kontext-FAB (Ledger-Tab, Admin); kein Inline-Button.
-  const adminBar = '';
 
   const rows = state.ledger.map(ledgerRowHtml).join('');
 
-  // Die Buchungen links, die Punktestaende als Seitenspalte: neben der Liste
-  // der Bewegungen steht, worauf sie sich summieren.
+  // DER VERLAUF IST EINE EBENE UNTER "PUNKTE" (Critique R24, E8): vorn der
+  // Rueckweg mit dem Namen der Ebene darueber, dann der Titel, die Personen,
+  // die Buchungen. Keine Seitenspalte mehr - die Punktestaende daneben waren
+  // genau die Spiegelung, die E8 aufhebt; sie stehen eine Ebene hoeher.
   el.insertAdjacentHTML('beforeend', `
     <div class="rewards-content__inner">
       ${renderPageColumns({
         main: `
-      <section class="rw-section">
-        <div class="rw-section__head">
-          ${filterChips}
-          ${adminBar}
-        </div>
+      <section class="rw-section rw-ledger-view" aria-labelledby="rw-ledger-title">
+        <button type="button" class="rw-back" data-rw-back>
+          <i data-lucide="chevron-left" aria-hidden="true"></i><span>${esc(t('rewards.tabPoints'))}</span>
+        </button>
+        <h2 class="rw-section__title u-section-title" id="rw-ledger-title">${esc(t('rewards.tabLedger'))}</h2>
+        ${filterChips}
         ${state.ledger.length
           ? `<ul class="rw-ledger row-carrier">${rows}</ul>`
           : emptyState('history', t('rewards.emptyLedgerTitle'), t('rewards.emptyLedgerBody'))}
       </section>`,
-        rail: renderBalancesRail(),
       })}
     </div>`);
-  el.querySelectorAll('.rw-standing__id, .rw-own__history').forEach((btn) => {
-    btn.addEventListener('click', () => openMemberDetail(Number(btn.dataset.member)));
+  el.querySelector('[data-rw-back]')?.addEventListener('click', () => {
+    leaveLedger(document.querySelector('.rewards-page')?.parentElement || document.body);
   });
 
   el.querySelectorAll('[data-filter="ledger-member"]').forEach((chip) => chip.addEventListener('click', async () => {
@@ -1099,14 +1100,24 @@ async function openRedeemModal(memberId, presetItemId = null) {
           <div class="rw-redeem-summary__row"><span>${esc(t('rewards.balance'))}</span><strong>${fmtPoints(bal)}</strong></div>
           <div class="rw-redeem-summary__row"><span>${esc(t('rewards.cost'))}</span><strong>−${fmtPoints(cost)}</strong></div>
           <div class="rw-redeem-summary__row rw-redeem-summary__row--total ${ok ? '' : 'rw-redeem-summary__row--neg'}"><span>${esc(t('rewards.remaining'))}</span><strong>${fmtPoints(after)}</strong></div>`);
-        submit.disabled = !ok;
+        // DER KNOPF BLEIBT BEDIENBAR (DESIGN.md D4, Critique R24 S3
+        // "primary-disabled"): ein gesperrter Primaerknopf sagt nicht, WAS
+        // fehlt. Die rote Restzeile zeigt es schon, das Absenden sagt es.
+        affordableNow = ok;
+        if (ok) errEl.hidden = true;
       };
+      let affordableNow = true;
       memberEl.addEventListener('change', refresh);
       itemEl.addEventListener('change', refresh);
       refresh();
 
       panel.querySelector('#rw-redeem-form').addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (!affordableNow) {
+          errEl.textContent = t('rewards.notEnoughPoints');
+          errEl.hidden = false;
+          return;
+        }
         errEl.hidden = true;
         const modalContext = captureModalContext();
         submit.disabled = true;
@@ -1213,10 +1224,20 @@ function decisionSentence(row, action) {
   return t(action === 'fulfill' ? 'rewards.toastApprovedNamed' : 'rewards.toastRejectedNamed', { reward, name });
 }
 
+/**
+ * BONUS: GUTSCHRIFT ODER ABZUG, IMMER EINE POSITIVE ZAHL (Critique R24,
+ * G2-Belohnungen-P3-1). Das Feld hiess "Punkte (+/−)" und erklaerte darunter,
+ * dass ein negativer Wert abzieht - der Dialog "Bonus vergeben" zog also auch
+ * ab, und wer das wollte, musste ein Minus tippen, das die Zifferntastatur des
+ * Telefons nicht hat. Jetzt sagt ein Segment, was passiert, die Zahl ist ein
+ * Betrag, und der Primaerknopf nennt die Handlung ("Gutschreiben" /
+ * "Abziehen") statt "Speichern".
+ */
 function openBonusModal() {
   if (readOnly()) return;
   const members = enrolledMembers();
   if (!members.length) { confirmModal(t('rewards.emptyOverviewAdmin'), { confirmLabel: t('rewards.gotIt') }); return; }
+  const kinds = [['credit', 'rewards.bonusKindCredit'], ['debit', 'rewards.bonusKindDebit']];
   openModal({
     staged: true, // Buehne zuerst, Felder nach dem ersten Bild (modal.js, R21 a6)
     title: t('rewards.grantBonus'),
@@ -1228,10 +1249,13 @@ function openBonusModal() {
             ${members.map((m) => `<option value="${m.id}">${esc(m.display_name)} · ${esc(pointsLabel(m.balance))}</option>`).join('')}
           </select>
         </div>
+        <div class="segmented rw-bonus-kind" role="radiogroup" aria-label="${esc(t('rewards.bonusKindLabel'))}">
+          ${kinds.map(([id, key], i) => `<button class="segmented__item${i === 0 ? ' is-active' : ''}" type="button" role="radio"
+                  data-tab-id="${id}" aria-checked="${i === 0}" tabindex="${i === 0 ? '0' : '-1'}">${esc(t(key))}</button>`).join('')}
+        </div>
         <div class="form-group">
-          <label class="label" for="rw-bonus-points">${esc(t('rewards.pointsSigned'))}${REQUIRED_MARK}</label>
-          <input class="input" id="rw-bonus-points" type="number" inputmode="numeric" step="1" placeholder="10" required>
-          <p class="rw-hint">${esc(t('rewards.pointsSignedHint'))}</p>
+          <label class="label" for="rw-bonus-points">${esc(t('rewards.bonusPoints'))}${REQUIRED_MARK}</label>
+          <input class="input" id="rw-bonus-points" type="number" inputmode="numeric" min="1" step="1" placeholder="10" required>
         </div>
         <div class="form-group">
           <label class="label" for="rw-bonus-reason">${esc(t('rewards.reasonOptional'))}</label>
@@ -1240,18 +1264,30 @@ function openBonusModal() {
         <div id="rw-bonus-error" class="form-error" role="alert" hidden></div>
         <div class="modal-panel__footer modal-panel__footer--plain">
           <button type="button" class="btn btn--secondary" data-action="close-modal">${esc(t('common.cancel'))}</button>
-          <button type="submit" class="btn btn--primary" id="rw-bonus-submit">${esc(t('common.save'))}</button>
+          <button type="submit" class="btn btn--primary" id="rw-bonus-submit">${esc(t('rewards.bonusCredit'))}</button>
         </div>
       </form>`,
     onSave: (panel) => {
-      panel.querySelector('#rw-bonus-form').addEventListener('submit', async (e) => {
+      const form = panel.querySelector('#rw-bonus-form');
+      const submit = panel.querySelector('#rw-bonus-submit');
+      let kind = 'credit';
+      wireTablist(panel.querySelector('.rw-bonus-kind'), {
+        activeId: kind,
+        activeClass: 'is-active',
+        mode: 'select',
+        onChange: (id) => {
+          kind = id;
+          submit.textContent = t(id === 'debit' ? 'rewards.bonusDebit' : 'rewards.bonusCredit');
+        },
+      });
+      attachSegmentIndicator(panel.querySelector('.rw-bonus-kind'));
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const errEl = panel.querySelector('#rw-bonus-error');
-        const submit = panel.querySelector('#rw-bonus-submit');
-        const delta = Math.trunc(Number(panel.querySelector('#rw-bonus-points').value));
-        if (!Number.isFinite(delta) || delta === 0) {
-          errEl.textContent = t('rewards.pointsSignedHint'); errEl.hidden = false; return;
-        }
+        const problems = constraintErrors(form);
+        if (problems.length) { reportFieldErrors(problems); return; }
+        const amount = Math.trunc(Number(panel.querySelector('#rw-bonus-points').value));
+        const delta = kind === 'debit' ? -amount : amount;
         const modalContext = captureModalContext();
         submit.disabled = true; errEl.hidden = true;
         try {
@@ -1278,6 +1314,7 @@ function openRewardModal(item) {
   openModal({
     staged: !isEdit, // Buehne zuerst, Felder nach dem ersten Bild (modal.js, R21 a6)
     title: isEdit ? t('rewards.editReward') : t('rewards.addReward'),
+    initialFocus: dialogInitialFocus(isEdit),
     content: `
       <form id="rw-reward-form" novalidate>
         <div class="modal-grid modal-grid--2">
@@ -1652,11 +1689,22 @@ function renderMoneyRow(account) {
     </li>`;
 }
 
+/* TASCHENGELD IST FUER DIE KINDER (Critique R24, G2-Belohnungen-P3-3).
+ * "Taschengeld einrichten" bot Alex und Linda - die Eltern - als Konto an.
+ * Der Server kennt jedes Haushaltsmitglied als Kandidaten; der Dialog laesst
+ * die Elternrollen weg. Ohne gesetzte Rolle (`other`, der Standard) bleibt
+ * man waehlbar - sonst sperrte ein Haushalt ohne Rollen sich selbst aus. */
+const PARENT_ROLES = new Set(['dad', 'mom', 'parent', 'grandparent']);
+
+function moneyCandidates() {
+  return (state.money?.candidates || []).filter((m) => !PARENT_ROLES.has(m.family_role));
+}
+
 function renderMoneySection() {
   if (!state.money) return '';
   const accounts = moneyAccounts();
   const manage = isAdmin() && !readOnly();
-  const canOpen = manage && (state.money.candidates || []).length > 0;
+  const canOpen = manage && moneyCandidates().length > 0;
   // Ohne Konto und ohne die Moeglichkeit, eines zu eroeffnen, gibt es nichts
   // zu zeigen - auch keine Ueberschrift ueber einer leeren Liste. Wer eines
   // eroeffnen kann, sieht ohne Konto einen Satz im selben Traeger.
@@ -1977,7 +2025,7 @@ function openMoneyPlanModal(memberId) {
  * Buchung haengen danach an der Zeile. */
 function openMoneyAccountModal() {
   if (readOnly() || !isAdmin()) return;
-  const candidates = state.money?.candidates || [];
+  const candidates = moneyCandidates();
   if (!candidates.length) return;
   openModal({
     title: t('rewards.money.setUp'),
@@ -2151,6 +2199,8 @@ export const __test = {
   openMoneyAccountModal, closeMoneyAccount,
   // #1997: Dialoge, die erst nach dem Laden aufgehen (test-late-modal-open.js).
   openParticipantsModal, openMemberDetail, openMoneyDetail,
+  // R24 (E8, G2-Belohnungen-P3-1/P3-3): Bonus als Gutschrift/Abzug, Taschengeld fuer Kinder, zwei Reiter.
+  openBonusModal, moneyCandidates, TABS, tabButton,
 };
 
 export async function render(container, { user } = {}) {

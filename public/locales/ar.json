@@ -6525,8 +6525,6 @@
         "balance": "الرصيد",
         "cost": "التكلفة",
         "remaining": "المتبقي",
-        "pointsSigned": "النقاط (+/−)",
-        "pointsSignedHint": "القيمة الموجبة تضيف والسالبة تخصم.",
         "reasonOptional": "السبب (اختياري)",
         "reasonPlaceholder": "مثال: ساعد كثيرًا",
         "iconLabel": "أيقونة",
@@ -6620,7 +6618,14 @@
         "toastApprovedNamed": "تمت الموافقة على «{{reward}}» لـ {{name}}.",
         "toastRejectedNamed": "تم رفض «{{reward}}» لـ {{name}}.",
         "toastCancelledNamed": "تم سحب «{{reward}}».",
-        "ledgerFilterLabel": "تصفية حسب الشخص"
+        "ledgerFilterLabel": "تصفية حسب الشخص",
+        "bonusKindCredit": "إضافة",
+        "bonusKindDebit": "خصم",
+        "bonusKindLabel": "إضافة أو خصم",
+        "bonusCredit": "إضافة",
+        "bonusDebit": "خصم",
+        "notEnoughPoints": "لا توجد نقاط كافية لهذه الجائزة.",
+        "bonusPoints": "النقاط"
     },
     "datepicker": {
         "openCalendar": "فتح التقويم",

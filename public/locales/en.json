@@ -6083,8 +6083,6 @@
         "balance": "Balance",
         "cost": "Cost",
         "remaining": "Remaining",
-        "pointsSigned": "Points (+/−)",
-        "pointsSignedHint": "A positive value credits, a negative value deducts.",
         "reasonOptional": "Reason (optional)",
         "reasonPlaceholder": "e.g. helped out a lot",
         "iconLabel": "Icon",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "“{{reward}}” approved for {{name}}.",
         "toastRejectedNamed": "“{{reward}}” rejected for {{name}}.",
         "toastCancelledNamed": "“{{reward}}” withdrawn.",
-        "ledgerFilterLabel": "Filter by person"
+        "ledgerFilterLabel": "Filter by person",
+        "bonusKindCredit": "Credit",
+        "bonusKindDebit": "Deduction",
+        "bonusKindLabel": "Credit or deduction",
+        "bonusCredit": "Credit",
+        "bonusDebit": "Deduct",
+        "notEnoughPoints": "Not enough points for this reward.",
+        "bonusPoints": "Points"
     },
     "datepicker": {
         "openCalendar": "Open calendar",

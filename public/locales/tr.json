@@ -6083,8 +6083,6 @@
         "balance": "Bakiye",
         "cost": "Maliyet",
         "remaining": "Kalan",
-        "pointsSigned": "Puan (+/−)",
-        "pointsSignedHint": "Pozitif değer ekler, negatif değer düşer.",
         "reasonOptional": "Neden (isteğe bağlı)",
         "reasonPlaceholder": "ör. çok yardım etti",
         "iconLabel": "Simge",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "\"{{reward}}\", {{name}} için onaylandı.",
         "toastRejectedNamed": "\"{{reward}}\", {{name}} için reddedildi.",
         "toastCancelledNamed": "\"{{reward}}\" geri çekildi.",
-        "ledgerFilterLabel": "Kişiye göre filtrele"
+        "ledgerFilterLabel": "Kişiye göre filtrele",
+        "bonusKindCredit": "Ekleme",
+        "bonusKindDebit": "Kesinti",
+        "bonusKindLabel": "Ekleme veya kesinti",
+        "bonusCredit": "Ekle",
+        "bonusDebit": "Düş",
+        "notEnoughPoints": "Bu ödül için yeterli puan yok.",
+        "bonusPoints": "Puanlar"
     },
     "datepicker": {
         "openCalendar": "Takvimi aç",

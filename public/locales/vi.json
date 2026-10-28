@@ -6083,8 +6083,6 @@
         "balance": "Số dư",
         "cost": "Chi phí",
         "remaining": "Còn lại",
-        "pointsSigned": "Điểm (+/−)",
-        "pointsSignedHint": "Giá trị dương cộng, âm trừ.",
         "reasonOptional": "Lý do (tùy chọn)",
         "reasonPlaceholder": "ví dụ đã giúp rất nhiều",
         "iconLabel": "Biểu tượng",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "Đã duyệt \"{{reward}}\" cho {{name}}.",
         "toastRejectedNamed": "Đã từ chối \"{{reward}}\" cho {{name}}.",
         "toastCancelledNamed": "Đã rút lại \"{{reward}}\".",
-        "ledgerFilterLabel": "Lọc theo người"
+        "ledgerFilterLabel": "Lọc theo người",
+        "bonusKindCredit": "Cộng điểm",
+        "bonusKindDebit": "Trừ điểm",
+        "bonusKindLabel": "Cộng hoặc trừ điểm",
+        "bonusCredit": "Cộng điểm",
+        "bonusDebit": "Trừ điểm",
+        "notEnoughPoints": "Không đủ điểm cho phần thưởng này.",
+        "bonusPoints": "Điểm"
     },
     "datepicker": {
         "openCalendar": "Mở lịch",

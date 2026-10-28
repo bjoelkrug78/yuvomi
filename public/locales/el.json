@@ -6083,8 +6083,6 @@
         "balance": "Υπόλοιπο",
         "cost": "Κόστος",
         "remaining": "Υπόλοιπο",
-        "pointsSigned": "Πόντοι (+/−)",
-        "pointsSignedHint": "Θετική τιμή πιστώνει, αρνητική αφαιρεί.",
         "reasonOptional": "Αιτία (προαιρετικό)",
         "reasonPlaceholder": "π.χ. βοήθησε πολύ",
         "iconLabel": "Εικονίδιο",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "«{{reward}}» εγκρίθηκε για {{name}}.",
         "toastRejectedNamed": "«{{reward}}» απορρίφθηκε για {{name}}.",
         "toastCancelledNamed": "«{{reward}}» αποσύρθηκε.",
-        "ledgerFilterLabel": "Φιλτράρισμα κατά άτομο"
+        "ledgerFilterLabel": "Φιλτράρισμα κατά άτομο",
+        "bonusKindCredit": "Πίστωση",
+        "bonusKindDebit": "Αφαίρεση",
+        "bonusKindLabel": "Πίστωση ή αφαίρεση",
+        "bonusCredit": "Πίστωση",
+        "bonusDebit": "Αφαίρεση",
+        "notEnoughPoints": "Δεν υπάρχουν αρκετοί πόντοι για αυτό το βραβείο.",
+        "bonusPoints": "Πόντοι"
     },
     "datepicker": {
         "openCalendar": "Άνοιγμα ημερολογίου",

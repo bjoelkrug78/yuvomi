@@ -6083,8 +6083,6 @@
         "balance": "Saldo",
         "cost": "Kostnad",
         "remaining": "Gjenstående",
-        "pointsSigned": "Poeng (+/−)",
-        "pointsSignedHint": "En positiv verdi krediterer, en negativ verdi trekker fra.",
         "reasonOptional": "Årsak (valgfritt)",
         "reasonPlaceholder": "f.eks. hjalp til mye",
         "iconLabel": "Ikon",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "«{{reward}}» godkjent for {{name}}.",
         "toastRejectedNamed": "«{{reward}}» avvist for {{name}}.",
         "toastCancelledNamed": "«{{reward}}» trukket tilbake.",
-        "ledgerFilterLabel": "Filtrer etter person"
+        "ledgerFilterLabel": "Filtrer etter person",
+        "bonusKindCredit": "Tillegg",
+        "bonusKindDebit": "Trekk",
+        "bonusKindLabel": "Tillegg eller trekk",
+        "bonusCredit": "Legg til",
+        "bonusDebit": "Trekk fra",
+        "notEnoughPoints": "Ikke nok poeng til denne belønningen.",
+        "bonusPoints": "Poeng"
     },
     "datepicker": {
         "openCalendar": "Åpne kalender",

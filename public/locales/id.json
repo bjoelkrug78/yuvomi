@@ -6083,8 +6083,6 @@
         "balance": "Saldo",
         "cost": "Biaya",
         "remaining": "Sisa",
-        "pointsSigned": "Poin (+/−)",
-        "pointsSignedHint": "Nilai positif menambah, negatif mengurangi.",
         "reasonOptional": "Alasan (opsional)",
         "reasonPlaceholder": "mis. banyak membantu",
         "iconLabel": "Ikon",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "\"{{reward}}\" disetujui untuk {{name}}.",
         "toastRejectedNamed": "\"{{reward}}\" ditolak untuk {{name}}.",
         "toastCancelledNamed": "\"{{reward}}\" ditarik.",
-        "ledgerFilterLabel": "Saring menurut orang"
+        "ledgerFilterLabel": "Saring menurut orang",
+        "bonusKindCredit": "Tambah",
+        "bonusKindDebit": "Kurangi",
+        "bonusKindLabel": "Tambah atau kurangi",
+        "bonusCredit": "Tambahkan",
+        "bonusDebit": "Kurangi",
+        "notEnoughPoints": "Poin tidak cukup untuk hadiah ini.",
+        "bonusPoints": "Poin"
     },
     "datepicker": {
         "openCalendar": "Buka kalender",

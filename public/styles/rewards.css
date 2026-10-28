@@ -70,9 +70,58 @@
  * `.section-title-link` (layout.css) - derselbe Knopf wie „Agenda >" in der
  * Tagesansicht des Kalenders. */
 
-/* Punktestand in Kurzform (Seitenspalte des Verlaufs): nur Person und Punkte. */
-.rw-standing--compact {
-  grid-template-columns: minmax(0, 1fr);
+/* DER VERLAUF IST EINE EBENE UNTER "PUNKTE" (Critique R24, E8; rewards.js
+ * `renderLedger`). Vorn der Rueckweg wie in iOS: Chevron und der Name der
+ * Ebene darueber, im Akzent, ohne Flaeche; das Zeichen steht an der Kante des
+ * Titels darunter (negativer Rand um die eigene Polsterung). Die Seitenspalte
+ * mit den Punktestaenden ist mit dem Reiter gegangen. */
+.rw-ledger-view {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.rw-ledger-view > .rw-ledger,
+.rw-ledger-view > .rw-chips,
+.rw-ledger-view > .empty-state {
+  align-self: stretch;
+}
+
+.rw-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-0h);
+  min-height: var(--target-base);
+  margin-block: calc(-1 * var(--space-2)) calc(-1 * var(--space-2));
+  margin-inline-start: calc(-1 * var(--space-1h));
+  padding: 0 var(--space-2) 0 0;
+  border: 0;
+  background: none;
+  color: var(--color-accent);
+  font: inherit;
+  font-size: var(--type-body);
+  cursor: pointer;
+}
+
+.rw-back > svg {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+}
+
+.rw-back:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* Gutschrift | Abzug im Bonus-Dialog: das Kanon-Segment ueber die volle
+ * Breite, beide Haelften gleich (Muster `.budget-type-toggle`). */
+.rw-bonus-kind {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(max-content, 1fr);
+  margin-block-end: var(--space-4);
 }
 
 .rw-section__head {

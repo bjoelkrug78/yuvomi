@@ -6083,8 +6083,6 @@
         "balance": "शेष",
         "cost": "लागत",
         "remaining": "शेष",
-        "pointsSigned": "अंक (+/−)",
-        "pointsSignedHint": "धनात्मक मान जोड़ता है, ऋणात्मक घटाता है।",
         "reasonOptional": "कारण (वैकल्पिक)",
         "reasonPlaceholder": "जैसे बहुत मदद की",
         "iconLabel": "आइकन",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "{{name}} के लिए \"{{reward}}\" स्वीकृत।",
         "toastRejectedNamed": "{{name}} के लिए \"{{reward}}\" अस्वीकृत।",
         "toastCancelledNamed": "\"{{reward}}\" वापस लिया गया।",
-        "ledgerFilterLabel": "व्यक्ति के अनुसार फ़िल्टर करें"
+        "ledgerFilterLabel": "व्यक्ति के अनुसार फ़िल्टर करें",
+        "bonusKindCredit": "जोड़",
+        "bonusKindDebit": "कटौती",
+        "bonusKindLabel": "जोड़ या कटौती",
+        "bonusCredit": "जोड़ें",
+        "bonusDebit": "घटाएँ",
+        "notEnoughPoints": "इस इनाम के लिए पर्याप्त अंक नहीं हैं।",
+        "bonusPoints": "अंक"
     },
     "datepicker": {
         "openCalendar": "कैलेंडर खोलें",

@@ -6236,8 +6236,6 @@
         "balance": "Zůstatek",
         "cost": "Cena",
         "remaining": "Zbývá",
-        "pointsSigned": "Body (+/−)",
-        "pointsSignedHint": "Kladná hodnota připíše, záporná odečte.",
         "reasonOptional": "Důvod (volitelné)",
         "reasonPlaceholder": "např. hodně pomohl",
         "iconLabel": "Ikona",
@@ -6331,7 +6329,14 @@
         "toastApprovedNamed": "„{{reward}}“ schváleno pro: {{name}}.",
         "toastRejectedNamed": "„{{reward}}“ zamítnuto pro: {{name}}.",
         "toastCancelledNamed": "„{{reward}}“ staženo.",
-        "ledgerFilterLabel": "Filtrovat podle osoby"
+        "ledgerFilterLabel": "Filtrovat podle osoby",
+        "bonusKindCredit": "Připsání",
+        "bonusKindDebit": "Odečtení",
+        "bonusKindLabel": "Připsání nebo odečtení",
+        "bonusCredit": "Připsat",
+        "bonusDebit": "Odečíst",
+        "notEnoughPoints": "Na tuto odměnu není dost bodů.",
+        "bonusPoints": "Body"
     },
     "datepicker": {
         "openCalendar": "Otevřít kalendář",

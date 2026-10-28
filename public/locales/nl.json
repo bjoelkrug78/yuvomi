@@ -6083,8 +6083,6 @@
         "balance": "Saldo",
         "cost": "Kosten",
         "remaining": "Resterend",
-        "pointsSigned": "Punten (+/−)",
-        "pointsSignedHint": "Een positieve waarde schrijft bij, een negatieve trekt af.",
         "reasonOptional": "Reden (optioneel)",
         "reasonPlaceholder": "bijv. veel geholpen",
         "iconLabel": "Pictogram",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "‘{{reward}}’ goedgekeurd voor {{name}}.",
         "toastRejectedNamed": "‘{{reward}}’ afgewezen voor {{name}}.",
         "toastCancelledNamed": "‘{{reward}}’ ingetrokken.",
-        "ledgerFilterLabel": "Filteren op persoon"
+        "ledgerFilterLabel": "Filteren op persoon",
+        "bonusKindCredit": "Bijschrijving",
+        "bonusKindDebit": "Aftrek",
+        "bonusKindLabel": "Bijschrijving of aftrek",
+        "bonusCredit": "Bijschrijven",
+        "bonusDebit": "Aftrekken",
+        "notEnoughPoints": "Niet genoeg punten voor deze beloning.",
+        "bonusPoints": "Punten"
     },
     "datepicker": {
         "openCalendar": "Kalender openen",

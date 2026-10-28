@@ -6083,8 +6083,6 @@
         "balance": "余额",
         "cost": "花费",
         "remaining": "剩余",
-        "pointsSigned": "积分（+/−）",
-        "pointsSignedHint": "正值增加，负值扣除。",
         "reasonOptional": "原因（可选）",
         "reasonPlaceholder": "例如：帮了很多忙",
         "iconLabel": "图标",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "已为{{name}}批准“{{reward}}”。",
         "toastRejectedNamed": "已为{{name}}拒绝“{{reward}}”。",
         "toastCancelledNamed": "“{{reward}}”已撤回。",
-        "ledgerFilterLabel": "按成员筛选"
+        "ledgerFilterLabel": "按成员筛选",
+        "bonusKindCredit": "增加",
+        "bonusKindDebit": "扣除",
+        "bonusKindLabel": "增加或扣除",
+        "bonusCredit": "增加",
+        "bonusDebit": "扣除",
+        "notEnoughPoints": "积分不足，无法兑换此奖品。",
+        "bonusPoints": "积分"
     },
     "datepicker": {
         "openCalendar": "打开日历",

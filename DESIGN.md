@@ -1803,7 +1803,9 @@ angedockte Primaerknopf sprang mit (Belohnungen 271/431px). Seitdem gilt:
 - **Ab `--layout-split-threshold` steht rechts eine Seitenspalte** bis zur Modulkante,
   mindestens `--layout-rail-min` (360px, die Inhaltsbreite eines Telefons) breit. Sie bekommt
   nur, was es als Daten und Baustein schon gibt: Belohnungen/Uebersicht die letzten Buchungen
-  (der Abschnittstitel fuehrt in den Reiter Verlauf), Belohnungen/Verlauf die Punktestaende,
+  (der Abschnittstitel fuehrt in den Verlauf - seit R24 E8 kein Reiter mehr, sondern eine Ebene
+  unter "Punkte" mit Rueckweg "‹ Punkte", ohne Seitenspalte: die Punktestaende dort spiegelten
+  nur die Uebersicht),
   Entsorgung Abfallarten und Quellen neben den Abholungen, Haushaltshilfe/Berichte die
   Kennzahlen (`railFirst`: mobil ueber der Liste, am Desktop daneben), Haushaltshilfe/Haushaltshilfen
   das Protokoll der gewaehlten Person, Haushaltshilfe/Aufgaben seit R17 die zwei Kennzahlen

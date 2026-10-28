@@ -6083,8 +6083,6 @@
         "balance": "Saldo",
         "cost": "Kostnad",
         "remaining": "Kvar",
-        "pointsSigned": "Poäng (+/−)",
-        "pointsSignedHint": "Ett positivt värde krediterar, ett negativt drar av.",
         "reasonOptional": "Anledning (valfritt)",
         "reasonPlaceholder": "t.ex. hjälpte till mycket",
         "iconLabel": "Ikon",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "”{{reward}}” godkänd för {{name}}.",
         "toastRejectedNamed": "”{{reward}}” avslagen för {{name}}.",
         "toastCancelledNamed": "”{{reward}}” återkallad.",
-        "ledgerFilterLabel": "Filtrera efter person"
+        "ledgerFilterLabel": "Filtrera efter person",
+        "bonusKindCredit": "Tillägg",
+        "bonusKindDebit": "Avdrag",
+        "bonusKindLabel": "Tillägg eller avdrag",
+        "bonusCredit": "Lägg till",
+        "bonusDebit": "Dra av",
+        "notEnoughPoints": "Inte tillräckligt med poäng för den här belöningen.",
+        "bonusPoints": "Poäng"
     },
     "datepicker": {
         "openCalendar": "Öppna kalender",

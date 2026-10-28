@@ -6377,8 +6377,6 @@
         "balance": "Баланс",
         "cost": "Вартість",
         "remaining": "Залишок",
-        "pointsSigned": "Бали (+/−)",
-        "pointsSignedHint": "Додатне значення нараховує, від’ємне - віднімає.",
         "reasonOptional": "Причина (необов’язково)",
         "reasonPlaceholder": "напр. дуже допоміг",
         "iconLabel": "Значок",
@@ -6472,7 +6470,14 @@
         "toastApprovedNamed": "«{{reward}}» схвалено для: {{name}}.",
         "toastRejectedNamed": "«{{reward}}» відхилено для: {{name}}.",
         "toastCancelledNamed": "«{{reward}}» відкликано.",
-        "ledgerFilterLabel": "Фільтр за учасником"
+        "ledgerFilterLabel": "Фільтр за учасником",
+        "bonusKindCredit": "Нарахування",
+        "bonusKindDebit": "Списання",
+        "bonusKindLabel": "Нарахування або списання",
+        "bonusCredit": "Нарахувати",
+        "bonusDebit": "Списати",
+        "notEnoughPoints": "Недостатньо балів для цієї нагороди.",
+        "bonusPoints": "Бали"
     },
     "datepicker": {
         "openCalendar": "Відкрити календар",

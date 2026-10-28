@@ -6083,8 +6083,6 @@
         "balance": "Saldo",
         "cost": "Costo",
         "remaining": "Rimanente",
-        "pointsSigned": "Punti (+/−)",
-        "pointsSignedHint": "Un valore positivo accredita, uno negativo detrae.",
         "reasonOptional": "Motivo (facoltativo)",
         "reasonPlaceholder": "ad es. ha aiutato molto",
         "iconLabel": "Icona",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "«{{reward}}» approvato per {{name}}.",
         "toastRejectedNamed": "«{{reward}}» rifiutato per {{name}}.",
         "toastCancelledNamed": "«{{reward}}» ritirato.",
-        "ledgerFilterLabel": "Filtra per persona"
+        "ledgerFilterLabel": "Filtra per persona",
+        "bonusKindCredit": "Accredito",
+        "bonusKindDebit": "Detrazione",
+        "bonusKindLabel": "Accredito o detrazione",
+        "bonusCredit": "Accredita",
+        "bonusDebit": "Detrai",
+        "notEnoughPoints": "Punti insufficienti per questo premio.",
+        "bonusPoints": "Punti"
     },
     "datepicker": {
         "openCalendar": "Apri calendario",

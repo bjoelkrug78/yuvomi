@@ -6083,8 +6083,6 @@
         "balance": "Egyenleg",
         "cost": "Költség",
         "remaining": "Fennmaradó",
-        "pointsSigned": "Pontok (+/−)",
-        "pointsSignedHint": "A pozitív érték jóváír, a negatív levon.",
         "reasonOptional": "Indok (opcionális)",
         "reasonPlaceholder": "pl. sokat segített",
         "iconLabel": "Ikon",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "„{{reward}}” jóváhagyva neki: {{name}}.",
         "toastRejectedNamed": "„{{reward}}” elutasítva neki: {{name}}.",
         "toastCancelledNamed": "„{{reward}}” visszavonva.",
-        "ledgerFilterLabel": "Szűrés személy szerint"
+        "ledgerFilterLabel": "Szűrés személy szerint",
+        "bonusKindCredit": "Jóváírás",
+        "bonusKindDebit": "Levonás",
+        "bonusKindLabel": "Jóváírás vagy levonás",
+        "bonusCredit": "Jóváír",
+        "bonusDebit": "Levon",
+        "notEnoughPoints": "Nincs elég pont ehhez a jutalomhoz.",
+        "bonusPoints": "Pontok"
     },
     "datepicker": {
         "openCalendar": "Naptár megnyitása",

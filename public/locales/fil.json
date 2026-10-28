@@ -6083,8 +6083,6 @@
         "balance": "Balanse",
         "cost": "Halaga",
         "remaining": "Natitira",
-        "pointsSigned": "Puntos (+/−)",
-        "pointsSignedHint": "Ang positibong halaga ay nagdaragdag, ang negatibo naman ay nagbabawas.",
         "reasonOptional": "Dahilan (opsyonal)",
         "reasonPlaceholder": "hal. malaki ang naitulong",
         "iconLabel": "Icon",
@@ -6178,7 +6176,14 @@
         "toastApprovedNamed": "Inaprubahan ang \"{{reward}}\" para kay {{name}}.",
         "toastRejectedNamed": "Tinanggihan ang \"{{reward}}\" para kay {{name}}.",
         "toastCancelledNamed": "Binawi ang \"{{reward}}\".",
-        "ledgerFilterLabel": "Salain ayon sa tao"
+        "ledgerFilterLabel": "Salain ayon sa tao",
+        "bonusKindCredit": "Dagdag",
+        "bonusKindDebit": "Bawas",
+        "bonusKindLabel": "Dagdag o bawas",
+        "bonusCredit": "Idagdag",
+        "bonusDebit": "Ibawas",
+        "notEnoughPoints": "Kulang ang puntos para sa gantimpalang ito.",
+        "bonusPoints": "Mga Puntos"
     },
     "datepicker": {
         "openCalendar": "Buksan ang kalendaryo",
