@@ -1022,6 +1022,86 @@ export function scanSwatchDialect(src, file = '') {
   return found;
 }
 
+/**
+ * DIALOGREGELN (Critique R24 S3; DESIGN.md D4 "Formulare"). Drei Regeln, die
+ * in jedem Moduldialog gelten, die Anwendung je Modul in S7-S11 - die
+ * Ausnahmelisten unten sinken mit jedem Modul:
+ *
+ * edit-autofocus: ein Dialog, der auch BEARBEITET (Titel nach isEdit/edit/
+ * mode), oeffnet mit `initialFocus: 'edit'` - am Finger nimmt dann der Titel
+ * den Fokus, keine Tastatur ueber dem halben Blatt (R23 D13, modal.js).
+ */
+export function scanEditAutofocus(src) {
+  const found = [];
+  const re = /\bopen(?:Shared)?Modal\(\{/g;
+  let m;
+  while ((m = re.exec(src))) {
+    if (inComment(src, m.index)) continue;
+    const args = callArgs(src, m.index + m[0].length - 2);
+    const title = /\btitle:\s*([^,\n]+)/.exec(args)?.[1] ?? '';
+    const editable = /\b(?:isEdit|edit|editing|existing)\s*\?|mode\s*===\s*'edit'\s*\?|\.id\s*\?/.test(title);
+    if (!editable || /\binitialFocus\s*:/.test(args)) continue;
+    found.push({ line: lineOf(src, m.index), what: title.trim().slice(0, 70) });
+  }
+  return found;
+}
+
+/**
+ * advanced-hint: "Weitere Angaben" nennt, was dahinter liegt ("Weitere
+ * Angaben - Kontakt, Notizen und Erinnerung", Inventar-Muster). Ohne Hinweis
+ * findet ein Feld dort nur, wer schon weiss, dass es existiert.
+ */
+export function scanAdvancedHint(src, file = '') {
+  if (file === 'public/components/modal.js') return [];
+  const found = [];
+  const re = /\badvancedSection\(/g;
+  let m;
+  while ((m = re.exec(src))) {
+    if (inComment(src, m.index)) continue;
+    const before = src.slice(Math.max(0, m.index - 30), m.index);
+    if (/import\s*\{[^}]*$|,\s*$/.test(before) && !/\$\{\s*$/.test(before)) continue;
+    const args = callArgs(src, m.index + m[0].length - 1);
+    if (/\b(?:hint|label)\s*:/.test(args)) continue;
+    found.push({ line: lineOf(src, m.index), what: 'advancedSection ohne hint' });
+  }
+  return found;
+}
+
+/**
+ * primary-disabled: der Primaerknopf eines Dialogs ist immer bedienbar, die
+ * Pruefung meldet sich beim Absenden am Feld (`reportFieldErrors`). Ein bis
+ * zur Gueltigkeit gesperrter Knopf sagt nicht, WAS fehlt (Aufteilung bis R24).
+ */
+export function scanPrimaryDisabled(src) {
+  const found = [];
+  const re = /\b(?:save|submit|primary|confirm)\w*\.disabled\s*=(?!\s*(?:true|false)\b)\s*[^;\n]+/gi;
+  let m;
+  while ((m = re.exec(src))) {
+    if (inComment(src, m.index)) continue;
+    found.push({ line: lineOf(src, m.index), what: m[0].slice(0, 80) });
+  }
+  return found;
+}
+
+/**
+ * people-checkbox: Personen waehlt man mit `renderUserMultiSelect` (Scheibe,
+ * Name, eine Trefferflaeche je Person) - nicht mit nativen 13px-Kaestchen in
+ * einem rohen `<fieldset>` (Aufteilung-Teilnehmende bis R24).
+ */
+export function scanPeopleCheckbox(src, file = '') {
+  if (file === 'public/components/user-multi-select.js') return [];
+  const found = [];
+  const re = /<input\b[^>]*\btype="checkbox"[^>]*>/g;
+  let m;
+  while ((m = re.exec(src))) {
+    const tag = m[0];
+    if (/role="switch"|user-ms__checkbox/.test(tag) || inComment(src, m.index)) continue;
+    if (!/(?:particip|member|person|people|assignee|user)/i.test(tag)) continue;
+    found.push({ line: lineOf(src, m.index), what: tag.slice(0, 80) });
+  }
+  return found;
+}
+
 /** Ende des Elements, dessen Tag bei `openIdx` beginnt (balancierte div-Tiefe); ohne Schluss +800. */
 function elementEnd(src, openIdx) {
   const re = /<div\b|<\/div>/g;
@@ -1599,6 +1679,29 @@ test('Scanner: swatch-dialect faengt die eigene Swatch-Klasse als Radio und laes
   assert.deepEqual(scanSwatchDialect(good, 'public/pages/x.js'), []);
 });
 
+test('Scanner: Dialogregeln - edit-autofocus, advanced-hint, primary-disabled, people-checkbox fangen ihr Muster und lassen den Kanon durch', () => {
+  const edit = `openModal({ title: isEdit ? t('a.edit') : t('a.new'), content });
+    openSharedModal({ title: t('a.only'), content });
+    openModal({ title: isEdit ? t('b.edit') : t('b.new'), initialFocus: isEdit ? 'edit' : 'first-field', content });`;
+  assert.deepEqual(scanEditAutofocus(edit).map((h) => h.line), [1], 'nur der bearbeitende Dialog ohne initialFocus');
+  const adv = `import { advancedSection } from '/components/modal.js';
+    \${advancedSection(fieldsHtml, { open })}
+    \${advancedSection(fieldsHtml, { hint: t('x.topics'), open })}
+    \${advancedSection(list, { label: t('x.fold') })}`;
+  assert.deepEqual(scanAdvancedHint(adv, 'public/pages/x.js').map((h) => h.line), [2]);
+  const prim = `saveBtn.disabled = true;
+    saveBtn.disabled = false;
+    save.disabled = !valid;
+    submitBtn.disabled = n === 0;
+    other.disabled = !ok;`;
+  assert.deepEqual(scanPrimaryDisabled(prim).map((h) => h.line), [3, 4], 'Laden-Sperre ja, Gueltigkeits-Sperre nein');
+  const ppl = `<input type="checkbox" name="participants" value="\${id}">
+    <input type="checkbox" class="user-ms__checkbox" value="\${u.id}">
+    <input type="checkbox" role="switch" id="member-active">
+    <input type="checkbox" name="done">`;
+  assert.deepEqual(scanPeopleCheckbox(ppl, 'public/pages/x.js').map((h) => h.line), [1]);
+});
+
 test('Scanner: section-action faengt btn--ghost und btn--secondary ohne --sm im Abschnittskopf und laesst Kanon durch', () => {
   const bad = `
     <div class="split-section-actions">
@@ -2050,6 +2153,29 @@ const PENDING = {
   // colorPickerHtml({ options, custom: false }) - der Baustein nimmt
   // Token-Ausdruecke als `paint`; der Kategorie-Verwalter folgt mit.
   'swatch-dialect': { 'public/pages/budget.js': 1, 'public/components/category-manager.js': 1 },
+  // --- Critique R24 S3: Dialogregeln (DESIGN.md D4). Gebaut sind Regel und
+  // Helfer, angewendet wird je Modul in S7-S11; die Listen sinken dort.
+  // S7 Zeit (Kalender, Schichtplan, Geburtstage), S8 (Aufgaben, Belohnungen,
+  // Haushaltshilfe, Entsorgung), S9 Kueche, S10 Geld & Ablage, S11
+  // Gesundheit/Kontakte/Familie; Schnellzugriffe und Einstellungen S6.
+  'edit-autofocus': {
+    'public/components/quick-links-manager.js': 1, 'public/pages/birthdays.js': 1, 'public/pages/budget.js': 2,
+    'public/pages/calendar.js': 1, 'public/pages/documents.js': 1, 'public/pages/health.js': 7,
+    'public/pages/housekeeping.js': 1, 'public/pages/notes.js': 1, 'public/pages/pantry.js': 1,
+    'public/pages/recipes.js': 1, 'public/pages/rewards.js': 1, 'public/pages/schedule.js': 1,
+    'public/pages/split-expenses.js': 3, 'public/pages/subscriptions.js': 1, 'public/pages/tasks.js': 1,
+    'public/pages/waste.js': 3, 'public/settings/pages/modules-health.js': 1, 'public/settings/pages/sync-contacts.js': 1,
+  },
+  'advanced-hint': {
+    'public/pages/contacts.js': 1, 'public/pages/documents.js': 1, 'public/pages/health.js': 2, 'public/pages/meals.js': 1,
+    'public/pages/pantry.js': 1, 'public/pages/recipes.js': 1, 'public/pages/subscriptions.js': 1,
+  },
+  'primary-disabled': {
+    'public/components/document-attach.js': 1, 'public/pages/birthdays.js': 1, 'public/pages/contacts.js': 1,
+    'public/pages/documents.js': 1, 'public/pages/rewards.js': 1, 'public/pages/schedule.js': 1,
+    'public/pages/shopping.js': 1, 'public/pages/split-expenses.js': 2, 'public/settings/pages/admin-permissions.js': 1,
+  },
+  'people-checkbox': { 'public/pages/documents.js': 1, 'public/pages/split-expenses.js': 2 },
 };
 
 const HEAD_SEARCH = headSearchClasses(JS);
@@ -2084,6 +2210,10 @@ const RULES = {
   'section-toolbar-create': { files: JS, scan: (s) => scanSectionToolbarCreate(s), canon: 'Erstell-Aktion im Abschnittskopf hinter `popover-menu__trigger`, kein nackter `btn--icon` mit Plus-Icon (DESIGN.md D5)' },
   'action-hook': { files: JS, scan: (s, f) => scanActionHook(s, importedSources(s, f, JS_BY_FILE)), canon: 'jedes `[data-action="x"]` im Listener hat ein `x` im Markup derselben Datei oder eines importierten Moduls (#2119)' },
   'native-color': { files: JS, scan: (s, f) => scanNativeColor(s, f), canon: '`colorPickerHtml()` + `wireColorPicker()` (utils/color-picker.js) - Familientoene, "Eigene" dahinter (E6)' },
+  'edit-autofocus': { files: JS, scan: (s) => scanEditAutofocus(s), canon: '`initialFocus: \'edit\'` an jedem Dialog, der auch bearbeitet (components/modal.js, R23 D13)' },
+  'advanced-hint': { files: JS, scan: (s, f) => scanAdvancedHint(s, f), canon: '`advancedSection(html, { hint })` - "Weitere Angaben" nennt, was dahinter liegt (Inventar-Muster)' },
+  'primary-disabled': { files: JS, scan: (s) => scanPrimaryDisabled(s), canon: 'Primaerknopf immer aktiv, Pruefung beim Absenden (`reportFieldErrors(constraintErrors(form))`)' },
+  'people-checkbox': { files: JS, scan: (s, f) => scanPeopleCheckbox(s, f), canon: '`renderUserMultiSelect()` (components/user-multi-select.js) statt nativer Kaestchen je Person' },
   'swatch-dialect': { files: JS, scan: (s, f) => scanSwatchDialect(s, f), canon: '`.color-swatch` aus `colorPickerHtml()` (utils/color-picker.js), keine eigene Swatch-Klasse je Modul' },
   'cta-hook': { files: JS, scan: (s) => scanCtaHook(s), canon: 'eine Leerzustand-Aktion ohne `onClick` traegt einen Haken (`attrs: { \'data-action\' }`, `id`, Klasse), den die Datei bindet (#2210)' },
 };

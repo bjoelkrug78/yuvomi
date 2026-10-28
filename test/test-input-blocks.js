@@ -88,3 +88,12 @@ test('Kontakte: "+ Telefonnummer hinzufuegen" ist eine leise Zeilenaktion an der
   assert.match(src, /birthDateFieldHtml\(\{\s*id: 'cm-birthday'/);
   assert.match(read('utils/birth-date.js'), /<input type="checkbox" role="switch" id="\$\{esc\(id\)\}-year-unknown"/);
 });
+
+test('Dialogregel Erstfokus: dialogInitialFocus - Anlegen das erste Feld, Bearbeiten "edit" (Loader-Stub gleich)', async () => {
+  const src = read('components/modal.js');
+  const body = src.slice(src.indexOf('export function dialogInitialFocus('), src.indexOf('\n}\n', src.indexOf('export function dialogInitialFocus(')));
+  assert.match(body, /return isEdit \? 'edit' : 'first-field';/);
+  const { dialogInitialFocus } = await import('/components/modal.js');
+  assert.equal(dialogInitialFocus(true), 'edit');
+  assert.equal(dialogInitialFocus(false), 'first-field');
+});

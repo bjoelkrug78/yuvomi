@@ -3290,6 +3290,24 @@ export function btnError(btn) {
 }
 
 // --------------------------------------------------------
+// Dialogregel Erstfokus (Critique R24 S3, DESIGN.md D4)
+// --------------------------------------------------------
+
+/**
+ * DER ERSTFOKUS EINES DIALOGS, DER ANLEGT UND BEARBEITET. Anlegen: das erste
+ * Pflichtfeld (Tastatur ist gewollt, es wird gleich getippt). Bearbeiten:
+ * `'edit'` - am Finger nimmt der Titel den Fokus, keine Tastatur ueber dem
+ * halben Blatt (R23 D13; resolveInitialFocus). Guard: `test:control-dialect`
+ * "edit-autofocus" (jeder Dialog mit Bearbeiten-Titel setzt initialFocus).
+ *
+ * @param {boolean} isEdit
+ * @returns {'edit'|'first-field'}
+ */
+export function dialogInitialFocus(isEdit) {
+  return isEdit ? 'edit' : 'first-field';
+}
+
+// --------------------------------------------------------
 // Progressive Disclosure: „Weitere Einstellungen"
 // --------------------------------------------------------
 
