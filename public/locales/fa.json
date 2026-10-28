@@ -113,8 +113,13 @@
         "createdNamed": "«{{name}}» ایجاد شد.",
         "savedNamed": "«{{name}}» ذخیره شد.",
         "everyNDays": "هر {{count}} روز",
+        "everyNDays_one": "هر {{count}} روز",
         "everyNWeeks": "هر {{count}} هفته",
-        "everyNMonths": "هر {{count}} ماه"
+        "everyNWeeks_one": "هر {{count}} هفته",
+        "everyNMonths": "هر {{count}} ماه",
+        "everyNMonths_one": "هر {{count}} ماه",
+        "everyNYears": "هر {{count}} سال",
+        "everyNYears_one": "هر {{count}} سال"
     },
     "kitchen": {
         "noShoppingLists": "هنوز فهرست خریدی وجود ندارد.",
@@ -4665,13 +4670,6 @@
             "monthly": "ماهانه",
             "yearly": "سالانه"
         },
-        "cyclePlural": {
-            "daily": "روز",
-            "weekly": "هفته",
-            "monthly": "ماه",
-            "yearly": "سال"
-        },
-        "everyCycle": "هر {{count}} {{cycle}}",
         "overdueDays": "{{count}} روز معوق",
         "overdueDays_one": "{{count}} روز معوق",
         "dueToday": "موعد امروز",
@@ -4710,7 +4708,6 @@
         "amountLabel": "مبلغ",
         "currencyLabel": "واحد پول",
         "billingCycleLabel": "چرخه صورت‌حساب",
-        "intervalLabel": "هر",
         "nextPaymentLabel": "پرداخت بعدی",
         "nextPaymentCompletedHint": "فقط زمانی اعمال می‌شود که اشتراک را دوباره به بودجه اضافه کنید.",
         "reminderDaysLabel": "روزهای یادآوری",

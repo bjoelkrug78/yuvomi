@@ -114,9 +114,22 @@
         "sortMode": "Zmień kolejność",
         "createdNamed": "„{{name}}” utworzone.",
         "savedNamed": "„{{name}}” zapisane.",
-        "everyNDays": "Co {{count}} dni",
-        "everyNWeeks": "Co {{count}} tygodni",
-        "everyNMonths": "Co {{count}} miesięcy"
+        "everyNDays": "Co {{count}} dnia",
+        "everyNDays_one": "Co {{count}} dzień",
+        "everyNDays_few": "Co {{count}} dni",
+        "everyNDays_many": "Co {{count}} dni",
+        "everyNWeeks": "Co {{count}} tygodnia",
+        "everyNWeeks_one": "Co {{count}} tydzień",
+        "everyNWeeks_few": "Co {{count}} tygodnie",
+        "everyNWeeks_many": "Co {{count}} tygodni",
+        "everyNMonths": "Co {{count}} miesiąca",
+        "everyNMonths_one": "Co {{count}} miesiąc",
+        "everyNMonths_few": "Co {{count}} miesiące",
+        "everyNMonths_many": "Co {{count}} miesięcy",
+        "everyNYears": "Co {{count}} roku",
+        "everyNYears_one": "Co {{count}} rok",
+        "everyNYears_few": "Co {{count}} lata",
+        "everyNYears_many": "Co {{count}} lat"
     },
     "kitchen": {
         "noShoppingLists": "Nie ma jeszcze listy zakupów.",
@@ -4917,13 +4930,6 @@
             "monthly": "Co miesiąc",
             "yearly": "Co rok"
         },
-        "cyclePlural": {
-            "daily": "dni",
-            "weekly": "tygodnie",
-            "monthly": "miesiące",
-            "yearly": "lata"
-        },
-        "everyCycle": "Co {{count}} {{cycle}}",
         "overdueDays": "{{count}} dni po terminie",
         "overdueDays_one": "{{count}} dzień po terminie",
         "overdueDays_few": "{{count}} dni po terminie",
@@ -4966,7 +4972,6 @@
         "amountLabel": "Kwota",
         "currencyLabel": "Waluta",
         "billingCycleLabel": "Cykl rozliczeniowy",
-        "intervalLabel": "Co",
         "nextPaymentLabel": "Następna płatność",
         "nextPaymentCompletedHint": "Obowiązuje dopiero po ponownym uwzględnieniu subskrypcji w budżecie.",
         "reminderDaysLabel": "Dni przypomnienia",

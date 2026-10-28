@@ -113,8 +113,13 @@
         "createdNamed": "「{{name}}」已建立。",
         "savedNamed": "「{{name}}」已儲存。",
         "everyNDays": "每 {{count}} 天",
+        "everyNDays_one": "每 {{count}} 天",
         "everyNWeeks": "每 {{count}} 週一次",
-        "everyNMonths": "每 {{count}} 個月一次"
+        "everyNWeeks_one": "每 {{count}} 週一次",
+        "everyNMonths": "每 {{count}} 個月一次",
+        "everyNMonths_one": "每 {{count}} 個月一次",
+        "everyNYears": "每 {{count}} 年一次",
+        "everyNYears_one": "每 {{count}} 年一次"
     },
     "kitchen": {
         "noShoppingLists": "還沒有購物清單。",
@@ -4665,13 +4670,6 @@
             "monthly": "每月",
             "yearly": "每年"
         },
-        "cyclePlural": {
-            "daily": "天",
-            "weekly": "週",
-            "monthly": "月",
-            "yearly": "年"
-        },
-        "everyCycle": "每 {{count}} {{cycle}}",
         "overdueDays": "逾期 {{count}} 天",
         "overdueDays_one": "逾期 {{count}} 天",
         "dueToday": "今天到期",
@@ -4710,7 +4708,6 @@
         "amountLabel": "金額",
         "currencyLabel": "貨幣",
         "billingCycleLabel": "帳單週期",
-        "intervalLabel": "每",
         "nextPaymentLabel": "下次付款",
         "nextPaymentCompletedHint": "僅在你再次將訂閱計入預算時生效。",
         "reminderDaysLabel": "提醒天數",

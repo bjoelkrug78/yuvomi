@@ -113,8 +113,13 @@
         "createdNamed": "„{{name}}“ angelegt.",
         "savedNamed": "„{{name}}“ gespeichert.",
         "everyNDays": "Alle {{count}} Tage",
+        "everyNDays_one": "Alle {{count}} Tag",
         "everyNWeeks": "Alle {{count}} Wochen",
-        "everyNMonths": "Alle {{count}} Monate"
+        "everyNWeeks_one": "Alle {{count}} Woche",
+        "everyNMonths": "Alle {{count}} Monate",
+        "everyNMonths_one": "Alle {{count}} Monat",
+        "everyNYears": "Alle {{count}} Jahre",
+        "everyNYears_one": "Alle {{count}} Jahr"
     },
     "kitchen": {
         "noShoppingLists": "Es gibt noch keine Einkaufsliste.",
@@ -4665,13 +4670,6 @@
             "monthly": "Monatlich",
             "yearly": "Jährlich"
         },
-        "cyclePlural": {
-            "daily": "Tage",
-            "weekly": "Wochen",
-            "monthly": "Monate",
-            "yearly": "Jahre"
-        },
-        "everyCycle": "Alle {{count}} {{cycle}}",
         "overdueDays": "{{count}} Tage überfällig",
         "overdueDays_one": "{{count}} Tag überfällig",
         "dueToday": "Heute fällig",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Betrag",
         "currencyLabel": "Währung",
         "billingCycleLabel": "Abrechnungszyklus",
-        "intervalLabel": "Alle",
         "nextPaymentLabel": "Nächste Zahlung",
         "nextPaymentCompletedHint": "Gilt erst, wenn du das Abo wieder ins Budget aufnimmst.",
         "reminderDaysLabel": "Erinnerungstage",

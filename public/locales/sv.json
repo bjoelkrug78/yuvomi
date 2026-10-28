@@ -113,8 +113,13 @@
         "createdNamed": "”{{name}}” skapad.",
         "savedNamed": "”{{name}}” sparad.",
         "everyNDays": "Var {{count}} dag",
+        "everyNDays_one": "Var {{count}} dag",
         "everyNWeeks": "Var {{count}}:e vecka",
-        "everyNMonths": "Var {{count}}:e månad"
+        "everyNWeeks_one": "Var {{count}}:e vecka",
+        "everyNMonths": "Var {{count}}:e månad",
+        "everyNMonths_one": "Var {{count}}:e månad",
+        "everyNYears": "Var {{count}}:e år",
+        "everyNYears_one": "Var {{count}}:e år"
     },
     "kitchen": {
         "noShoppingLists": "Det finns ingen inköpslista än.",
@@ -4665,13 +4670,6 @@
             "monthly": "Månadsvis",
             "yearly": "Årligen"
         },
-        "cyclePlural": {
-            "daily": "dagar",
-            "weekly": "veckor",
-            "monthly": "månader",
-            "yearly": "år"
-        },
-        "everyCycle": "Varje {{count}} {{cycle}}",
         "overdueDays": "{{count}} dagar försenad",
         "overdueDays_one": "{{count}} dag försenad",
         "dueToday": "Förfaller idag",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Belopp",
         "currencyLabel": "Valuta",
         "billingCycleLabel": "Faktureringscykel",
-        "intervalLabel": "Varje",
         "nextPaymentLabel": "Nästa betalning",
         "nextPaymentCompletedHint": "Gäller först när du inkluderar prenumerationen i budgeten igen.",
         "reminderDaysLabel": "Påminnelsedagar",

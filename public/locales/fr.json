@@ -113,8 +113,13 @@
         "createdNamed": "« {{name}} » créé.",
         "savedNamed": "« {{name}} » enregistré.",
         "everyNDays": "Tous les {{count}} jours",
+        "everyNDays_one": "Tous les {{count}} jour",
         "everyNWeeks": "Toutes les {{count}} semaines",
-        "everyNMonths": "Tous les {{count}} mois"
+        "everyNWeeks_one": "Toutes les {{count}} semaine",
+        "everyNMonths": "Tous les {{count}} mois",
+        "everyNMonths_one": "Tous les {{count}} mois",
+        "everyNYears": "Tous les {{count}} ans",
+        "everyNYears_one": "Tous les {{count}} an"
     },
     "kitchen": {
         "noShoppingLists": "Il n'y a encore aucune liste de courses.",
@@ -4665,13 +4670,6 @@
             "monthly": "Mensuel",
             "yearly": "Annuel"
         },
-        "cyclePlural": {
-            "daily": "jours",
-            "weekly": "semaines",
-            "monthly": "mois",
-            "yearly": "ans"
-        },
-        "everyCycle": "Tous les {{count}} {{cycle}}",
         "overdueDays": "{{count}} jours de retard",
         "overdueDays_one": "{{count}} jour de retard",
         "dueToday": "Échéance aujourd’hui",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Montant",
         "currencyLabel": "Devise",
         "billingCycleLabel": "Cycle de facturation",
-        "intervalLabel": "Tous les",
         "nextPaymentLabel": "Prochain paiement",
         "nextPaymentCompletedHint": "Ne s'applique que lorsque vous réintégrez l'abonnement au budget.",
         "reminderDaysLabel": "Jours de rappel",

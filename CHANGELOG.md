@@ -20,7 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   chores now ask "Every [2] weeks", "Every [1] [months]" and "Every [7] days" with the number inside the
   sentence. Before, waste collection labelled the field "Every N weeks", subscriptions showed a search
   field for the billing cycle next to a lone "Every" over a number, and chores asked for a bare number of
-  days.
+  days. The sentence follows the number as you type - "Every 1 week", "Every 2 weeks" - in every
+  language, including the forms Czech, Polish, Russian, Ukrainian and Arabic use for 2-4 or 5 and more,
+  and a subscription's line in the list now says the same words.
 - **A birthday photo is chosen with one control.** The photo itself is the button, with a small pencil
   badge; the separate pencil button next to it is gone, and "Remove picture" appears as text below only
   when there is a picture.

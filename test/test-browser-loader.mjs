@@ -72,6 +72,13 @@ const STUBS = {
   `,
   '/i18n.js': `
     export const t = (key, values = {}) => {
+      // Wer echte Saetze braucht (der Intervall-Satz waehlt seine Pluralform an
+      // der Vorlage, R24 S4), setzt globalThis.__tDict auf flache Schluessel ->
+      // Text; Platzhalter werden wie im Original eingesetzt, unbekannte bleiben.
+      const dict = globalThis.__tDict;
+      if (dict && Object.prototype.hasOwnProperty.call(dict, key)) {
+        return String(dict[key]).replace(/\{\{(\w+)\}\}/g, (m, name) => (values && name in values ? String(values[name]) : m));
+      }
       if (!values || Object.keys(values).length === 0) return key;
       return key + JSON.stringify(values);
     };

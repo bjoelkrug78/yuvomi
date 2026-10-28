@@ -113,8 +113,13 @@
         "createdNamed": "\"{{name}}\" बनाया गया।",
         "savedNamed": "\"{{name}}\" सहेजा गया।",
         "everyNDays": "हर {{count}} दिन",
+        "everyNDays_one": "हर {{count}} दिन",
         "everyNWeeks": "हर {{count}} सप्ताह में",
-        "everyNMonths": "हर {{count}} महीने में"
+        "everyNWeeks_one": "हर {{count}} सप्ताह में",
+        "everyNMonths": "हर {{count}} महीने में",
+        "everyNMonths_one": "हर {{count}} महीने में",
+        "everyNYears": "हर {{count}} साल में",
+        "everyNYears_one": "हर {{count}} साल में"
     },
     "kitchen": {
         "noShoppingLists": "अभी कोई खरीद सूची नहीं है.",
@@ -4665,13 +4670,6 @@
             "monthly": "मासिक",
             "yearly": "वार्षिक"
         },
-        "cyclePlural": {
-            "daily": "दिन",
-            "weekly": "सप्ताह",
-            "monthly": "महीने",
-            "yearly": "साल"
-        },
-        "everyCycle": "हर {{count}} {{cycle}}",
         "overdueDays": "{{count}} दिन overdue",
         "overdueDays_one": "{{count}} दिन अतिदेय",
         "dueToday": "आज देय",
@@ -4710,7 +4708,6 @@
         "amountLabel": "राशि",
         "currencyLabel": "मुद्रा",
         "billingCycleLabel": "बिलिंग चक्र",
-        "intervalLabel": "हर",
         "nextPaymentLabel": "अगला भुगतान",
         "nextPaymentCompletedHint": "यह तभी लागू होगा जब आप सदस्यता को फिर से बजट में शामिल करेंगे।",
         "reminderDaysLabel": "रिमाइंडर दिन",

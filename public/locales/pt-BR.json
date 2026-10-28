@@ -113,8 +113,13 @@
         "createdNamed": "\"{{name}}\" criado.",
         "savedNamed": "\"{{name}}\" salvo.",
         "everyNDays": "A cada {{count}} dias",
+        "everyNDays_one": "A cada {{count}} dia",
         "everyNWeeks": "A cada {{count}} semanas",
-        "everyNMonths": "A cada {{count}} meses"
+        "everyNWeeks_one": "A cada {{count}} semana",
+        "everyNMonths": "A cada {{count}} meses",
+        "everyNMonths_one": "A cada {{count}} mês",
+        "everyNYears": "A cada {{count}} anos",
+        "everyNYears_one": "A cada {{count}} ano"
     },
     "kitchen": {
         "noShoppingLists": "Ainda não existe lista de compras.",
@@ -4665,13 +4670,6 @@
             "monthly": "Mensal",
             "yearly": "Anual"
         },
-        "cyclePlural": {
-            "daily": "dias",
-            "weekly": "semanas",
-            "monthly": "meses",
-            "yearly": "anos"
-        },
-        "everyCycle": "A cada {{count}} {{cycle}}",
         "overdueDays": "{{count}} dias em atraso",
         "overdueDays_one": "{{count}} dia em atraso",
         "dueToday": "Vence hoje",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Valor",
         "currencyLabel": "Moeda",
         "billingCycleLabel": "Ciclo de cobrança",
-        "intervalLabel": "A cada",
         "nextPaymentLabel": "Próximo pagamento",
         "nextPaymentCompletedHint": "Só vale quando você incluir a assinatura no orçamento novamente.",
         "reminderDaysLabel": "Dias de lembrete",

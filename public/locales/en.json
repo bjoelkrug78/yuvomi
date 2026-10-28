@@ -113,8 +113,13 @@
         "createdNamed": "“{{name}}” created.",
         "savedNamed": "“{{name}}” saved.",
         "everyNDays": "Every {{count}} days",
+        "everyNDays_one": "Every {{count}} day",
         "everyNWeeks": "Every {{count}} weeks",
-        "everyNMonths": "Every {{count}} months"
+        "everyNWeeks_one": "Every {{count}} week",
+        "everyNMonths": "Every {{count}} months",
+        "everyNMonths_one": "Every {{count}} month",
+        "everyNYears": "Every {{count}} years",
+        "everyNYears_one": "Every {{count}} year"
     },
     "kitchen": {
         "noShoppingLists": "There is no shopping list yet.",
@@ -4665,13 +4670,6 @@
             "monthly": "Monthly",
             "yearly": "Yearly"
         },
-        "cyclePlural": {
-            "daily": "days",
-            "weekly": "weeks",
-            "monthly": "months",
-            "yearly": "years"
-        },
-        "everyCycle": "Every {{count}} {{cycle}}",
         "overdueDays": "{{count}} days overdue",
         "overdueDays_one": "{{count}} day overdue",
         "dueToday": "Due today",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Amount",
         "currencyLabel": "Currency",
         "billingCycleLabel": "Billing cycle",
-        "intervalLabel": "Every",
         "nextPaymentLabel": "Next payment",
         "nextPaymentCompletedHint": "Only applies once you include the subscription in the budget again.",
         "reminderDaysLabel": "Reminder days",

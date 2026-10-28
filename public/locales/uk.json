@@ -114,9 +114,22 @@
         "sortMode": "Змінити порядок",
         "createdNamed": "«{{name}}» створено.",
         "savedNamed": "«{{name}}» збережено.",
-        "everyNDays": "Кожні {{count}} днів",
-        "everyNWeeks": "Кожні {{count}} тижнів",
-        "everyNMonths": "Кожні {{count}} місяців"
+        "everyNDays": "Раз на {{count}} дня",
+        "everyNDays_one": "Раз на {{count}} день",
+        "everyNDays_few": "Раз на {{count}} дні",
+        "everyNDays_many": "Раз на {{count}} днів",
+        "everyNWeeks": "Раз на {{count}} тижня",
+        "everyNWeeks_one": "Раз на {{count}} тиждень",
+        "everyNWeeks_few": "Раз на {{count}} тижні",
+        "everyNWeeks_many": "Раз на {{count}} тижнів",
+        "everyNMonths": "Раз на {{count}} місяця",
+        "everyNMonths_one": "Раз на {{count}} місяць",
+        "everyNMonths_few": "Раз на {{count}} місяці",
+        "everyNMonths_many": "Раз на {{count}} місяців",
+        "everyNYears": "Раз на {{count}} року",
+        "everyNYears_one": "Раз на {{count}} рік",
+        "everyNYears_few": "Раз на {{count}} роки",
+        "everyNYears_many": "Раз на {{count}} років"
     },
     "kitchen": {
         "noShoppingLists": "Списку покупок ще немає.",
@@ -4917,13 +4930,6 @@
             "monthly": "Щомісяця",
             "yearly": "Щороку"
         },
-        "cyclePlural": {
-            "daily": "днів",
-            "weekly": "тижнів",
-            "monthly": "місяців",
-            "yearly": "років"
-        },
-        "everyCycle": "Кожні {{count}} {{cycle}}",
         "overdueDays": "Прострочено на {{count}} дн.",
         "overdueDays_one": "Прострочено на {{count}} дн.",
         "overdueDays_few": "Прострочено на {{count}} дні",
@@ -4966,7 +4972,6 @@
         "amountLabel": "Сума",
         "currencyLabel": "Валюта",
         "billingCycleLabel": "Цикл оплати",
-        "intervalLabel": "Кожні",
         "nextPaymentLabel": "Наступний платіж",
         "nextPaymentCompletedHint": "Діє, лише коли ви знову включите підписку до бюджету.",
         "reminderDaysLabel": "Дні нагадування",

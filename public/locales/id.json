@@ -113,8 +113,13 @@
         "createdNamed": "\"{{name}}\" dibuat.",
         "savedNamed": "\"{{name}}\" disimpan.",
         "everyNDays": "Setiap {{count}} hari",
+        "everyNDays_one": "Setiap {{count}} hari",
         "everyNWeeks": "Setiap {{count}} minggu",
-        "everyNMonths": "Setiap {{count}} bulan"
+        "everyNWeeks_one": "Setiap {{count}} minggu",
+        "everyNMonths": "Setiap {{count}} bulan",
+        "everyNMonths_one": "Setiap {{count}} bulan",
+        "everyNYears": "Setiap {{count}} tahun",
+        "everyNYears_one": "Setiap {{count}} tahun"
     },
     "kitchen": {
         "noShoppingLists": "Belum ada daftar belanja.",
@@ -4665,13 +4670,6 @@
             "monthly": "Bulanan",
             "yearly": "Tahunan"
         },
-        "cyclePlural": {
-            "daily": "hari",
-            "weekly": "minggu",
-            "monthly": "bulan",
-            "yearly": "tahun"
-        },
-        "everyCycle": "Setiap {{count}} {{cycle}}",
         "overdueDays": "terlambat {{count}} hari",
         "overdueDays_one": "terlambat {{count}} hari",
         "dueToday": "Jatuh tempo hari ini",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Jumlah",
         "currencyLabel": "Mata uang",
         "billingCycleLabel": "Siklus penagihan",
-        "intervalLabel": "Setiap",
         "nextPaymentLabel": "Pembayaran berikutnya",
         "nextPaymentCompletedHint": "Baru berlaku saat Anda memasukkan langganan ke anggaran lagi.",
         "reminderDaysLabel": "Hari pengingat",

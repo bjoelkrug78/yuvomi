@@ -113,8 +113,13 @@
         "createdNamed": "«{{name}}» δημιουργήθηκε.",
         "savedNamed": "«{{name}}» αποθηκεύτηκε.",
         "everyNDays": "Κάθε {{count}} ημέρες",
+        "everyNDays_one": "Κάθε {{count}} ημέρα",
         "everyNWeeks": "Κάθε {{count}} εβδομάδες",
-        "everyNMonths": "Κάθε {{count}} μήνες"
+        "everyNWeeks_one": "Κάθε {{count}} εβδομάδα",
+        "everyNMonths": "Κάθε {{count}} μήνες",
+        "everyNMonths_one": "Κάθε {{count}} μήνα",
+        "everyNYears": "Κάθε {{count}} χρόνια",
+        "everyNYears_one": "Κάθε {{count}} χρόνο"
     },
     "kitchen": {
         "noShoppingLists": "Δεν υπάρχει ακόμη λίστα αγορών.",
@@ -4665,13 +4670,6 @@
             "monthly": "Μηνιαία",
             "yearly": "Ετήσια"
         },
-        "cyclePlural": {
-            "daily": "ημέρες",
-            "weekly": "εβδομάδες",
-            "monthly": "μήνες",
-            "yearly": "χρόνια"
-        },
-        "everyCycle": "Κάθε {{count}} {{cycle}}",
         "overdueDays": "{{count}} ημέρες καθυστέρηση",
         "overdueDays_one": "{{count}} ημέρα καθυστέρηση",
         "dueToday": "Λήγει σήμερα",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Ποσό",
         "currencyLabel": "Νόμισμα",
         "billingCycleLabel": "Κύκλος χρέωσης",
-        "intervalLabel": "Κάθε",
         "nextPaymentLabel": "Επόμενη πληρωμή",
         "nextPaymentCompletedHint": "Ισχύει μόνο όταν συμπεριλάβεις ξανά τη συνδρομή στον προϋπολογισμό.",
         "reminderDaysLabel": "Ημέρες υπενθύμισης",

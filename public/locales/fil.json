@@ -113,8 +113,13 @@
         "createdNamed": "Nagawa ang \"{{name}}\".",
         "savedNamed": "Na-save ang \"{{name}}\".",
         "everyNDays": "Tuwing {{count}} araw",
+        "everyNDays_one": "Tuwing {{count}} araw",
         "everyNWeeks": "Bawat {{count}} linggo",
-        "everyNMonths": "Bawat {{count}} buwan"
+        "everyNWeeks_one": "Bawat {{count}} linggo",
+        "everyNMonths": "Bawat {{count}} buwan",
+        "everyNMonths_one": "Bawat {{count}} buwan",
+        "everyNYears": "Bawat {{count}} taon",
+        "everyNYears_one": "Bawat {{count}} taon"
     },
     "kitchen": {
         "noShoppingLists": "Wala pang listahan ng pamimili.",
@@ -4665,13 +4670,6 @@
             "monthly": "Buwanan",
             "yearly": "Taunan"
         },
-        "cyclePlural": {
-            "daily": "araw",
-            "weekly": "linggo",
-            "monthly": "buwan",
-            "yearly": "taon"
-        },
-        "everyCycle": "Tuwing {{count}} {{cycle}}",
         "overdueDays": "{{count}} araw nang lampas sa taning",
         "overdueDays_one": "{{count}} araw nang lampas sa taning",
         "dueToday": "Taning ngayon",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Halaga",
         "currencyLabel": "Pera",
         "billingCycleLabel": "Siklo ng pagsingil",
-        "intervalLabel": "Tuwing",
         "nextPaymentLabel": "Susunod na bayad",
         "nextPaymentCompletedHint": "Magkakabisa lang kapag isinama mo ulit ang subscription sa badyet.",
         "reminderDaysLabel": "Mga araw ng paalala",

@@ -113,8 +113,13 @@
         "createdNamed": "'{{name}}' 만들었습니다.",
         "savedNamed": "'{{name}}' 저장했습니다.",
         "everyNDays": "{{count}}일마다",
+        "everyNDays_one": "{{count}}일마다",
         "everyNWeeks": "{{count}}주마다",
-        "everyNMonths": "{{count}}개월마다"
+        "everyNWeeks_one": "{{count}}주마다",
+        "everyNMonths": "{{count}}개월마다",
+        "everyNMonths_one": "{{count}}개월마다",
+        "everyNYears": "{{count}}년마다",
+        "everyNYears_one": "{{count}}년마다"
     },
     "kitchen": {
         "noShoppingLists": "아직 장보기 목록이 없습니다.",
@@ -4665,13 +4670,6 @@
             "monthly": "매월",
             "yearly": "매년"
         },
-        "cyclePlural": {
-            "daily": "일",
-            "weekly": "주",
-            "monthly": "개월",
-            "yearly": "년"
-        },
-        "everyCycle": "{{count}} {{cycle}}마다",
         "overdueDays": "{{count}}일 지남",
         "overdueDays_one": "{{count}}일 지남",
         "dueToday": "오늘 마감",
@@ -4710,7 +4708,6 @@
         "amountLabel": "금액",
         "currencyLabel": "통화",
         "billingCycleLabel": "청구 주기",
-        "intervalLabel": "매",
         "nextPaymentLabel": "다음 결제",
         "nextPaymentCompletedHint": "구독을 다시 예산에 포함할 때만 적용됩니다.",
         "reminderDaysLabel": "알림 일수",

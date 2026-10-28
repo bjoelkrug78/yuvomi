@@ -1023,7 +1023,7 @@ function openTaskCreateModal(content) {
             <div class="housekeeping-field">
               <span id="housekeeping-create-frequency-label">${esc(t('housekeeping.taskFrequency'))}${REQUIRED_MARK}</span>
               ${intervalSentenceHtml({
-                key: 'common.everyNDays', labelledBy: 'housekeeping-create-frequency-label',
+                key: 'common.everyNDays', labelledBy: 'housekeeping-create-frequency-label', count: 7,
                 countHtml: `<input name="frequency_days" required inputmode="numeric" type="number" min="1" step="1" value="7" aria-label="${esc(t('housekeeping.taskFrequency'))}">`,
               })}
             </div>
@@ -2127,7 +2127,7 @@ function openTaskEditModal(task, content) {
         <div class="housekeeping-field">
           <span id="housekeeping-edit-frequency-label">${esc(t('housekeeping.taskFrequency'))}${REQUIRED_MARK}</span>
           ${intervalSentenceHtml({
-            key: 'common.everyNDays', labelledBy: 'housekeeping-edit-frequency-label',
+            key: 'common.everyNDays', labelledBy: 'housekeeping-edit-frequency-label', count: task.frequency_days,
             countHtml: `<input name="frequency_days" required inputmode="numeric" type="number" min="1" step="1" value="${esc(task.frequency_days)}" aria-label="${esc(t('housekeeping.taskFrequency'))}">`,
           })}
         </div>

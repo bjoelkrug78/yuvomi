@@ -113,8 +113,13 @@
         "createdNamed": "‘{{name}}’ aangemaakt.",
         "savedNamed": "‘{{name}}’ opgeslagen.",
         "everyNDays": "Elke {{count}} dagen",
+        "everyNDays_one": "Elke {{count}} dag",
         "everyNWeeks": "Elke {{count}} weken",
-        "everyNMonths": "Elke {{count}} maanden"
+        "everyNWeeks_one": "Elke {{count}} week",
+        "everyNMonths": "Elke {{count}} maanden",
+        "everyNMonths_one": "Elke {{count}} maand",
+        "everyNYears": "Elke {{count}} jaar",
+        "everyNYears_one": "Elke {{count}} jaar"
     },
     "kitchen": {
         "noShoppingLists": "Er is nog geen boodschappenlijst.",
@@ -4665,13 +4670,6 @@
             "monthly": "Maandelijks",
             "yearly": "Jaarlijks"
         },
-        "cyclePlural": {
-            "daily": "dagen",
-            "weekly": "weken",
-            "monthly": "maanden",
-            "yearly": "jaren"
-        },
-        "everyCycle": "Elke {{count}} {{cycle}}",
         "overdueDays": "{{count}} dagen te laat",
         "overdueDays_one": "{{count}} dag te laat",
         "dueToday": "Vandaag verschuldigd",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Bedrag",
         "currencyLabel": "Valuta",
         "billingCycleLabel": "Facturatiecyclus",
-        "intervalLabel": "Elke",
         "nextPaymentLabel": "Volgende betaling",
         "nextPaymentCompletedHint": "Geldt pas als je het abonnement weer in het budget opneemt.",
         "reminderDaysLabel": "Herinneringsdagen",

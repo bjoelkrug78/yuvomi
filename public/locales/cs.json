@@ -113,9 +113,18 @@
         "sortMode": "Změnit pořadí",
         "createdNamed": "„{{name}}“ vytvořeno.",
         "savedNamed": "„{{name}}“ uloženo.",
-        "everyNDays": "Každých {{count}} dní",
-        "everyNWeeks": "Každých {{count}} týdnů",
-        "everyNMonths": "Každých {{count}} měsíců"
+        "everyNDays": "Jednou za {{count}} dní",
+        "everyNDays_one": "Jednou za {{count}} den",
+        "everyNDays_few": "Jednou za {{count}} dny",
+        "everyNWeeks": "Jednou za {{count}} týdnů",
+        "everyNWeeks_one": "Jednou za {{count}} týden",
+        "everyNWeeks_few": "Jednou za {{count}} týdny",
+        "everyNMonths": "Jednou za {{count}} měsíců",
+        "everyNMonths_one": "Jednou za {{count}} měsíc",
+        "everyNMonths_few": "Jednou za {{count}} měsíce",
+        "everyNYears": "Jednou za {{count}} let",
+        "everyNYears_one": "Jednou za {{count}} rok",
+        "everyNYears_few": "Jednou za {{count}} roky"
     },
     "kitchen": {
         "noShoppingLists": "Nákupní seznam ještě neexistuje.",
@@ -4797,13 +4806,6 @@
             "monthly": "Měsíčně",
             "yearly": "Ročně"
         },
-        "cyclePlural": {
-            "daily": "dní",
-            "weekly": "týdnů",
-            "monthly": "měsíců",
-            "yearly": "let"
-        },
-        "everyCycle": "Každých {{count}} {{cycle}}",
         "overdueDays": "{{count}} dní po splatnosti",
         "overdueDays_one": "{{count}} den po splatnosti",
         "overdueDays_few": "{{count}} dny po splatnosti",
@@ -4844,7 +4846,6 @@
         "amountLabel": "Částka",
         "currencyLabel": "Měna",
         "billingCycleLabel": "Fakturační cyklus",
-        "intervalLabel": "Každých",
         "nextPaymentLabel": "Další platba",
         "nextPaymentCompletedHint": "Platí až po opětovném zahrnutí předplatného do rozpočtu.",
         "reminderDaysLabel": "Dny připomenutí",

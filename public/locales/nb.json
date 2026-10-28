@@ -113,8 +113,13 @@
         "createdNamed": "«{{name}}» opprettet.",
         "savedNamed": "«{{name}}» lagret.",
         "everyNDays": "Hver {{count}} dager",
+        "everyNDays_one": "Hver {{count}} dag",
         "everyNWeeks": "Hver {{count}}. uke",
-        "everyNMonths": "Hver {{count}}. måned"
+        "everyNWeeks_one": "Hver {{count}}. uke",
+        "everyNMonths": "Hver {{count}}. måned",
+        "everyNMonths_one": "Hver {{count}}. måned",
+        "everyNYears": "Hver {{count}}. år",
+        "everyNYears_one": "Hver {{count}}. år"
     },
     "kitchen": {
         "noShoppingLists": "Det finnes ingen handleliste ennå.",
@@ -4665,13 +4670,6 @@
             "monthly": "Månedlig",
             "yearly": "Årlig"
         },
-        "cyclePlural": {
-            "daily": "dager",
-            "weekly": "uker",
-            "monthly": "måneder",
-            "yearly": "år"
-        },
-        "everyCycle": "Hver {{count}} {{cycle}}",
         "overdueDays": "{{count}} dager forsinket",
         "overdueDays_one": "{{count}} dager forsinket",
         "dueToday": "Forfaller i dag",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Beløp",
         "currencyLabel": "Valuta",
         "billingCycleLabel": "Faktureringssyklus",
-        "intervalLabel": "Hver",
         "nextPaymentLabel": "Neste betaling",
         "nextPaymentCompletedHint": "Gjelder først når du inkluderer abonnementet i budsjettet igjen.",
         "reminderDaysLabel": "Påminnelsesdager",

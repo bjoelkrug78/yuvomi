@@ -38,7 +38,7 @@ import { leadCardClass, fitMetricLeads } from '/utils/metric-card.js';
 import { errorSentence, isGone, isAlreadyDeleted } from '/utils/friendly-error.js';
 import { reloadAfterSave } from '/utils/reload-after-save.js';
 import { colorPickerHtml, familyColorOptions, setColorPickerValue, wireColorPicker } from '/utils/color-picker.js';
-import { intervalSentenceHtml } from '/utils/interval-sentence.js';
+import { intervalSentenceHtml, UNIT_SENTENCE_KEYS } from '/utils/interval-sentence.js';
 
 const SUBSCRIPTION_COLOR_DEFAULT = '#0F766E';
 
@@ -291,14 +291,17 @@ function monthLabel(key) {
   return new Intl.DateTimeFormat(getLocale(), { month: 'short' }).format(new Date(year, month - 1, 1));
 }
 
+// Die Zeile sagt denselben Satz wie der Dialog (R24 S4): "Alle 2 Monate" aus
+// dem Satz der Einheit, mit der Pluralform der Zahl - "Co 2 miesiące" neben
+// "Co 5 miesięcy". Bis dahin setzte sie ein festes Pluralwort ein
+// (`subscriptions.cyclePlural`), das im Polnischen, Tschechischen, Russischen
+// und Ukrainischen bei 2-4 falsch war. Bei 1 bleibt das Adverb ("Monatlich").
 function cycleLabel(subscription) {
   const key = `subscriptions.cycle.${subscription.billing_cycle}`;
-  return subscription.cycle_interval === 1
+  const sentence = UNIT_SENTENCE_KEYS[subscription.billing_cycle];
+  return subscription.cycle_interval === 1 || !sentence
     ? t(key)
-    : t('subscriptions.everyCycle', {
-      count: subscription.cycle_interval,
-      cycle: t(`subscriptions.cyclePlural.${subscription.billing_cycle}`),
-    });
+    : t(sentence, { count: subscription.cycle_interval });
 }
 
 function daysUntil(date) {
@@ -1620,7 +1623,6 @@ export function openSubscriptionModal(subscription = null) {
   // und wird beim Wechsel der Währungs-Combobox nachgezogen.
   const formCurrency = subscription?.currency || state.settings.base_currency;
   const formCycle = subscription?.billing_cycle || 'monthly';
-  const cycleOptions = state.meta.billing_cycles.map((cycle) => `<option value="${esc(cycle)}"${cycle === formCycle ? ' selected' : ''}>${esc(t(`subscriptions.cyclePlural.${cycle}`))}</option>`).join('');
   const initialLogo = subscription?.logo_data || '';
   const initialName = subscription?.name || '';
 
@@ -1711,16 +1713,17 @@ export function openSubscriptionModal(subscription = null) {
             value: subscription?.currency || state.settings.base_currency,
             placeholder: t('subscriptions.currencySearchPlaceholder'),
           })}
-          ${/* DER ZYKLUS IST EIN SATZ (Critique R24 G4-Budget-P3-3): "Alle [1] [Monate]"
+          ${/* DER ZYKLUS IST EIN SATZ (Critique R24 G4-Budget-P3-3): "Alle [1] [Monat]"
                statt "Abrechnungszyklus" als Suchfeld und daneben "Alle" ueber einer
-               nackten 1 (utils/interval-sentence.js). */ ''}
+               nackten 1 (utils/interval-sentence.js). Die Woerter der Wahl folgen der
+               Zahl und kommen aus dem Satz der Einheit (S4, F1). */ ''}
           <div class="form-group subscription-form__cycle">
             <span class="form-label" id="subscription-cycle-label">${t('subscriptions.billingCycleLabel')}</span>
             ${intervalSentenceHtml({
-              prefix: t('subscriptions.intervalLabel'),
+              units: { id: 'subscription-cycle', options: state.meta.billing_cycles, selected: formCycle },
               labelledBy: 'subscription-cycle-label',
+              count: subscription?.cycle_interval || 1,
               countHtml: `<input class="form-input" id="subscription-interval" type="number" min="1" max="365" step="1" inputmode="numeric" value="${esc(String(subscription?.cycle_interval || 1))}" aria-labelledby="subscription-cycle-label">`,
-              unitHtml: `<select class="form-input" id="subscription-cycle" aria-labelledby="subscription-cycle-label">${cycleOptions}</select>`,
             })}
           </div>
         </div>

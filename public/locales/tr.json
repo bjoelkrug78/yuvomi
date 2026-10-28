@@ -113,8 +113,13 @@
         "createdNamed": "\"{{name}}\" oluşturuldu.",
         "savedNamed": "\"{{name}}\" kaydedildi.",
         "everyNDays": "Her {{count}} günde bir",
+        "everyNDays_one": "Her {{count}} günde bir",
         "everyNWeeks": "Her {{count}} haftada bir",
-        "everyNMonths": "Her {{count}} ayda bir"
+        "everyNWeeks_one": "Her {{count}} haftada bir",
+        "everyNMonths": "Her {{count}} ayda bir",
+        "everyNMonths_one": "Her {{count}} ayda bir",
+        "everyNYears": "Her {{count}} yılda bir",
+        "everyNYears_one": "Her {{count}} yılda bir"
     },
     "kitchen": {
         "noShoppingLists": "Henüz alışveriş listesi yok.",
@@ -4665,13 +4670,6 @@
             "monthly": "Aylık",
             "yearly": "Yıllık"
         },
-        "cyclePlural": {
-            "daily": "gün",
-            "weekly": "hafta",
-            "monthly": "ay",
-            "yearly": "yıl"
-        },
-        "everyCycle": "Her {{count}} {{cycle}}",
         "overdueDays": "{{count}} gün gecikmiş",
         "overdueDays_one": "{{count}} gün gecikmiş",
         "dueToday": "Bugün ödenecek",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Tutar",
         "currencyLabel": "Para birimi",
         "billingCycleLabel": "Faturalama döngüsü",
-        "intervalLabel": "Her",
         "nextPaymentLabel": "Sonraki ödeme",
         "nextPaymentCompletedHint": "Yalnızca aboneliği yeniden bütçeye dahil ettiğinizde geçerli olur.",
         "reminderDaysLabel": "Hatırlatma günleri",

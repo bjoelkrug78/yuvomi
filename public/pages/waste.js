@@ -1324,6 +1324,7 @@ function openScheduleModal(type, schedule = null) {
       <span class="form-label" id="wsm-interval-label">${t('waste.intervalLabel')}</span>
       ${intervalSentenceHtml({
         key: kind === 'weekly' ? 'common.everyNWeeks' : 'common.everyNMonths',
+        count: schedule?.interval ?? 1,
         countHtml: intervalStepperHtml(schedule?.interval ?? 1),
         labelledBy: 'wsm-interval-label', className: 'wsm-interval-sentence',
       })}

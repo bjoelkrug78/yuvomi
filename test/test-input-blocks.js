@@ -18,22 +18,67 @@ import { readFileSync, readdirSync } from 'node:fs';
 const read = (f) => readFileSync(new URL(`../public/${f}`, import.meta.url), 'utf8');
 const { intervalSentenceHtml } = await import('../public/utils/interval-sentence.js');
 
+// Echte Saetze einer Sprache fuer den Loader-Stub von t() (globalThis.__tDict).
+const localeDict = (locale) => {
+  const { common } = JSON.parse(readFileSync(new URL(`../public/locales/${locale}.json`, import.meta.url), 'utf8'));
+  return Object.fromEntries(Object.entries(common).filter(([k]) => k.startsWith('everyN')).map(([k, v]) => [`common.${k}`, v]));
+};
+const withLocale = (locale, fn) => {
+  globalThis.__tDict = localeDict(locale);
+  globalThis.__locale = locale;
+  try { return fn(); } finally { delete globalThis.__tDict; delete globalThis.__locale; }
+};
+const words = (html) => [...html.matchAll(/<span class="interval-sentence__word"[^>]*>([^<]*)<\/span>/g)].map((m) => m[1]);
+
 test('Intervall-Satz: das Feld steht an der Stelle von {{count}}, Woerter davor und danach, benannte Gruppe', () => {
-  // Der Loader-Stub von t() gibt "key" + JSON der Parameter zurueck - der
-  // Platzhalter steht darin, wo die Sprache ihn hinstellt.
-  const html = intervalSentenceHtml({ key: 'common.everyNWeeks', countHtml: '<input id="n">', labelledBy: 'lbl', className: 'x' });
-  assert.match(html, /^<div class="interval-sentence x" role="group" aria-labelledby="lbl" data-interval-key="common\.everyNWeeks">/);
-  assert.match(html, /<span class="interval-sentence__word">common\.everyNWeeks\{&quot;count&quot;:&quot;<\/span><input id="n"><span class="interval-sentence__word">&quot;\}<\/span><\/div>$/,
-    'das Feld steht genau dort, wo der Text {{count}} traegt');
-  const withUnit = intervalSentenceHtml({ prefix: 'Alle', countHtml: '<input id="n">', unitHtml: '<select id="u"></select>', labelledBy: 'l' });
-  assert.match(withUnit, /<span class="interval-sentence__word">Alle<\/span><input id="n"><select id="u"><\/select><\/div>$/, 'Wahl der Einheit am Satzende');
+  withLocale('de', () => {
+    const html = intervalSentenceHtml({ key: 'common.everyNWeeks', count: 2, countHtml: '<input id="n">', labelledBy: 'lbl', className: 'x' });
+    assert.match(html, /^<div class="interval-sentence x" role="group" aria-labelledby="lbl" data-interval-key="common\.everyNWeeks">/);
+    assert.match(html, /<span class="interval-sentence__word" data-interval-part="before">Alle<\/span><input id="n"><span class="interval-sentence__word" data-interval-part="after">Wochen<\/span><\/div>$/,
+      'das Feld steht genau dort, wo der Text {{count}} traegt');
+  });
+  // Ein Anhaengsel an der Zahl ("2. héten") bleibt an der Zahl, nicht am Wort.
+  withLocale('hu', () => {
+    assert.deepEqual(words(intervalSentenceHtml({ key: 'common.everyNWeeks', count: 2, countHtml: '<input>', labelledBy: 'l' })), ['Minden', '.', 'héten']);
+  });
 });
 
-test('Intervall-Satz: jede Sprache hat die drei Saetze mit genau einem {{count}}', () => {
+// R24 S4, Frage F1: bei 1 las der Satz "Alle 1 Wochen". Die Form waehlt die
+// Zahl (Intl.PluralRules der UI-Sprache), in jeder Sprache mit ihren Kategorien.
+test('Intervall-Satz F1: die Woerter folgen der Zahl - Singular bei 1, few/many, wo die Sprache sie hat', () => {
+  const satz = (locale, key, count) => withLocale(locale, () => words(intervalSentenceHtml({ key, count, countHtml: '<input>', labelledBy: 'l' })).join(' '));
+  assert.equal(satz('de', 'common.everyNWeeks', 1), 'Alle Woche');
+  assert.equal(satz('de', 'common.everyNWeeks', 2), 'Alle Wochen');
+  assert.equal(satz('de', 'common.everyNDays', 1), 'Alle Tag');
+  assert.equal(satz('en', 'common.everyNMonths', 1), 'Every month');
+  assert.equal(satz('pl', 'common.everyNMonths', 2), 'Co miesiące');
+  assert.equal(satz('pl', 'common.everyNMonths', 5), 'Co miesięcy');
+  assert.equal(satz('ru', 'common.everyNWeeks', 21), 'Раз в неделю');
+  assert.equal(satz('de', 'common.everyNWeeks', ''), 'Alle Wochen', 'ein leeres Feld behaelt den Basissatz');
+});
+
+test('Intervall-Satz F1, Abos: die Einheit ist eine Wahl IM Satz, ihre Woerter folgen Zahl und Einheit', () => {
+  withLocale('de', () => {
+    const html = intervalSentenceHtml({ units: { id: 'u', options: ['daily', 'weekly', 'monthly', 'yearly'], selected: 'monthly' }, count: 1, countHtml: '<input>', labelledBy: 'l' });
+    assert.match(html, /data-interval-units/);
+    assert.match(html, /<select class="form-input" id="u" aria-labelledby="l"><option value="daily">Tag<\/option><option value="weekly">Woche<\/option><option value="monthly" selected>Monat<\/option><option value="yearly">Jahr<\/option><\/select><\/div>$/,
+      'bei 1 im Singular - "Alle [1] [Monat]"');
+    assert.deepEqual(words(html), ['Alle']);
+    const zwei = intervalSentenceHtml({ units: { id: 'u', options: ['monthly'], selected: 'monthly' }, count: 2, countHtml: '<input>', labelledBy: 'l' });
+    assert.match(zwei, /<option value="monthly" selected>Monate<\/option>/);
+  });
+  // Das Wort vor der Zahl kommt aus dem Satz der gewaehlten Einheit - so stimmt das Geschlecht.
+  withLocale('fr', () => {
+    const woche = intervalSentenceHtml({ units: { id: 'u', options: ['daily', 'weekly'], selected: 'weekly' }, count: 2, countHtml: '<input>', labelledBy: 'l' });
+    assert.deepEqual(words(woche), ['Toutes les']);
+  });
+});
+
+test('Intervall-Satz: jede Sprache hat die vier Saetze mit genau einem {{count}}', () => {
   const dir = new URL('../public/locales/', import.meta.url);
   for (const file of readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const { common } = JSON.parse(readFileSync(new URL(file, dir), 'utf8'));
-    for (const key of ['everyNDays', 'everyNWeeks', 'everyNMonths']) {
+    for (const key of ['everyNDays', 'everyNWeeks', 'everyNMonths', 'everyNYears', 'everyNDays_one', 'everyNWeeks_one', 'everyNMonths_one', 'everyNYears_one']) {
       assert.equal((common[key]?.match(/\{\{count\}\}/g) ?? []).length, 1, `${file}: common.${key} = ${common[key]}`);
       assert.doesNotMatch(common[key], /\bN\b/, `${file}: common.${key} traegt noch das Buchstaben-N`);
     }
@@ -46,10 +91,16 @@ test('Intervall-Satz: Entsorgung, Abos und Haushaltshilfe benutzen ihn (Critique
   assert.match(waste, /setIntervalSentenceKey\(panel\.querySelector\('\.wsm-interval-sentence'\)/, 'der Satz folgt der Wiederholung');
   assert.doesNotMatch(waste, /intervalLabelWeekly|intervalLabelMonthly/, 'kein Etikett "Alle N Wochen" mehr');
   const subs = read('pages/subscriptions.js');
-  assert.match(subs, /intervalSentenceHtml\(\{\s*prefix: t\('subscriptions\.intervalLabel'\)[\s\S]{0,400}unitHtml: `<select class="form-input" id="subscription-cycle"/);
+  assert.match(subs, /intervalSentenceHtml\(\{\s*units: \{ id: 'subscription-cycle', options: state\.meta\.billing_cycles, selected: formCycle \}[\s\S]{0,200}count: subscription\?\.cycle_interval \|\| 1,/);
+  assert.match(subs, /t\(sentence, \{ count: subscription\.cycle_interval \}\)/, 'die Abo-Zeile sagt denselben Satz wie der Dialog');
+  assert.match(waste, /count: schedule\?\.interval \?\? 1,/, 'die Entsorgung nennt ihre Zahl - der Satz waehlt danach');
   assert.doesNotMatch(subs, /comboboxMarkup\(\{\s*id: 'subscription-cycle'/, 'der Zyklus ist kein Suchfeld mehr');
   const hk = read('pages/housekeeping.js');
   assert.equal((hk.match(/intervalSentenceHtml\(\{\s*key: 'common\.everyNDays'/g) ?? []).length, 2, 'Anlegen und Bearbeiten einer Arbeit');
+  assert.equal((hk.match(/labelledBy: 'housekeeping-(?:create|edit)-frequency-label', count: /g) ?? []).length, 2, 'beide nennen ihre Zahl');
+  // Neu gesetzt wird beim Tippen ueber EINEN Listener am Dokument - kein Aufrufer verdrahtet ihn.
+  const util = read('utils/interval-sentence.js');
+  assert.match(util, /document\.addEventListener\('input', onChange\);\s*document\.addEventListener\('change', onChange\);/);
 });
 
 test('Schichtart: Beginn und Ende in EINER Zeile, das Symbol ohne durchgestrichenes Bild', async () => {

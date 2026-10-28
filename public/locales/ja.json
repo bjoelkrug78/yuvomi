@@ -113,8 +113,13 @@
         "createdNamed": "「{{name}}」を作成しました。",
         "savedNamed": "「{{name}}」を保存しました。",
         "everyNDays": "{{count}} 日ごと",
+        "everyNDays_one": "{{count}} 日ごと",
         "everyNWeeks": "{{count}}週間ごと",
-        "everyNMonths": "{{count}}か月ごと"
+        "everyNWeeks_one": "{{count}}週間ごと",
+        "everyNMonths": "{{count}}か月ごと",
+        "everyNMonths_one": "{{count}}か月ごと",
+        "everyNYears": "{{count}}年ごと",
+        "everyNYears_one": "{{count}}年ごと"
     },
     "kitchen": {
         "noShoppingLists": "買い物リストがまだありません。",
@@ -4665,13 +4670,6 @@
             "monthly": "毎月",
             "yearly": "毎年"
         },
-        "cyclePlural": {
-            "daily": "日",
-            "weekly": "週",
-            "monthly": "か月",
-            "yearly": "年"
-        },
-        "everyCycle": "{{count}} {{cycle}}ごと",
         "overdueDays": "{{count}}日遅れ",
         "overdueDays_one": "{{count}}日遅れ",
         "dueToday": "今日が期限",
@@ -4710,7 +4708,6 @@
         "amountLabel": "金額",
         "currencyLabel": "通貨",
         "billingCycleLabel": "請求周期",
-        "intervalLabel": "毎",
         "nextPaymentLabel": "次回支払い",
         "nextPaymentCompletedHint": "サブスクリプションを再び予算に含めたときにのみ適用されます。",
         "reminderDaysLabel": "リマインダー日数",

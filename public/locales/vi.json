@@ -113,8 +113,13 @@
         "createdNamed": "Đã tạo \"{{name}}\".",
         "savedNamed": "Đã lưu \"{{name}}\".",
         "everyNDays": "Mỗi {{count}} ngày",
+        "everyNDays_one": "Mỗi {{count}} ngày",
         "everyNWeeks": "Mỗi {{count}} tuần",
-        "everyNMonths": "Mỗi {{count}} tháng"
+        "everyNWeeks_one": "Mỗi {{count}} tuần",
+        "everyNMonths": "Mỗi {{count}} tháng",
+        "everyNMonths_one": "Mỗi {{count}} tháng",
+        "everyNYears": "Mỗi {{count}} năm",
+        "everyNYears_one": "Mỗi {{count}} năm"
     },
     "kitchen": {
         "noShoppingLists": "Chưa có danh sách mua sắm.",
@@ -4665,13 +4670,6 @@
             "monthly": "Hằng tháng",
             "yearly": "Hằng năm"
         },
-        "cyclePlural": {
-            "daily": "ngày",
-            "weekly": "tuần",
-            "monthly": "tháng",
-            "yearly": "năm"
-        },
-        "everyCycle": "Mỗi {{count}} {{cycle}}",
         "overdueDays": "Quá hạn {{count}} ngày",
         "overdueDays_one": "Quá hạn {{count}} ngày",
         "dueToday": "Đến hạn hôm nay",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Số tiền",
         "currencyLabel": "Tiền tệ",
         "billingCycleLabel": "Chu kỳ thanh toán",
-        "intervalLabel": "Mỗi",
         "nextPaymentLabel": "Khoản thanh toán tiếp theo",
         "nextPaymentCompletedHint": "Chỉ áp dụng khi bạn tính lại gói đăng ký vào ngân sách.",
         "reminderDaysLabel": "Số ngày nhắc",

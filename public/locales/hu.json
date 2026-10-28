@@ -113,8 +113,13 @@
         "createdNamed": "„{{name}}” létrehozva.",
         "savedNamed": "„{{name}}” mentve.",
         "everyNDays": "Minden {{count}} nap",
+        "everyNDays_one": "Minden {{count}} nap",
         "everyNWeeks": "Minden {{count}}. héten",
-        "everyNMonths": "Minden {{count}}. hónapban"
+        "everyNWeeks_one": "Minden {{count}}. héten",
+        "everyNMonths": "Minden {{count}}. hónapban",
+        "everyNMonths_one": "Minden {{count}}. hónapban",
+        "everyNYears": "Minden {{count}}. évben",
+        "everyNYears_one": "Minden {{count}}. évben"
     },
     "kitchen": {
         "noShoppingLists": "Még nincs bevásárlólista.",
@@ -4665,13 +4670,6 @@
             "monthly": "Havi",
             "yearly": "Éves"
         },
-        "cyclePlural": {
-            "daily": "Nap",
-            "weekly": "Hét",
-            "monthly": "Hónap",
-            "yearly": "Év"
-        },
-        "everyCycle": "Minden {{count}} {{cycle}}",
         "overdueDays": "{{count}} nap késésben",
         "overdueDays_one": "{{count}} nap késésben",
         "dueToday": "Ma esedékes",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Összeg",
         "currencyLabel": "Pénznem",
         "billingCycleLabel": "Számlázási ciklus",
-        "intervalLabel": "Minden",
         "nextPaymentLabel": "Következő fizetés",
         "nextPaymentCompletedHint": "Csak akkor érvényes, ha az előfizetést újra beleveszed a költségvetésbe.",
         "reminderDaysLabel": "Emlékeztető napok",

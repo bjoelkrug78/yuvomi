@@ -113,8 +113,13 @@
         "createdNamed": "«{{name}}» creato.",
         "savedNamed": "«{{name}}» salvato.",
         "everyNDays": "Ogni {{count}} giorni",
+        "everyNDays_one": "Ogni {{count}} giorno",
         "everyNWeeks": "Ogni {{count}} settimane",
-        "everyNMonths": "Ogni {{count}} mesi"
+        "everyNWeeks_one": "Ogni {{count}} settimana",
+        "everyNMonths": "Ogni {{count}} mesi",
+        "everyNMonths_one": "Ogni {{count}} mese",
+        "everyNYears": "Ogni {{count}} anni",
+        "everyNYears_one": "Ogni {{count}} anno"
     },
     "kitchen": {
         "noShoppingLists": "Non c'è ancora una lista della spesa.",
@@ -4665,13 +4670,6 @@
             "monthly": "Mensile",
             "yearly": "Annuale"
         },
-        "cyclePlural": {
-            "daily": "giorni",
-            "weekly": "settimane",
-            "monthly": "mesi",
-            "yearly": "anni"
-        },
-        "everyCycle": "Ogni {{count}} {{cycle}}",
         "overdueDays": "{{count}} giorni di ritardo",
         "overdueDays_one": "{{count}} giorno di ritardo",
         "dueToday": "Scade oggi",
@@ -4710,7 +4708,6 @@
         "amountLabel": "Importo",
         "currencyLabel": "Valuta",
         "billingCycleLabel": "Ciclo di fatturazione",
-        "intervalLabel": "Ogni",
         "nextPaymentLabel": "Prossimo pagamento",
         "nextPaymentCompletedHint": "Vale solo quando includi di nuovo l'abbonamento nel budget.",
         "reminderDaysLabel": "Giorni di promemoria",
