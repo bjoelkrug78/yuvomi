@@ -5,6 +5,7 @@ import { stagger, scheduleUndoableDelete } from '/utils/ux.js';
 import { wireSwipeRows, maybeShowSwipeHint } from '/utils/swipe-row.js';
 import { t, formatMonthYear, parseDateInput, isDateInputValid, getLocale, formatUnit } from '/i18n.js';
 import { dateText, daysFromTodayText } from '/utils/date-format.js';
+import { mediaPickerBadgeHtml } from '/utils/media-picker.js';
 import { esc, REQUIRED_MARK } from '/utils/html.js';
 import { initials } from '/utils/initials.js';
 import { rowMenuHtml } from '/utils/row-action.js';
@@ -1079,20 +1080,21 @@ function openBirthdayModal({ mode, birthday = null }) {
     content: `
       <div class="birthday-modal">
         <div class="birthday-modal__identity">
+          ${/* EIN BEDIENELEMENT FUER DAS BILD (Critique R24 G1-Geburtstage-P3-1,
+               Baustein `.media-picker` in layout.css): die Scheibe IST die Wahl,
+               das Stift-Abzeichen sagt es; der zweite Knopf mit demselben Stift
+               daneben ist weg. "Bild entfernen" steht nur mit Bild darunter, als
+               Text - eine andere Handlung, kein zweiter Weg zur selben. */ ''}
           <div class="birthday-modal__photo-wrap">
-            <button type="button" class="birthday-avatar-editor" id="birthday-preview" aria-label="${t('birthdays.photoLabel')}">
-              ${birthdayPreviewHtml(birthday?.name || '', photoData)}
-            </button>
+            <span class="media-picker">
+              <button type="button" class="birthday-avatar-editor" id="birthday-preview" aria-label="${t('birthdays.photoLabel')}">
+                ${birthdayPreviewHtml(birthday?.name || '', photoData)}
+              </button>
+              ${mediaPickerBadgeHtml()}
+            </span>
             <input class="sr-only" id="bd-photo" type="file" accept="image/png,image/jpeg,image/webp"
                    aria-label="${t('birthdays.photoLabel')}" tabindex="-1">
-            <div class="birthday-modal__photo-actions">
-              <button type="button" class="birthday-modal__photo-action" id="bd-photo-edit" aria-label="${t('birthdays.photoLabel')}" title="${t('birthdays.photoLabel')}">
-                <i data-lucide="pencil" aria-hidden="true"></i>
-              </button>
-              <button type="button" class="birthday-modal__photo-action birthday-modal__photo-action--danger" id="bd-remove-photo" aria-label="${t('birthdays.removePhoto')}" title="${t('birthdays.removePhoto')}"${photoData ? '' : ' hidden'}>
-                <i data-lucide="trash-2" aria-hidden="true"></i>
-              </button>
-            </div>
+            <button type="button" class="btn btn--ghost btn--sm media-picker__remove" id="bd-remove-photo"${photoData ? '' : ' hidden'}>${t('birthdays.removePhoto')}</button>
           </div>
           <div class="birthday-modal__fields">
             <div class="form-group">
@@ -1136,7 +1138,6 @@ function openBirthdayModal({ mode, birthday = null }) {
       const nameInput = panel.querySelector('#bd-name');
       const preview = panel.querySelector('#birthday-preview');
       const fileInput = panel.querySelector('#bd-photo');
-      const photoEdit = panel.querySelector('#bd-photo-edit');
       // Den Entfernen-Knopf gibt es nur mit Bild: ein roter Muelleimer fuer
       // ein Bild, das es nicht gibt, war eine Handlung ohne Gegenstand.
       const removePhoto = panel.querySelector('#bd-remove-photo');
@@ -1148,7 +1149,6 @@ function openBirthdayModal({ mode, birthday = null }) {
       };
       nameInput.addEventListener('input', renderPreview);
       preview.addEventListener('click', () => fileInput?.click());
-      photoEdit?.addEventListener('click', () => fileInput?.click());
       fileInput?.addEventListener('change', async (e) => {
         const file = e.target.files?.[0];
         if (!file) return;

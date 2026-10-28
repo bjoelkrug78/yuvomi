@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   sentence. Before, waste collection labelled the field "Every N weeks", subscriptions showed a search
   field for the billing cycle next to a lone "Every" over a number, and chores asked for a bare number of
   days.
+- **A birthday photo is chosen with one control.** The photo itself is the button, with a small pencil
+  badge; the separate pencil button next to it is gone, and "Remove picture" appears as text below only
+  when there is a picture.
 - **Filtering by person looks the same in every module.** The task history, the rewards history, the
   task filters and the calendar show one row of chips with each person's colour, initials and first
   name, with "All" in front. On phones the task history showed only initials without names, and on

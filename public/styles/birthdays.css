@@ -385,38 +385,6 @@
   font-weight: var(--font-weight-bold);
 }
 
-.birthday-modal__photo-actions {
-  display: flex;
-  gap: var(--space-2);
-  justify-content: center;
-}
-
-.birthday-modal__photo-action {
-  width: var(--target-base);
-  height: var(--target-base);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text-secondary);
-  cursor: pointer;
-}
-
-.birthday-modal__photo-action:hover {
-  background: var(--color-surface-hover);
-}
-
-.birthday-modal__photo-action svg {
-  width: 16px;
-  height: 16px;
-}
-
-.birthday-modal__photo-action--danger {
-  color: var(--color-danger);
-}
-
 .birthday-modal__identity {
   display: flex;
   align-items: flex-start;

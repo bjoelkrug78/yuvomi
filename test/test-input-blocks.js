@@ -61,3 +61,18 @@ test('Schichtart: Beginn und Ende in EINER Zeile, das Symbol ohne durchgestriche
   assert.match(schedule.shiftFields({ icon: 'moon' }), /data-action="pick-shift-icon"><i data-lucide="moon"/);
   assert.doesNotMatch(read('pages/schedule.js'), /'image-off'/);
 });
+
+test('Bild: das Vorschaubild ist der EINE Knopf, das Abzeichen sagt "aenderbar", Entfernen nur als Text mit Bild', async () => {
+  const { mediaPickerBadgeHtml } = await import('../public/utils/media-picker.js');
+  assert.equal(mediaPickerBadgeHtml(), '<span class="media-picker__badge" aria-hidden="true"><i data-lucide="pencil"></i></span>');
+  const bd = read('pages/birthdays.js');
+  const editor = bd.slice(bd.indexOf('<div class="birthday-modal__photo-wrap">'), bd.indexOf('<div class="birthday-modal__fields">'));
+  assert.match(editor, /<span class="media-picker">\s*<button type="button" class="birthday-avatar-editor" id="birthday-preview"[\s\S]*?<\/button>\s*\$\{mediaPickerBadgeHtml\(\)\}\s*<\/span>/);
+  assert.doesNotMatch(bd, /bd-photo-edit|birthday-modal__photo-action/, 'kein zweiter Knopf mit demselben Stift');
+  assert.match(editor, /class="btn btn--ghost btn--sm media-picker__remove" id="bd-remove-photo"\$\{photoData \? '' : ' hidden'\}>\$\{t\('birthdays\.removePhoto'\)\}<\/button>/);
+  const { eachRule } = await import('./css-rules.js');
+  const layout = [...eachRule(readFileSync(new URL('../public/styles/layout.css', import.meta.url), 'utf8'))].filter((r) => !r.at.length);
+  const badge = layout.find((r) => r.selector.trim() === '.media-picker__badge');
+  assert.match(badge?.body ?? '', /pointer-events:\s*none/, 'das Abzeichen nimmt dem Knopf keinen Tipp');
+  assert.match(badge?.body ?? '', /position:\s*absolute/);
+});

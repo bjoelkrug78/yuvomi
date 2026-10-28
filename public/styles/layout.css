@@ -7478,6 +7478,39 @@ dialog.dialog-surface.dialog-surface--closing::backdrop {
   min-inline-size: 0;
 }
 
+/* EIN BEDIENELEMENT FUER EIN BILD (Critique R24; utils/media-picker.js): das
+ * Vorschaubild ist der Knopf, das Abzeichen an seiner Ecke sagt "aenderbar".
+ * Das Abzeichen sitzt NEBEN dem Knopf im Traeger, nicht in ihm: der Knopf
+ * schneidet sein Bild rund (`overflow: hidden`) und schnitte das Abzeichen mit. */
+.media-picker {
+  position: relative;
+  display: inline-flex;
+}
+
+.media-picker__badge {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  display: grid;
+  place-items: center;
+  inline-size: calc(var(--space-6) + var(--space-1));
+  block-size: calc(var(--space-6) + var(--space-1));
+  border-radius: var(--radius-full);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.media-picker__badge svg {
+  inline-size: var(--icon-md);
+  block-size: var(--icon-md);
+}
+
+.media-picker__remove {
+  color: var(--color-danger);
+}
+
 /* EIN FARBWAEHLER (Critique R24, E6; utils/color-picker.js). Eine Reihe
  * benannter Toene als radiogroup, dahinter "Eigene" fuer den Systemwaehler.
  * Stand bis R24 als `.color-swatch` in calendar.css und in vier Abschriften

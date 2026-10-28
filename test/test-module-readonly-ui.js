@@ -2755,7 +2755,6 @@ async function geburtstagSpeichern(eintrag, { mode = 'edit', bedienen = async ()
     '#bd-name': editorElement({ value: eintrag.name }),
     '#birthday-preview': editorElement(),
     '#bd-photo': editorElement(),
-    '#bd-photo-edit': editorElement(),
     '#bd-remove-photo': editorElement(),
     '#bd-birth-date': editorElement({ value: eintrag.birth_date }),
     // "Jahr unbekannt" (#2095, utils/birth-date.js): Haken, Monat, Tag.
