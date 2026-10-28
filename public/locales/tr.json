@@ -439,7 +439,9 @@
         "todayTimelinePast": "bitti",
         "todayTimelineRunning": "sürüyor",
         "todayTimelineNext": "sıradaki",
-        "todayAlsoTitle": "Bugün ayrıca"
+        "todayAlsoTitle": "Bugün ayrıca",
+        "todayNothingPlanned": "Henüz bir şey planlanmadı",
+        "todayNothingPlannedSub": "Bugünün randevuları, görevleri ve öğünleri burada görünecek."
     },
     "tasks": {
         "resetOrder": "Otomatik sırala",

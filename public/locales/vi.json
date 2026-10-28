@@ -439,7 +439,9 @@
         "todayTimelinePast": "đã kết thúc",
         "todayTimelineRunning": "đang diễn ra",
         "todayTimelineNext": "tiếp theo",
-        "todayAlsoTitle": "Hôm nay còn có"
+        "todayAlsoTitle": "Hôm nay còn có",
+        "todayNothingPlanned": "Chưa có kế hoạch nào",
+        "todayNothingPlannedSub": "Lịch hẹn, công việc và bữa ăn hôm nay sẽ hiển thị ở đây."
     },
     "tasks": {
         "resetOrder": "Sắp xếp tự động",

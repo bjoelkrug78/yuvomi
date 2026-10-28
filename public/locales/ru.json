@@ -523,7 +523,9 @@
         "todayTimelinePast": "завершено",
         "todayTimelineRunning": "идёт сейчас",
         "todayTimelineNext": "далее",
-        "todayAlsoTitle": "Также сегодня"
+        "todayAlsoTitle": "Также сегодня",
+        "todayNothingPlanned": "Пока ничего не запланировано",
+        "todayNothingPlannedSub": "Здесь появятся встречи, задачи и блюда на сегодня."
     },
     "tasks": {
         "resetOrder": "Сортировать автоматически",

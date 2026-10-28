@@ -40,6 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **The install hint waits for the tour to end.** The two "Next" taps of the welcome tour counted as the
   clicks the hint waits for, so it popped up over the step that explains the tab bar; taps in the tour no
   longer count.
+- **A new household is not told it has the day off.** Right after setup the overview said "Free today"
+  over an empty page; while the first-steps card is open and nothing is coming up, it now says nothing
+  is planned yet and what will appear there.
 
 ## [2.82.0] - 2026-10-28
 

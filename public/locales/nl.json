@@ -439,7 +439,9 @@
         "todayTimelinePast": "afgelopen",
         "todayTimelineRunning": "bezig",
         "todayTimelineNext": "hierna",
-        "todayAlsoTitle": "Verder vandaag"
+        "todayAlsoTitle": "Verder vandaag",
+        "todayNothingPlanned": "Nog niets gepland",
+        "todayNothingPlannedSub": "Afspraken, taken en maaltijden van vandaag verschijnen hier."
     },
     "tasks": {
         "resetOrder": "Automatisch sorteren",

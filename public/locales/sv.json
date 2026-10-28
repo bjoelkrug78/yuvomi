@@ -439,7 +439,9 @@
         "todayTimelinePast": "slut",
         "todayTimelineRunning": "pågår",
         "todayTimelineNext": "härnäst",
-        "todayAlsoTitle": "Även i dag"
+        "todayAlsoTitle": "Även i dag",
+        "todayNothingPlanned": "Inget planerat än",
+        "todayNothingPlannedSub": "Dagens möten, uppgifter och måltider visas här."
     },
     "tasks": {
         "resetOrder": "Sortera automatiskt",

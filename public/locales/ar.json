@@ -565,7 +565,9 @@
         "todayTimelinePast": "انتهى",
         "todayTimelineRunning": "جارٍ الآن",
         "todayTimelineNext": "التالي",
-        "todayAlsoTitle": "أيضًا اليوم"
+        "todayAlsoTitle": "أيضًا اليوم",
+        "todayNothingPlanned": "لم يُخطَّط لشيء بعد",
+        "todayNothingPlannedSub": "ستظهر هنا مواعيد اليوم ومهامه ووجباته."
     },
     "tasks": {
         "resetOrder": "الترتيب التلقائي",

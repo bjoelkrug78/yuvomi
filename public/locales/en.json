@@ -439,7 +439,9 @@
         "todayTimelinePast": "over",
         "todayTimelineRunning": "in progress",
         "todayTimelineNext": "up next",
-        "todayAlsoTitle": "Also today"
+        "todayAlsoTitle": "Also today",
+        "todayNothingPlanned": "Nothing planned yet",
+        "todayNothingPlannedSub": "Today's appointments, tasks and meals will show up here."
     },
     "tasks": {
         "resetOrder": "Sort automatically",

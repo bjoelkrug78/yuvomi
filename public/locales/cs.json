@@ -483,7 +483,9 @@
         "todayTimelinePast": "skončilo",
         "todayTimelineRunning": "právě probíhá",
         "todayTimelineNext": "jako další",
-        "todayAlsoTitle": "Dnes také"
+        "todayAlsoTitle": "Dnes také",
+        "todayNothingPlanned": "Zatím nic naplánováno",
+        "todayNothingPlannedSub": "Dnešní události, úkoly a jídla se objeví tady."
     },
     "tasks": {
         "resetOrder": "Řadit automaticky",

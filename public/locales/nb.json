@@ -439,7 +439,9 @@
         "todayTimelinePast": "over",
         "todayTimelineRunning": "pågår nå",
         "todayTimelineNext": "neste",
-        "todayAlsoTitle": "Også i dag"
+        "todayAlsoTitle": "Også i dag",
+        "todayNothingPlanned": "Ingenting planlagt ennå",
+        "todayNothingPlannedSub": "Dagens avtaler, oppgaver og måltider vises her."
     },
     "tasks": {
         "resetOrder": "Sorter automatisk",

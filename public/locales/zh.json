@@ -439,7 +439,9 @@
         "todayTimelinePast": "已结束",
         "todayTimelineRunning": "进行中",
         "todayTimelineNext": "下一个",
-        "todayAlsoTitle": "今天还有"
+        "todayAlsoTitle": "今天还有",
+        "todayNothingPlanned": "尚无任何安排",
+        "todayNothingPlannedSub": "今天的约会、任务和餐食会显示在这里。"
     },
     "tasks": {
         "resetOrder": "自动排序",

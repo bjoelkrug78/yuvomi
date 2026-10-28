@@ -61,7 +61,7 @@ import { whoMark } from '/utils/seal-pair.js';
 import { MODULE_ICON, moduleIconHTML } from '/nav-icons.js';
 import { enterWallMode, exitWallMode, isWallActive, syncWallMode } from '/utils/wall-mode.js';
 import { mountZonePrompt } from '/utils/household-zone-hint.js';
-import { mountFirstSteps, startFirstSteps } from '/utils/first-steps.js';
+import { firstStepsActive, mountFirstSteps, startFirstSteps } from '/utils/first-steps.js';
 import { renderWallTimer, wireWallTimer } from '/components/wall-timer.js';
 import { rememberLayoutHint, layoutHintTiles, layoutHintQuery, rememberHeadHint, headHint } from '/utils/dashboard-layout-hint.js';
 import { emptyHintHTML, cardEmptyRowHtml } from '/utils/empty-state.js';
@@ -4815,11 +4815,16 @@ function buildTodayCockpitModel(data, cfg = [], {
     // „Alles erledigt" sagt auch eine Quelle, deren Offenes heute geschafft
     // ist (alle Dosen genommen) - sonst hiesse derselbe Tag „Heute frei".
     const sayAllDone = (includeTasks && program.tasksDoneToday > 0) || contributed.settled;
+    // EIN NEUER HAUSHALT IST NICHT FREI, SONDERN LEER (R24, Critique G6 P2-2).
+    // Nach der Einrichtung stand "Heute frei" ueber einer Uebersicht ohne einen
+    // einzigen Eintrag. Solange die Erste-Schritte-Karte laeuft und nichts
+    // kommt, sagt die Zeile das: noch nichts geplant, und was hier erscheint.
+    const fresh = !sayAllDone && !outlook && firstStepsActive();
     if (sayAllDone || includeCalendar) {
       state = {
-        title: sayAllDone ? t('dashboard.todayAllDone') : t('dashboard.todayFree'),
-        sub: outlook?.sub ?? '',
-        icon: sayAllDone ? 'check-circle' : 'sparkles',
+        title: sayAllDone ? t('dashboard.todayAllDone') : t(fresh ? 'dashboard.todayNothingPlanned' : 'dashboard.todayFree'),
+        sub: fresh ? t('dashboard.todayNothingPlannedSub') : (outlook?.sub ?? ''),
+        icon: sayAllDone ? 'check-circle' : fresh ? 'calendar-plus' : 'sparkles',
         route: outlook?.route ?? null,
       };
     }

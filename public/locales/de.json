@@ -457,7 +457,9 @@
         "todayTimelinePast": "vorbei",
         "todayTimelineRunning": "läuft gerade",
         "todayTimelineNext": "als Nächstes",
-        "todayAlsoTitle": "Außerdem heute"
+        "todayAlsoTitle": "Außerdem heute",
+        "todayNothingPlanned": "Noch nichts geplant",
+        "todayNothingPlannedSub": "Termine, Aufgaben und Mahlzeiten von heute erscheinen hier."
     },
     "tasks": {
         "resetOrder": "Automatisch sortieren",

@@ -439,7 +439,9 @@
         "todayTimelinePast": "समाप्त",
         "todayTimelineRunning": "अभी चल रहा है",
         "todayTimelineNext": "अगला",
-        "todayAlsoTitle": "आज और भी"
+        "todayAlsoTitle": "आज और भी",
+        "todayNothingPlanned": "अभी कुछ भी तय नहीं",
+        "todayNothingPlannedSub": "आज के अपॉइंटमेंट, कार्य और भोजन यहाँ दिखाई देंगे।"
     },
     "tasks": {
         "resetOrder": "अपने-आप क्रमबद्ध करें",

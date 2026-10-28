@@ -439,7 +439,9 @@
         "todayTimelinePast": "ολοκληρώθηκε",
         "todayTimelineRunning": "σε εξέλιξη",
         "todayTimelineNext": "επόμενο",
-        "todayAlsoTitle": "Επίσης σήμερα"
+        "todayAlsoTitle": "Επίσης σήμερα",
+        "todayNothingPlanned": "Τίποτα προγραμματισμένο ακόμα",
+        "todayNothingPlannedSub": "Τα σημερινά ραντεβού, οι εργασίες και τα γεύματα θα εμφανίζονται εδώ."
     },
     "tasks": {
         "resetOrder": "Αυτόματη ταξινόμηση",

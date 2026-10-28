@@ -439,7 +439,9 @@
         "todayTimelinePast": "terminado",
         "todayTimelineRunning": "en curso",
         "todayTimelineNext": "lo siguiente",
-        "todayAlsoTitle": "También hoy"
+        "todayAlsoTitle": "También hoy",
+        "todayNothingPlanned": "Nada planificado todavía",
+        "todayNothingPlannedSub": "Las citas, tareas y comidas de hoy aparecerán aquí."
     },
     "tasks": {
         "resetOrder": "Ordenar automáticamente",

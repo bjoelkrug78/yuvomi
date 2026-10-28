@@ -457,7 +457,9 @@
         "todayTimelinePast": "selesai",
         "todayTimelineRunning": "sedang berlangsung",
         "todayTimelineNext": "berikutnya",
-        "todayAlsoTitle": "Juga hari ini"
+        "todayAlsoTitle": "Juga hari ini",
+        "todayNothingPlanned": "Belum ada rencana",
+        "todayNothingPlannedSub": "Janji, tugas, dan makanan hari ini akan muncul di sini."
     },
     "tasks": {
         "resetOrder": "Urutkan otomatis",

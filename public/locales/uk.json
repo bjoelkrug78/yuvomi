@@ -523,7 +523,9 @@
         "todayTimelinePast": "завершено",
         "todayTimelineRunning": "триває",
         "todayTimelineNext": "далі",
-        "todayAlsoTitle": "Також сьогодні"
+        "todayAlsoTitle": "Також сьогодні",
+        "todayNothingPlanned": "Поки нічого не заплановано",
+        "todayNothingPlannedSub": "Тут з'являться сьогоднішні зустрічі, завдання та страви."
     },
     "tasks": {
         "resetOrder": "Сортувати автоматично",

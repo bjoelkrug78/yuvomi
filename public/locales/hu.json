@@ -439,7 +439,9 @@
         "todayTimelinePast": "véget ért",
         "todayTimelineRunning": "folyamatban",
         "todayTimelineNext": "következik",
-        "todayAlsoTitle": "Ma még"
+        "todayAlsoTitle": "Ma még",
+        "todayNothingPlanned": "Még nincs semmi tervezve",
+        "todayNothingPlannedSub": "A mai időpontok, feladatok és étkezések itt jelennek meg."
     },
     "tasks": {
         "resetOrder": "Automatikus rendezés",

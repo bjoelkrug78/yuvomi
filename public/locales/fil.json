@@ -457,7 +457,9 @@
         "todayTimelinePast": "tapos na",
         "todayTimelineRunning": "kasalukuyang nagaganap",
         "todayTimelineNext": "susunod",
-        "todayAlsoTitle": "Ngayong araw din"
+        "todayAlsoTitle": "Ngayong araw din",
+        "todayNothingPlanned": "Wala pang nakaplano",
+        "todayNothingPlannedSub": "Lalabas dito ang mga appointment, gawain at pagkain ngayong araw."
     },
     "tasks": {
         "resetOrder": "Awtomatikong ayusin",
