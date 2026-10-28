@@ -1652,7 +1652,14 @@ Seitdem steht jede Seite hinter der Shell in **genau einem von drei Regimen**:
 
 - **Lesemass** - eine Spalte auf `--layout-reading` (720px), Kopfzeile `--narrow` bis zur
   Listenkante. Fuer reine Listen und Formulare ohne Detail, das daneben stehen koennte.
-  Umsetzung: Kompositionsmodus `reading` oder `form`.
+  Umsetzung: Kompositionsmodus `reading` oder `form`. **Der Kopf endet an der Kante seines
+  Inhalts, auch rechts - das ist die Regel, kein Randfehler (R24, Critique G0-Shell-P3-6 /
+  G5-Kontakte-P3-1 / G0 Inv-2):** die Kontakte stehen zwischen 1024 und 1279px im Lesemass
+  (unter der Split-Schwelle, siehe unten), ihr Kopf und seine Pille enden mit der Liste
+  (gemessen Pille rechts bei x 972: Rand 52px bei 1024, 128px bei 1100 statt der 32px eines
+  Flaechen-Kopfs). Dasselbe im Budget: seine Bahn (`--budget-lane`) endet bei 1440 auf x 1376,
+  und dort endet auch „+ Eintrag" - nicht am 32px-Rand eines vollbreiten Moduls (1408). Ein
+  Kopf, der ueber seinen Inhalt hinausreicht, stuende ueber Leere.
 - **Liste + Detail** - unter der Schwelle exakt wie Lesemass (die Zeile oeffnet Modal, Sheet
   oder Aufklapper). Ab einer Modulflaeche von `--layout-split-threshold` (65rem) steht links
   die Liste auf einer Bahn zwischen `--layout-list-min` und `--layout-list-max` (480-520px;
@@ -4925,6 +4932,20 @@ Lueckenhinweis schreibt erst nach dem naechsten Bild, das Raster gleitet dann an
 Oberkante. Neu gebaut wird nur beim Moduswechsel (Betreten, Speichern, Abbrechen).
 
 ### FAB (Signature Component)
+**Jede Ansicht, die etwas anlegt, hat ihn - auch die Gesundheit (R24, E9, Ulas 2026-10-28).**
+Uebersicht und Zyklus standen ohne Knopf, mobil blieb in der Kapsel ein leerer Platz unten
+rechts (Critique G5 P1-1). Jetzt: Uebersicht „+ Erfassen" mit einem Menue am Knopf (Messwert,
+Training, Einnahme, Zyklus; `popovertarget`, die Popover-API oeffnet, schliesst und gibt den
+Fokus zurueck, mobil endet es 8px ueber der Kapsel), Zyklus „+ Tag" (Tag protokollieren;
+„Periode gestartet" steht sekundaer in der Heute-Karte, das Nachtragen sekundaer im
+Leerzustand), Fasten weiter „Fasten starten" (R23 D14). Pille, Ansage und Dialogtitel tragen
+EIN Nomen („Training" / „Training erfassen"; die Naehrwerte-Pille bleibt „Mahlzeit", Ulas
+2026-10-25). Angedockt haelt der Aktions-Slot der Gesundheit die Breite seines laengsten
+Nomens (`--health-fab-slot`, gemessen in `fitHealthFabSlot`): die Personenwahl daneben steht
+in jedem Bereich auf x 1008 (vorher 1008-1167 je Nomen). Die Plan-Pille des Budgets nennt das
+Objekt („+ Kategoriebudget"), nicht das Modul. Guards: `test:health-nav` "R24 E9",
+`test:budget-ui` "R24".
+
 Getoente Glas-Kapsel: der App-Akzent mit 78 % Deckung
 (`color-mix(in srgb, var(--color-accent) 78%, transparent)`) ueber
 `--blur-md` + `saturate(var(--lg-glass-saturate))`, Specular-Kanten (`--glass-inset-strong`

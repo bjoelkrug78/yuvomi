@@ -496,8 +496,10 @@ test('Kanon: der Kontext-FAB dockt am Desktop an - Aktions-Slot im Kopf, Nomen j
 
   const update = functionSource('updateHealthFab');
   assert.ok(update, 'updateHealthFab() nicht gefunden');
-  const actions = update.match(/setPageFabAction\(_fab, \{[^\n]*\}\)/g) ?? [];
-  assert.ok(actions.length >= 8, `erwartet: ein Aufruf je Tab plus der Ausblend-Zweig, gefunden ${actions.length}`);
+  // Seit R24 (E9) traegt jede Ansicht ihren Aufruf, auch Uebersicht und
+  // Zyklus - einige davon mehrzeilig.
+  const actions = update.match(/setPageFabAction\(_fab, \{[\s\S]*?\}\);/g) ?? [];
+  assert.ok(actions.length >= 10, `erwartet: ein Aufruf je Ansicht (9) plus der Ausblend-Zweig, gefunden ${actions.length}`);
   for (const call of actions) {
     // Auch der Ausblend-Zweig: der Router dockt nur beim Seitenaufbau an und
     // nur mit `data-dock-label` - wer auf der Uebersicht einsteigt und das
@@ -691,13 +693,18 @@ test('R22 D12: ein Leerzustand je Ebene - der leere Bereich mit Aktion, die leer
     assert.doesNotMatch(body, /emptyHintHTML\(|reminders-empty/, `${fn}: kein nackter Satz`);
   }
   assert.match(fnBody('renderActivityShell'), /cardEmptyRowHtml\(t\('health\.activity\.noData'\), \{ action: canAdd/, 'leere Woche: Zeile mit Erfassen');
-  // EIN VERB JE AKTION: der Zyklus ohne Kopf-Aktion, der Inhalt traegt sie.
-  // Das Fasten seit R23 D14 umgekehrt: der FAB heisst "Fasten starten", der
+  // EIN VERB JE AKTION: seit R24 (E9) traegt der Zyklus-FAB die ANDERE
+  // Handlung als die Heute-Karte - „+ Tag" (Tag protokollieren) neben
+  // „Periode gestartet"; die Karte fuehrt den Tag nicht mehr ein zweites Mal.
+  // Das Fasten seit R23 D14: der FAB heisst "Fasten starten", der
   // Ring traegt keinen Startknopf mehr (nur noch "Beenden" bei laufendem Fasten).
   const fab = fnBody('updateHealthFab');
   {
     const at = fab.indexOf(`case '/health/cycle':`);
-    assert.match(fab.slice(at, fab.indexOf('break;', at)), /hidden: true/, 'cycle: keine Kopf-Aktion neben der des Inhalts');
+    const ccase = fab.slice(at, fab.indexOf('break;', at));
+    assert.match(ccase, /hidden: !cycleCanEdit\(\)/, 'cycle: der FAB, wo der Tag protokolliert werden darf');
+    assert.match(ccase, /onClick: \(\) => openDayLogModal\(todayKey\(\)\)/, 'cycle: der FAB protokolliert den Tag');
+    assert.doesNotMatch(fnBody('cycleTodayActionsMarkup'), /cycle-log-today|btn--primary/, 'die Heute-Karte: kein zweiter Tag-Knopf, kein zweiter Primaer');
     const ft = fab.indexOf(`case '/health/fasting':`);
     const fcase = fab.slice(ft, fab.indexOf('break;', ft));
     assert.match(fcase, /hidden: !fastingIntent\.canStart/, 'fasting: der FAB nur, wenn ein Start moeglich ist');
@@ -971,4 +978,41 @@ test('F4.5: Einnehmen ist in jeder Sprache ein Verb, und sein Wort steht im Name
     if (!named.includes(meds.take.toLocaleLowerCase())) missing.push(`${file}: "${meds.take}" / "${meds.takeNamed}"`);
   }
   assert.deepEqual(missing, [], 'das sichtbare Wort fehlt im Namen des Knopfs');
+});
+
+// R24 E9 (Ulas 2026-10-28; Critique G5 P1-1, G0 P2-2, G5 P2-3): jede Ansicht
+// der Gesundheit hat ihren FAB. Uebersicht: „+ Erfassen" mit einem Menue am
+// Knopf (popovertarget, die Popover-API oeffnet, schliesst und gibt den Fokus
+// zurueck); Zyklus: „+ Tag". Der Platz des angedockten Knopfs steht, damit
+// die Personenwahl daneben nicht springt (gemessen 1440: x 1008-1167 -> 1008).
+test('R24 E9: FAB in jeder Ansicht - Uebersicht mit Erfassen-Menue, Zyklus „+ Tag", fester Platz', () => {
+  const update = functionSource('updateHealthFab');
+  const at = update.indexOf('case HEALTH_OVERVIEW_ROUTE:');
+  assert.ok(at > 0, 'die Uebersicht hat einen eigenen Fall');
+  const ov = update.slice(at, update.indexOf('break;', at));
+  assert.match(ov, /dockLabel: t\('newLabel\.healthOverview'\)/);
+  assert.match(ov, /hidden: !items\.length/, 'ohne Recht kein Knopf');
+  assert.match(ov, /syncCaptureMenu\(items\)/);
+  const sync = functionSource('syncCaptureMenu');
+  assert.match(sync, /setAttribute\('popovertarget', CAPTURE_MENU_ID\)/, 'das Menue haengt per popovertarget am FAB');
+  assert.match(sync, /removeAttribute\('popovertarget'\)/, 'ausserhalb der Uebersicht wieder ab');
+  assert.match(sync, /installPopoverMenus\(panel\)/, 'das Menue ist seine eigene Wurzel');
+  const items = functionSource('overviewCaptureItems');
+  for (const action of ['ov-add-vital', 'ov-add-activity', 'ov-go-meds', 'ov-go-cycle']) assert.ok(items.includes(`'${action}'`), action);
+  assert.match(update, /fitHealthFabSlot\(\)/);
+  const css = read('public/styles/health.css');
+  assert.match(css, /\.health-toolbar > \.page-toolbar__actions \{[^}]*min-inline-size: var\(--health-fab-slot, auto\)/, 'der Platz des Knopfs steht');
+  const de = JSON.parse(read('public/locales/de.json'));
+  assert.equal(de.newLabel.healthOverview, 'Erfassen');
+  assert.equal(de.newLabel.healthCycle, 'Tag');
+  // EIN NOMEN JE BEREICH: Pille, aria und Dialogtitel (Aktivitaet sagte
+  // „Training" / „Einheit erfassen").
+  for (const l of ['de', 'en']) {
+    const loc = JSON.parse(read(`public/locales/${l}.json`));
+    assert.ok(loc.health.activity.add.toLowerCase().includes(loc.newLabel.healthActivity.toLowerCase()), `${l}: ${loc.health.activity.add} / ${loc.newLabel.healthActivity}`);
+  }
+  for (const file of readdirSync(join(ROOT, 'public/locales')).filter((f) => f.endsWith('.json'))) {
+    const loc = JSON.parse(read(`public/locales/${file}`));
+    assert.ok(loc.newLabel.healthOverview, `${file}: newLabel.healthOverview`);
+  }
 });

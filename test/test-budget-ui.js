@@ -7798,3 +7798,19 @@ test('R23: die Abo-Faelligkeit nennt ueber einen Monat Wochen, Monate oder Jahre
   assert.match(due(0), /subscriptions\.dueToday/);
   assert.match(due(-3), /subscriptions\.overdueDays/);
 });
+
+// R24 (Critique G4-Budget-P3-4): die Plan-Pille nannte das Modul („+ Budget"
+// im Modul Budget), nicht das Objekt. Jetzt „+ Kategoriebudget", und die
+// Ansage sagt dasselbe Nomen - in jeder Sprache ist die Pille nicht der
+// Modulname.
+test('R24: die Plan-Pille nennt das Kategoriebudget, nicht das Modul', async () => {
+  const { readFileSync, readdirSync } = await import('node:fs');
+  const dir = new URL('../public/locales/', import.meta.url);
+  const de = JSON.parse(readFileSync(new URL('de.json', dir), 'utf8'));
+  assert.equal(de.newLabel.budgetPlan, 'Kategoriebudget');
+  assert.equal(de.budget.planAddBudget, 'Kategoriebudget festlegen');
+  for (const file of readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+    const loc = JSON.parse(readFileSync(new URL(file, dir), 'utf8'));
+    assert.notEqual(loc.newLabel.budgetPlan.toLowerCase(), loc.budget.title.toLowerCase(), `${file}: die Pille wiederholt den Modulnamen`);
+  }
+});

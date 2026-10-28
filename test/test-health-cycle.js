@@ -2189,13 +2189,16 @@ test('Zyklus: "Periode nachtragen" steht am Verlauf und im Leerzustand, die Heut
   assert.equal(de.period.add, de.add, 'Knopf und Dialogtitel sagen dasselbe');
   assert.notEqual(de.add, de.today.startPeriod, 'und etwas anderes als die Heute-Aktion');
   const src = readFileSync(new URL('../public/pages/health.js', import.meta.url), 'utf8');
-  // R22 D12: kein FAB, keine Kopf-Pille - "+ Periode" stand neben "Periode gestartet".
+  // R22 D12: kein „+ Periode" im Kopf - es stand neben "Periode gestartet".
+  // Seit R24 (E9) traegt der FAB den Tag („+ Tag"), nie das Nachtragen.
   const fab = src.slice(src.indexOf("case '/health/cycle':"), src.indexOf("case '/health/meds':"));
-  assert.match(fab, /setPageFabAction\(_fab, \{ hidden: true, dockLabel: t\('newLabel\.healthCycle'\) \}\)/);
+  assert.match(fab, /dockLabel: t\('newLabel\.healthCycle'\)/);
+  assert.match(fab, /openDayLogModal\(todayKey\(\)\)/);
   assert.doesNotMatch(fab, /openPeriodModal/);
   const hist = src.slice(src.indexOf('function cycleHistoryMarkup('), src.indexOf('function cycleDiscoveryMarkup('));
   assert.match(hist, /data-action="cycle-add-period"><i data-lucide="plus" aria-hidden="true"><\/i>\$\{esc\(t\('health\.cycle\.add'\)\)\}/, 'das Nachtragen steht am Verlauf');
-  assert.match(src, /action: darf \? \{ label: t\('health\.cycle\.add'\), icon: 'plus', attrs: \{ 'data-action': 'cycle-add-period' \} \} : undefined/, 'und im leeren Bereich');
+  // Seit R24 (E9) steht im leeren Bereich auch der FAB: das Nachtragen ist sekundaer.
+  assert.match(src, /action: darf \? \{ label: t\('health\.cycle\.add'\), icon: 'plus', tone: 'secondary', attrs: \{ 'data-action': 'cycle-add-period' \} \} : undefined/, 'und im leeren Bereich');
   assert.match(src, /querySelectorAll\('\[data-action="cycle-add-period"\]'\)\.forEach\(\(btn\) =>\s*btn\.addEventListener\('click', \(\) => openPeriodModal\(null\)\)\)/);
 });
 

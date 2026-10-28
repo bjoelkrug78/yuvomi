@@ -468,6 +468,12 @@
 @media (min-width: 1024px) {
   .health-toolbar > .page-toolbar__actions {
     min-height: var(--target-base);
+    /* DER PLATZ DES KNOPFS STEHT (R24, Critique G5 P2-3): so breit wie sein
+     * laengstes Nomen (gemessen in fitHealthFabSlot, health.js), auch wenn er
+     * im Fasten oder ohne Recht fehlt. Vorher sprang die Personenwahl links
+     * daneben bei jedem Bereichswechsel (1440: x 1008-1167). */
+    min-inline-size: var(--health-fab-slot, auto);
+    justify-content: flex-end;
   }
 }
 

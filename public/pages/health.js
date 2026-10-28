@@ -560,7 +560,11 @@ function panelMarkup(panel, activeRoute) {
 }
 
 // Routen-basierter Kontext-FAB: die Primäraktion folgt der aktiven Health-Route.
-// Auf der Übersicht (keine Erstellen-Aktion) ausgeblendet.
+// SEIT R24 IN JEDER ANSICHT (E9, Ulas 2026-10-28): auf der Uebersicht
+// „+ Erfassen" mit einem Auswahlmenue (Messwert, Training, Einnahme, Zyklus),
+// im Zyklus „+ Tag" (Tag protokollieren). Vorher stand dort kein Knopf, und
+// die Kapsel trug mobil einen leeren Platz unten rechts - genau dort, wo Casey
+// sucht (Critique G5 P1-1, G0 P2-2).
 let _fab = null;
 // Was der FAB im Fasten kann - pages/health-fasting.js meldet es nach jedem
 // Zeichnen (mountFasting onIntent), bis dahin ausgeblendet.
@@ -578,10 +582,16 @@ function updateHealthFab(activeRoute) {
     case '/health/cycle':
       // EIN VERB JE AKTION (R22, D12; Critique a5 P2): "+ Periode" im Kopf
       // stand neben "Periode gestartet" in der Heute-Karte - zwei Knoepfe fuer
-      // dieselbe Frage. Die Hauptaktion traegt der Inhalt (Heute-Karte, im
-      // Leerzustand "Periode nachtragen"), das Nachtragen steht am Verlauf
-      // (cycleHistoryMarkup). Kein FAB, keine Kopf-Pille.
-      setPageFabAction(_fab, { hidden: true, dockLabel: t('newLabel.healthCycle') }); break;
+      // dieselbe Frage. Seit R24 (E9) traegt der FAB die ANDERE Handlung: den
+      // Tag protokollieren (Blutung, Symptome, Notiz) - „+ Tag". „Periode
+      // gestartet" bleibt der eine Tipp in der Heute-Karte (dort sekundaer,
+      // der Primaer ist der FAB), das Nachtragen steht am Verlauf.
+      setPageFabAction(_fab, {
+        hidden: !cycleCanEdit(),
+        label: t('health.cycle.today.logDay'),
+        dockLabel: t('newLabel.healthCycle'),
+        onClick: () => openDayLogModal(todayKey()),
+      }); break;
     case '/health/meds':
       setPageFabAction(_fab, { hidden: !canEditFor(meds.personId, meds.meId), label: t('health.meds.add'), dockLabel: t('newLabel.healthMeds'), onClick: () => openMedModal(null) }); break;
     case '/health/prevention':
@@ -606,13 +616,154 @@ function updateHealthFab(activeRoute) {
         dockLabel: t('health.fasting.start'),
         onClick: () => void fastingIntent.start?.(),
       }); break;
+    case HEALTH_OVERVIEW_ROUTE: {
+      // DIE UEBERSICHT ERFASST UEBER EIN MENUE (R24, E9). Ein Knopf, vier
+      // Wege - wie „+ Neu" der App-Uebersicht. Das Menue haengt per
+      // `popovertarget` am FAB: die Popover-API oeffnet und schliesst, gibt den
+      // Fokus zurueck, und das geteilte Menue (popover-menu.js) rechnet die
+      // Lage am Knopf - unten rechts kippt es nach oben, angedockt nach unten.
+      const items = overviewCaptureItems();
+      setPageFabAction(_fab, {
+        hidden: !items.length,
+        label: t('health.overview.quick.title'),
+        dockLabel: t('newLabel.healthOverview'),
+        onClick: null,
+      });
+      syncCaptureMenu(items);
+      break;
+    }
     default:
       // Das Nomen bleibt stehen: der Router dockt den Knopf am Desktop nur beim
-      // Seitenaufbau an und nur mit `data-dock-label`. Wer auf der Uebersicht
-      // (ohne Erstellen-Aktion) einsteigt und es hier loeschte, behielte den
+      // Seitenaufbau an und nur mit `data-dock-label`. Wer in einem Bereich
+      // ohne eigene Aktion einsteigt und es hier loeschte, behielte den
       // schwebenden Knopf fuer den ganzen Besuch.
       setPageFabAction(_fab, { hidden: true, dockLabel: _fab.dataset?.dockLabel || t('newLabel.healthVitals') });
   }
+  if (activeRoute !== HEALTH_OVERVIEW_ROUTE) syncCaptureMenu(null);
+  fitHealthFabSlot();
+}
+
+const HEALTH_OVERVIEW_ROUTE = '/health';
+const CAPTURE_MENU_ID = 'health-capture-menu';
+
+/**
+ * Die Wege des Erfassen-Menues auf der Uebersicht - nur, was die gewaehlte
+ * Person hier anlegen darf. Messwert und Training oeffnen ihren Dialog direkt
+ * (wie bisher „Schnell erfassen"), Einnahme und Zyklus fuehren in ihren
+ * Bereich, wo die Heute-Karte bzw. die Dosis-Zeile den einen Tipp tragen.
+ */
+function overviewCaptureItems() {
+  if (readOnly() || !canEditFor(overview.personId, overview.meId)) return [];
+  const own = overview.personId == null || overview.personId === overview.meId;
+  return [
+    { action: 'ov-add-vital', icon: 'heart-pulse', label: t('newLabel.healthVitals') },
+    { action: 'ov-add-activity', icon: 'dumbbell', label: t('newLabel.healthActivity') },
+    { action: 'ov-go-meds', icon: 'pill', label: t('health.overview.quick.meds') },
+    ...(cycleEnabled && own ? [{ action: 'ov-go-cycle', icon: 'droplet', label: t('health.tabs.cycle') }] : []),
+  ];
+}
+
+/** Das Menue am FAB anlegen, auffrischen oder (ausserhalb der Uebersicht) abbauen. */
+function syncCaptureMenu(items) {
+  if (!_fab) return;
+  let panel = document.getElementById(CAPTURE_MENU_ID);
+  if (!items?.length) {
+    _fab.removeAttribute('popovertarget');
+    _fab.removeAttribute('aria-haspopup');
+    _fab.removeAttribute('aria-expanded');
+    if (panel?.matches?.(':popover-open')) panel.hidePopover();
+    return;
+  }
+  const host = _container?.querySelector('.health-page');
+  if (!host) return;
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.className = 'popover-menu health-capture-menu';
+    panel.id = CAPTURE_MENU_ID;
+    panel.setAttribute('popover', '');
+    panel.setAttribute('role', 'menu');
+    // Das Menue ist seine eigene Wurzel: unter der Uebersicht haengt schon
+    // ein installPopoverMenus(), ein zweites darueber liefe jede Taste doppelt.
+    installPopoverMenus(panel);
+    panel.addEventListener('click', onCaptureMenuClick);
+    // Am Telefon steht der FAB IN der Kapsel: das Menue kippt nach oben und
+    // laege mit seiner Unterkante auf dem Glas. Es endet ueber der Kapsel, im
+    // Abstand, den auch Toasts und Mehr-Blatt zu ihr halten (8px).
+    panel.addEventListener('toggle', (event) => {
+      if (event.newState !== 'open') return;
+      const capsule = document.querySelector('.nav-bottom');
+      const top = capsule?.getClientRects().length ? capsule.getBoundingClientRect().top : null;
+      const box = panel.getBoundingClientRect();
+      if (top != null && box.bottom > top - 8 && box.top < top) {
+        panel.style.top = `${Math.max(8, Math.round(top - 8 - box.height))}px`;
+      }
+    });
+    host.appendChild(panel);
+  }
+  panel.setAttribute('aria-label', t('health.overview.quick.title'));
+  panel.replaceChildren();
+  panel.insertAdjacentHTML('beforeend', items.map((item) => `
+    <button type="button" role="menuitem" class="popover-menu__item" data-action="${esc(item.action)}">
+      <i data-lucide="${esc(item.icon)}" class="icon-md" aria-hidden="true"></i>
+      <span>${esc(item.label)}</span>
+    </button>`).join(''));
+  if (window.lucide) window.lucide.createIcons({ el: panel });
+  _fab.setAttribute('popovertarget', CAPTURE_MENU_ID);
+  _fab.setAttribute('aria-haspopup', 'menu');
+  if (!_fab.hasAttribute('aria-expanded')) _fab.setAttribute('aria-expanded', 'false');
+}
+
+function onCaptureMenuClick(event) {
+  const action = event.target.closest?.('[data-action]')?.dataset.action;
+  if (!action || readOnly()) return;
+  if (action === 'ov-add-vital') openVitalModal({ onSaved: () => reloadOverview() });
+  else if (action === 'ov-add-activity') openActivityModal(null, { onSaved: () => reloadOverview() });
+  else if (action === 'ov-go-meds') window.yuvomi?.navigate('/health/meds');
+  else if (action === 'ov-go-cycle') window.yuvomi?.navigate('/health/cycle');
+}
+
+/**
+ * DER FAB-PLATZ STEHT (R24, Critique G5 P2-3). Angedockt traegt der Knopf je
+ * Bereich ein anderes Nomen („Messwert", „Befund", „Fasten starten"), und die
+ * Personenwahl links daneben sprang bei jedem Bereichswechsel seitlich (1440:
+ * x 1008-1167). Der Platz bekommt die Breite seines laengsten Nomens - einmal
+ * gemessen am angedockten Knopf selbst, im selben Frame zurueckgesetzt.
+ */
+let _fabSlotKey = '';
+function fitHealthFabSlot() {
+  const label = _fab?.querySelector('.toolbar-new-btn__label');
+  const toolbar = _fab?.closest('.health-toolbar');
+  if (!label || !toolbar) return;
+  const words = [
+    'newLabel.healthOverview', 'newLabel.healthVitals', 'newLabel.healthCycle', 'newLabel.healthMeds',
+    'newLabel.healthPrevention', 'newLabel.healthLabs', 'newLabel.healthActivity', 'newLabel.healthNutrition',
+    'health.fasting.start',
+  ].map((key) => t(key));
+  const key = words.join('|');
+  if (key === _fabSlotKey && toolbar.style.getPropertyValue('--health-fab-slot')) return;
+  // Gemessen wird der Knopf, wie er steht (Schrift, Polster, Zeichen) - mit
+  // jedem Nomen einmal, ohne die Mindestbreite und sichtbar; zurueckgesetzt,
+  // bevor der Browser zeichnet. Die Breite gilt nur angedockt (health.css).
+  const shown = label.textContent;
+  const display = _fab.style.display;
+  const wasHidden = _fab.hidden;
+  _fab.hidden = false;
+  _fab.style.display = '';
+  toolbar.style.removeProperty('--health-fab-slot');
+  let widest = 0;
+  // Gemessen wird der ganze Aktions-Slot: dort steht vor dem Knopf das
+  // Werkzeug des Kopfs (Export), und dessen Breite gehoert mit zum Platz.
+  const slot = _fab.closest('.page-toolbar__actions') ?? _fab;
+  for (const word of words) {
+    label.textContent = word;
+    widest = Math.max(widest, slot.getBoundingClientRect().width);
+  }
+  label.textContent = shown;
+  _fab.style.display = display;
+  _fab.hidden = wasHidden;
+  if (!widest) return;
+  _fabSlotKey = key;
+  toolbar.style.setProperty('--health-fab-slot', `${Math.ceil(widest)}px`);
 }
 
 // FAB nach Panel-Mount / Personenwechsel neu bewerten (personId steht dann fest).
@@ -1228,6 +1379,16 @@ export async function render(container, ctx = {}) {
 
   _fab = createPageFab({ id: 'health-fab', dockLabel: t('newLabel.healthVitals') });
   page.appendChild(_fab);
+  // Der Router dockt den Knopf erst NACH dem Aufbau an (adoptPageFab). Der
+  // Platz wird im selben Zug gemessen - der Beobachter laeuft vor dem Malen,
+  // sonst stuende er erst nach dem Laden der Daten, und die Personenwahl
+  // spraenge doch noch einmal (R24, G5 P2-3).
+  const actionsSlot = container.querySelector('.health-toolbar > .page-toolbar__actions');
+  if (actionsSlot && typeof MutationObserver === 'function') {
+    const slotWatch = new MutationObserver(() => fitHealthFabSlot());
+    slotWatch.observe(actionsSlot, { childList: true });
+    ctx.signal?.addEventListener('abort', () => slotWatch.disconnect(), { once: true });
+  }
 
   if (window.lucide) window.lucide.createIcons({ el: container });
 
@@ -7067,6 +7228,8 @@ function renderOverviewShell() {
   wireOverview();
   applyOverviewStatuses();
   syncHoists();
+  // Das Erfassen-Menue am FAB kennt jetzt Person und Recht (R24, E9).
+  refreshHealthFab();
 }
 
 /**
@@ -7889,9 +8052,10 @@ function renderCycleShell() {
     title: t('health.cycle.emptyTitle'),
     description: t('health.cycle.emptyDesc'),
     // DER LEERZUSTAND TRAEGT DIE AKTION (R22, D12): Glyphe, Titel, Satz,
-    // Aktion - wie jeder leere Bereich. Seit der FAB hier fehlt, ist sie der
-    // einzige Anlege-Weg und kein zweiter: hier steht kein FAB (Kanon D5).
-    action: darf ? { label: t('health.cycle.add'), icon: 'plus', attrs: { 'data-action': 'cycle-add-period' } } : undefined,
+    // Aktion - wie jeder leere Bereich. Seit R24 (E9) steht hier auch der FAB
+    // („+ Tag"); das Nachtragen ist die andere Handlung und steht deshalb
+    // sekundaer daneben - nie zwei Primaere in einer Ansicht (R23 D14).
+    action: darf ? { label: t('health.cycle.add'), icon: 'plus', tone: 'secondary', attrs: { 'data-action': 'cycle-add-period' } } : undefined,
   })}`);
     if (window.lucide) window.lucide.createIcons({ el: cycle.root });
     wireCycle();
@@ -8443,18 +8607,20 @@ function watchCycleTodayPlace() {
 function cycleTodayActionsMarkup(pregnant = false) {
   const open = cycleOpenPeriod();
   // Im Schwangerschafts-Modus keine „Periode starten/beenden"-Aktion anbieten —
-  // nur das Tages-Protokoll bleibt (z. B. für Schmierblutungen/Symptome).
-  const primary = pregnant
-    ? ''
-    : (open
-      ? `<button class="btn btn--secondary" data-action="cycle-end-period"><i data-lucide="check" aria-hidden="true"></i>${esc(t('health.cycle.today.endPeriod'))}</button>`
-      : `<button class="btn btn--primary" data-action="cycle-start-period"><i data-lucide="droplet" aria-hidden="true"></i>${esc(t('health.cycle.today.startPeriod'))}</button>`);
+  // nur das Tages-Protokoll bleibt (z. B. für Schmierblutungen/Symptome), und
+  // das traegt seit R24 der FAB („+ Tag"). Die Karte faellt dann weg.
+  if (pregnant) return '';
+  // EIN PRIMAER JE ANSICHT (R24, E9): der FAB ist der Primaer des Bereichs,
+  // „Periode gestartet" steht hier sekundaer wie sein Gegenstueck „beendet".
+  // „Tag protokollieren" stand als dritter Knopf daneben - das ist jetzt der FAB.
+  const action = open
+    ? `<button class="btn btn--secondary" data-action="cycle-end-period"><i data-lucide="check" aria-hidden="true"></i>${esc(t('health.cycle.today.endPeriod'))}</button>`
+    : `<button class="btn btn--secondary" data-action="cycle-start-period"><i data-lucide="droplet" aria-hidden="true"></i>${esc(t('health.cycle.today.startPeriod'))}</button>`;
   return `
     <div class="cycle-today">
       <span class="cycle-today__label">${esc(t('health.cycle.today.title'))}</span>
       <div class="cycle-today__actions">
-        ${primary}
-        <button class="btn btn--ghost" data-action="cycle-log-today"><i data-lucide="pencil-line" aria-hidden="true"></i>${esc(t('health.cycle.today.logDay'))}</button>
+        ${action}
       </div>
     </div>`;
 }
@@ -9568,7 +9734,6 @@ function wireCycle() {
     btn.addEventListener('click', () => openPeriodModal(null)));
   cycle.root.querySelector('[data-action="cycle-start-period"]')?.addEventListener('click', () => cycleStartPeriodToday());
   cycle.root.querySelector('[data-action="cycle-end-period"]')?.addEventListener('click', () => cycleEndPeriodToday());
-  cycle.root.querySelector('[data-action="cycle-log-today"]')?.addEventListener('click', () => openDayLogModal(todayKey()));
   cycle.root.querySelector('[data-action="cycle-settings"]')?.addEventListener('click', () => openCycleSettingsModal());
   cycle.root.querySelector('[data-action="cycle-import"]')?.addEventListener('click', () => openCycleImportModal());
   cycle.root.querySelector('[data-cycle-feed-link]')?.addEventListener('click', (event) => {

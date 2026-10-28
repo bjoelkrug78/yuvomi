@@ -8,6 +8,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **Every Health view has its add button.** The overview's "+ Record" opens a short menu at the button
+  (measurement, workout, dose, cycle), and the cycle area's "+ Day" logs today. Before, both views had
+  no button and phones showed an empty spot at the end of the tab bar. "Period started" in the cycle's
+  today card is now a quiet button next to it, and the workout dialog says "Log workout" like its button.
+  On the desktop the person picker no longer shifts sideways when you switch areas.
+- **The active tab looks the same in light and dark.** Budget, Rewards, Household help, Shift plan,
+  Kitchen and the shopping lists mark the current tab with a soft capsule in the module's colour. In light
+  mode it was a white capsule with a grey ring that looked like a button.
+- **Headers line up across modules.** On phones every header with a tab row has the same height, so the
+  tabs no longer jump by a few pixels between Budget and Rewards. The header menu is always the "..."
+  button (Documents showed two arrows), the Documents view switch is as wide as the buttons beside it,
+  and Tasks shows either the view's icon or, on wide screens, its name - never both. The Overview's tools
+  and "+ New" stand at the same height as in every module, and on phones "Today" starts higher up.
+- **The budget plan's button says what it adds.** It reads "+ Category budget" instead of repeating the
+  module's name.
 - **One way to pick a colour, everywhere.** Shift types, the household help's calendar and profile
   colour, subscriptions and their categories, new calendars, calendar subscriptions and imports,
   holiday colours, member and account colours, waste types, notes and quick links now offer the same

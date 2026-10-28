@@ -13224,7 +13224,12 @@ test('Render-Funktionen mit mehreren Aufrufern materialisieren ihre Icons selbst
     const helpers = fns
       .filter(([, body]) => /createIcons/.test(body) && !/data-lucide=/.test(body))
       .map(([name]) => name);
+    // Ein Dialog ueber `openModal({ ... })` materialisiert sein Markup im
+    // Baustein selbst (modal.js, „Lucide-Icons rendern" nach dem Einhaengen) -
+    // ob ein oder zwei Aufrufer ihn oeffnen, ist dafuer gleich (R24: der
+    // Zyklus-FAB oeffnet `openDayLogModal` als zweiter Aufrufer).
     const materialises = (body) => /createIcons/.test(body)
+      || /\bopenModal\(\{/.test(body)
       || helpers.some((name) => new RegExp(`\\b${name}\\s*\\(`).test(body));
 
     for (const [name, body] of fns) {
