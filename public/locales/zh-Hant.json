@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "排班、例外和額外班次都以班次類型為基礎 - 例如早班、上課時段或休假。請先新增一個。",
         "goToShiftTypes": "前往班次類型",
         "shiftTypeRequiredError": "請選擇一個班次類型。",
-        "quickStartShiftTypes": "快速開始",
+        "quickStartShiftTypes": "新增常見班別：",
         "quickStartCreated": "已建立 {{count}} 個班次類型。",
         "quickStartCreated_one": "已建立一個班次類型。",
         "quickStartNothingNew": "均已存在,沒有需要新建的類型。",

@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Escalas, exceções e turnos extra baseiam-se em tipos de turno - por exemplo turno da manhã, aula ou férias. Adicione um primeiro.",
         "goToShiftTypes": "Ir para os tipos de turno",
         "shiftTypeRequiredError": "Escolha um tipo de turno.",
-        "quickStartShiftTypes": "Início rápido",
+        "quickStartShiftTypes": "Adicionar tipos de turno comuns:",
         "quickStartCreated": "Foram criados {{count}} tipos de turno.",
         "quickStartCreated_one": "Foi criado {{count}} tipo de turno.",
         "quickStartNothingNew": "Já está configurado - nada de novo para criar.",

@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Schedules, exceptions and extra shifts build on shift types - such as an early shift, a school period or vacation. Add one first.",
         "goToShiftTypes": "Go to shift types",
         "shiftTypeRequiredError": "Choose a shift type.",
-        "quickStartShiftTypes": "Quick start",
+        "quickStartShiftTypes": "Add typical shift types:",
         "quickStartCreated": "{{count}} shift types created.",
         "quickStartCreated_one": "One shift type created.",
         "quickStartNothingNew": "Already set up - nothing new to create.",

@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "A beosztások, kivételek és extra műszakok műszaktípusokra épülnek - például reggeli műszak, tanóra vagy szabadság. Először adj hozzá egyet.",
         "goToShiftTypes": "A műszaktípusokhoz",
         "shiftTypeRequiredError": "Válasszon műszaktípust.",
-        "quickStartShiftTypes": "Gyors indítás",
+        "quickStartShiftTypes": "Szokásos műszaktípusok hozzáadása:",
         "quickStartCreated": "{{count}} műszaktípus létrehozva.",
         "quickStartCreated_one": "Egy műszaktípus létrehozva.",
         "quickStartNothingNew": "Már létezik - nincs mit létrehozni.",

@@ -6860,7 +6860,7 @@
         "planningNeedsTypesDescription": "Grafiki, wyjątki i dodatkowe zmiany opierają się na rodzajach zmian - np. zmiana poranna, lekcja lub urlop. Najpierw dodaj jeden.",
         "goToShiftTypes": "Do rodzajów zmian",
         "shiftTypeRequiredError": "Wybierz rodzaj zmiany.",
-        "quickStartShiftTypes": "Szybki start",
+        "quickStartShiftTypes": "Dodaj typowe rodzaje zmian:",
         "quickStartCreated": "Utworzono {{count}} rodzajów zmian.",
         "quickStartCreated_one": "Utworzono jeden rodzaj zmiany.",
         "quickStartCreated_few": "Utworzono {{count}} rodzaje zmian.",

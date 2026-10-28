@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Roosters, uitzonderingen en extra diensten bouwen op diensttypes - bijvoorbeeld vroege dienst, lesuur of vakantie. Voeg er eerst een toe.",
         "goToShiftTypes": "Naar de diensttypes",
         "shiftTypeRequiredError": "Kies een diensttype.",
-        "quickStartShiftTypes": "Snelstart",
+        "quickStartShiftTypes": "Gangbare diensttypen toevoegen:",
         "quickStartCreated": "{{count}} diensttypen aangemaakt.",
         "quickStartCreated_one": "Eén diensttype aangemaakt.",
         "quickStartNothingNew": "Al ingesteld - niets nieuws aan te maken.",

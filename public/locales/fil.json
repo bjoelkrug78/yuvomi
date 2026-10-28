@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Nakabatay sa mga uri ng shift ang mga iskedyul, eksepsiyon at dagdag na shift - gaya ng maagang shift, oras ng klase o bakasyon. Magdagdag muna ng isa.",
         "goToShiftTypes": "Pumunta sa mga uri ng shift",
         "shiftTypeRequiredError": "Pumili ng uri ng shift.",
-        "quickStartShiftTypes": "Mabilisang pagsisimula",
+        "quickStartShiftTypes": "Magdagdag ng karaniwang uri ng shift:",
         "quickStartCreated": "Nagawa ang {{count}} uri ng shift.",
         "quickStartCreated_one": "Nagawa ang {{count}} uri ng shift.",
         "quickStartNothingNew": "Naka-set up na - walang bagong gagawin.",

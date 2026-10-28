@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "排班、例外和加班都基于班次类型 - 例如早班、课时或休假。请先添加一个。",
         "goToShiftTypes": "前往班次类型",
         "shiftTypeRequiredError": "请选择一个班次类型。",
-        "quickStartShiftTypes": "快速开始",
+        "quickStartShiftTypes": "添加常见班次类型：",
         "quickStartCreated": "已创建 {{count}} 个班次类型。",
         "quickStartCreated_one": "已创建一个班次类型。",
         "quickStartNothingNew": "均已存在,没有需要新建的类型。",

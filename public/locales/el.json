@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Τα προγράμματα, οι εξαιρέσεις και οι επιπλέον βάρδιες βασίζονται σε τύπους βάρδιας - π.χ. πρωινή βάρδια, σχολική ώρα ή άδεια. Πρόσθεσε πρώτα έναν.",
         "goToShiftTypes": "Στους τύπους βάρδιας",
         "shiftTypeRequiredError": "Επιλέξτε έναν τύπο βάρδιας.",
-        "quickStartShiftTypes": "Γρήγορη εκκίνηση",
+        "quickStartShiftTypes": "Προσθήκη συνηθισμένων τύπων βάρδιας:",
         "quickStartCreated": "Δημιουργήθηκαν {{count}} τύποι βάρδιας.",
         "quickStartCreated_one": "Δημιουργήθηκε ένας τύπος βάρδιας.",
         "quickStartNothingNew": "Υπάρχουν ήδη - τίποτα νέο για δημιουργία.",

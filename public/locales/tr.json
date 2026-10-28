@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Planlar, istisnalar ve ek vardiyalar vardiya türlerine dayanır - örneğin sabah vardiyası, ders saati veya izin. Önce bir tane ekleyin.",
         "goToShiftTypes": "Vardiya türlerine git",
         "shiftTypeRequiredError": "Bir vardiya türü seçin.",
-        "quickStartShiftTypes": "Hızlı başlangıç",
+        "quickStartShiftTypes": "Yaygın vardiya türleri ekle:",
         "quickStartCreated": "{{count}} vardiya türü oluşturuldu.",
         "quickStartCreated_one": "Bir vardiya türü oluşturuldu.",
         "quickStartNothingNew": "Zaten ayarlı - oluşturulacak yeni bir şey yok.",

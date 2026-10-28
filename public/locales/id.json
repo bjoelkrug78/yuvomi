@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Jadwal, pengecualian, dan sif tambahan bergantung pada jenis sif - misalnya sif pagi, jam pelajaran, atau cuti. Tambahkan satu dulu.",
         "goToShiftTypes": "Ke jenis sif",
         "shiftTypeRequiredError": "Pilih jenis shift.",
-        "quickStartShiftTypes": "Mulai cepat",
+        "quickStartShiftTypes": "Tambahkan jenis shift umum:",
         "quickStartCreated": "{{count}} jenis shift dibuat.",
         "quickStartCreated_one": "Satu jenis shift dibuat.",
         "quickStartNothingNew": "Sudah disiapkan - tidak ada yang baru untuk dibuat.",

@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Schichtpläne, Ausnahmen und Zusatzschichten bauen auf Schichtarten auf - etwa Frühschicht, Schulstunde oder Urlaub. Lege zuerst eine an.",
         "goToShiftTypes": "Zu den Schichtarten",
         "shiftTypeRequiredError": "Wähle eine Schichtart aus.",
-        "quickStartShiftTypes": "Schnellstart",
+        "quickStartShiftTypes": "Typische Schichtarten anlegen:",
         "quickStartCreated": "{{count}} Schichtarten angelegt.",
         "quickStartCreated_one": "Eine Schichtart angelegt.",
         "quickStartNothingNew": "Bereits eingerichtet - nichts Neues anzulegen.",

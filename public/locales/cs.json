@@ -6704,7 +6704,7 @@
         "planningNeedsTypesDescription": "Rozpisy, výjimky a směny navíc stojí na typech směn - třeba ranní směna, vyučovací hodina nebo dovolená. Nejdřív jeden přidejte.",
         "goToShiftTypes": "K typům směn",
         "shiftTypeRequiredError": "Vyberte typ směny.",
-        "quickStartShiftTypes": "Rychlý start",
+        "quickStartShiftTypes": "Přidat typické druhy směn:",
         "quickStartCreated": "Vytvořeno {{count}} typů směn.",
         "quickStartCreated_one": "Vytvořen jeden typ směny.",
         "quickStartCreated_few": "Vytvořeny {{count}} typy směn.",

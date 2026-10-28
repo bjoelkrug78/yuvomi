@@ -274,7 +274,11 @@
 .settings-overview__heading,
 .settings-navigation-group__title,
 .settings-scope__title,
-.kanban-col__title {
+.kanban-col__title,
+/* Die Gruppen der Schichtarten („Mit Uhrzeit", „Ganztaegig") gliedern EINEN
+ * Abschnitt - neben dem Abschnittstitel „Eigene Felder" (20) standen sie in
+ * 15/600 wie eine zweite Stufe (R24, Critique G1-Schichtplan-P3-2). */
+.schedule-type-group__title {
   font-size: var(--text-xs);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);

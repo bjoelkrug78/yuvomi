@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "근무표, 예외, 추가 근무는 근무 유형을 기반으로 합니다(예: 오전 근무, 수업 시간, 휴가). 먼저 하나를 추가하세요.",
         "goToShiftTypes": "근무 유형으로 이동",
         "shiftTypeRequiredError": "근무 유형을 선택하세요.",
-        "quickStartShiftTypes": "빠른 시작",
+        "quickStartShiftTypes": "일반적인 근무 유형 추가:",
         "quickStartCreated": "근무 유형 {{count}}개를 만들었습니다.",
         "quickStartCreated_one": "근무 유형 1개를 만들었습니다.",
         "quickStartNothingNew": "이미 설정되어 있습니다. 새로 만들 항목이 없습니다.",

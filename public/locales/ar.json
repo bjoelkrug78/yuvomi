@@ -7027,7 +7027,7 @@
         "planningNeedsTypesDescription": "تعتمد الجداول والاستثناءات والمناوبات الإضافية على أنواع المناوبات - مثل المناوبة الصباحية أو الحصة الدراسية أو الإجازة. أضف نوعًا أولًا.",
         "goToShiftTypes": "إلى أنواع المناوبات",
         "shiftTypeRequiredError": "اختر نوع مناوبة.",
-        "quickStartShiftTypes": "بداية سريعة",
+        "quickStartShiftTypes": "إضافة أنواع ورديات شائعة:",
         "quickStartCreated": "تم إنشاء {{count}} من أنواع المناوبات.",
         "quickStartCreated_one": "تم إنشاء نوع مناوبة واحد.",
         "quickStartCreated_few": "تم إنشاء {{count}} من أنواع المناوبات.",

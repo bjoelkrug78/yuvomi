@@ -16,6 +16,7 @@ import { emptyStateHTML, loadErrorHTML, mountLoadError } from '/utils/empty-stat
 import { rowActionHtml, rowMenuHtml } from '/utils/row-action.js';
 import { installPopoverMenus } from '/utils/popover-menu.js';
 import { wireScrollFade } from '/utils/ux.js';
+import { flipSnapshotElements, flipPlayElements } from '/utils/flip.js';
 import { wireTablist } from '/utils/tablist.js';
 import { attachSegmentIndicator } from '/utils/segment-indicator.js';
 import { toggleRowHtml, formSwitchRowHtml } from '/settings/components.js';
@@ -1090,7 +1091,7 @@ function shiftTypeListHtml(types = state.types) {
   // Eine Gruppe allein braucht keinen Titel - die Liste heisst schon "Schichtarten".
   if (groups.length === 1) return '<div class="row-carrier">' + groups[0].types.map(shiftTypeRow).join('') + '</div>';
   return groups.map((group) => '<div class="schedule-type-group" data-type-group="' + group.key + '">'
-    + '<h3 class="schedule-type-group__title u-meta">' + esc(group.label) + '</h3>'
+    + '<h3 class="schedule-type-group__title">' + esc(group.label) + '</h3>'
     + '<div class="row-carrier">' + group.types.map(shiftTypeRow).join('') + '</div></div>').join('');
 }
 
@@ -1406,13 +1407,17 @@ function overrideRows() {
   return '<div class="row-carrier">' + groups.map((group) => {
     const type = state.types.find((item) => Number(item.id) === Number(group.shift_type_id));
     const swatchColor = type ? type.color : 'var(--color-border)';
+    // DER ZEILENTITEL IST DAS OBJEKT (R24, Critique G1-Schichtplan-P3-2): was
+    // gilt („U · Urlaub"), darunter wann und fuer wen. Bis R24 stand das Datum
+    // als Titel und die Schicht nur in der Metazeile - eine Liste von Daten.
     const typeLabel = type ? (shiftTypeLabel(type)) : t('schedule.freeDay');
-    const meta = [userName(group.user_id), typeLabel, group.note].filter(Boolean).join(' · ');
-    const label = dateRangeText(group.from, group.to);
+    const when = dateRangeText(group.from, group.to);
+    const meta = [when, userName(group.user_id), group.note].filter(Boolean).join(' · ');
+    const label = typeLabel;
     const actions = canWrite(group.user_id)
       ? editDeleteMenu({
         key: `override-${group.user_id}-${group.from}`,
-        name: label,
+        name: `${typeLabel}, ${when}`,
         edit: { action: 'edit-override', attrs: { 'data-from': group.from, 'data-user-id': group.user_id } },
         remove: { action: 'delete-override-range', attrs: { 'data-from': group.from, 'data-to': group.to, 'data-user-id': group.user_id } },
       })
@@ -1477,14 +1482,16 @@ function extraRows() {
   return '<div class="row-carrier">' + groups.map((group) => {
     const type = state.types.find((item) => Number(item.id) === Number(group.shift_type_id));
     const swatchColor = type ? type.color : 'var(--color-border)';
-    const typeLabel = type ? (shiftTypeLabel(type)) : '';
-    const meta = [userName(group.user_id), typeLabel, group.note].filter(Boolean).join(' · ');
-    const label = dateRangeText(group.from, group.to);
+    // Wie die Ausnahme: die Schicht ist der Titel, Datum und Person die Meta.
+    const when = dateRangeText(group.from, group.to);
+    const typeLabel = type ? (shiftTypeLabel(type)) : t('schedule.extraBadgeLabel');
+    const meta = [when, userName(group.user_id), group.note].filter(Boolean).join(' · ');
+    const label = typeLabel;
     const icon = type?.icon ? '<i data-lucide="' + esc(type.icon) + '" class="schedule-type-icon" aria-hidden="true"></i>' : '';
     const actions = canWrite(group.user_id)
       ? editDeleteMenu({
         key: `extra-${group.ids.join('-')}`,
-        name: label,
+        name: `${typeLabel}, ${when}`,
         edit: { action: 'edit-extra-range', attrs: { 'data-ids': group.ids.join(',') } },
         remove: { action: 'delete-extra-range', attrs: { 'data-ids': group.ids.join(','), 'data-user-id': group.user_id, 'data-from': group.from, 'data-to': group.to } },
       })
@@ -1705,7 +1712,7 @@ function emptyShiftTypesState() {
 }
 
 // Note plus jedes ueberlagerungssichtbare Feld mit einem Wert, gemeinsam eine
-// Zeile - dieselbe Form nutzen renderToday() hier UND calendar.js'
+// Zeile - dieselbe Form nutzen die Uebersicht-Bloecke hier UND calendar.js'
 // scheduleEntryTitle()-Tooltip, damit "was ergaenzt den Namen" an genau einer
 // Stelle definiert ist statt zweimal (leicht) verschieden nachgebaut zu werden.
 // Bewusst NUR die Felder, deren show_in_overlay gesetzt ist - ein Feld ohne
@@ -1777,28 +1784,6 @@ function openScheduleEntryDetailModal(entry) {
   // dirtyGuard:false - reine Leseansicht ohne Formularfelder, es gibt nichts
   // zu verwerfen.
   openModal({ title: t('schedule.entryDetailTitle'), size: 'sm', content: renderScheduleEntryDetailContent(entry), dirtyGuard: false });
-}
-
-/* "HEUTE" IST EINE ZEILE (Entscheidung R17, E1). Bis R17 eine Karte mit
- * Abschnittstitel und einer Listenzeile je Eintrag: 132px (mobil) bis 148px
- * ueber JEDEM Reiter, bevor dessen Inhalt begann. Jetzt das Wort "Heute" und
- * dahinter je Eintrag eine Marke - Punkt, Schicht, Person und Uhrzeit -, die
- * bei vielen Eintraegen seitwaerts rollt statt zu stapeln. Jede Marke bleibt
- * der Detail-Ausloeser von S-17 (role=button, READ_SAFE_ACTIONS). */
-function renderToday() {
-  if (!state.entries.length) return `<span class="schedule-today__empty">${esc(t('schedule.empty'))}</span>`;
-  return state.entries.map((entry) => {
-    const type = entry.shift_type;
-    const swatchColor = type ? type.color : 'var(--color-border)';
-    const name = type ? esc(shiftTypeLabel(type)) : esc(t('schedule.freeDay'));
-    const base = type ? `${esc(userName(entry.user_id))} · ${esc(clockLabel(type))}` : esc(userName(entry.user_id));
-    const overlay = overlayMeta(entry);
-    const meta = overlay ? `${base} · ${esc(overlay)}` : base;
-    const icon = type?.icon ? `<i data-lucide="${esc(type.icon)}" class="schedule-type-icon" aria-hidden="true"></i>` : '';
-    const badge = entry.source === 'extra' ? extraBadge() : '';
-    const key = esc(scheduleEntryMatchKey(entry));
-    return `<div class="schedule-today__entry schedule-entry-row" role="button" tabindex="0" data-action="view-schedule-entry" data-schedule-key="${key}" aria-label="${name}, ${meta}"><span class="schedule-swatch" style="--schedule-color:${esc(swatchColor)}"></span>${icon}${badge}<span class="schedule-today__name">${name}</span><span class="schedule-today__meta">${meta}</span></div>`;
-  }).join('');
 }
 
 // Uebersicht-Tab: mehrere Personen nebeneinander vergleichen.
@@ -1938,7 +1923,7 @@ function overviewEntryBlock(entry) {
   const overlay = overlayMeta(entry);
   const label = type ? shiftTypeLabel(type) : t('schedule.freeDay');
   // S-17: read-only Detailansicht bei Klick/Enter/Space - dieselbe Aktion wie
-  // renderToday()'s Zeilen, derselbe zusammengesetzte Schluessel
+  // der Kalender-Ueberlagerung, derselbe zusammengesetzte Schluessel
   // (scheduleEntryMatchKey()) findet den Eintrag wieder unabhaengig davon, ob
   // dieser Block eine Fortsetzungszeile (`__continuation`) ist oder nicht.
   const detailAttrs = ` role="button" tabindex="0" data-action="view-schedule-entry" data-schedule-key="${esc(scheduleEntryMatchKey(entry))}" aria-label="${esc(scheduleOverviewEntryTitle(entry))}"`;
@@ -2190,6 +2175,10 @@ function alignOverviewToNow() {
   const dock = section?.querySelector('.schedule-overview__dock');
   const axis = grid?.querySelector('.schedule-overview__times');
   if (!port || !grid || !dock || !axis) return;
+  // Der Kopf bleibt beim Ausrichten offen (holdHeadForAlign) - die Klebekante
+  // ist dann seine volle Unterkante, und die wird hier gleich mitgerechnet.
+  holdHeadForAlign(port);
+  syncOverviewDock();
   const hourHeight = axis.getBoundingClientRect().height / 24;
   const stuck = (parseFloat(section.style.getPropertyValue('--schedule-dock-top')) || 0) + dock.offsetHeight;
   // Unten zieht die Tab-Leiste ab (mobil 80px, als scroll-padding des Ports):
@@ -2215,6 +2204,52 @@ function alignOverviewToNow() {
     scroller.scrollLeft = Math.max(0, Math.round(left));
     if (head) head.scrollLeft = scroller.scrollLeft;
   }
+}
+
+/**
+ * NUR DER NUTZER DOCKT DEN KOPF AN (R24, Critique G1-Schichtplan-P2-1).
+ * Die Uebersicht rollt die SEITE beim Oeffnen zur laufenden Stunde
+ * (alignOverviewToNow). Im scrollenden Kopf (layout.css, negatives `top` =
+ * Lead-Zone) hiess das: der Large Title wanderte sofort aus dem Bild, der
+ * Kopf stand angedockt, und mobil teilten sich angedockter Titel und Reiter
+ * eine Zeile („Planu..."). Der Zustand blieb beim Reiterwechsel, erst die
+ * Auswertung zeigte den vollen Kopf - der Kopf sprang je Reiter.
+ *
+ * Jetzt haelt der Kopf beim Ausrichten seine volle Hoehe (`--held`: klebt bei
+ * 0 statt bei -Lead). Die erste Geste des Nutzers im Port (Rad, Finger,
+ * Taste) gibt ihn frei: er gleitet per transform an seine angedockte Lage,
+ * und von da an dockt er wie in jedem Modul. Ein Reiterwechsel ohne Geste
+ * findet ihn offen und beginnt oben.
+ */
+let headHoldRelease = null;
+
+function holdHeadForAlign(port) {
+  const head = root?.querySelector('.schedule-toolbar');
+  if (!head || !port) return;
+  head.classList.add('schedule-toolbar--held');
+  if (headHoldRelease) return;
+  const release = (e) => {
+    if (e?.type === 'keydown' && !['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(e.key)) return;
+    if (e?.target?.closest?.('.schedule-toolbar')) return;
+    releaseHeadHold();
+  };
+  for (const type of ['wheel', 'touchmove', 'keydown']) port.addEventListener(type, release, { passive: true });
+  headHoldRelease = () => {
+    for (const type of ['wheel', 'touchmove', 'keydown']) port.removeEventListener(type, release);
+    headHoldRelease = null;
+  };
+}
+
+function releaseHeadHold() {
+  headHoldRelease?.();
+  const head = root?.querySelector('.schedule-toolbar');
+  if (!head?.classList.contains('schedule-toolbar--held')) return;
+  // FLIP (utils/flip.js): nur `transform`, Tokens fuer Dauer und Kurve,
+  // unter reduzierter Bewegung steht der Wechsel.
+  const before = flipSnapshotElements([head, root.querySelector('.schedule-overview__dock')].filter(Boolean));
+  head.classList.remove('schedule-toolbar--held');
+  syncOverviewDock();
+  flipPlayElements(before);
 }
 
 function openOverviewPeople() {
@@ -2461,9 +2496,13 @@ function renderPage() {
       // erreichbar fuer die zweite Vorlage, ohne den Blick zu ziehen.
       + '</div>'
       + (state.types.length ? shiftTypeListHtml() : emptyShiftTypesState())
+      // R24 (Critique G1-Schichtplan-P3-2): der Schnellstart SAGT, was er tut -
+      // „Typische Schichtarten anlegen:" vor den Vorlagen -, und die Vorlagen
+      // sind kleine Sekundaerknoepfe wie die Vorlagen der Entsorgung, nicht
+      // Funkel-Geisterlinks, die mobil mit 56px Luecke umbrachen.
       + (locked ? '' : (state.types.length && visibleQuickstartTemplates().length ? '<div class="schedule-quickstart-actions schedule-quickstart-actions--more" role="group" aria-labelledby="schedule-quickstart-label">'
-        + '<span class="u-meta" id="schedule-quickstart-label">' + esc(t('schedule.quickStartShiftTypes')) + '</span>'
-        + visibleQuickstartTemplates().map(([template, key]) => '<button type="button" class="btn btn--ghost btn--sm" data-action="quick-start-shifts" data-template="' + template + '"><i data-lucide="sparkles" aria-hidden="true"></i>' + esc(t(key)) + '</button>').join('')
+        + '<span class="schedule-quickstart-actions__label u-meta" id="schedule-quickstart-label">' + esc(t('schedule.quickStartShiftTypes')) + '</span>'
+        + visibleQuickstartTemplates().map(([template, key]) => '<button type="button" class="btn btn--secondary btn--sm" data-action="quick-start-shifts" data-template="' + template + '"><i data-lucide="sparkles" aria-hidden="true"></i>' + esc(t(key)) + '</button>').join('')
         + '</div>' : '')) + '</section>'
       + customFieldsSection()
     : activeView === 'patterns'
@@ -2524,35 +2563,22 @@ function renderPage() {
   }
 }
 
-// App-weite UX-Durchsicht 2026-09-12 (Batch 4): vorher war die "Heute"-Karte
-// der ERSTE Block INNERHALB des je Tab-Wechsel komplett neu gebauten
-// `.schedule-body` - und nur auf Schichtarten/Planung ueberhaupt vorhanden
-// (Statistik/Uebersicht liessen sie weg, siehe der fruehere Kommentar an
-// dieser Stelle). Ein Wechsel zu Statistik/Uebersicht liess sie verschwinden,
-// und der gesamte restliche Inhalt sprang nach oben - "der erste Block der
-// Seite" aendert sich beim Tab-Wechsel, obwohl "was ist heute" nichts mit dem
-// gewaehlten Tab zu tun hat. Jetzt lebt sie in `.schedule-today-slot`, einem
-// eigenen Geschwister-Element ausserhalb von `.schedule-body` (siehe
-// renderShell()), das nie durch den Tab-Wechsel ersetzt wird - nur sein
-// Inhalt wird bei jedem renderPage() aufgefrischt, unabhaengig von
-// `activeView`. Der `inUse`-Waechter bleibt UNVERAENDERT (ein frischer
-// Haushalt sieht auf KEINEM Tab zwei Leerzustaende uebereinander - „Noch keine
-// Schichteintraege." + „Noch kein Schichtplan", Critique 2026-08-27, P2) -
-// nur die fruehere Tab-Bedingung (`activeView === 'statistics' ||
-// activeView === 'overview'`) entfaellt, denn genau DIE erzeugte den Sprung.
+// DER SLOT UEBER DEN REITERN TRAEGT NUR NOCH DIE UEBERSCHNEIDUNGS-WARNUNG.
+// Bis R24 stand hier die Zeile „Heute" mit einer Marke je Eintrag - seit
+// 2026-09-12 ueber JEDEM Reiter, damit der erste Block beim Wechsel nicht
+// springt. Die Critique (G1-Schichtplan-P2-2) fand sie am falschen Ort: auf
+// Schichtarten, Planung und Auswertung klebte sie ohne Abstand unter der
+// Reiterlinie, und auf der Uebersicht - wo „heute" hingehoert - lag sie ueber
+// dem Bild, weil die Seite zur laufenden Stunde rollt. Heute steht jetzt im
+// Raster der Uebersicht (Tageskopf im Akzentkreis, Jetzt-Linie, die Bloecke
+// selbst; jeder oeffnet das Detail), die Konfigurations-Reiter sind ruhig. Der
+// Slot bleibt ein Geschwister von `.schedule-body`, gefuellt unabhaengig vom
+// Reiter: die Warnung gilt fuer alle.
 function renderTodayCard() {
   const slot = root?.querySelector('.schedule-today-slot');
   if (!slot) return;
-  const inUse = state.types.length || state.patterns.length
-    || state.overrides.length || state.entries.length;
   slot.replaceChildren();
-  if (inUse) {
-    // Kein Kartenrahmen, kein Abschnittstitel: eine Zeile (renderToday()). Die
-    // Ueberschneidungs-Warnung ist selten und steht als eigene Zeile darunter.
-    slot.insertAdjacentHTML('beforeend', '<section class="schedule-today" aria-labelledby="schedule-today-label"><h2 class="schedule-today__label" id="schedule-today-label">' + esc(t('schedule.today')) + '</h2><div class="schedule-today__entries">' + renderToday() + '</div></section>' + renderScheduleWarnings());
-    wireScrollFade(slot.querySelector('.schedule-today__entries'));
-  }
-  window.lucide?.createIcons({ el: slot });
+  slot.insertAdjacentHTML('beforeend', renderScheduleWarnings());
 }
 
 // Drag ist NIE der einzige Weg (siehe utils/sortable.js) - die Auf/Ab-Knoepfe
@@ -3862,4 +3888,4 @@ export async function update({ path } = {}) {
 // bereits pur bzw. nehmen ihre Eingabe jetzt als Parameter statt sie fest aus
 // `state` zu lesen - ein Test kann so echte Tage hineingeben und das Ergebnis
 // pruefen, statt nur zu belegen, dass der Funktionsname im Quelltext steht.
-export const __test = { shiftTypeGroups, shiftTypeListHtml, PRESET_TEMPLATES, presetShortCode, presetAlreadyThere, NUMERIC_PRESET_CODES, setStatisticsEntries: (entries) => { statistics = { ...statistics, entries }; }, availableTypeFields, shiftTypeFieldsEditor, syncTypeFieldPicker, editorAction, shiftTypeRow, patternRow, patternDaysEditorHtml, patternSaveOrder, initialOverviewSelection, renderOverview, renderToday, overviewLaneHeader, planningPanel, scheduleFabIntent, renderStatistics, patternFields, formField, shiftFields, reminderOffsetField, emptyShiftTypesState, emptyPatternState, emptyOverrideState, emptyExtraShiftsState, emptyCustomFieldsState, customFieldsSection, scheduleState: () => state, userOptions, setOwnerContext, overrideGroups, extraGroups, patternsInMemberOrder, rangeDifference, wireRangeFollow, reportReversedRange, saveCreatedSchedule, saveCustomField, saveShiftTypeEdit, savePatternEdit, setRootForTest: (element) => { root = element; scheduleTablist = null; }, setShiftIconButtonIcon, overtimeInfo, sameFieldValues, overlayMeta, buildOverviewLanes, normalizeOverviewSelection, setOverviewForTest: (next) => { overview = { ...overview, ...next }; }, isOvernightEntry, overviewEntryBlock, alignOverviewToNow, syncOverviewDock, pinnedTitleShift, pinOverviewTitles, overviewFetchRange, patternDaysExceedingCycleLength, scheduleErrorMessage, cycleDayNextDate, cycleDayHeaderLabel, windowsOverlap, findOverlappingActivePattern, resolveWinningPatternId, scheduleEntryMatchKey };
+export const __test = { shiftTypeGroups, shiftTypeListHtml, PRESET_TEMPLATES, presetShortCode, presetAlreadyThere, NUMERIC_PRESET_CODES, setStatisticsEntries: (entries) => { statistics = { ...statistics, entries }; }, availableTypeFields, shiftTypeFieldsEditor, syncTypeFieldPicker, editorAction, shiftTypeRow, patternRow, patternDaysEditorHtml, patternSaveOrder, initialOverviewSelection, renderOverview, overviewLaneHeader, planningPanel, scheduleFabIntent, renderStatistics, patternFields, formField, shiftFields, reminderOffsetField, emptyShiftTypesState, emptyPatternState, emptyOverrideState, emptyExtraShiftsState, emptyCustomFieldsState, customFieldsSection, scheduleState: () => state, userOptions, setOwnerContext, overrideGroups, extraGroups, patternsInMemberOrder, rangeDifference, wireRangeFollow, reportReversedRange, saveCreatedSchedule, saveCustomField, saveShiftTypeEdit, savePatternEdit, setRootForTest: (element) => { root = element; scheduleTablist = null; }, setShiftIconButtonIcon, overtimeInfo, sameFieldValues, overlayMeta, buildOverviewLanes, normalizeOverviewSelection, setOverviewForTest: (next) => { overview = { ...overview, ...next }; }, isOvernightEntry, overviewEntryBlock, alignOverviewToNow, syncOverviewDock, pinnedTitleShift, pinOverviewTitles, overviewFetchRange, patternDaysExceedingCycleLength, scheduleErrorMessage, cycleDayNextDate, cycleDayHeaderLabel, windowsOverlap, findOverlappingActivePattern, resolveWinningPatternId, scheduleEntryMatchKey };

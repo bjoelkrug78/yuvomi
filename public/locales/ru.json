@@ -6860,7 +6860,7 @@
         "planningNeedsTypesDescription": "Графики, исключения и дополнительные смены строятся на типах смен - например, утренняя смена, урок или отпуск. Сначала добавьте один.",
         "goToShiftTypes": "К типам смен",
         "shiftTypeRequiredError": "Выберите тип смены.",
-        "quickStartShiftTypes": "Быстрый старт",
+        "quickStartShiftTypes": "Добавить типичные виды смен:",
         "quickStartCreated": "Создано типов смен: {{count}}.",
         "quickStartCreated_one": "Создан {{count}} тип смены.",
         "quickStartCreated_few": "Создано {{count}} типа смен.",

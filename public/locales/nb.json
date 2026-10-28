@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Planer, unntak og ekstra vakter er basert på vakttyper - som for eksempel tidlig vakt, skoleperiode eller ferie. Opprett en vakttype først.",
         "goToShiftTypes": "Gå til vakttyper",
         "shiftTypeRequiredError": "Velg en vakttype.",
-        "quickStartShiftTypes": "Hurtigstart",
+        "quickStartShiftTypes": "Legg til vanlige skifttyper:",
         "quickStartCreated": "{{count}} vakttyper opprettet.",
         "quickStartCreated_one": "Én vakttype opprettet.",
         "quickStartNothingNew": "Allerede satt opp - ingenting nytt å opprette.",

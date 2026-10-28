@@ -6860,7 +6860,7 @@
         "planningNeedsTypesDescription": "Графіки, винятки й додаткові зміни спираються на типи змін - наприклад, ранкова зміна, урок чи відпустка. Спершу додайте один.",
         "goToShiftTypes": "До типів змін",
         "shiftTypeRequiredError": "Виберіть тип зміни.",
-        "quickStartShiftTypes": "Швидкий старт",
+        "quickStartShiftTypes": "Додати типові види змін:",
         "quickStartCreated": "Створено типів змін: {{count}}.",
         "quickStartCreated_one": "Створено {{count}} тип зміни.",
         "quickStartCreated_few": "Створено {{count}} типи змін.",

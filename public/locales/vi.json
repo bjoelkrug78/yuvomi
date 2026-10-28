@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Lịch, ngoại lệ và ca thêm đều dựa trên loại ca - ví dụ ca sáng, tiết học hoặc nghỉ phép. Hãy thêm một loại trước.",
         "goToShiftTypes": "Đến loại ca",
         "shiftTypeRequiredError": "Hãy chọn một loại ca.",
-        "quickStartShiftTypes": "Bắt đầu nhanh",
+        "quickStartShiftTypes": "Thêm các loại ca phổ biến:",
         "quickStartCreated": "Đã tạo {{count}} loại ca.",
         "quickStartCreated_one": "Đã tạo một loại ca.",
         "quickStartNothingNew": "Đã thiết lập sẵn - không có gì mới để tạo.",

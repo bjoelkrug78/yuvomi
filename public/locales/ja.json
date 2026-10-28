@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "シフトパターン、例外、追加シフトはシフトの種類をもとにします（早番、授業時間、休暇など）。まず1つ追加してください。",
         "goToShiftTypes": "シフトの種類へ",
         "shiftTypeRequiredError": "シフトの種類を選択してください。",
-        "quickStartShiftTypes": "クイックスタート",
+        "quickStartShiftTypes": "よく使うシフト種別を追加:",
         "quickStartCreated": "シフトの種類を{{count}}件作成しました。",
         "quickStartCreated_one": "シフトの種類を1件作成しました。",
         "quickStartNothingNew": "すでに作成済みです。新しく作るものはありません。",

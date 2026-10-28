@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "शेड्यूल, अपवाद और अतिरिक्त शिफ्ट शिफ्ट प्रकारों पर आधारित होते हैं - जैसे सुबह की शिफ्ट, स्कूल की घंटी या छुट्टी। पहले एक जोड़ें।",
         "goToShiftTypes": "शिफ्ट प्रकारों पर जाएँ",
         "shiftTypeRequiredError": "कोई शिफ़्ट प्रकार चुनें।",
-        "quickStartShiftTypes": "त्वरित शुरुआत",
+        "quickStartShiftTypes": "सामान्य शिफ्ट प्रकार जोड़ें:",
         "quickStartCreated": "{{count}} शिफ़्ट प्रकार बनाए गए।",
         "quickStartCreated_one": "{{count}} शिफ़्ट प्रकार बनाया गया।",
         "quickStartNothingNew": "पहले से मौजूद है - बनाने के लिए कुछ नया नहीं।",

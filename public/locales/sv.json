@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Scheman, undantag och extrapass bygger på skifttyper - till exempel morgonpass, lektion eller semester. Lägg till en först.",
         "goToShiftTypes": "Till skifttyperna",
         "shiftTypeRequiredError": "Välj en skifttyp.",
-        "quickStartShiftTypes": "Snabbstart",
+        "quickStartShiftTypes": "Lägg till vanliga skifttyper:",
         "quickStartCreated": "{{count}} skifttyper skapade.",
         "quickStartCreated_one": "En skifttyp skapad.",
         "quickStartNothingNew": "Redan klart - inget nytt att skapa.",

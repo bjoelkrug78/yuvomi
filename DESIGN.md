@@ -3919,7 +3919,12 @@ unter den Falz schob. Vier Antworten, je eine Bauart, gemessen bei 390x844:
   halb unter der Achse). Neben der Seitenleiste ebenso **ganze Tage**: so viele, wie das
   Mindestmass (7rem je Spur) erlaubt, gemessen am Abschnitt (`container-type`, `cqi`) - bei
   1024px sechs Tage zu 113px statt sieben zu 112px mit einem 4px-Streifen des ersten neben der
-  Achse (R23 S11b). **Ein Reiterwechsel haelt den Kopf**: der neue Reiter beginnt unter
+  Achse (R23 S11b). **Nur der Nutzer dockt den Kopf an** (R24, Critique G1-Schichtplan-P2-1):
+  beim Ausrichten auf die laufende Stunde haelt der Kopf seine volle Hoehe
+  (`.schedule-toolbar--held`, klebt bei 0 statt bei -Lead; `holdHeadForAlign`), die erste
+  Geste im Port (Rad, Finger, Taste) gibt ihn frei, und er gleitet per FLIP an seine angedockte
+  Lage - vorher stand er nach dem Oeffnen schon angedockt, mobil mit „Planu..." neben dem
+  angedockten Titel. **Ein Reiterwechsel haelt den Kopf**: der neue Reiter beginnt unter
   der angedockten Leiste, die Uebersicht wieder auf der laufenden Stunde; `update()` meldet
   `'own-scroll'`, und der Router setzt den Stand bei der Soft-Navigation nicht noch einmal auf 0
   (vorher zwei Spruenge 0,035/0,038 beim Wechsel, und die Rueckkehr stand auf 00:00). Traegt
@@ -3932,11 +3937,18 @@ unter den Falz schob. Vier Antworten, je eine Bauart, gemessen bei 390x844:
   Kennzahl („Schichten · Freie Tage: 9").
 - **Schichtplan: der Plan zuerst (R17, E1).** "Vergleich" ist erster Reiter und Startreiter,
   die eigene Person vorgewaehlt; ohne Schichtart oder Plan traegt er den Leerzustand, der das
-  Fehlende anlegt, statt Personenwahl und Stepper ueber einem leeren Raster. "Heute" ist EINE
-  Zeile aus Marken (`.schedule-today`, 132 -> 48px mobil), keine Karte mit Listenzeilen.
-  Schichtart und Plan sind `.list-row` mit "Bearbeiten"/"Loeschen" wie Ausnahmen und
-  Zusatzschichten; Bearbeiten oeffnet den Dialog des Anlegens mit EINEM "Speichern" (Plan samt
-  Zyklustagen) - kein `<details>` mit Formular in der Flaeche.
+  Fehlende anlegt, statt Personenwahl und Stepper ueber einem leeren Raster. "Heute" steht seit
+  R24 IM RASTER der Uebersicht (Tageskopf im Akzentkreis, Jetzt-Linie, die Bloecke), nicht mehr
+  als Zeile aus Marken ueber jedem Reiter (`.schedule-today`, R17 bis R24): auf den
+  Konfigurations-Reitern klebte sie ohne Abstand unter der Reiterlinie, auf der Uebersicht lag
+  sie ueber dem Bild (Critique G1-Schichtplan-P2-2). Der Slot ueber den Reitern traegt nur die
+  Ueberschneidungs-Warnung. Schichtart und Plan sind `.list-row` mit "Bearbeiten"/"Loeschen"
+  wie Ausnahmen und Zusatzschichten; deren Zeilentitel ist die SCHICHT („U · Urlaub"), Datum
+  und Person stehen in der Meta (R24, vorher das Datum als Titel). Bearbeiten oeffnet den
+  Dialog des Anlegens mit EINEM "Speichern" (Plan samt Zyklustagen) - kein `<details>` mit
+  Formular in der Flaeche. Die Vorlagen unter den Schichtarten sind kleine Sekundaerknoepfe
+  hinter einem Satz, der sagt, was sie tun („Typische Schichtarten anlegen:"); die Gruppen
+  „Mit Uhrzeit"/„Ganztaegig" sind Gruppenlabel (12/600), keine zweite Abschnittsstufe.
 - **Kacheln werden mobil kompakte Karten.** Praemien: 358x218 -> rund 130px (Zeichen und Text
   nebeneinander, Preis und Aktion darunter). Ein Abschnittstitel, der den Reiter wiederholt,
   steht mobil nur im Baum.

@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **The shift plan opens with its full header.** The overview still scrolls to the current hour, but
+  the title and tabs stay in view until you scroll yourself; before, the header was already folded and
+  the tabs were cut off on phones.
+- **"Today" in the shift plan is in the overview grid.** The row of today's shifts above every tab is
+  gone; the overview shows today in its grid, and shift types, planning and statistics start right with
+  their content.
+- **Planning rows name the shift.** Exceptions and extra shifts show the shift ("U · Vacation") as the
+  row title, with date and person below. The quick templates under the shift types say what they do
+  ("Add typical shift types:") and are small buttons, and the week in the overview reads in the same size
+  as other periods.
 - **The weather is under the date on the desktop too.** The overview shows the current weather below
   the greeting in every width, as it already did on phones. The weather card stays optional for the
   forecast.

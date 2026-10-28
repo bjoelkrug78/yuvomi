@@ -22,7 +22,6 @@
  * shared components that pad themselves; the body below carries the same
  * --page-inline-pad via margin so its cards keep their own internal padding
  * instead of stretching edge-to-edge. */
-.schedule-today,
 .schedule-content {
   margin-inline: var(--page-inline-pad);
 }
@@ -49,76 +48,31 @@
   min-width: 0;
 }
 
-/* "HEUTE" IST EINE ZEILE (Entscheidung R17, E1). Bis R17 eine Karte mit
- * Abschnittstitel und Listenzeilen: 132px (mobil) bis 148px ueber JEDEM Reiter,
- * bevor dessen Inhalt begann - mobil lag die erste Datenzeile der Planung bei
- * y=304. Jetzt das Wort und dahinter eine Marke je Eintrag, eine
- * Trefferflaeche hoch; mehr Eintraege, als die Zeile fasst, rollen seitwaerts
- * (der Anschnitt kommt aus wireScrollFade()). */
-.schedule-today {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  min-width: 0;
-}
-
-.schedule-today__label {
-  flex: 0 0 auto;
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-secondary);
-}
-
-.schedule-today__entries {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.schedule-today__entry {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: var(--target-base);
-  padding-inline: var(--space-3);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-full);
-  background: var(--color-surface);
-  white-space: nowrap;
-}
-
-.schedule-today__name {
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-primary);
-}
-
-.schedule-today__meta,
-.schedule-today__empty {
-  color: var(--color-text-secondary);
-}
-
-/* Der leere Tag haelt dieselbe Zeilenhoehe wie einer mit Marke, damit der
- * Inhalt darunter nicht um eine halbe Zeile ruckt, sobald der erste Eintrag
- * dazukommt. */
-.schedule-today__empty {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--target-base);
+/* Ohne Warnung ist der Slot leer und nimmt keine Rasterzeile (sonst stuende
+ * eine zweite Luecke zwischen Kopf und Reiterinhalt). */
+.schedule-today-slot:empty {
+  display: none;
 }
 
 .schedule-today-slot > .schedule-warnings {
   margin: var(--space-2) var(--page-inline-pad) 0;
 }
 
-.schedule-toolbar {
-  margin-bottom: calc(var(--space-4) * -1);
+/* Zwischen Kopf und Reiterinhalt steht die Luecke des Seitenrasters. Bis R24
+ * zog ein negativer Rand sie ab, damit die Heute-Zeile direkt unter der
+ * Reiterlinie stand (0 px, Critique G1-Schichtplan-P2-2); seit die Zeile weg
+ * ist, stuende der erste Abschnittstitel 13px unter der Linie. */
+
+/* DER KOPF BLEIBT OFFEN, BIS DER NUTZER ROLLT (R24, Critique
+ * G1-Schichtplan-P2-1; schedule.js holdHeadForAlign). Unter 1024px klebt der
+ * Kopf mit negativem `top` (Lead-Zone, layout.css); die Uebersicht rollt beim
+ * Oeffnen zur laufenden Stunde und hatte ihn damit schon angedockt. Gehalten
+ * klebt er bei 0 - Titel und Reiter bleiben im Bild -, die erste Geste gibt
+ * ihn frei. */
+@media (max-width: 1023px) {
+  .schedule-toolbar.page-toolbar--stacked.schedule-toolbar--held {
+    top: 0;
+  }
 }
 
 /* EINE TITELZEILE, EINE HOEHE (wie die Haushaltshilfe). "Vergleich" und
@@ -372,9 +326,17 @@
   gap: var(--space-2);
 }
 
-/* Unter der Liste, leise (R20): Etikett und Ghost-Knoepfe auf einer Linie. */
+/* Unter der Liste, leise (R20). Seit R24 (Critique G1-Schichtplan-P3-2) sagt
+ * das Etikett, was die Knoepfe tun („Typische Schichtarten anlegen:"), und
+ * steht als eigene Zeile ueber ihnen - neben ihnen brach mobil der erste Knopf
+ * in die Etikettzeile und die anderen darunter, mit 56px Luecke. */
 .schedule-quickstart-actions--more {
   align-items: center;
+}
+
+.schedule-quickstart-actions__label {
+  flex-basis: 100%;
+  color: var(--color-text-secondary);
 }
 
 /* Zwei Gruppen in der Schichtarten-Liste (R20): mit Uhrzeit, ganztaegig. Den
@@ -382,7 +344,7 @@
  * als seine zwei Spalten nebeneinander. */
 .schedule-type-group__title {
   margin: 0 0 var(--space-2);
-  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
 }
 
 .schedule-icon-picker {
@@ -398,10 +360,6 @@
     /* Die Kapselzone traegt der Shell-Nachlauf (--nav-tail, layout.css);
      * hier steht nur das eigene Ende der Seite. */
     padding-bottom: var(--space-6);
-  }
-
-  .schedule-toolbar {
-    margin-bottom: calc(var(--space-3) * -1);
   }
 
   .schedule-create > .schedule-form {
@@ -805,12 +763,15 @@
 }
 
 /* Der Wert steht ZWISCHEN den Pfeilen (Zeitraum-Kopf, DESIGN.md) und haelt
- * eine Mindestbreite, damit der rechte Pfeil beim Blaettern nicht wandert. */
+ * eine Mindestbreite, damit der rechte Pfeil beim Blaettern nicht wandert.
+ * Groesse und Gewicht des Zeitraums in einer Inhaltszeile wie im Budget und
+ * der Haushaltshilfe (16/600, R24 Critique G1-Schichtplan-P3-3) - vorher 14/500
+ * neben 18/700 im Kalender. */
 .schedule-overview__week-label {
   min-inline-size: 8rem;
   text-align: center;
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
   white-space: nowrap;
 }
@@ -1143,7 +1104,6 @@
    * Einstellungsblatt (settings/pages/personal-schedule.js), das settings.css
    * laedt - hier gibt es sie nicht mehr zu verstecken. */
   .schedule-tabs,
-  .schedule-today,
   .schedule-stat-filters,
   .schedule-stat-filters .form-field,
   .schedule-stat-filter-actions {
@@ -1272,11 +1232,15 @@
     contain: inline-size;
   }
 
+  /* Mobil teilt sich der Zeitraum die Zeile mit Woche/Tag und der
+   * Personenwahl: in 16px kuerzte „26.10. - 01.11." auf „26.10. - 01...". Er
+   * bleibt hier in der Footnote-Groesse, halbfett wie breit. */
   .schedule-overview__stepper > .schedule-overview__week-label {
     flex: 1 1 0;
     min-inline-size: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: var(--text-sm);
   }
 
   .schedule-overview__stepper > .period-stepper__reset.is-current {

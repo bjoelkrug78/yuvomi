@@ -2345,44 +2345,22 @@ test('R17/E1: without anything to compare the start tab leads to the first actio
   }
 });
 
-test('R17/E1: "Today" is one line of chips, not a card of list rows', async () => {
-  const { __test } = await import('../public/pages/schedule.js');
-  __test.setOwnerContext({ users: [{ id: 7, display_name: 'Ada' }], me: 7 });
-  const st = __test.scheduleState();
-  const before = { entries: st.entries };
-  try {
-    st.entries = [
-      { user_id: 7, date_key: '2026-10-07', source: 'pattern', shift_type: { id: 3, name: 'Frueh', short_code: 'F', color: '#0891b2', start_time: '06:00', end_time: '14:00', fields: [] } },
-      { user_id: 7, date_key: '2026-10-07', source: 'pattern', shift_type: null },
-    ];
-    const html = __test.renderToday();
-    assert.equal((html.match(/class="schedule-today__entry /g) || []).length, 2, 'one chip per entry');
-    assert.doesNotMatch(html, /list-row|row-carrier|<p>/, 'no list rows, no carrier');
-    assert.equal((html.match(/role="button" tabindex="0" data-action="view-schedule-entry"/g) || []).length, 2, 'each chip still opens the detail (S-17)');
-    // R23 (D11): die Spanne geht durch utils/date-format.js (12 h, Trenner der
-    // Sprache) - im Loader ist t() der Schluessel samt Parametern. Vorher stand
-    // hier die rohe Zeichenkette "06:00-14:00".
-    assert.ok(html.includes('F · Frueh</span><span class="schedule-today__meta">Ada · calendar.dayRangeLabel{&quot;from&quot;:&quot;06:00&quot;,&quot;to&quot;:&quot;14:00&quot;}<'), html);
-    st.entries = [];
-    assert.match(__test.renderToday(), /^<span class="schedule-today__empty">/);
-  } finally {
-    Object.assign(st, before);
-    __test.setOwnerContext({});
-  }
+// R24, Critique G1-Schichtplan-P2-2: die Zeile „Heute" klebte auf
+// Schichtarten, Planung und Auswertung ohne Abstand unter der Reiterlinie und
+// lag auf der Uebersicht ueber dem Bild (die Seite rollt zur laufenden Stunde).
+// Heute steht im Raster der Uebersicht; die Konfigurations-Reiter sind ruhig.
+test('R24 G1-Schichtplan-P2-2: keine Heute-Zeile ueber den Reitern, der Slot traegt nur die Warnung', async () => {
   const schedulePage = readFileSync(new URL('../public/pages/schedule.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(schedulePage, /schedule-today__|function renderToday\(/, 'keine Heute-Zeile mehr');
   const cardFn = schedulePage.slice(schedulePage.indexOf('function renderTodayCard()'), schedulePage.indexOf('function wireShiftTypeFieldSortables('));
-  assert.doesNotMatch(cardFn, /card card--padded|u-section-title/, 'no card frame and no section title above the line');
-  assert.match(cardFn, /<section class="schedule-today" aria-labelledby="schedule-today-label"><h2 class="schedule-today__label" id="schedule-today-label">/);
-
+  assert.match(cardFn, /slot\.insertAdjacentHTML\('beforeend', renderScheduleWarnings\(\)\)/, 'der Slot traegt die Ueberschneidungs-Warnung');
   const { eachRule } = await import('./css-rules.js');
   const rules = [...eachRule(readFileSync(new URL('../public/styles/schedule.css', import.meta.url), 'utf8'))];
-  const strip = rules.find((r) => r.selector.trim() === '.schedule-today' && r.at.length === 0);
-  assert.match(strip?.body ?? '', /display:\s*flex/);
-  const entries = rules.find((r) => r.selector.trim() === '.schedule-today__entries');
-  assert.match(entries?.body ?? '', /overflow-x:\s*auto/, 'more chips than fit scroll sideways instead of stacking');
-  const chip = rules.find((r) => r.selector.trim() === '.schedule-today__entry');
-  assert.match(chip?.body ?? '', /min-height:\s*var\(--target-base\)/);
-  assert.match(chip?.body ?? '', /white-space:\s*nowrap/);
+  assert.ok(!rules.some((r) => /\.schedule-today(?![-\w])/.test(r.selector)), 'keine Regel fuer die alte Zeile');
+  const empty = rules.find((r) => r.selector.trim() === '.schedule-today-slot:empty');
+  assert.match(empty?.body ?? '', /display:\s*none/, 'ein leerer Slot nimmt keine Rasterzeile');
+  assert.ok(!rules.some((r) => r.selector.trim() === '.schedule-toolbar' && /margin-bottom:\s*calc\(var\(--space-\d\) \* -1\)/.test(r.body)),
+    'kein negativer Rand mehr unter dem Kopf - der erste Abschnitt hat die Luecke des Seitenrasters');
 });
 
 test('R17/E1: seven day columns fit the 996px stage for one person', async () => {
@@ -2601,26 +2579,15 @@ test('weeklyHours: 0 stays rejected server-side - S-24 was answered with a separ
 
 // App-weite UX-Durchsicht 2026-09-12 (Batch 4): "Schedule: hierarchy + actions".
 
-test('the Today card lives in its own slot above `.schedule-body` and no longer depends on the active tab', () => {
+test('the warnings slot lives above `.schedule-body` and no longer depends on the active tab', () => {
   const schedulePage = readFileSync(new URL('../public/pages/schedule.js', import.meta.url), 'utf8');
   // renderShell() builds the slot exactly once, as a sibling of `.schedule-body`
   // - never inside it, so a tab switch (which only rebuilds `.schedule-body`)
-  // cannot make the card appear/disappear or shift the rest of the page.
+  // cannot make it appear/disappear inside the tab content.
   const shellFn = schedulePage.slice(schedulePage.indexOf('function renderShell()'), schedulePage.indexOf('function renderTodayCard()'));
-  assert.match(shellFn, /<div class="schedule-today-slot"><\/div>\s*\n\s*<div class="schedule-body"[^>]*><\/div>/, 'the today slot must be a sibling that precedes .schedule-body, built once in renderShell()');
-  assert.doesNotMatch(shellFn.slice(0, shellFn.indexOf('schedule-today-slot')), /class="schedule-body"/, 'the today slot must come before .schedule-body in the shell markup');
-
-  const todayCardFn = schedulePage.slice(schedulePage.indexOf('function renderTodayCard()'), schedulePage.indexOf('function renderTodayCard()') + 800);
-  // The old gate additionally hid the card on the statistics/overview tabs
-  // (the very thing that made the first block of the page change per tab) -
-  // only the inUse guard (unchanged data condition) may remain.
-  assert.doesNotMatch(todayCardFn, /activeView === 'statistics'/, 'the today card must no longer be gated on which tab is active');
-  assert.doesNotMatch(todayCardFn, /activeView === 'overview'/, 'the today card must no longer be gated on which tab is active');
-  assert.match(todayCardFn, /const inUse = state\.types\.length \|\| state\.patterns\.length\s*\n\s*\|\| state\.overrides\.length \|\| state\.entries\.length;/, 'the inUse guard itself (a fresh household shows no empty-state pileup) must survive unchanged');
-  assert.match(todayCardFn, /if \(inUse\) \{/, 'an empty household must still render nothing in the slot');
-
-  // renderPage() must refresh the slot on every call (every tab switch, every
-  // mutation), not just on initial mount.
+  assert.match(shellFn, /<div class="schedule-today-slot"><\/div>\s*\n\s*<div class="schedule-body"[^>]*><\/div>/, 'the slot must be a sibling that precedes .schedule-body, built once in renderShell()');
+  const todayCardFn = schedulePage.slice(schedulePage.indexOf('function renderTodayCard()'), schedulePage.indexOf('function renderTodayCard()') + 400);
+  assert.doesNotMatch(todayCardFn, /activeView/, 'the slot must not be gated on which tab is active');
   const renderPageFn = schedulePage.slice(schedulePage.indexOf('function renderPage()'), schedulePage.indexOf('function renderTodayCard()'));
   assert.match(renderPageFn, /renderTodayCard\(\);/);
 });
@@ -2653,8 +2620,13 @@ test('Shift types quick-start: plain buttons replace the misused `.segmented` co
   const shiftsPanel = schedulePage.slice(schedulePage.indexOf("activeView === 'shifts'"), schedulePage.indexOf(": activeView === 'patterns'"));
   assert.doesNotMatch(shiftsPanel, /class="segmented"/, 'the quick-start template triggers must not be styled as a segmented/exclusive-state control');
   assert.match(shiftsPanel, /class="schedule-quickstart-actions schedule-quickstart-actions--more"/, 'a plain button row replaces it');
-  // R20: below the list and quiet (ghost) once types exist; the empty state keeps them as its action.
-  assert.match(shiftsPanel, /class="btn btn--ghost btn--sm" data-action="quick-start-shifts"/, 'each template is an ordinary ghost button, an existing variant');
+  // R20: below the list once types exist; the empty state keeps them as its action.
+  // R24 (G1-Schichtplan-P3-2): small secondary buttons like the waste templates,
+  // behind a label that says what they do - not sparkle ghost links.
+  assert.match(shiftsPanel, /class="btn btn--secondary btn--sm" data-action="quick-start-shifts"/, 'each template is a small secondary button');
+  assert.match(shiftsPanel, /class="schedule-quickstart-actions__label u-meta" id="schedule-quickstart-label">' \+ esc\(t\('schedule\.quickStartShiftTypes'\)\)/, 'the label explains the row');
+  const de = JSON.parse(readFileSync(new URL('../public/locales/de.json', import.meta.url), 'utf8'));
+  assert.equal(de.schedule.quickStartShiftTypes, 'Typische Schichtarten anlegen:', 'the label names the action, not "Schnellstart"');
   assert.ok(shiftsPanel.indexOf('shiftTypeListHtml()') < shiftsPanel.indexOf('schedule-quickstart-actions--more'), 'the quick start follows the list, it no longer sits in the header');
   // The household template visibility filter must be respected unchanged.
   assert.match(shiftsPanel, /visibleQuickstartTemplates\(\)\.map\(\(\[template, key\]\)/);
@@ -3701,12 +3673,13 @@ test('R22 D5: das Kuerzel doppelt den Namen nicht, und kein Ort schreibt das Eti
       { user_id: 7, date_key: '2026-10-07', source: 'pattern', shift_type: type('F', 'Frühschicht') },
       { user_id: 7, date_key: '2026-10-07', source: 'pattern', shift_type: type('N', 'n') },
     ];
-    const html = __test.renderToday();
+    // Seit R24 (keine Heute-Zeile) traegt der Block der Uebersicht dasselbe Etikett.
+    const html = st.entries.map((entry) => __test.overviewEntryBlock(entry)).join('');
     assert.doesNotMatch(html, /24 · 24-Stunden-Schicht/, 'die 24-Stunden-Schicht nennt ihre 24 einmal');
-    assert.match(html, /schedule-today__name">24-Stunden-Schicht</);
-    assert.match(html, /schedule-today__name">1\. Stunde</, 'die erste Stunde ebenso');
-    assert.match(html, /schedule-today__name">F · Frühschicht</, 'ein Buchstabe vor einem Wort sagt weiter etwas');
-    assert.match(html, /schedule-today__name">n</, 'ein Kuerzel gleich dem Namen faellt weg');
+    assert.match(html, /schedule-overview__block-title">24-Stunden-Schicht</);
+    assert.match(html, /schedule-overview__block-title">1\. Stunde</, 'die erste Stunde ebenso');
+    assert.match(html, /schedule-overview__block-title">F · Frühschicht</, 'ein Buchstabe vor einem Wort sagt weiter etwas');
+    assert.match(html, /schedule-overview__block-title">n</, 'ein Kuerzel gleich dem Namen faellt weg');
   } finally {
     Object.assign(st, before);
     __test.setOwnerContext({});
@@ -3715,6 +3688,63 @@ test('R22 D5: das Kuerzel doppelt den Namen nicht, und kein Ort schreibt das Eti
     const src = readFileSync(new URL(`../public/${file}`, import.meta.url), 'utf8');
     assert.doesNotMatch(src, /short_code\}? ?(?:\+ ' · ' \+|· \$\{)/, `${file}: das Etikett kommt aus shiftTypeLabel()`);
   }
+});
+
+// R24, Critique G1-Schichtplan-P3-2: in der Planung war das Datum der
+// Zeilentitel und die Schicht nur Meta - eine Liste von Daten. Jetzt ist die
+// Schicht der Titel, Datum und Person stehen darunter.
+test('R24 G1-Schichtplan-P3-2: Ausnahme und Zusatzschicht tragen die Schicht als Titel', async () => {
+  const { __test } = await import('../public/pages/schedule.js');
+  __test.setOwnerContext({ users: [{ id: 7, display_name: 'Ada' }], me: 7 });
+  const st = __test.scheduleState();
+  const before = { types: st.types, overrides: st.overrides, extras: st.extras, patterns: st.patterns };
+  try {
+    st.types = [
+      { id: 5, name: 'Urlaub', short_code: 'U', color: '#6b7280', start_time: null, end_time: null, fields: [] },
+      { id: 6, name: 'Bereitschaft', short_code: 'B', color: '#d97706', start_time: '18:00', end_time: '22:00', fields: [] },
+    ];
+    st.patterns = [];
+    st.overrides = [{ id: 1, user_id: 7, date_key: '2026-11-02', shift_type_id: 5, note: null }];
+    st.extras = [{ id: 2, user_id: 7, date_key: '2026-10-28', shift_type_id: 6, note: null }];
+    const html = __test.planningPanel();
+    const names = [...html.matchAll(/class="list-row__name">([^<]*)</g)].map((m) => m[1]);
+    assert.ok(names.includes('U · Urlaub'), `die Ausnahme heisst nach ihrer Schicht: ${names}`);
+    assert.ok(names.includes('B · Bereitschaft'), `die Zusatzschicht ebenso: ${names}`);
+    const metas = [...html.matchAll(/class="list-row__meta">([^<]*)</g)].map((m) => m[1]);
+    assert.ok(metas.some((m) => /Ada$/.test(m) && !/Urlaub|Bereitschaft/.test(m)), `Datum und Person in der Meta, die Schicht nicht doppelt: ${metas}`);
+  } finally {
+    Object.assign(st, before);
+    __test.setOwnerContext({});
+  }
+  const { eachRule } = await import('./css-rules.js');
+  const typo = [...eachRule(readFileSync(new URL('../public/styles/typography.css', import.meta.url), 'utf8'))];
+  const group = typo.find((r) => r.selector.split(',').map((x) => x.trim()).includes('.schedule-type-group__title'));
+  assert.match(group?.body ?? '', /font-size:\s*var\(--text-xs\)/, '„Mit Uhrzeit" ist ein Gruppenlabel, keine zweite Abschnittsstufe');
+  assert.doesNotMatch(readFileSync(new URL('../public/pages/schedule.js', import.meta.url), 'utf8'), /schedule-type-group__title u-meta/);
+});
+
+// R24, Critique G1-Schichtplan-P2-1: die Uebersicht rollte die Seite beim
+// Oeffnen zur laufenden Stunde, und der Kopf stand damit schon angedockt
+// („Planu..."). Beim Ausrichten haelt er seine volle Hoehe; erst die Geste des
+// Nutzers gibt ihn frei.
+test('R24 G1-Schichtplan-P2-1: beim Ausrichten bleibt der Kopf offen, die Geste gibt ihn frei', async () => {
+  const js = readFileSync(new URL('../public/pages/schedule.js', import.meta.url), 'utf8');
+  const align = js.slice(js.indexOf('function alignOverviewToNow()'), js.indexOf('function alignOverviewToNow()') + 1400);
+  const hold = align.indexOf('holdHeadForAlign(port)');
+  assert.ok(hold > 0 && hold < align.indexOf('const stuck'), 'gehalten wird VOR der Rechnung der Klebekante');
+  assert.ok(align.indexOf('syncOverviewDock()') > hold && align.indexOf('syncOverviewDock()') < align.indexOf('const stuck'), 'die Klebekante folgt dem gehaltenen Kopf');
+  const holdFn = js.slice(js.indexOf('function holdHeadForAlign('), js.indexOf('function releaseHeadHold('));
+  assert.match(holdFn, /\['wheel', 'touchmove', 'keydown'\]/, 'nur eine Geste im Port gibt frei');
+  const releaseFn = js.slice(js.indexOf('function releaseHeadHold('), js.indexOf('function openOverviewPeople('));
+  assert.match(releaseFn, /flipSnapshotElements[\s\S]*classList\.remove\('schedule-toolbar--held'\)[\s\S]*flipPlayElements/, 'der Kopf gleitet per FLIP an seine angedockte Lage');
+  const { eachRule } = await import('./css-rules.js');
+  const held = [...eachRule(readFileSync(new URL('../public/styles/schedule.css', import.meta.url), 'utf8'))]
+    .find((r) => r.selector.trim() === '.schedule-toolbar.page-toolbar--stacked.schedule-toolbar--held');
+  assert.ok(held && /top:\s*0/.test(held.body) && held.at.some((a) => /max-width:\s*1023px/.test(a)), 'gehalten klebt der scrollende Kopf bei 0');
+  const label = [...eachRule(readFileSync(new URL('../public/styles/schedule.css', import.meta.url), 'utf8'))]
+    .find((r) => r.at.length === 0 && r.selector.trim() === '.schedule-overview__week-label');
+  assert.match(label?.body ?? '', /font-size:\s*var\(--text-base\)/, 'der Zeitraum 16 wie im Budget (G1-Schichtplan-P3-3)');
+  assert.match(label.body, /font-weight:\s*var\(--font-weight-semibold\)/);
 });
 
 // R23 S10 (Critique G1 P3, D14): der FAB nennt den Plan, nicht "Eintrag", und

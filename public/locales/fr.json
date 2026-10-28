@@ -6528,7 +6528,7 @@
         "planningNeedsTypesDescription": "Les roulements, exceptions et postes supplémentaires reposent sur les types de poste - par exemple poste du matin, heure de cours ou congé. Ajoutez-en un d’abord.",
         "goToShiftTypes": "Vers les types de poste",
         "shiftTypeRequiredError": "Choisissez un type de poste.",
-        "quickStartShiftTypes": "Démarrage rapide",
+        "quickStartShiftTypes": "Ajouter des types de poste courants :",
         "quickStartCreated": "{{count}} types de poste créés.",
         "quickStartCreated_one": "{{count}} type de poste créé.",
         "quickStartNothingNew": "Déjà en place - rien de nouveau à créer.",
