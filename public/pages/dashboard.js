@@ -33,7 +33,7 @@ import { locationLabel } from '/utils/pantry-locations.js';
 import { pantryQuantityLabel } from '/utils/pantry-units.js';
 import { findPageFab } from '/utils/fab.js';
 import { setLeaveGuard } from '/utils/leave-guard.js';
-import { openModal, closeModal, confirmModal, refocusAfterRender } from '/components/modal.js';
+import { openModal, closeModal, confirmModal, refocusAfterRender, lastInputWasKeyboard } from '/components/modal.js';
 import { renderAvatarStack, sharedSurname } from '/components/user-multi-select.js';
 import { isSoloHousehold } from '/utils/household.js';
 import { toggleRegion, durationToken, easingToken, expandIn } from '/utils/ux.js';
@@ -442,6 +442,52 @@ function isShownOnScreen(el) {
 
 /** Abstand des Lichtrings um das gezeigte Bedienelement, in px. */
 const ONBOARDING_SPOT_PAD = 6;
+/** Abstand der Karte zum Lichtring und zum Fensterrand, in px. */
+const ONBOARDING_CARD_GAP = 16;
+
+/**
+ * DIE KARTE STEHT AM ERKLAERTEN ELEMENT (Critique R24, G6-Rundgang-P3-1). Sie
+ * stand mittig, auch wenn der Schritt die Seitenleiste erklaerte - 306 px
+ * daneben am Desktop, mobil oben, waehrend der Ring unten um die Leiste lag.
+ * Jetzt an der Seite des Rings, die Platz hat: ueber oder unter einem breiten
+ * oder quadratischen Ziel (Leiste, Plus-Knopf), neben einem hohen
+ * (Seitenleiste); quer dazu an der Mitte des Ziels ausgerichtet, im Fenster
+ * gehalten. Passt sie nirgends daneben, bleibt sie in der Mitte (null).
+ *
+ * Rein: Rechteck des Rings, Groesse der Karte, Fenster -> linke obere Ecke.
+ *
+ * @param {{ left: number, top: number, right: number, bottom: number }} spot
+ * @param {{ width: number, height: number }} card
+ * @param {{ width: number, height: number }} view
+ * @param {number} [gap]
+ * @returns {{ x: number, y: number, side: string } | null}
+ */
+function onboardingCardPlacement(spot, card, view, gap = ONBOARDING_CARD_GAP) {
+  const spotW = spot.right - spot.left;
+  const spotH = spot.bottom - spot.top;
+  const clamp = (value, max) => Math.round(Math.max(gap, Math.min(value, max - gap)));
+  const room = {
+    above: spot.top - gap * 2 >= card.height,
+    below: view.height - spot.bottom - gap * 2 >= card.height,
+    right: view.width - spot.right - gap * 2 >= card.width,
+    left: spot.left - gap * 2 >= card.width,
+  };
+  const order = spotH > spotW ? ['right', 'left', 'below', 'above'] : ['above', 'below', 'right', 'left'];
+  const side = order.find((name) => room[name]);
+  if (!side) return null;
+  if (side === 'above' || side === 'below') {
+    return {
+      side,
+      x: clamp(spot.left + spotW / 2 - card.width / 2, view.width - card.width),
+      y: Math.round(side === 'above' ? spot.top - gap - card.height : spot.bottom + gap),
+    };
+  }
+  return {
+    side,
+    x: Math.round(side === 'right' ? spot.right + gap : spot.left - gap - card.width),
+    y: clamp(spot.top + spotH / 2 - card.height / 2, view.height - card.height),
+  };
+}
 
 function showOnboarding(appContainer, onDone) {
   const steps = getOnboardingSteps();
@@ -515,7 +561,7 @@ function showOnboarding(appContainer, onDone) {
     const target = steps[current].target?.();
     const shown = isShownOnScreen(target);
     overlay.classList.toggle('onboarding-overlay--spot', shown);
-    if (!shown) return;
+    if (!shown) { placeCard(null); return; }
     const r = target.getBoundingClientRect();
     const radius = parseFloat(getComputedStyle(target).borderTopLeftRadius) || 0;
     const pad = ONBOARDING_SPOT_PAD;
@@ -524,6 +570,37 @@ function showOnboarding(appContainer, onDone) {
     spot.style.setProperty('--spot-w', `${Math.round(r.width + pad * 2)}px`);
     spot.style.setProperty('--spot-h', `${Math.round(r.height + pad * 2)}px`);
     spot.style.setProperty('--spot-r', `${Math.round(Math.min(radius + pad, (r.height + pad * 2) / 2))}px`);
+    placeCard({ left: r.left - pad, top: r.top - pad, right: r.right + pad, bottom: r.bottom + pad });
+  }
+
+  /* Die Karte an den Ring (onboardingCardPlacement). Der Ortswechsel gleitet
+   * wie der Ring (FLIP ueber transform, --duration-lg), unter reduzierter
+   * Bewegung springt er. Ohne Ziel steht sie wieder, wie das Overlay sie
+   * stellt (Mitte, mobil oben). */
+  function placeCard(spotRect) {
+    const before = card.getBoundingClientRect();
+    const place = spotRect && onboardingCardPlacement(
+      spotRect,
+      { width: card.offsetWidth, height: card.offsetHeight },
+      { width: window.innerWidth, height: window.innerHeight },
+    );
+    overlay.classList.toggle('onboarding-overlay--anchored', Boolean(place));
+    if (place) {
+      card.style.setProperty('--card-x', `${place.x}px`);
+      card.style.setProperty('--card-y', `${place.y}px`);
+    } else {
+      card.style.removeProperty('--card-x');
+      card.style.removeProperty('--card-y');
+    }
+    const after = card.getBoundingClientRect();
+    const dx = before.left - after.left;
+    const dy = before.top - after.top;
+    if ((Math.abs(dx) < 1 && Math.abs(dy) < 1) || !card.animate || !before.width) return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    card.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], {
+      duration: parseFloat(getComputedStyle(card).getPropertyValue('--onboarding-move-ms')) || 400,
+      easing: getComputedStyle(card).getPropertyValue('--onboarding-move-ease').trim() || 'ease-out',
+    });
   }
   const onResize = () => placeSpotlight();
   window.addEventListener('resize', onResize);
@@ -563,6 +640,8 @@ function showOnboarding(appContainer, onDone) {
     const title = document.createElement('h2');
     title.className = 'onboarding-title';
     title.id = ONBOARDING_TITLE_ID;
+    // Fokusziel nach einem Tipp (focusStep), nicht in der Tab-Folge.
+    title.tabIndex = -1;
     title.textContent = step.title;
 
     const body = document.createElement('p');
@@ -604,7 +683,7 @@ function showOnboarding(appContainer, onDone) {
       // gegangen) - synchron nach dem Tausch, die Blende sperrt nichts.
       let next = null;
       swapContent(stepEl, () => { next = fillStep(); }, { direction: 1 });
-      next?.focus();
+      focusStep(next);
     });
 
     // EIN SCHRITT ZURUECK (R23 S10, Critique G6 P3 "Tour ohne Zurueck"): wer
@@ -619,7 +698,7 @@ function showOnboarding(appContainer, onDone) {
       current--;
       let next = null;
       swapContent(stepEl, () => { next = fillStep(); }, { direction: -1 });
-      next?.focus();
+      focusStep(next);
     });
 
     if (current > 0) actions.appendChild(backBtn);
@@ -635,6 +714,19 @@ function showOnboarding(appContainer, onDone) {
     if (window.lucide) window.lucide.createIcons({ el: stepEl });
     placeSpotlight();
     return nextBtn;
+  }
+
+  /* KEIN RING AM FINGER (Critique R24, G6-Rundgang-P3-1). Der Fokus ging nach
+   * jedem Schritt programmatisch an "Weiter", und der Knopf trug danach seinen
+   * Fokusring auch nach einem Tipp (gemessen 390, touch: `:focus-visible` in
+   * allen drei Schritten). Wie im Dialog (components/modal.js, Erstfokus):
+   * nach Tastatur der Hauptknopf mit Ring, nach Zeiger oder auf einem
+   * Touchgeraet ohne Eingabe der Titel des Schritts (`tabindex=-1`, ohne
+   * Ring) - der Fokus bleibt in der Karte, und Tab fuehrt zu den Knoepfen. */
+  function focusStep(button) {
+    const touch = window.matchMedia?.('(hover: none) and (pointer: coarse)').matches === true;
+    if (lastInputWasKeyboard() && !touch) { button?.focus(); return; }
+    stepEl.querySelector('.onboarding-title')?.focus({ preventScroll: true });
   }
 
   let finished = false;
@@ -672,7 +764,7 @@ function showOnboarding(appContainer, onDone) {
   // Die Seite hinter dem Rundgang ist gesperrt, solange er laeuft
   // (utils/background-inert.js); finish() gibt sie vor dem Fokus frei.
   const releaseBackground = inertOutside(overlay);
-  setTimeout(() => stepEl.querySelector('.btn--primary')?.focus(), 50);
+  setTimeout(() => focusStep(stepEl.querySelector('.btn--primary')), 50);
   // Die Zurueck-Geste beendet die Einfuehrung, statt hinter ihr zu navigieren
   // (#871). `finish()` ist der EINE Weg hinaus und merkt sich das auch.
   attachOverlay(overlay, finish);
@@ -11345,6 +11437,7 @@ async function loadScheduleSlice(day) {
 }
 
 export const __test = {
+  onboardingCardPlacement,
   usableOverviewMemo, overviewMemoKey, overviewSignature, watchOverviewWrites,
   getOverviewMemo: () => _overviewMemo,
   setOverviewMemo: (memo) => { _overviewMemo = memo; },

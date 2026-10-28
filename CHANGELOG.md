@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **The welcome tour explains a control next to it.** The tour card stayed in the middle of the screen
+  while the highlighted sidebar, tab bar or + button was elsewhere; it now sits beside the control it
+  describes and moves with the highlight. After a tap the "Next" button no longer shows a focus ring.
 - **Installing on iPhone is explained in one sentence.** The install hint, the Device settings and the
   note after "Install" now all say "Tap Share and choose “Add to Home Screen”", with the menu item in
   proper quotation marks; before, the hint used straight quotes and an arrow, and the settings worded it

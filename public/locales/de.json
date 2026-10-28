@@ -3756,12 +3756,12 @@
         "step2Title": "Navigation & Module",
         "step2Body": "Die Leiste unten führt direkt zu den wichtigsten Bereichen. Alle weiteren Module findest du unter „Mehr“.",
         "step3Title": "Schnell loslegen",
-        "step3Body": "Mit dem +-Knopf unten rechts erstellst du überall neue Einträge. In Aufgaben, Einkauf und Vorrat wischst du Einträge nach links oder rechts für Schnellaktionen.",
+        "step3Body": "Mit dem Plus-Knopf unten rechts erstellst du überall neue Einträge. In Aufgaben, Einkauf und Vorrat wischst du Einträge nach links oder rechts für Schnellaktionen.",
         "next": "Weiter",
         "done": "Loslegen",
         "skip": "Überspringen",
         "step2BodyDesktop": "Links in der Seitenleiste erreichst du alle Module - von Kalender und Aufgaben bis Küche, Dokumente und Einstellungen.",
-        "step3BodyDesktop": "Mit dem +-Knopf oben rechts im Kopf jedes Moduls erstellst du neue Einträge.",
+        "step3BodyDesktop": "Mit dem Plus-Knopf oben rechts im Kopf jedes Moduls erstellst du neue Einträge.",
         "stepProgress": "Schritt {{current}} von {{total}}"
     },
     "offline": {

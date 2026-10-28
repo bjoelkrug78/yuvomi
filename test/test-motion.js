@@ -1840,7 +1840,8 @@ test('Erststart: die Karte steht, der Schritt wechselt ueber swapContent mit fes
   const dash = pageSource('dashboard');
   const fn = dash.slice(dash.indexOf('function showOnboarding('), dash.indexOf('function maybeHintCustomize('));
   assert.doesNotMatch(fn, /overlay\.replaceChildren\(\)/, 'die Karte wird nicht mehr je Schritt neu gebaut');
-  assert.match(fn, /swapContent\(stepEl, \(\) => \{ next = fillStep\(\); \}, \{ direction: 1 \}\);\s*next\?\.focus\(\);/, 'Tausch, dann Fokus auf den neuen Hauptknopf');
+  // Seit R24 (G6-Rundgang-P3-1) ueber focusStep: Hauptknopf nach Tastatur, Titel nach Tipp.
+  assert.match(fn, /swapContent\(stepEl, \(\) => \{ next = fillStep\(\); \}, \{ direction: 1 \}\);\s*focusStep\(next\);/, 'Tausch, dann Fokus in den neuen Schritt');
   assert.match(fn, /function fitSteps\(\) \{[\s\S]{0,420}tallest = Math\.max\(tallest, stepEl\.offsetHeight\);[\s\S]{0,200}stepEl\.style\.minBlockSize = `\$\{tallest\}px`;/, 'die Hoehe ist die des hoechsten Schritts');
   assert.match(fn, /appContainer\.appendChild\(overlay\);[\s\S]{0,120}fitSteps\(\);/, 'gemessen wird im Baum');
   const step = ruleBodies('dashboard.css', '.onboarding-step').join(';');

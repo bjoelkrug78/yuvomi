@@ -2725,6 +2725,21 @@ svg.weather-forecast__icon {
   opacity: 1;
 }
 
+/* DIE KARTE AM ERKLAERTEN ELEMENT (Critique R24, G6-Rundgang-P3-1;
+ * dashboard.js onboardingCardPlacement): steht ein Ring, haengt die Karte an
+ * der Seite, die Platz hat - neben der Seitenleiste, ueber der Leiste und dem
+ * Plus-Knopf. Vorher blieb sie mittig, 306 px neben der Seitenleiste, die sie
+ * erklaerte. Der Ortswechsel gleitet in Dauer und Kurve des Rings (FLIP im
+ * Skript, die Werte an `.onboarding-card`). */
+.onboarding-overlay--anchored .onboarding-card {
+  position: fixed;
+  /* Physisch wie der Ring: die Werte sind Fensterkoordinaten
+   * (getBoundingClientRect), keine Leserichtung. */
+  left: var(--card-x);
+  top: var(--card-y);
+  margin: 0;
+}
+
 /* Die Bildmarke statt eines Lucide-Zeichens im ersten Schritt - dieselbe
  * Kachel wie auf der Anmeldeseite (.auth-hero__mark). */
 .onboarding-mark {
@@ -2763,6 +2778,10 @@ svg.weather-forecast__icon {
  * einem, `--glass-inset-elevated` die Lichtkante oben (glass.css, R18). Keine
  * eigene Linie mehr. */
 .onboarding-card {
+  /* Dauer und Kurve, mit denen die Karte dem Ring folgt (dashboard.js
+   * placeCard, FLIP) - dieselben wie die des Rings. */
+  --onboarding-move-ms: var(--duration-lg);
+  --onboarding-move-ease: var(--ease-glass);
   /* positioniert, damit die Tafel ueber dem Abdunkler des Lichtrings liegt
    * (.onboarding-spotlight ist fixed und malte sonst darueber). */
   position: relative;
@@ -2801,6 +2820,14 @@ svg.weather-forecast__icon {
   width: 48px;
   height: 48px;
   color: var(--color-accent);
+}
+
+/* Der Titel nimmt nach einem Tipp den Fokus (dashboard.js focusStep) - ohne
+ * Ring, wie der Dialogtitel (`.modal-panel__title[tabindex="-1"]:focus`): er
+ * ist kein Steuerelement, ein Ring verspraeche eine Bedienung. Mit Tastatur
+ * geht der Fokus an den Knopf und traegt dort seinen Ring. */
+.onboarding-title[tabindex="-1"]:focus {
+  outline: none;
 }
 
 .onboarding-title {

@@ -4820,7 +4820,13 @@ Seitenleiste bzw. Kapsel (`.nav-bottom__items`) und dem sichtbaren `.page-fab`, 
 Radius des Ziels plus Luft, Ring 2px `--color-accent`. Den Abdunkler traegt der Ring als
 Schatten nach aussen (100vmax Spreizung, `--color-bg` 78 %), das Overlay wird dafuer klar
 (`.onboarding-overlay--spot`); ohne sichtbares Ziel bleibt die Unschaerfe. Klicks faengt das
-Overlay, der Ring ist aria-hidden, die Tafel liegt positioniert darueber.
+Overlay, der Ring ist aria-hidden, die Tafel liegt positioniert darueber. **Die Tafel steht
+am Ring (R24):** an der Seite, die Platz hat - neben einem hohen Ziel (Seitenleiste), ueber oder
+unter einem breiten oder quadratischen (Kapsel, Plus), quer dazu an seiner Mitte, 16px Luft,
+im Fenster gehalten (`onboardingCardPlacement`); der Ortswechsel gleitet mit dem Ring (FLIP,
+`--duration-lg`/`--ease-glass`). Vorher stand sie mittig, 306px neben der Seitenleiste. **Kein
+Ring am Finger:** nach einem Tipp nimmt der Titel des Schritts den Fokus (`tabindex=-1`, ohne
+Ring, wie der Dialogtitel), nach Tastatur der Hauptknopf.
 Ab Schritt 2 steht **„Zurueck"** dort, wo auf Schritt 1 „Ueberspringen" steht (R23 S10);
 Esc und die Zurueck-Geste beenden den Rundgang weiter. Die Hilfe fuehrt mit „Rundgang
 ansehen" zurueck auf die Uebersicht und zeigt ihn dort erneut (einmal je Wunsch, ohne die
