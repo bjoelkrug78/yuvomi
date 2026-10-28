@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **The wall display shows the day's appointments first.** "Today" on the wall lists all-day events,
+  then appointments and meals by time, followed by the rest, the same way the overview does.
+  Before, open tasks could push the evening's appointments out, and a smaller tablet showed different
+  rows than a large one. The kitchen timer buttons are larger outlined buttons, easier to read and hit
+  from a distance.
+- **A new birthday says what happens to it next to the date.** The note that every birthday goes to the
+  calendar and reminders now sits under the date field instead of above the buttons.
 - **The shift plan opens with its full header.** The overview still scrolls to the current hour, but
   the title and tabs stay in view until you scroll yourself; before, the header was already folded and
   the tabs were cut off on phones.

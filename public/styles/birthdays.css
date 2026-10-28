@@ -389,6 +389,9 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-4);
+  /* Seit der Kalender-Hinweis unter dem Datum steht (R24), endet der Kopf mit
+   * Text - er braucht Luft bis zur Linie von „Weitere Angaben". */
+  padding-block-end: var(--space-3);
 }
 
 .birthday-modal__photo-wrap {
@@ -426,11 +429,6 @@
 
 .birthday-name-day__hint {
   margin-top: var(--space-1);
-  color: var(--color-text-secondary);
-  font-size: var(--type-caption);
-}
-
-.birthday-modal__hint {
   color: var(--color-text-secondary);
   font-size: var(--type-caption);
 }

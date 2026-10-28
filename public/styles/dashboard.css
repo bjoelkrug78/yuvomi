@@ -7933,17 +7933,24 @@ button.today-cockpit__more--link {
  * „unsichtbare, klickbare Bänder" führt; Ruhe entsteht durch Kontrast, nicht
  * durch Unsichtbarkeit. Die Beschriftung steht deshalb in Tertiärfarbe da, eine
  * Stufe unter dem Zeichen des Ausstiegs (Sekundär), ohne Kapsel. Dass der erste
- * Tipp auf eine schlafende Wand nur weckt, regelt wall-timer.js. */
+ * Tipp auf eine schlafende Wand nur weckt, regelt wall-timer.js.
+ *
+ * SEIT R24 EINE KAPSEL IN BODY-GROESSE (Critique G1-Wand-P3-1). Als 15px-Text
+ * ohne Rand waren „3 Min" ... „30 Min" aus zwei Metern kaum zu lesen und kaum
+ * als Ziel zu erkennen. Jetzt ruht jeder Startknopf als Kapsel mit Haarlinie
+ * (`--color-border`, kein gefuellter Grund - die Wand hat genau einen gefuellten
+ * Traeger), Body 17, Sekundaertinte; wach steht er auf der Flaeche in der
+ * Primaertinte wie bisher. */
 .wall__timer-preset {
   min-height: var(--target-lg);
   min-width: var(--target-lg);
-  padding: 0 var(--space-2);
-  border: 1px solid transparent;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
   background: transparent;
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   font-family: inherit;
-  font-size: var(--type-secondary);
+  font-size: var(--type-body);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
   transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
@@ -7967,6 +7974,20 @@ button.today-cockpit__more--link {
 .wall__timer-preset:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
+}
+
+/* Die Telefon-Wand liest man aus der Hand, nicht aus zwei Metern: die fuenf
+ * Kapseln bleiben EINE Reihe (in 17px brach „30 Min" bei 390px in eine
+ * zweite, R24). Nach der Basisregel, sonst gewinnt sie per Quellreihenfolge. */
+@container wall (max-width: 559px) {
+  .wall__timer-presets {
+    column-gap: var(--space-1);
+  }
+
+  .wall__timer-preset {
+    padding-inline: var(--space-2);
+    font-size: var(--type-secondary);
+  }
 }
 
 /* ── Nachtabsenkung (22:00 bis 06:00) ──

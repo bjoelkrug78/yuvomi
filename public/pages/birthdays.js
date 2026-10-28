@@ -1108,6 +1108,11 @@ function openBirthdayModal({ mode, birthday = null }) {
               yearUnknown: birthday?.year_unknown,
               max: today,
               required: true,
+              // DER HINWEIS STEHT IM KOPF, BEIM DATUM (R24, Critique
+              // G1-Geburtstage-P3-1): was mit dem Datum geschieht (Kalender,
+              // Erinnerung), sagt der Hinweis des Felds, wo es eingegeben wird -
+              // nicht mehr unter dem Aufklapper ueber dem Fuss.
+              hint: t('birthdays.calendarHint'),
             })}
           </div>
         </div>
@@ -1121,7 +1126,6 @@ function openBirthdayModal({ mode, birthday = null }) {
           ${renderBirthdayReminderSection(birthday)}`,
           { open: isEdit && (!!birthday?.contact_id || !!birthday?.name_day || !!birthday?.notes || reminderOpensAdvanced(birthday)),
             hint: birthdayAdvancedTopics(mayLinkContacts(birthday)) })}
-        <div class="birthday-modal__hint">${t('birthdays.calendarHint')}</div>
         <div class="modal-panel__footer modal-panel__footer--plain">
           ${isEdit ? `<button type="button" class="btn btn--danger-outline" id="bd-delete">
             <i data-lucide="trash-2" class="icon-md" aria-hidden="true"></i>${t('common.delete')}

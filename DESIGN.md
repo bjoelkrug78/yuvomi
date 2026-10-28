@@ -5473,10 +5473,19 @@ Zustand, kein Skript, keine Bewegung, kein Tipp bleibt an ihr haengen.
 
 **Die Startknoepfe der Kuechenuhr ruhen sichtbar, und die erste Beruehrung weckt nur**
 (2026-09-23). Unsichtbare Knoepfe, die trotzdem auf Beruehrung reagierten, waren eine Falle:
-wer die Wand wecken wollte, startete einen Timer. Sie ruhen jetzt in Tertiaerfarbe (AA), der
+wer die Wand wecken wollte, startete einen Timer. Sie ruhen seit R24 als Kapsel mit Haarlinie
+in Body 17 und Sekundaerfarbe (Critique G1-Wand-P3-1: 15px-Text ohne Rand war aus zwei Metern
+kaum zu lesen und kaum als Ziel zu erkennen; kein gefuellter Grund, die Wand hat genau einen
+gefuellten Traeger), der
 erste Zeiger auf eine schlafende Wand setzt nur `data-wall-awake` (Tastatur ausgenommen), und
 Wecken VERSCHIEBT nichts - die Fusszeile ist ein festes Raster, damit der zweite Tipp dort
 trifft, wo der erste hinzielte. Ansagen nennen Start, Stopp und Ende, nicht jede Sekunde.
+
+**„Heute wichtig" rechnet auf der Wand wie das Cockpit** (R24, Uebergabe S1 zu Critique
+G1-Uebersicht-P2-1): die Eintraege der Zeitleiste fuehren (Ganztaegiges vorn, dann nach
+Uhrzeit), der Rest folgt, und der Deckel kuerzt zuerst den Rest (`composeTodaySheet` mit
+`lead`, `wallTimelineOptions`). Bis R24 deckelte die Wand „offen zuerst" ohne Leiste: bei 1440
+stand das Sportfest, bei 1024 nicht, offene Aufgaben schoben den Filmabend hinaus.
 
 **Dass die Flaeche lebt, sagt eine absolute Uhrzeit**, kein „vor 3 Minuten": eine relative
 Angabe braeuchte einen zweiten Timer, nur damit sie sich selbst aktuell haelt.

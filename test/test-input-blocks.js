@@ -113,6 +113,16 @@ test('Schichtart: Beginn und Ende in EINER Zeile, das Symbol ohne durchgestriche
   assert.doesNotMatch(read('pages/schedule.js'), /'image-off'/);
 });
 
+// R24, Critique G1-Geburtstage-P3-1 (Hinweis-Ort): „Jeder Geburtstag wird
+// automatisch zum Kalender ... hinzugefuegt" stand unter dem Aufklapper ueber
+// dem Fuss - nach dem Ausfuellen. Jetzt ist er der Hinweis des Datumsfelds.
+test('Geburtstag: der Kalender-Hinweis steht am Datum, nicht ueber dem Fuss', () => {
+  const bd = read('pages/birthdays.js');
+  const field = bd.slice(bd.indexOf("id: 'bd-birth-date',"), bd.indexOf('})}', bd.indexOf("id: 'bd-birth-date',")));
+  assert.match(field, /hint: t\('birthdays\.calendarHint'\)/, 'der Hinweis des Datumsfelds');
+  assert.doesNotMatch(bd, /birthday-modal__hint/, 'kein zweiter Ort ueber dem Fuss');
+});
+
 test('Bild: das Vorschaubild ist der EINE Knopf, das Abzeichen sagt "aenderbar", Entfernen nur als Text mit Bild', async () => {
   const { mediaPickerBadgeHtml } = await import('../public/utils/media-picker.js');
   assert.equal(mediaPickerBadgeHtml(), '<span class="media-picker__badge" aria-hidden="true"><i data-lucide="pencil"></i></span>');
