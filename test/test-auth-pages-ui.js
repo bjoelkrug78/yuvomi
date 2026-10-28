@@ -335,6 +335,32 @@ test('R24: falsche Zugangsdaten ohne Zuruecksetzen nennen die Administration, di
   assert.equal(de.join.introNamed, '{{name}} hat dich zu {{app}} eingeladen. Lege hier deine Zugangsdaten fest.');
 });
 
+/* EIN OFFLINE-ZUSTAND, EIN WORT (Critique R24, G6-Rand-P3-1). offline.html hatte
+ * eine eigene Karte (Radius 12, Haarlinie, graues wifi-off, "Keine Verbindung")
+ * neben dem Zustand der App ("Verbindung unterbrochen", page-unreachable). Jetzt
+ * steht sie auf der Buehne der Zugangsseiten: Lichtfeld, Glastafel 26 px, die
+ * Bildmarke als Absender und derselbe Titel. */
+test('R24: offline.html steht auf der Buehne der Zugangsseiten und heisst wie der Zustand der App', async () => {
+  const offline = read('../public/offline.html');
+  const de = JSON.parse(read('../public/locales/de.json'));
+  const title = de.common.sessionUnreachableTitle;
+  assert.equal(offline.match(/<h1>([^<]+)<\/h1>/)?.[1], title, 'derselbe Titel wie page-unreachable');
+  assert.match(offline, new RegExp(`<title>${title} - Yuvomi</title>`));
+  const style = offline.slice(offline.indexOf('<style>') + 7, offline.indexOf('</style>'));
+  const stage = [...eachRule(style)].find((r) => r.selector === '.stage' && !r.at.length);
+  assert.ok(stage, '.stage fehlt');
+  assert.match(stage.body, /border-radius:\s*var\(--radius-xl\)/);
+  assert.match(style, /--radius-xl:\s*26px;/, 'die Tafel traegt den Radius schwebender Flaechen');
+  assert.match(stage.body, /box-shadow:\s*var\(--glass-inset-elevated\), var\(--glass-shadow-lg\)/, 'Lichtkante und Glas-Schatten wie .auth-page');
+  assert.match(style, /radial-gradient\(circle 24rem at calc\(50% - 13rem\) calc\(50% - 12rem\)/, 'das Marken-Lichtfeld liegt auf dem Grund');
+  // Die Bildmarke: dieselben drei Kreise wie utils/brand-mark.js.
+  const { BRAND_MARK_CIRCLES } = await import('../public/utils/brand-mark.js');
+  for (const [cx, cy, r] of BRAND_MARK_CIRCLES) {
+    assert.ok(offline.includes(`<circle cx="${cx}" cy="${cy}" r="${r}"/>`), `Kreis ${cx}/${cy}/${r} der Bildmarke`);
+  }
+  assert.doesNotMatch(offline, /Keine Verbindung/, 'kein zweites Wort fuer denselben Zustand');
+});
+
 /* /pair: DER FEHLER STEHT AM FELD, UND ES GIBT EINEN WEG ZURUECK (Critique R22,
  * D19). Die Meldung stand als Banner unter dem Formular, das Feld zeigte keinen
  * Fehlerzustand, ein falscher Code kam als englischer Servertext an, und von der

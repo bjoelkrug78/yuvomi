@@ -6,6 +6,7 @@ colors:
   accent-violet-hover: "#5B2FD4"
   accent-violet-dark: "#A78BFA"
   accent-light: "#F3EFFE"
+  brand-mark-from: "#8B5CF6"
   grouped-bg: "#F5F3ED"
   surface: "#FFFFFF"
   surface-dark: "#2B2825"
@@ -14,6 +15,8 @@ colors:
   surface-elevated: "#FBFAF7"
   surface-elevated-hover: "#EDEAE3"
   bg-dark: "#191816"
+  # brand-mark-from (Verlauf der Bildmarke, tokens.css) seit R24: die Offline-Seite
+  # spiegelt Marke und Lichtfeld der Zugangsseiten als Literal.
   # Dark-Gegenstuecke von Kante und Sekundaertext (tokens.css, Dark-Block):
   # stehen hier, weil die Offline-Seite (public/offline.html) sie als Literal
   # spiegelt - sie laedt kein tokens.css (R22, Detektor-Rest).
@@ -4774,7 +4777,9 @@ zwei Knoepfe; die Eintraege klicken die Knoepfe, ein Display behaelt seinen Wand
 ### Anmeldeseite
 Die erste Seite der App ist Teil derselben Welt, keine Ausnahme - und sie hat einen Ort
 (R18, 2026-10-07; gilt fuer Anmeldung, Einrichtung, Einladung, Passwort-Reset und das
-Koppeln eines Wandtabletts). Zwei Ebenen, wie ueberall sonst: **Raumlicht und Glas.** Die
+Koppeln eines Wandtabletts, seit R24 auch fuer die Offline-Huelle `offline.html`: kompakter
+Kopf mit Marke, Titel "Verbindung unterbrochen" wie `page-unreachable`, die Werte als
+Literale gespiegelt, weil sie ohne tokens.css stehen muss). Zwei Ebenen, wie ueberall sonst: **Raumlicht und Glas.** Die
 Shell traegt das Marken-Lichtfeld (`--brand-field`, siehe „Colors"): drei stehende, weiche
 Kreise in den Farben der Bildmarke. Die Seite selbst (`main.auth-page`) ist die Glastafel
 davor: `--radius-xl`, Lichtkante, `--glass-bg-elevated` mit `--blur-lg` in `@supports`,

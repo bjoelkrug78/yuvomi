@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **The offline page looks like Yuvomi's own.** When the server cannot be reached at all, the page now
+  stands on the same lit stage with the app mark as the sign-in pages, and it is called "Connection
+  lost" like the same state inside the app, instead of a plain grey card titled "No connection".
 - **Sign-in and invitations say who helps and who invited you.** Without email password reset, a wrong
   password now adds that your household's administrator can set a new one, instead of leaving you at
   "Invalid credentials." The invitation page names the person who invited you and uses the app name
