@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **The read and write boxes of a new API token are easy to hit.** Each box only answered on its
   own 14 px square; now the whole cell of its column does, as tall as any other control.
+- **The cycle figures are readable on a phone again.** Below 640 px the four figure tiles shrank to a
+  sliver, and their labels and dates ran over each other or down letter by letter; they take the full
+  width of the column again.
 
 ## [2.82.0] - 2026-10-28
 

@@ -830,3 +830,18 @@ test('R21 S7: das Mehr-Blatt hat einen festen Fuss und gruppierten Grund', () =>
   assert.ok(list, 'Regel der Modulliste fehlt');
   assert.equal(decl(list.body, 'box-shadow'), null, 'keine Karte mit Schatten auf dem Blatt');
 });
+
+test('R24 G5 P0-1: in der Zyklus-Spalte nimmt die Kennzahlseite die volle Breite', () => {
+  // `.cycle-stats` ist ein Groessen-Container ohne Eigenbreite. Steht
+  // `.cycle-hero` schmal als Spalte mit `align-items: center`, schrumpft die
+  // Seite ohne `align-self: stretch` auf ihr Polster (gemessen 8px). Die
+  // Browser-Messung haelt test:metric-tile-fit-browser; hier die Regel in der Kette.
+  const healthCss = read('../public/styles/health.css');
+  const all = rules(healthCss);
+  const stats = all.find((r) => r.selector === '.cycle-stats' && !r.at.length);
+  assert.match(decl(stats?.body ?? '', 'container') ?? '', /inline-size/, 'die Reihe ist kein Groessen-Container mehr - Guard pruefen');
+  const column = all.find((r) => r.selector === '.cycle-hero' && r.at.some((a) => /max-width:\s*639px/.test(a)));
+  assert.equal(decl(column?.body ?? '', 'flex-direction'), 'column', 'schmal steht der Zykluskopf als Spalte');
+  const side = all.find((r) => r.selector === '.cycle-hero > .cycle-hero__side' && r.at.some((a) => /max-width:\s*639px/.test(a)));
+  assert.equal(decl(side?.body ?? '', 'align-self'), 'stretch', '.cycle-hero__side streckt sich in der schmalen Spalte nicht');
+});

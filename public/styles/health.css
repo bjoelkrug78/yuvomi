@@ -3829,6 +3829,15 @@ button.cycle-cal__day:not(:disabled):hover { background: var(--color-surface-2);
     align-self: stretch;
     margin-top: 0;
   }
+
+  /* Die Kennzahlen ebenso volle Breite. `.cycle-stats` ist der Container
+   * `metric-grid` und hat damit keine Eigenbreite: unter `align-items: center`
+   * schrumpfte die Seite auf ihr Polster (8px), die Kacheln auf 26px, und die
+   * Texte liefen buchstabenweise senkrecht (R24, Critique G5 P0-1). Haelt
+   * test:metric-tile-fit-browser. */
+  .cycle-hero > .cycle-hero__side {
+    align-self: stretch;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
