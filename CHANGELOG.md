@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   because the demo points belonged to no task; each now names the chore it was earned for, the tasks'
   history view shows who ticked what, and the demo recipe no longer puts "Zitrone" next to "Zitronen"
   on the shopping list.
+- **Esc closes a menu in a detail column.** On a wide screen, Esc in the fasting "..." menu (and any
+  menu in the right-hand column of a list) left the menu open and jumped to the list; it closes the
+  menu again, and the next Esc returns to the list as before.
 
 ## [2.82.0] - 2026-10-28
 
