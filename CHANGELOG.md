@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **The cycle figures are readable on a phone again.** Below 640 px the four figure tiles shrank to a
   sliver, and their labels and dates ran over each other or down letter by letter; they take the full
   width of the column again.
+- **Birthdays found by search are named in your language.** The command palette and the phone search
+  listed a birthday or name day as "Birthday: Emma" whatever the language; they now read like the
+  calendar and the overview do.
 
 ## [2.82.0] - 2026-10-28
 
