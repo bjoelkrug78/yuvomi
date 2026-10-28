@@ -4391,7 +4391,8 @@
         "dropzoneTitleTouch": "Klepnutím vyberte soubor",
         "viewerPrevNamed": "Předchozí dokument: {{name}}",
         "viewerNextNamed": "Další dokument: {{name}}",
-        "emptyFolderTitle": "„{{name}}“ je prázdná"
+        "emptyFolderTitle": "„{{name}}“ je prázdná",
+        "viewerImageFallbackHint": "Tento obrázek se nepodařilo zobrazit. Stáhněte si jej a otevřete."
     },
     "reminders": {
         "sectionTitle": "Připomínka",

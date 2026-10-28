@@ -4101,7 +4101,8 @@
         "dropzoneTitleTouch": "I-tap para pumili ng file",
         "viewerPrevNamed": "Nakaraang dokumento: {{name}}",
         "viewerNextNamed": "Susunod na dokumento: {{name}}",
-        "emptyFolderTitle": "Walang laman ang \"{{name}}\""
+        "emptyFolderTitle": "Walang laman ang \"{{name}}\"",
+        "viewerImageFallbackHint": "Hindi maipakita ang larawang ito. I-download ito para mabuksan."
     },
     "userMultiSelect": {
         "nobody": "Wala",

@@ -4280,7 +4280,8 @@
         "dropzoneTitleTouch": "Нажмите, чтобы выбрать файл",
         "viewerPrevNamed": "Предыдущий документ: {{name}}",
         "viewerNextNamed": "Следующий документ: {{name}}",
-        "emptyFolderTitle": "Папка «{{name}}» пуста"
+        "emptyFolderTitle": "Папка «{{name}}» пуста",
+        "viewerImageFallbackHint": "Не удалось показать это изображение. Скачайте его, чтобы открыть."
     },
     "shortcuts": {
         "goKitchen": "Кухня",

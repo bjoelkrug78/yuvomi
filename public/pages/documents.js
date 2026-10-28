@@ -4283,7 +4283,7 @@ function openDocumentViewer(doc, { opener: listOpener = null } = {}) {
         if (opener?.isConnected && opener !== document.body) opener.focus();
         openDocumentModal(doc);
       });
-      wireViewerStage(panel);
+      wireViewerStage(panel, doc);
       // Vor/Zurueck: die Knoepfe und die Pfeiltasten, die auf sie zeigen
       // (RTL gespiegelt). Nicht aus einem Feld oder der PDF-Seitenleiste heraus
       // - dort gehoeren die Pfeile dem Element.
@@ -4390,14 +4390,31 @@ function viewerStageStatusHtml() {
  * das Bild blendet ueber das Poster, Poster und Ladezeichen treten zurueck.
  * Ein Bild aus dem Cache ist beim Verdrahten schon `complete`.
  */
-function wireViewerStage(panel) {
+function wireViewerStage(panel, doc) {
   const stage = panel.querySelector('.document-viewer__stage[data-stage-loading]');
   const img = stage?.querySelector('img.document-viewer__image:not(.document-viewer__poster)');
   if (!stage || !img) return;
   const done = () => stage.removeAttribute('data-stage-loading');
-  if (img.complete && img.naturalWidth > 0) { done(); return; }
+  // EIN KAPUTTES BILD IST KEINE BUEHNE (R24, Critique G4 P2-1). Bei `error`
+  // nahm die Buehne nur ihr Ladezeichen weg, und das Broken-Image-Zeichen mit
+  // dem Alt-Text blieb stehen (naturalWidth 0). Jetzt steht dort dieselbe
+  // Ersatzkarte wie fuer eine PDF, die pdf.js nicht zeichnen kann - Typzeichen,
+  // Dateiname, Hinweis; Herunterladen bleibt in der Meta-Leiste.
+  const failed = () => {
+    if (!stage.isConnected) return;
+    stage.insertAdjacentHTML('afterend', renderViewerFallback(doc, {
+      hint: t('documents.viewerImageFallbackHint'), icon: 'image-off', alert: true,
+    }));
+    const fallback = stage.nextElementSibling;
+    stage.remove();
+    if (window.lucide && fallback) window.lucide.createIcons({ el: fallback });
+  };
+  if (img.complete) {
+    if (img.naturalWidth > 0) done(); else failed();
+    return;
+  }
   img.addEventListener('load', done, { once: true });
-  img.addEventListener('error', done, { once: true });
+  img.addEventListener('error', failed, { once: true });
 }
 
 function renderViewerContent(doc, previewUrl, downloadUrl) {

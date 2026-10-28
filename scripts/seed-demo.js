@@ -48,7 +48,9 @@ import '../server/utils/require-supported-runtime.js';
 // verschluesselt hat (#2114). Bereits gesetzte Variablen gewinnen.
 import 'dotenv/config';
 import bcrypt from 'bcrypt';
-import { resolve } from 'node:path';
+import { readFileSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { computeLoanSchedule } from '../server/services/loan-amortization.js';
 import { buildDemoPdf } from './seed-demo-pdf.js';
 import { assignPantryProduct } from '../server/services/pantry-products.js';
@@ -1008,12 +1010,13 @@ for (const [slug, name] of [
   folderId[slug] = insertFolder.run(name, alexId).lastInsertRowid;
   folderName[slug] = name;
 }
-// Build a base64 payload of a given byte size so file sizes look realistic.
-function payload(bytes) {
-  const text = 'OIKOS DEMO DOCUMENT - placeholder content. '.repeat(Math.ceil(bytes / 44)).slice(0, bytes);
-  const buf = Buffer.from(text, 'utf8');
-  return { base64: buf.toString('base64'), size: buf.length };
-}
+// DIE BILDBELEGE SIND ECHTE JPEGS (R24, Critique G4 P2-1). Hier lag Klartext
+// mit MIME-Typ image/jpeg, und jede Vorschau und jeder Screenshot zeigte ein
+// kaputtes Bild. Die Dateien zeichnet scripts/generate-seed-images.mjs (ohne
+// Schrift, also in jeder Seed-Sprache richtig); eingecheckt, damit der Seed
+// ohne die Entwicklungsabhaengigkeit `sharp` auskommt.
+const SEED_IMAGES = join(dirname(fileURLToPath(import.meta.url)), 'seed-images');
+const seedImage = (original) => readFileSync(join(SEED_IMAGES, original));
 const insertDoc = db.prepare(`
   INSERT INTO family_documents (name, description, category, status, visibility, folder_id, original_name, mime_type, file_size, content_data, created_by)
   VALUES (@name, @description, @category, 'active', @visibility, @folder, @original, @mime, @size, @content, @created_by)
@@ -1042,7 +1045,7 @@ for (const [name, description, category, visibility, folder, original, mime, siz
   // PDFs sind echte PDFs (#1511): die Vorschau der App und der PDF-Viewer des
   // Browsers öffnen sie, statt einen Fehler zu zeigen. Als Buffer gebunden
   // landet der Inhalt als BLOB in der Spalte - das Format, in dem die App seit
-  // Migration 67 selbst schreibt. Die Bilder bleiben ein Text-Platzhalter.
+  // Migration 67 selbst schreibt. Die Bilder sind echte JPEGs (seedImage).
   // `size` ist in beiden Fällen die angezeigte, realistische Grösse, nicht die
   // der abgelegten Bytes.
   const content = mime === 'application/pdf'
@@ -1059,7 +1062,7 @@ for (const [name, description, category, visibility, folder, original, mime, siz
       footer: L('Yuvomi demo document - sample content, not a real record.',
         'Yuvomi-Demodokument - Beispielinhalt, keine echte Unterlage.'),
     })
-    : payload(Math.min(size, 4096)).base64; // store a small placeholder, report a realistic size
+    : seedImage(original);
   documentIdByName[name] = insertDoc.run({
     name, description, category, visibility, folder: folderId[folder],
     original, mime, size, content, created_by,

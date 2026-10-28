@@ -4101,7 +4101,8 @@
         "dropzoneTitleTouch": "Tap to choose a file",
         "viewerPrevNamed": "Previous document: {{name}}",
         "viewerNextNamed": "Next document: {{name}}",
-        "emptyFolderTitle": "\"{{name}}\" is empty"
+        "emptyFolderTitle": "\"{{name}}\" is empty",
+        "viewerImageFallbackHint": "This image could not be displayed. Download it to open it."
     },
     "housekeeping": {
         "title": "Housekeeping",

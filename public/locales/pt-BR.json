@@ -4038,7 +4038,8 @@
         "dropzoneTitleTouch": "Toque para escolher um arquivo",
         "viewerPrevNamed": "Documento anterior: {{name}}",
         "viewerNextNamed": "Próximo documento: {{name}}",
-        "emptyFolderTitle": "\"{{name}}\" está vazia"
+        "emptyFolderTitle": "\"{{name}}\" está vazia",
+        "viewerImageFallbackHint": "Não foi possível mostrar esta imagem. Baixe-a para abri-la."
     },
     "shortcuts": {
         "goKitchen": "Cozinha",

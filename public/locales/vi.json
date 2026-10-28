@@ -4101,7 +4101,8 @@
         "dropzoneTitleTouch": "Chạm để chọn tệp",
         "viewerPrevNamed": "Tài liệu trước: {{name}}",
         "viewerNextNamed": "Tài liệu tiếp theo: {{name}}",
-        "emptyFolderTitle": "\"{{name}}\" đang trống"
+        "emptyFolderTitle": "\"{{name}}\" đang trống",
+        "viewerImageFallbackHint": "Không thể hiển thị hình ảnh này. Hãy tải xuống để mở."
     },
     "housekeeping": {
         "title": "Dọn dẹp",

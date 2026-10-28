@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   shift began at 06:00, so its name sat above the view and only nameless coloured columns showed;
   the day now opens at the earliest block, and a shift's name stays at the top of the view while you
   scroll, like an appointment's title.
+- **An image that cannot be shown says so.** The document preview left a broken-image icon when a
+  picture failed to load; it now shows the file name and a hint to download it, as it does for a PDF.
+  The receipts and the insurance card in the demo household are real pictures now.
 
 ## [2.82.0] - 2026-10-28
 

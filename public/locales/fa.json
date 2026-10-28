@@ -4101,7 +4101,8 @@
         "dropzoneTitleTouch": "برای انتخاب فایل ضربه بزنید",
         "viewerPrevNamed": "سند قبلی: {{name}}",
         "viewerNextNamed": "سند بعدی: {{name}}",
-        "emptyFolderTitle": "«{{name}}» خالی است"
+        "emptyFolderTitle": "«{{name}}» خالی است",
+        "viewerImageFallbackHint": "نمایش این تصویر ممکن نشد. برای باز کردن، آن را دانلود کنید."
     },
     "userMultiSelect": {
         "nobody": "هیچ‌کس",

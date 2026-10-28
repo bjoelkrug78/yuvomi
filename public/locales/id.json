@@ -4101,7 +4101,8 @@
         "dropzoneTitleTouch": "Ketuk untuk memilih file",
         "viewerPrevNamed": "Dokumen sebelumnya: {{name}}",
         "viewerNextNamed": "Dokumen berikutnya: {{name}}",
-        "emptyFolderTitle": "\"{{name}}\" kosong"
+        "emptyFolderTitle": "\"{{name}}\" kosong",
+        "viewerImageFallbackHint": "Gambar ini tidak dapat ditampilkan. Unduh untuk membukanya."
     },
     "userMultiSelect": {
         "nobody": "Tidak ada",

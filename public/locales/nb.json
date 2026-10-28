@@ -4101,7 +4101,8 @@
         "dropzoneTitleTouch": "Trykk for å velge en fil",
         "viewerPrevNamed": "Forrige dokument: {{name}}",
         "viewerNextNamed": "Neste dokument: {{name}}",
-        "emptyFolderTitle": "«{{name}}» er tom"
+        "emptyFolderTitle": "«{{name}}» er tom",
+        "viewerImageFallbackHint": "Dette bildet kunne ikke vises. Last det ned for å åpne det."
     },
     "housekeeping": {
         "title": "Husarbeid",

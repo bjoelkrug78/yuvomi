@@ -4038,7 +4038,8 @@
         "dropzoneTitleTouch": "Touchez pour choisir un fichier",
         "viewerPrevNamed": "Document précédent : {{name}}",
         "viewerNextNamed": "Document suivant : {{name}}",
-        "emptyFolderTitle": "« {{name}} » est vide"
+        "emptyFolderTitle": "« {{name}} » est vide",
+        "viewerImageFallbackHint": "Cette image n'a pas pu être affichée. Téléchargez-la pour l'ouvrir."
     },
     "shortcuts": {
         "goKitchen": "Cuisine",

@@ -4280,7 +4280,8 @@
         "dropzoneTitleTouch": "Торкніться, щоб вибрати файл",
         "viewerPrevNamed": "Попередній документ: {{name}}",
         "viewerNextNamed": "Наступний документ: {{name}}",
-        "emptyFolderTitle": "Тека «{{name}}» порожня"
+        "emptyFolderTitle": "Тека «{{name}}» порожня",
+        "viewerImageFallbackHint": "Не вдалося показати це зображення. Завантажте його, щоб відкрити."
     },
     "shortcuts": {
         "goKitchen": "Кухня",

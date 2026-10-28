@@ -4038,7 +4038,8 @@
         "dropzoneTitleTouch": "फ़ाइल चुनने के लिए टैप करें",
         "viewerPrevNamed": "पिछला दस्तावेज़: {{name}}",
         "viewerNextNamed": "अगला दस्तावेज़: {{name}}",
-        "emptyFolderTitle": "\"{{name}}\" खाली है"
+        "emptyFolderTitle": "\"{{name}}\" खाली है",
+        "viewerImageFallbackHint": "यह छवि प्रदर्शित नहीं की जा सकी। इसे खोलने के लिए डाउनलोड करें।"
     },
     "shortcuts": {
         "goKitchen": "रसोई",

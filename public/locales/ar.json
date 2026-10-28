@@ -4402,7 +4402,8 @@
         "dropzoneTitleTouch": "اضغط لاختيار ملف",
         "viewerPrevNamed": "المستند السابق: {{name}}",
         "viewerNextNamed": "المستند التالي: {{name}}",
-        "emptyFolderTitle": "\"{{name}}\" فارغ"
+        "emptyFolderTitle": "\"{{name}}\" فارغ",
+        "viewerImageFallbackHint": "تعذّر عرض هذه الصورة. نزّلها لفتحها."
     },
     "shortcuts": {
         "goKitchen": "المطبخ",

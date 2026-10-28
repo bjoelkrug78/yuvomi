@@ -4101,7 +4101,8 @@
         "dropzoneTitleTouch": "Tik om een bestand te kiezen",
         "viewerPrevNamed": "Vorig document: {{name}}",
         "viewerNextNamed": "Volgend document: {{name}}",
-        "emptyFolderTitle": "\"{{name}}\" is leeg"
+        "emptyFolderTitle": "\"{{name}}\" is leeg",
+        "viewerImageFallbackHint": "Deze afbeelding kon niet worden weergegeven. Download hem om hem te openen."
     },
     "housekeeping": {
         "title": "Huishouden",

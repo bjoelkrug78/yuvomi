@@ -4343,7 +4343,8 @@
         "dropzoneTitleTouch": "Dotknij, aby wybrać plik",
         "viewerPrevNamed": "Poprzedni dokument: {{name}}",
         "viewerNextNamed": "Następny dokument: {{name}}",
-        "emptyFolderTitle": "Folder „{{name}}” jest pusty"
+        "emptyFolderTitle": "Folder „{{name}}” jest pusty",
+        "viewerImageFallbackHint": "Nie udało się wyświetlić tego obrazu. Pobierz go, aby go otworzyć."
     },
     "userMultiSelect": {
         "nobody": "Nikt",

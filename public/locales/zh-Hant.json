@@ -4038,7 +4038,8 @@
         "dropzoneTitleTouch": "點選以選擇檔案",
         "viewerPrevNamed": "上一個文件：{{name}}",
         "viewerNextNamed": "下一個文件：{{name}}",
-        "emptyFolderTitle": "「{{name}}」是空的"
+        "emptyFolderTitle": "「{{name}}」是空的",
+        "viewerImageFallbackHint": "無法顯示此圖片。請下載後開啟。"
     },
     "shortcuts": {
         "goKitchen": "廚房",

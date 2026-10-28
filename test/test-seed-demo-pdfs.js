@@ -179,6 +179,39 @@ for (const locale of ['en', 'de']) {
   });
 }
 
+/* Abmessungen aus dem ersten SOF-Segment einer JPEG-Datei - ohne Bildbibliothek,
+ * nur die Segmentkette ab SOI. null, wenn die Datei kein JPEG ist. */
+function jpegSize(buffer) {
+  if (buffer.length < 4 || buffer[0] !== 0xFF || buffer[1] !== 0xD8) return null;
+  let at = 2;
+  while (at + 4 <= buffer.length) {
+    if (buffer[at] !== 0xFF) return null;
+    const marker = buffer[at + 1];
+    const length = buffer.readUInt16BE(at + 2);
+    // SOF0..SOF15 ohne DHT (C4), JPG (C8) und DAC (CC)
+    if (marker >= 0xC0 && marker <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(marker)) {
+      return { height: buffer.readUInt16BE(at + 5), width: buffer.readUInt16BE(at + 7) };
+    }
+    at += 2 + length;
+  }
+  return null;
+}
+
+// R24, Critique G4 P2-1: die Bildbelege waren Klartext mit image/jpeg, und
+// jede Demo-Vorschau zeigte ein kaputtes Bild.
+test('Seed: jedes Dokument mit image/jpeg ist ein JPEG, das ein Bild traegt', async () => {
+  const images = seed('de').filter((doc) => doc.mime_type === 'image/jpeg');
+  assert.ok(images.length >= 3, `erwartet die drei Bildbelege, gefunden ${images.length}`);
+  for (const doc of images) {
+    const { buffer, mime } = await readDocumentContent(doc);
+    assert.equal(mime, 'image/jpeg', `${doc.original_name}: MIME`);
+    const size = jpegSize(buffer);
+    assert.ok(size, `${doc.original_name}: kein JPEG (beginnt mit ${buffer.subarray(0, 8).toString('hex')})`);
+    assert.ok(size.width >= 200 && size.height >= 200, `${doc.original_name}: ${size.width}x${size.height}`);
+    assert.equal(buffer.readUInt16BE(buffer.length - 2), 0xFFD9, `${doc.original_name}: endet nicht mit EOI`);
+  }
+});
+
 test('Seed (de): Umlaute, ß und Klammern sind im Seed wirklich vertreten', () => {
   // Hält den Fall oben ehrlich: verschwände der Titel mit Klammern aus dem
   // Seed, prüfte die Schleife das Escaping nicht mehr.

@@ -4038,7 +4038,8 @@
         "dropzoneTitleTouch": "Tryck för att välja en fil",
         "viewerPrevNamed": "Föregående dokument: {{name}}",
         "viewerNextNamed": "Nästa dokument: {{name}}",
-        "emptyFolderTitle": "”{{name}}” är tom"
+        "emptyFolderTitle": "”{{name}}” är tom",
+        "viewerImageFallbackHint": "Det gick inte att visa denna bild. Ladda ner den för att öppna den."
     },
     "shortcuts": {
         "goKitchen": "Kök",

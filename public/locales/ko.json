@@ -4101,7 +4101,8 @@
         "dropzoneTitleTouch": "탭하여 파일 선택",
         "viewerPrevNamed": "이전 문서: {{name}}",
         "viewerNextNamed": "다음 문서: {{name}}",
-        "emptyFolderTitle": "\"{{name}}\" 폴더가 비어 있습니다"
+        "emptyFolderTitle": "\"{{name}}\" 폴더가 비어 있습니다",
+        "viewerImageFallbackHint": "이 이미지를 표시할 수 없습니다. 다운로드하여 여세요."
     },
     "userMultiSelect": {
         "nobody": "없음",

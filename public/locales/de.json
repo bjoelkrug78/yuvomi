@@ -4101,7 +4101,8 @@
         "dropzoneTitleTouch": "Tippen, um eine Datei auszuwählen",
         "viewerPrevNamed": "Vorheriges Dokument: {{name}}",
         "viewerNextNamed": "Nächstes Dokument: {{name}}",
-        "emptyFolderTitle": "„{{name}}“ ist leer"
+        "emptyFolderTitle": "„{{name}}“ ist leer",
+        "viewerImageFallbackHint": "Dieses Bild konnte nicht angezeigt werden. Lade es herunter, um es zu öffnen."
     },
     "userMultiSelect": {
         "nobody": "Niemand",

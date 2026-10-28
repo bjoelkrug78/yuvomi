@@ -4038,7 +4038,8 @@
         "dropzoneTitleTouch": "Πατήστε για να επιλέξετε αρχείο",
         "viewerPrevNamed": "Προηγούμενο έγγραφο: {{name}}",
         "viewerNextNamed": "Επόμενο έγγραφο: {{name}}",
-        "emptyFolderTitle": "Το «{{name}}» είναι κενό"
+        "emptyFolderTitle": "Το «{{name}}» είναι κενό",
+        "viewerImageFallbackHint": "Δεν ήταν δυνατή η προβολή αυτής της εικόνας. Κατεβάστε την για να την ανοίξετε."
     },
     "shortcuts": {
         "goKitchen": "Κουζίνα",
