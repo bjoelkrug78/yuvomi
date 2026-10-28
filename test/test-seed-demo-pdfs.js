@@ -237,6 +237,42 @@ function readSeeded(locale, query) {
   }
 }
 
+// R24, Critique G2 P3-2 / G2 P3-3 / G3 P3-3: der Seed provozierte Fehlbilder.
+// Eltern lasen im Belohnungsverlauf sechsmal "Aufgabe erledigt" (earn ohne
+// task_id, der Server maskiert den Grund dann), der Aufgaben-Verlauf war in
+// jeder Demo leer, und nach der Rezept-Uebergabe standen "Zitronen" und
+// "Zitrone" nebeneinander auf dem Einkaufszettel.
+test('Seed (de): jede Punkte-Gutschrift nennt ihre erledigte Aufgabe, und der Verlauf hat Eintraege', () => {
+  const { earns, completions } = readSeeded('de', (db) => ({
+    earns: db.prepare(`SELECT l.reason, l.task_id, l.created_at, t.title, t.status, t.points, c.completed_at
+      FROM reward_ledger l LEFT JOIN tasks t ON t.id = l.task_id LEFT JOIN task_completions c ON c.task_id = l.task_id
+      WHERE l.type = 'earn'`).all(),
+    completions: db.prepare(`SELECT t.title, t.status FROM task_completions c JOIN tasks t ON t.id = c.task_id`).all(),
+  }));
+  assert.ok(earns.length >= 5, `erwartet mehrere Gutschriften, gefunden ${earns.length}`);
+  const orphans = earns.filter((e) => e.task_id == null).map((e) => e.reason);
+  assert.deepEqual(orphans, [], `Gutschriften ohne Aufgabe: ${orphans.join(', ')}`);
+  for (const e of earns) {
+    assert.equal(e.status, 'done', `${e.reason}: die Aufgabe ist nicht erledigt`);
+    assert.equal(e.reason, e.title, `${e.reason}: Grund und Aufgabentitel weichen ab`);
+    assert.ok(e.points > 0, `${e.reason}: die Aufgabe traegt keine Punkte`);
+    assert.equal(e.completed_at, e.created_at, `${e.reason}: Verlaufseintrag und Gutschrift zu verschiedenen Zeiten`);
+  }
+  assert.ok(completions.length >= 5, `der Aufgaben-Verlauf hat ${completions.length} Eintraege`);
+  assert.deepEqual(completions.filter((c) => c.status !== 'done').map((c) => c.title), [], 'Verlauf an offenen Aufgaben');
+});
+
+test('Seed (de): die Rezept-Uebergabe stellt keine "Zitrone" neben die "Zitronen"', () => {
+  const { items, ingredients } = readSeeded('de', (db) => ({
+    items: db.prepare('SELECT name FROM shopping_items').all().map((r) => r.name),
+    ingredients: db.prepare('SELECT name FROM recipe_ingredients').all().map((r) => r.name),
+  }));
+  const names = [...new Set([...items, ...ingredients])];
+  const stem = (n) => n.toLowerCase().replace(/(en|n|e|s)$/u, '');
+  const near = names.filter((a) => names.some((b) => a !== b && stem(a) === stem(b)));
+  assert.deepEqual(near, [], `fast gleiche Namen zwischen Einkauf und Rezepten: ${near.join(', ')}`);
+});
+
 test('Seed (de): Listen in Notizen sind Markdown, die Gartenliste hakt man ab', () => {
   const notes = readSeeded('de', (db) => db.prepare('SELECT title, content FROM notes').all());
   const glyphs = notes.filter((n) => /^\s*[□☐☑✓✔•]/mu.test(n.content)).map((n) => n.title);

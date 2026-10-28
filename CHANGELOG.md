@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **An image that cannot be shown says so.** The document preview left a broken-image icon when a
   picture failed to load; it now shows the file name and a hint to download it, as it does for a PDF.
   The receipts and the insurance card in the demo household are real pictures now.
+- **The demo household has a history.** Parents saw "Task completed" six times in the rewards history
+  because the demo points belonged to no task; each now names the chore it was earned for, the tasks'
+  history view shows who ticked what, and the demo recipe no longer puts "Zitrone" next to "Zitronen"
+  on the shopping list.
 
 ## [2.82.0] - 2026-10-28
 

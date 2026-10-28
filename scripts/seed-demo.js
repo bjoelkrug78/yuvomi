@@ -55,6 +55,7 @@ import { computeLoanSchedule } from '../server/services/loan-amortization.js';
 import { buildDemoPdf } from './seed-demo-pdf.js';
 import { assignPantryProduct } from '../server/services/pantry-products.js';
 import { applyChildStartPermissions } from '../server/permissions.js';
+import { recordCompletion } from '../server/services/task-completions.js';
 
 const args = process.argv.slice(2);
 const dbIdx = args.indexOf('--db');
@@ -477,6 +478,16 @@ for (const [title, description, category, priority, status, start_date, due_date
   for (const u of assignees) insertTaskAssign.run(id, u);
   for (const tag of tags) insertTaskTag.run(id, tag, tagKey(tag));
 }
+// DER VERLAUF IST NICHT LEER (R24, Critique G2 P3-3). Die erledigten
+// Seed-Aufgaben standen ohne Eintrag in task_completions da, und die Ansicht
+// "Verlauf" der Aufgaben zeigte in jeder Demo ihren Leerzustand. Eingetragen
+// wie beim Abhaken (recordCompletion), zum Faelligkeitstag; die Kinder-Aufgaben
+// bekommen ihren Eintrag unten mit der Punkte-Gutschrift.
+for (const [title, days, hour, min, who] of [
+  [L('Call insurance about claim', 'Versicherung wegen Schaden anrufen'), -3, 10, 15, alexId],
+  [L('Grocery run', 'Wocheneinkauf erledigen'), -1, 18, 20, lindaId],
+]) recordCompletion(db, taskIdByTitle[title], who, null, { completedAt: isoFromNow(days, hour, min) });
+
 // Point values on the children's chores (drives the Rewards module)
 const setTaskPoints = db.prepare('UPDATE tasks SET points = ? WHERE id = ?');
 [
@@ -560,7 +571,7 @@ const recipes = [
   ]],
   [L('Grilled Salmon & Roasted Veg', 'Lachs mit Ofengemüse'), L('Lemon butter sauce ties it all together. Ready in 30 minutes.', 'Die Zitronenbutter hält alles zusammen. In 30 Minuten fertig.'), null, [
     [L('Salmon fillets', 'Lachsfilets'), '4', CAT.meat], [L('Courgette', 'Zucchini'), '2', CAT.produce], [L('Bell peppers', 'Paprika'), '2', CAT.produce],
-    [L('Lemon', 'Zitrone'), '1', CAT.produce], [L('Butter', 'Butter'), '50 g', CAT.dairy],
+    [L('Lemon juice', 'Zitronensaft'), L('2 tbsp', '2 EL'), CAT.produce], [L('Butter', 'Butter'), '50 g', CAT.dairy],
   ]],
   [L('Sunday Roast Chicken', 'Hähnchen aus dem Ofen'), L('Rest the chicken for 15 minutes before carving.', 'Das Hähnchen vor dem Tranchieren 15 Minuten ruhen lassen.'), null, [
     [L('Whole chicken', 'Ganzes Hähnchen'), '1,5 kg', CAT.meat], [L('Potatoes', 'Kartoffeln'), '1 kg', CAT.produce], [L('Carrots', 'Möhren'), '500 g', CAT.produce],
@@ -1467,23 +1478,42 @@ const REWARD_GAMING    = L('Video game hour', 'Eine Stunde zocken');
 ].forEach((r, i) => insertRewardItem.run(r[0], r[1], r[2], r[3], i, alexId));
 
 const insertRewardLedger = db.prepare(`
-  INSERT INTO reward_ledger (user_id, delta, type, reason, task_id, redemption_id, created_by, created_at)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  INSERT INTO reward_ledger (user_id, delta, type, reason, task_id, redemption_id, created_by, created_at, series_id)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 `);
+// JEDE GUTSCHRIFT HAT IHRE AUFGABE (R24, Critique G2 P3-2). Die earn-Zeilen
+// standen ohne task_id da; der Server zeigt den Grund einer solchen Zeile nur
+// der Person, der sie gehoert (routes/rewards.js, LEDGER_TASK_VISIBLE_SQL), und
+// Eltern lasen sechsmal "Aufgabe erledigt". Jetzt bucht der Seed, was die App
+// beim Abhaken bucht (awardForCompletion): eine erledigte Aufgabe des Kindes
+// mit Punkten, ihr Verlaufseintrag (task_completions) und die Gutschrift mit
+// Titel, task_id und Serie - zur selben Zeit.
+const insertDoneChore = db.prepare(`
+  INSERT INTO tasks (title, category, priority, status, due_date, assigned_to, created_by, points)
+  VALUES (?, 'household', 'none', 'done', ?, ?, ?, ?)
+`);
+function earnForChore(userId, title, points, days, hour = 18, min = 0, { taskId = null } = {}) {
+  if (!taskId) {
+    taskId = insertDoneChore.run(title, daysFromNow(days), userId, lindaId, points).lastInsertRowid;
+    insertTaskAssign.run(taskId, userId);
+  }
+  const at = isoFromNow(days, hour, min);
+  recordCompletion(db, taskId, userId, null, { completedAt: at });
+  insertRewardLedger.run(userId, points, 'earn', title, taskId, null, userId, at, taskId);
+}
 // Emma earns points, then redeems an ice cream trip
-[
-  [10, 'earn',  L('Tidied her bedroom',      'Zimmer aufgeräumt'),          -9],
-  [15, 'earn',  L('Helped with the dishes',  'Beim Abwasch geholfen'),      -7],
-  [20, 'bonus', L('Great school week 🎉',    'Tolle Schulwoche 🎉'),        -5],
-  [10, 'earn',  L('Fed the cat all week',    'Die ganze Woche Katze gefüttert'), -2],
-].forEach(([delta, type, reason, d]) => insertRewardLedger.run(emmaId, delta, type, reason, null, null, alexId, isoFromNow(d, 18, 0)));
+earnForChore(emmaId, L('Tidy the desk', 'Schreibtisch aufräumen'), 10, -9);
+earnForChore(emmaId, L('Help with the dishes', 'Beim Abwasch helfen'), 15, -7, 19, 30);
+insertRewardLedger.run(emmaId, 20, 'bonus', L('Great school week 🎉', 'Tolle Schulwoche 🎉'), null, null, alexId, isoFromNow(-5, 18, 0), null);
+earnForChore(emmaId, L('Feed the cat', 'Katze füttern'), 10, -2, 7, 45);
 // Leo earns points (has a pending redemption, not yet deducted)
-[
-  [15, 'earn',  L('Practised piano',          'Klavier geübt'),             -8],
-  [10, 'earn',  L('Watered the plants',       'Pflanzen gegossen'),         -6],
-  [20, 'bonus', L('Kept his room tidy all week','Zimmer die ganze Woche ordentlich'), -4],
-  [15, 'earn',  L('Homework done on time',    'Hausaufgaben pünktlich erledigt'), -1],
-].forEach(([delta, type, reason, d]) => insertRewardLedger.run(leoId, delta, type, reason, null, null, alexId, isoFromNow(d, 18, 0)));
+earnForChore(leoId, L('Practise piano', 'Klavier üben'), 15, -8, 17, 15);
+earnForChore(leoId, L('Take out the bins', 'Mülltonnen rausstellen'), 10, -6, 19, 0);
+// Die schon erledigte Seed-Aufgabe "Pflanzen gießen" (5 Punkte, vorgestern)
+// bucht wie jede andere - vorher stand sie erledigt da, ohne Gutschrift.
+earnForChore(leoId, L('Water the plants', 'Pflanzen gießen'), 5, -2, 17, 40, { taskId: taskIdByTitle[L('Water the plants', 'Pflanzen gießen')] });
+insertRewardLedger.run(leoId, 20, 'bonus', L('Kept his room tidy all week', 'Zimmer die ganze Woche ordentlich'), null, null, alexId, isoFromNow(-4, 18, 0), null);
+earnForChore(leoId, L('Homework done on time', 'Hausaufgaben pünktlich erledigt'), 15, -1, 16, 30);
 
 const insertRedemption = db.prepare(`
   INSERT INTO reward_redemptions (user_id, catalog_id, reward_name, reward_icon, cost, status, note, requested_by, decided_by, decided_at, created_at)
@@ -1493,7 +1523,7 @@ const insertRedemption = db.prepare(`
 const emmaRedemptionId = insertRedemption.run(
   emmaId, 2, REWARD_ICE_CREAM, '🍦', 25, 'fulfilled', null, emmaId, alexId, isoFromNow(-3, 19, 0), isoFromNow(-3, 16, 0)
 ).lastInsertRowid;
-insertRewardLedger.run(emmaId, -25, 'redeem', REWARD_ICE_CREAM, null, emmaRedemptionId, alexId, isoFromNow(-3, 19, 0));
+insertRewardLedger.run(emmaId, -25, 'redeem', REWARD_ICE_CREAM, null, emmaRedemptionId, alexId, isoFromNow(-3, 19, 0), null);
 // Leo: pending request awaiting a parent's approval (no ledger entry yet)
 insertRedemption.run(leoId, 4, REWARD_GAMING, '🎮', 40, 'pending',
   L('Please? Finished all my homework!', 'Bitte? Ich habe alle Hausaufgaben fertig!'),
