@@ -319,6 +319,22 @@ test('/join ohne gueltige Einladung: der Titel nennt sie, EIN Satz, "Zur Anmeldu
   }
 });
 
+/* WER HILFT, WER EINLAEDT (Critique R24, G6-Zugang-P3-1). Ohne SMTP stand nach
+ * "Ungueltige Anmeldedaten." kein Weg da (der Link "Passwort vergessen?" fehlt
+ * dort zu Recht); die Einladung sagte "Du wurdest zu Yuvomi eingeladen" ohne
+ * Person und mit dem Produktnamen auch dort, wo der Haushalt einen eigenen hat. */
+test('R24: falsche Zugangsdaten ohne Zuruecksetzen nennen die Administration, die Einladung nennt die Person', () => {
+  const login = read('../public/pages/login.js');
+  assert.match(login, /const resetOffered = form\.querySelector\('\.auth-form__forgot'\)\?\.hidden === false;/,
+    'gefragt wird der Link im Formular, nicht der Gast-Knopf des SSO-Blocks');
+  assert.match(login, /err\.status === 401\) message = t\(resetOffered \? 'login\.invalidCredentials' : 'login\.invalidCredentialsAskAdmin'\)/);
+  const join = read('../public/pages/join.js');
+  assert.match(join, /if \(preview\.invited_by\) \{\s*intro\.textContent = t\('join\.introNamed', \{ name: preview\.invited_by, app: getStoredAppName\(\) \}\);/);
+  const de = JSON.parse(read('../public/locales/de.json'));
+  assert.match(de.login.invalidCredentialsAskAdmin, /^Ungültige Anmeldedaten\. .*Administration/);
+  assert.equal(de.join.introNamed, '{{name}} hat dich zu {{app}} eingeladen. Lege hier deine Zugangsdaten fest.');
+});
+
 /* /pair: DER FEHLER STEHT AM FELD, UND ES GIBT EINEN WEG ZURUECK (Critique R22,
  * D19). Die Meldung stand als Banner unter dem Formular, das Feld zeigte keinen
  * Fehlerzustand, ein falscher Code kam als englischer Servertext an, und von der

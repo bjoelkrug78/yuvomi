@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "Avbryt",
         "ssoOnlyHint": "Innlogging til denne husholdningen skjer utelukkende via felles pålogging.",
         "guestPasswordLogin": "Gjestinnlogging med passord",
-        "accountCannotSignIn": "Denne kontoen kan ikke logge inn. Vennligst kontakt administratoren for husholdningen din."
+        "accountCannotSignIn": "Denne kontoen kan ikke logge inn. Vennligst kontakt administratoren for husholdningen din.",
+        "invalidCredentialsAskAdmin": "Ugyldige påloggingsdetaljer. Glemt passordet? Administratoren for husholdningen kan sette et nytt."
     },
     "setup": {
         "title": "Velkommen til Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "Visningsnavnet kan være maksimalt 128 tegn langt.",
         "previewFailed": "Invitasjonen kunne ikke kontrolleres akkurat nå. Vennligst last inn siden på nytt om et øyeblikk.",
         "invalidTitle": "Ugyldig invitasjon",
-        "toLogin": "Gå til pålogging"
+        "toLogin": "Gå til pålogging",
+        "introNamed": "{{name}} har invitert deg til {{app}}. Velg innloggingsdetaljer her."
     },
     "newLabel": {
         "tasks": "Oppgave",

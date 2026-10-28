@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "取消",
         "ssoOnlyHint": "登录此家庭仅通过 SSO 进行。",
         "guestPasswordLogin": "以访客身份用密码登录",
-        "accountCannotSignIn": "此账户无法登录，请联系您家庭的管理员。"
+        "accountCannotSignIn": "此账户无法登录，请联系您家庭的管理员。",
+        "invalidCredentialsAskAdmin": "用户名或密码错误。忘记密码了吗？家庭管理员可以为你设置新密码。"
     },
     "setup": {
         "title": "欢迎使用 Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "显示名称最多 128 个字符。",
         "previewFailed": "目前无法检查该邀请，请稍后重新加载页面。",
         "invalidTitle": "邀请无效",
-        "toLogin": "前往登录"
+        "toLogin": "前往登录",
+        "introNamed": "{{name}} 邀请你加入 {{app}}。请在此设置登录信息。"
     },
     "newLabel": {
         "tasks": "任务",

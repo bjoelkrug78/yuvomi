@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "Annuleren",
         "ssoOnlyHint": "Aanmelden bij dit huishouden gaat uitsluitend via SSO.",
         "guestPasswordLogin": "Gastaanmelding met wachtwoord",
-        "accountCannotSignIn": "Dit account kan zich niet aanmelden. Neem contact op met de beheerder van je huishouden."
+        "accountCannotSignIn": "Dit account kan zich niet aanmelden. Neem contact op met de beheerder van je huishouden.",
+        "invalidCredentialsAskAdmin": "Ongeldige inloggegevens. Wachtwoord vergeten? De beheerder van je huishouden kan een nieuw instellen."
     },
     "setup": {
         "title": "Welkom bij Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "De weergavenaam mag maximaal 128 tekens lang zijn.",
         "previewFailed": "De uitnodiging kon nu niet worden gecontroleerd. Laad de pagina zo meteen opnieuw.",
         "invalidTitle": "Uitnodiging ongeldig",
-        "toLogin": "Naar inloggen"
+        "toLogin": "Naar inloggen",
+        "introNamed": "{{name}} heeft je uitgenodigd voor {{app}}. Stel hier je inloggegevens in."
     },
     "newLabel": {
         "tasks": "Taak",

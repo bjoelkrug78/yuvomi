@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "Annuler",
         "ssoOnlyHint": "La connexion à ce foyer se fait exclusivement via le SSO.",
         "guestPasswordLogin": "Connexion invité avec mot de passe",
-        "accountCannotSignIn": "Ce compte ne peut pas se connecter. Contactez l'administrateur de votre foyer."
+        "accountCannotSignIn": "Ce compte ne peut pas se connecter. Contactez l'administrateur de votre foyer.",
+        "invalidCredentialsAskAdmin": "Identifiants invalides. Mot de passe oublié ? L'administrateur de votre foyer peut en définir un nouveau."
     },
     "setup": {
         "title": "Bienvenue sur Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "Le nom affiché ne peut pas dépasser 128 caractères.",
         "previewFailed": "L'invitation n'a pas pu être vérifiée pour le moment. Rechargez la page dans un instant.",
         "invalidTitle": "Invitation invalide",
-        "toLogin": "Aller à la connexion"
+        "toLogin": "Aller à la connexion",
+        "introNamed": "{{name}} vous a invité à {{app}}. Choisissez ici vos identifiants."
     },
     "newLabel": {
         "tasks": "Tâche",

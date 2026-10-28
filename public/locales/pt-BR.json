@@ -3469,7 +3469,8 @@
         "guestPasswordLogin": "Login de convidado com senha",
         "accountCannotSignIn": "Esta conta não pode fazer login. Contate o administrador do seu grupo familiar.",
         "ssoEmailAmbiguous": "Não foi possível vincular sua conta de logon único porque este endereço de e-mail corresponde a mais de uma pessoa.",
-        "ssoLinkRequired": "O logon único exige que um administrador vincule seu endereço de e-mail a uma pessoa."
+        "ssoLinkRequired": "O logon único exige que um administrador vincule seu endereço de e-mail a uma pessoa.",
+        "invalidCredentialsAskAdmin": "Credenciais inválidas. Esqueceu a senha? O administrador do seu grupo familiar pode definir uma nova."
     },
     "setup": {
         "title": "Bem-vindo ao Yuvomi",
@@ -6013,7 +6014,8 @@
         "displayNameTooLong": "O nome de exibição pode ter no máximo 128 caracteres.",
         "previewFailed": "Não foi possível verificar o convite no momento. Recarregue a página em instantes.",
         "invalidTitle": "Convite inválido",
-        "toLogin": "Ir para o login"
+        "toLogin": "Ir para o login",
+        "introNamed": "{{name}} convidou você para o {{app}}. Defina seus dados de acesso abaixo."
     },
     "newLabel": {
         "tasks": "Tarefa",

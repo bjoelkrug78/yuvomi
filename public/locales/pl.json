@@ -3705,7 +3705,8 @@
         "twoFactorCancel": "Anuluj",
         "ssoOnlyHint": "Logowanie do tego gospodarstwa domowego odbywa się wyłącznie przez SSO.",
         "guestPasswordLogin": "Logowanie gościa hasłem",
-        "accountCannotSignIn": "To konto nie może się zalogować. Skontaktuj się z administratorem swojego gospodarstwa domowego."
+        "accountCannotSignIn": "To konto nie może się zalogować. Skontaktuj się z administratorem swojego gospodarstwa domowego.",
+        "invalidCredentialsAskAdmin": "Nieprawidłowe dane logowania. Nie pamiętasz hasła? Administrator gospodarstwa domowego może ustawić nowe."
     },
     "setup": {
         "title": "Witamy w Yuvomi",
@@ -6803,7 +6804,8 @@
         "displayNameTooLong": "Nazwa wyświetlana może mieć najwyżej 128 znaków.",
         "previewFailed": "Nie udało się teraz sprawdzić zaproszenia. Odśwież stronę za chwilę.",
         "invalidTitle": "Nieprawidłowe zaproszenie",
-        "toLogin": "Przejdź do logowania"
+        "toLogin": "Przejdź do logowania",
+        "introNamed": "{{name}} zaprasza cię do {{app}}. Ustaw tutaj swoje dane logowania."
     },
     "newLabel": {
         "tasks": "Zadanie",

@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "キャンセル",
         "ssoOnlyHint": "この世帯へのサインインは SSO のみです。",
         "guestPasswordLogin": "ゲストとしてパスワードでサインイン",
-        "accountCannotSignIn": "このアカウントはサインインできません。世帯の管理者にお問い合わせください。"
+        "accountCannotSignIn": "このアカウントはサインインできません。世帯の管理者にお問い合わせください。",
+        "invalidCredentialsAskAdmin": "ユーザー名またはパスワードが正しくありません。パスワードを忘れた場合は、世帯の管理者が新しいパスワードを設定できます。"
     },
     "setup": {
         "title": "Yuvomi へようこそ",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "表示名は128文字までです。",
         "previewFailed": "招待をいま確認できませんでした。しばらくしてからページを再読み込みしてください。",
         "invalidTitle": "招待が無効です",
-        "toLogin": "ログインへ"
+        "toLogin": "ログインへ",
+        "introNamed": "{{name}}さんから{{app}}に招待されました。ここでログイン情報を設定してください。"
     },
     "newLabel": {
         "tasks": "タスク",

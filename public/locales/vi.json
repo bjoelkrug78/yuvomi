@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "Hủy",
         "ssoOnlyHint": "Việc đăng nhập vào hộ gia đình này chỉ diễn ra qua SSO.",
         "guestPasswordLogin": "Đăng nhập khách bằng mật khẩu",
-        "accountCannotSignIn": "Tài khoản này không thể đăng nhập. Vui lòng liên hệ quản trị viên hộ gia đình của bạn."
+        "accountCannotSignIn": "Tài khoản này không thể đăng nhập. Vui lòng liên hệ quản trị viên hộ gia đình của bạn.",
+        "invalidCredentialsAskAdmin": "Thông tin đăng nhập không hợp lệ. Quên mật khẩu? Quản trị viên hộ gia đình có thể đặt mật khẩu mới."
     },
     "setup": {
         "title": "Chào mừng đến với Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "Tên hiển thị dài tối đa 128 ký tự.",
         "previewFailed": "Hiện chưa kiểm tra được lời mời. Vui lòng tải lại trang sau giây lát.",
         "invalidTitle": "Lời mời không hợp lệ",
-        "toLogin": "Đến đăng nhập"
+        "toLogin": "Đến đăng nhập",
+        "introNamed": "{{name}} đã mời bạn vào {{app}}. Hãy đặt thông tin đăng nhập tại đây."
     },
     "newLabel": {
         "tasks": "Nhiệm vụ",

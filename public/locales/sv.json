@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "Avbryt",
         "ssoOnlyHint": "Inloggning till det här hushållet sker uteslutande via SSO.",
         "guestPasswordLogin": "Gästinloggning med lösenord",
-        "accountCannotSignIn": "Det här kontot kan inte logga in. Kontakta administratören för ditt hushåll."
+        "accountCannotSignIn": "Det här kontot kan inte logga in. Kontakta administratören för ditt hushåll.",
+        "invalidCredentialsAskAdmin": "Ogiltiga användaruppgifter. Glömt lösenordet? Hushållets administratör kan ange ett nytt."
     },
     "setup": {
         "title": "Välkommen till Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "Visningsnamnet får vara högst 128 tecken långt.",
         "previewFailed": "Inbjudan kunde inte kontrolleras just nu. Ladda om sidan om en stund.",
         "invalidTitle": "Ogiltig inbjudan",
-        "toLogin": "Till inloggningen"
+        "toLogin": "Till inloggningen",
+        "introNamed": "{{name}} har bjudit in dig till {{app}}. Ange dina inloggningsuppgifter här."
     },
     "newLabel": {
         "tasks": "Uppgift",

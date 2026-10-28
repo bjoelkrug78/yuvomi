@@ -3487,7 +3487,8 @@
         "twoFactorCancel": "Batal",
         "ssoOnlyHint": "Masuk ke rumah tangga ini hanya melalui SSO.",
         "guestPasswordLogin": "Masuk tamu dengan kata sandi",
-        "accountCannotSignIn": "Akun ini tidak dapat masuk. Silakan hubungi administrator rumah tangga Anda."
+        "accountCannotSignIn": "Akun ini tidak dapat masuk. Silakan hubungi administrator rumah tangga Anda.",
+        "invalidCredentialsAskAdmin": "Kredensial tidak valid. Lupa kata sandi? Administrator rumah tangga Anda dapat menetapkan yang baru."
     },
     "setup": {
         "title": "Selamat datang di Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "Nama tampilan paling banyak 128 karakter.",
         "previewFailed": "Undangan tidak dapat diperiksa saat ini. Silakan muat ulang halaman sebentar lagi.",
         "invalidTitle": "Undangan tidak valid",
-        "toLogin": "Ke halaman masuk"
+        "toLogin": "Ke halaman masuk",
+        "introNamed": "{{name}} mengundang Anda ke {{app}}. Tentukan data masuk Anda di sini."
     },
     "newLabel": {
         "tasks": "Tugas",

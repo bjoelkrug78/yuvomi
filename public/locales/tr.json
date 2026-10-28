@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "İptal",
         "ssoOnlyHint": "Bu haneye giriş yalnızca SSO ile yapılır.",
         "guestPasswordLogin": "Şifreyle misafir girişi",
-        "accountCannotSignIn": "Bu hesap giriş yapamaz. Lütfen hane yöneticinizle iletişime geçin."
+        "accountCannotSignIn": "Bu hesap giriş yapamaz. Lütfen hane yöneticinizle iletişime geçin.",
+        "invalidCredentialsAskAdmin": "Geçersiz kimlik bilgileri. Şifreni mi unuttun? Hane yöneticin yeni bir şifre belirleyebilir."
     },
     "setup": {
         "title": "Yuvomi’a hoş geldiniz",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "Görünen ad en fazla 128 karakter olabilir.",
         "previewFailed": "Davet şu anda denetlenemedi. Lütfen birazdan sayfayı yeniden yükle.",
         "invalidTitle": "Geçersiz davet",
-        "toLogin": "Girişe git"
+        "toLogin": "Girişe git",
+        "introNamed": "{{name}} seni {{app}} uygulamasına davet etti. Giriş bilgilerini burada belirle."
     },
     "newLabel": {
         "tasks": "Görev",

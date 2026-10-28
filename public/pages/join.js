@@ -6,7 +6,7 @@
 import { auth } from '/api.js';
 import { t } from '/i18n.js';
 import { esc } from '/utils/html.js';
-import { authHeroHtml, authErrorHtml, wirePasswordToggle, passwordRuleHtml, flagField, hideAuthError } from '/utils/auth-ui.js';
+import { authHeroHtml, authErrorHtml, wirePasswordToggle, passwordRuleHtml, flagField, hideAuthError, getStoredAppName } from '/utils/auth-ui.js';
 
 // Dieselbe Regel wie im Server (POST /auth/invites/accept). Sie hier zu spiegeln
 // erspart dem Nutzer ein 400, das sich sonst nicht von einem toten Token
@@ -133,6 +133,13 @@ export async function render(container) {
   }
   if (!preview?.valid) { dead(); return; }
   btn.disabled = false;
+  // DIE EINLADUNG NENNT, WER EINLAEDT (Critique R24, G6-Zugang-P3-1): "Du
+  // wurdest zu Yuvomi eingeladen" sagte weder wer noch wohin - und trug den
+  // Produktnamen auch dort, wo ein Haushalt seinen eigenen Namen gesetzt hat.
+  // Jetzt Person und Name der App, wie ihn die Marke darueber zeigt.
+  if (preview.invited_by) {
+    intro.textContent = t('join.introNamed', { name: preview.invited_by, app: getStoredAppName() });
+  }
 
   // Was die Einladung vorgibt, steht fest: der Server nimmt ohnehin ihre Werte.
   // Das Feld wird deshalb schreibgeschützt UND sichtbar als vorgegeben markiert -

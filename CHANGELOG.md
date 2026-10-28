@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Sign-in and invitations say who helps and who invited you.** Without email password reset, a wrong
+  password now adds that your household's administrator can set a new one, instead of leaving you at
+  "Invalid credentials." The invitation page names the person who invited you and uses the app name
+  your household set, instead of "You have been invited to Yuvomi". The invitation preview of the API
+  carries this as `invited_by`.
 - **German settings say "Zurzeit:" for what applies now.** The hint under Language of stored entries,
   Region, Time zone and Currency began with "Gerade Englisch.", which next to a German interface read
   like "even English"; it now reads "Zurzeit: Englisch.".

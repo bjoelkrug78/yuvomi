@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "Cancel",
         "ssoOnlyHint": "Signing in to this household works exclusively through single sign-on.",
         "guestPasswordLogin": "Guest sign-in with password",
-        "accountCannotSignIn": "This account cannot sign in. Please contact your household's administrator."
+        "accountCannotSignIn": "This account cannot sign in. Please contact your household's administrator.",
+        "invalidCredentialsAskAdmin": "Invalid credentials. Forgot your password? Your household's administrator can set a new one."
     },
     "setup": {
         "title": "Welcome to Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "The display name may be at most 128 characters long.",
         "previewFailed": "The invitation could not be checked right now. Please reload the page in a moment.",
         "invalidTitle": "Invitation not valid",
-        "toLogin": "Go to login"
+        "toLogin": "Go to login",
+        "introNamed": "{{name}} invited you to {{app}}. Choose your sign-in details here."
     },
     "newLabel": {
         "tasks": "Task",

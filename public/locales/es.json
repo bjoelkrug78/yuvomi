@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "Cancelar",
         "ssoOnlyHint": "El acceso a este hogar se realiza exclusivamente mediante SSO.",
         "guestPasswordLogin": "Acceso de invitado con contraseña",
-        "accountCannotSignIn": "Esta cuenta no puede iniciar sesión. Ponte en contacto con la administración de tu hogar."
+        "accountCannotSignIn": "Esta cuenta no puede iniciar sesión. Ponte en contacto con la administración de tu hogar.",
+        "invalidCredentialsAskAdmin": "Credenciales incorrectas. ¿Olvidaste la contraseña? La administración de tu hogar puede asignarte una nueva."
     },
     "setup": {
         "title": "Bienvenido a Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "El nombre visible puede tener como máximo 128 caracteres.",
         "previewFailed": "No se ha podido comprobar la invitación en este momento. Vuelve a cargar la página en unos instantes.",
         "invalidTitle": "Invitación no válida",
-        "toLogin": "Ir al inicio de sesión"
+        "toLogin": "Ir al inicio de sesión",
+        "introNamed": "{{name}} te ha invitado a {{app}}. Define aquí tus datos de acceso."
     },
     "newLabel": {
         "tasks": "Tarea",

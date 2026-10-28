@@ -3469,7 +3469,8 @@
         "twoFactorCancel": "Cancelar",
         "ssoOnlyHint": "O acesso a este agregado familiar é feito exclusivamente através de SSO.",
         "guestPasswordLogin": "Início de sessão de convidado com senha",
-        "accountCannotSignIn": "Esta conta não pode iniciar sessão. Contacte o administrador do seu agregado familiar."
+        "accountCannotSignIn": "Esta conta não pode iniciar sessão. Contacte o administrador do seu agregado familiar.",
+        "invalidCredentialsAskAdmin": "Credenciais inválidas. Esqueceste a senha? O administrador do teu agregado familiar pode definir uma nova."
     },
     "setup": {
         "title": "Bem-vindo ao Yuvomi",
@@ -6479,7 +6480,8 @@
         "displayNameTooLong": "O nome apresentado pode ter no máximo 128 caracteres.",
         "previewFailed": "Não foi possível verificar o convite neste momento. Volta a carregar a página daqui a pouco.",
         "invalidTitle": "Convite inválido",
-        "toLogin": "Ir para o início de sessão"
+        "toLogin": "Ir para o início de sessão",
+        "introNamed": "{{name}} convidou-te para o {{app}}. Define aqui os teus dados de acesso."
     },
     "newLabel": {
         "tasks": "Tarefa",

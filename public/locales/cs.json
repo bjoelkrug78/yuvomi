@@ -3583,7 +3583,8 @@
         "twoFactorCancel": "Zrušit",
         "ssoOnlyHint": "Přihlášení do této domácnosti probíhá výhradně přes SSO.",
         "guestPasswordLogin": "Přihlášení hosta heslem",
-        "accountCannotSignIn": "Tento účet se nemůže přihlásit. Obraťte se na správce vaší domácnosti."
+        "accountCannotSignIn": "Tento účet se nemůže přihlásit. Obraťte se na správce vaší domácnosti.",
+        "invalidCredentialsAskAdmin": "Neplatné přihlašovací údaje. Zapomněl jsi heslo? Nové ti nastaví správce domácnosti."
     },
     "setup": {
         "title": "Vítejte v Yuvomi",
@@ -6651,7 +6652,8 @@
         "displayNameTooLong": "Zobrazované jméno může mít nejvýše 128 znaků.",
         "previewFailed": "Pozvánku se teď nepodařilo ověřit. Za chvíli stránku načti znovu.",
         "invalidTitle": "Neplatná pozvánka",
-        "toLogin": "Přejít na přihlášení"
+        "toLogin": "Přejít na přihlášení",
+        "introNamed": "{{name}} tě pozval(a) do {{app}}. Nastav si zde přihlašovací údaje."
     },
     "newLabel": {
         "tasks": "Úkol",
