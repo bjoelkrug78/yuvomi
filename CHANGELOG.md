@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **Waste collection is calmer.** Today's pickup carries a "Put out today" label instead of the same grey
+  "Today" as every other date. Types without a schedule share one card ("No schedule: Recycling, Organic,
+  Glass") with a single "Add schedule" button instead of one card each repeating "No schedule yet", and
+  a type card has one "..." menu - the schedule row opens its dialog, where Delete is.
+- **A new waste schedule picks its weekday.** The weekday of the first pickup is selected and follows
+  that date until you pick a day yourself, so you no longer get "Choose at least one weekday" after
+  pressing Add. "Active" only appears when editing a schedule.
+- **Waste messages name the type.** Archiving, restoring and deleting a schedule or pickup now say which
+  waste type it was.
 - **Household help's visits show what is still open.** An unpaid visit carries a "Pending" label next
   to its date and a "Paid" button at the end of the row, so marking it paid is one tap instead of a trip
   through the "..." menu. The payments card shows a chart only once there are two months of payments;

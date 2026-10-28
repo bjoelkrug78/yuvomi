@@ -17,7 +17,7 @@ import { dateText, dateRangeText, dateWithDistanceText } from '/utils/date-forma
 import { esc, REQUIRED_MARK } from '/utils/html.js';
 import { formSwitchRowHtml } from '/settings/components.js';
 import { todayKey, addLocalDays, parseLocalDateKey, toLocalDateKey } from '/utils/date.js';
-import { openModal, closeModal, captureModalContext, captureOpenContext, isModalContextCurrent, confirmModal, confirmOverModal, btnLoading, refocusAfterRender, reportFieldError } from '/components/modal.js';
+import { openModal, closeModal, captureModalContext, captureOpenContext, isModalContextCurrent, confirmModal, confirmOverModal, btnLoading, refocusAfterRender, reportFieldError, dialogInitialFocus } from '/components/modal.js';
 import { renderSkeletonList } from '/utils/skeleton.js';
 import { emptyStateHTML, mountLoadError } from '/utils/empty-state.js';
 import {
@@ -304,7 +304,12 @@ function occurrenceRowHtml(occurrence) {
         <i data-lucide="${esc(occurrence.type_icon || 'trash-2')}" style="color:${esc(occurrence.type_color || '')}" aria-hidden="true"></i>
         <span class="list-row__body">
           <span class="list-row__name">${esc(occurrence.type_name ?? '')}</span>
-          <span class="list-row__meta">${esc(pickupWhenLabel(occurrence.date_key))} ${originBadges(occurrence)}</span>
+          <span class="list-row__meta">${occurrence.date_key === todayKey()
+    // HEUTE IST DIE WICHTIGSTE ZEILE DER SEITE (Critique R24,
+    // G2-Entsorgung-P3-2): sie stand als "Heute" in derselben Metafarbe wie
+    // "in 2 Tagen". Jetzt ein Etikett im Modulton, das sagt, was zu tun ist.
+    ? `<span class="tag waste-today-tag">${esc(t('waste.putOutToday'))}</span>`
+    : esc(pickupWhenLabel(occurrence.date_key))} ${originBadges(occurrence)}</span>
         </span>
       </div>
       ${actions}
@@ -442,10 +447,14 @@ function scheduleRowHtml(schedule) {
   // dem Zeilenkoerper loeschte hier sofort eine ganze Serie.
   // Ein Menue mit einem Eintrag ist bewusst in Kauf genommen - die Alternative
   // waere, die Ausnahme zur Regel zu machen.
-  const menuId = `waste-schedule-menu-${schedule.id}`;
+  // EINE ELLIPSE JE KARTE (Critique R24, G2-Entsorgung-P3-2): die Terminzeile
+  // trug ein eigenes "..." mit genau einem Eintrag (Loeschen) unter dem "..."
+  // ihrer Abfallart - zwei Menues in einer Karte. Loeschen steht im Dialog,
+  // den die Zeile oeffnet (Fuss: Loeschen mit Wort), die Zeile selbst ist
+  // nur noch der Weg dorthin.
   return `
     <div class="list-row waste-row waste-schedule-row${schedule.active ? '' : ' waste-schedule-row--paused'}" data-id="${schedule.id}">
-      <div class="list-row__main${ro ? '' : ' list-row__main--interactive'}"${ro ? '' : ` data-action="edit-schedule" data-id="${schedule.id}" role="button" tabindex="0"`}>
+      <div class="list-row__main${ro ? '' : ' list-row__main--interactive'}"${ro ? '' : ` data-action="edit-schedule" data-id="${schedule.id}" role="button" tabindex="0" aria-label="${esc(t('common.editNamed', { name: scheduleRowName(schedule) }))}"`}>
         <i data-lucide="repeat" aria-hidden="true"></i>
         <span class="list-row__body">
           <span class="list-row__name">${esc(recurrenceSummary(schedule))}</span>
@@ -455,15 +464,6 @@ function scheduleRowHtml(schedule) {
           </span>`}
         </span>
       </div>
-      ${ro ? '' : `
-        <div class="row-actions">
-          <button type="button" class="row-action" popovertarget="${menuId}" aria-haspopup="menu" aria-expanded="false" aria-label="${esc(t('common.moreActionsNamed', { name: scheduleRowName(schedule) }))}">
-            <i data-lucide="more-horizontal" aria-hidden="true"></i>
-          </button>
-          <div class="popover-menu" id="${menuId}" popover role="menu">
-            <button type="button" role="menuitem" class="popover-menu__item popover-menu__item--danger" data-action="delete-schedule" data-id="${schedule.id}"><i data-lucide="trash-2" aria-hidden="true"></i>${esc(t('common.delete'))}</button>
-          </div>
-        </div>`}
     </div>`;
 }
 
@@ -541,6 +541,40 @@ function remainingPresetsHtml() {
   return `<div class="waste-type-presets-more" role="group" aria-label="${esc(t('waste.typePresetLabel'))}">`
     + presets.map(presetButtonHtml).join('')
     + '</div>';
+}
+
+/**
+ * LEERE ARTEN IN EINER ZEILE (Critique R24, G2-Entsorgung-P3-2). Vier Karten
+ * wiederholten "Noch kein Termin fuer diese Abfallart." und "+ Termin
+ * hinzufuegen" - die Seite bestand zur Haelfte aus derselben Aussage. Arten
+ * ohne Termin und ohne anstehende Abholung (und nicht archiviert) stehen jetzt
+ * gesammelt in EINER Karte: "Ohne Termin", ihre Namen (jeder oeffnet seine
+ * Art) und EINE Handlung, die nach der Art fragt.
+ */
+function isUnscheduledType(type, schedules = state.schedules, occurrences = state.occurrences) {
+  return !type.archived
+    && !schedules.some((schedule) => schedule.type_id === type.id)
+    && !occurrences.some((occ) => occ.type_id === type.id);
+}
+
+function unscheduledTypesHtml(types, ro = readOnly()) {
+  if (!types.length) return '';
+  const names = types.map((type) => {
+    const icon = `<i data-lucide="${esc(type.icon || 'trash-2')}" style="color:${esc(type.color)}" aria-hidden="true"></i>`;
+    return ro
+      ? `<span class="waste-unscheduled__name">${icon}<span>${esc(type.name)}</span></span>`
+      : `<button type="button" class="waste-unscheduled__name" data-action="edit-type" data-id="${type.id}" aria-label="${esc(t('common.editNamed', { name: type.name }))}">${icon}<span>${esc(type.name)}</span></button>`;
+  }).join('');
+  return `
+    <div class="waste-type-card waste-type-card--unscheduled">
+      <div class="waste-unscheduled">
+        <div class="waste-unscheduled__text">
+          <span class="waste-unscheduled__label">${esc(t('waste.typesWithoutSchedule'))}</span>
+          <span class="waste-unscheduled__names">${names}</span>
+        </div>
+        ${ro ? '' : `<button type="button" class="btn btn--secondary btn--sm" data-action="add-schedule"><i data-lucide="plus" aria-hidden="true"></i>${esc(t('waste.addSchedule'))}</button>`}
+      </div>
+    </div>`;
 }
 
 function typeCardHtml(type, index, total) {
@@ -759,7 +793,10 @@ function drawTypes(host) {
     return;
   }
   host.replaceChildren();
-  host.insertAdjacentHTML('beforeend', state.types.map((type, index) => typeCardHtml(type, index, state.types.length)).join('')
+  const unscheduled = state.types.filter((type) => isUnscheduledType(type));
+  host.insertAdjacentHTML('beforeend', state.types
+    .map((type, index) => (unscheduled.includes(type) ? '' : typeCardHtml(type, index, state.types.length))).join('')
+    + unscheduledTypesHtml(unscheduled)
     + remainingPresetsHtml());
   if (window.lucide) window.lucide.createIcons({ el: host });
 }
@@ -1111,6 +1148,7 @@ function openTypeModal(type = null) {
   openModal({
     staged: !isEdit, // Buehne zuerst, Felder nach dem ersten Bild (modal.js, R21 a6)
     title: isEdit ? t('waste.editType') : t('waste.newType'),
+    initialFocus: dialogInitialFocus(isEdit),
     content,
     // 520 statt 400: Loeschen, Archivieren, Abbrechen und Speichern brauchen
     // 395px, das 400er-Blatt hat innen 366 - der Fuss brach in zwei Zeilen.
@@ -1146,7 +1184,7 @@ function openTypeModal(type = null) {
           closeModal({ force: true, context: modalContext });
           await reloadAfterSave(() => reloadAndRender());
           refocusAfterRender();
-          window.yuvomi?.showToast(type.archived ? t('waste.typeRestoredToast') : t('waste.typeArchivedToast'), 'success');
+          window.yuvomi?.showToast(t(type.archived ? 'waste.typeRestoredNamed' : 'waste.typeArchivedNamed', { name: type.name }), 'success');
         } catch (err) {
           reportError(err);
         }
@@ -1251,6 +1289,34 @@ function weekdayPickerHtml(selected) {
     <input type="hidden" name="weekdays" value="${chosen.join(',')}"></div>`;
 }
 
+/**
+ * DER WOCHENTAG FOLGT DER ERSTEN ABHOLUNG (Critique R24, G2-Entsorgung-P2-1).
+ * Ein neuer Termin stand auf "Woechentlich" ohne gewaehlten Tag, waehrend
+ * "Erste Abholung" schon heute trug - erst das Absenden sagte "Waehle
+ * mindestens einen Wochentag". Jetzt ist der Tag der ersten Abholung
+ * vorgewaehlt und zieht mit, wenn man sie aendert - bis man selbst einen Tag
+ * waehlt; dann gehoert die Auswahl einem selbst.
+ */
+function weekdayCodeOf(dateKey) {
+  const date = parseLocalDateKey(dateKey);
+  if (!date || Number.isNaN(date.getTime?.())) return null;
+  const day = date.getDay();
+  return WEEKDAY_CODES.find((code) => DAY_INDEX[code] === day) ?? null;
+}
+
+function setWeekdayPickerValue(root, codes) {
+  const picker = root.querySelector('.waste-weekday-picker');
+  if (!picker) return;
+  const set = new Set(codes);
+  picker.querySelectorAll('[data-weekday]').forEach((chip) => {
+    const on = set.has(chip.dataset.weekday);
+    chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+    chip.classList.toggle('filter-chip--active', on);
+  });
+  const hidden = picker.querySelector('input[name="weekdays"]');
+  if (hidden) hidden.value = WEEKDAY_CODES.filter((code) => set.has(code)).join(',');
+}
+
 function weekdayPickerValue(root) {
   return [...root.querySelectorAll('.waste-weekday-picker [data-weekday][aria-pressed="true"]')]
     .map((el) => el.dataset.weekday);
@@ -1314,7 +1380,7 @@ function openScheduleModal(type, schedule = null) {
     </div>
     <div class="form-group form-field" id="wsm-weekly-fields" ${kind === 'weekly' ? '' : 'hidden'}>
       <span class="form-label" id="wsm-weekdays-label">${t('waste.weekdaysLabel')}</span>
-      ${weekdayPickerHtml(schedule?.weekdays)}
+      ${weekdayPickerHtml(schedule?.weekdays ?? weekdayCodeOf(schedule?.anchor_date ?? todayKey()))}
     </div>
     <div class="form-group" id="wsm-monthly-fields" ${kind === 'monthly_fixed_day' ? '' : 'hidden'}>
       <label class="form-label" for="wsm-month-day">${t('waste.monthDayLabel')}</label>
@@ -1348,9 +1414,12 @@ function openScheduleModal(type, schedule = null) {
       <label class="form-label" for="wsm-valid-until">${t('waste.validUntilLabel')}</label>
       <yuvomi-datepicker id="wsm-valid-until" name="valid_until" type="date" value="${esc(schedule?.valid_until ?? '')}"></yuvomi-datepicker>
     </div>
-    <div class="form-group">
+    ${/* "AKTIV" NUR BEIM BEARBEITEN (R24, G2-Entsorgung-P2-1): ein neuer Termin
+          ist aktiv - der Schalter beim Anlegen fragte nach etwas, das niemand
+          anders will. Pausieren ist eine Frage an einen bestehenden Termin. */ ''}
+    ${isEdit ? `<div class="form-group">
       ${formSwitchRowHtml({ label: t('waste.activeLabel'), checked: schedule?.active !== 0, attrs: { id: 'wsm-active' } })}
-    </div>
+    </div>` : ''}
     <div class="modal-panel__footer modal-panel__footer--plain">
       ${isEdit ? `<button type="button" class="btn btn--danger-outline" id="wsm-delete"><i data-lucide="trash-2" class="icon-md" aria-hidden="true"></i>${t('common.delete')}</button>` : ''}
       <div class="modal-panel__footer-group">
@@ -1362,6 +1431,7 @@ function openScheduleModal(type, schedule = null) {
   openModal({
     staged: !isEdit, // Buehne zuerst, Felder nach dem ersten Bild (modal.js, R21 a6)
     title: isEdit ? t('waste.editSchedule') : t('waste.newSchedule'),
+    initialFocus: dialogInitialFocus(isEdit),
     content,
     size: 'sm',
     onSave(panel) {
@@ -1369,6 +1439,17 @@ function openScheduleModal(type, schedule = null) {
 
       wireWeekdayPicker(panel);
       wireIntervalStepper(panel);
+      if (!isEdit) {
+        let ownWeekdays = false;
+        panel.querySelector('.waste-weekday-picker')?.addEventListener('click', (event) => {
+          if (event.target.closest?.('[data-weekday]')) ownWeekdays = true;
+        });
+        panel.querySelector('#wsm-anchor')?.addEventListener('change', (event) => {
+          if (ownWeekdays || panel.querySelector('#wsm-kind')?.value !== 'weekly') return;
+          const code = weekdayCodeOf(event.target.value);
+          if (code) setWeekdayPickerValue(panel, [code]);
+        });
+      }
       const kindSelect = panel.querySelector('#wsm-kind');
       const weeklyFields = panel.querySelector('#wsm-weekly-fields');
       const monthlyFields = panel.querySelector('#wsm-monthly-fields');
@@ -1407,7 +1488,7 @@ function openScheduleModal(type, schedule = null) {
           closeModal({ force: true, context: modalContext });
           await reloadAndRender();
           refocusAfterRender();
-          window.yuvomi?.showToast(t('waste.scheduleDeletedToast'), 'success');
+          window.yuvomi?.showToast(t('waste.scheduleDeletedNamed', { name: typeById(schedule.type_id)?.name ?? type?.name ?? '' }), 'success');
         } catch (err) {
           reportError(err);
         }
@@ -1418,7 +1499,7 @@ function openScheduleModal(type, schedule = null) {
         const anchor = panel.querySelector('#wsm-anchor').value;
         const validUntil = panel.querySelector('#wsm-valid-until').value || null;
         const interval = Number(panel.querySelector('#wsm-interval').value) || 1;
-        const active = panel.querySelector('#wsm-active').checked;
+        const active = panel.querySelector('#wsm-active')?.checked ?? true;
 
         const typeSelect = panel.querySelector('#wsm-type');
         if (typeSelect && !typeSelect.value) { typeSelect.focus(); return; }
@@ -1490,6 +1571,7 @@ function openPickupModal(pickup = null) {
 
   openModal({
     title: isEdit ? t('waste.editPickup') : t('waste.newPickup'),
+    initialFocus: dialogInitialFocus(isEdit),
     content,
     size: 'sm',
     onSave(panel) {
@@ -1498,6 +1580,8 @@ function openPickupModal(pickup = null) {
 
       panel.querySelector('#wpm-delete')?.addEventListener('click', async () => {
         const modalContext = captureModalContext();
+        // Der Name VOR dem Nachladen: danach kann die Art schon fehlen.
+        const name = typeById(pickup.type_id)?.name ?? '';
         const ok = await confirmOverModal(t('waste.pickupDeleteConfirm'), { danger: true, confirmLabel: t('common.delete'), detail: t('waste.pickupDeleteConfirmDetail') });
         if (!ok) return;
         try {
@@ -1505,7 +1589,7 @@ function openPickupModal(pickup = null) {
           closeModal({ force: true, context: modalContext });
           await reloadAndRender();
           refocusAfterRender();
-          window.yuvomi?.showToast(t('waste.pickupDeletedToast'), 'success');
+          window.yuvomi?.showToast(t('waste.pickupDeletedNamed', { name }), 'success');
         } catch (err) {
           reportError(err);
         }
@@ -2639,26 +2723,15 @@ function bindEvents() {
     } else if (kind === 'move-type-down') {
       moveType(Number(action.dataset.id), 'down');
     } else if (kind === 'add-schedule') {
+      // Ohne Art (die Zeile "Ohne Termin" fuer mehrere Arten): der Dialog
+      // fragt nach der Art, vorbelegt mit der ersten ohne Termin.
+      if (!action.dataset.typeId) { openScheduleModal(null); return; }
       const type = typeById(Number(action.dataset.typeId));
       if (type) openScheduleModal(type);
     } else if (kind === 'edit-schedule') {
       const schedule = state.schedules.find((s) => s.id === Number(action.dataset.id));
       const type = schedule && typeById(schedule.type_id);
       if (schedule && type) openScheduleModal(type, schedule);
-    } else if (kind === 'delete-schedule') {
-      const schedule = state.schedules.find((s) => s.id === Number(action.dataset.id));
-      if (!schedule) return;
-      confirmModal(t('waste.scheduleDeleteConfirm'), { danger: true, confirmLabel: t('common.delete'), detail: t('waste.scheduleDeleteConfirmDetail') }).then(async (ok) => {
-        if (!ok) return;
-        try {
-          await deleteOrAlreadyGone(`/waste/schedules/${schedule.id}`, 'waste_schedule_not_found');
-          await reloadAndRender();
-          refocusAfterRender();
-          window.yuvomi?.showToast(t('waste.scheduleDeletedToast'), 'success');
-        } catch (err) {
-          reportError(err);
-        }
-      });
     } else if (kind === 'move-occurrence') {
       moveOccurrence(action.closest('.waste-occurrence-row')?.dataset.key);
     } else if (kind === 'skip-occurrence') {
@@ -2668,7 +2741,7 @@ function bindEvents() {
     } else if (kind === 'edit-pickup') {
       loadPickupAndEdit(Number(action.dataset.id));
     } else if (kind === 'delete-pickup') {
-      deletePickup(Number(action.dataset.id));
+      deletePickup(Number(action.dataset.id), typeById(Number(action.closest('.waste-occurrence-row')?.dataset.typeId))?.name ?? null);
     } else if (kind === 'open-source') {
       loadSourceAndOpen(Number(action.dataset.id));
     } else if (kind === 'reimport-source') {
@@ -2711,14 +2784,18 @@ async function loadPickupAndEdit(id) {
   }
 }
 
-async function deletePickup(id) {
+async function deletePickup(id, typeName = null) {
+  // Der Name VOR dem Loeschen: danach steht die Abholung nicht mehr in der Liste.
+  // Die Zeile reicht ihre Art mit; sonst die Abholung im Stand.
+  const occ = state.occurrences.find((o) => o.origins?.some((x) => x.kind === 'one_off' && x.one_off_id === id));
+  const name = typeName ?? occ?.type_name ?? typeById(occ?.type_id)?.name ?? '';
   const ok = await confirmModal(t('waste.pickupDeleteConfirm'), { danger: true, confirmLabel: t('common.delete'), detail: t('waste.pickupDeleteConfirmDetail') });
   if (!ok) return;
   try {
     await deleteOrAlreadyGone(`/waste/pickups/${id}`, 'waste_pickup_not_found');
     await reloadAndRender();
     refocusAfterRender();
-    window.yuvomi?.showToast(t('waste.pickupDeletedToast'), 'success');
+    window.yuvomi?.showToast(t('waste.pickupDeletedNamed', { name }), 'success');
   } catch (err) {
     reportError(err);
   }
@@ -2826,6 +2903,8 @@ export const __test = {
   // nicht mehr am Markup ablesen kann - welcher Eintrag bei welcher Position
   // im Menue steht, und dass die Preset-Farben allesamt im Raster liegen.
   typeCardHtml, scheduleRowHtml, sourceRowHtml, TYPE_PRESETS, typeWithoutScheduleHtml, remainingTypePresets, remainingPresetsHtml, WASTE_TYPE_COLORS,
+  // R24 (G2-Entsorgung-P2-1/P3-2): Wochentag aus der ersten Abholung, leere Arten in einer Zeile.
+  weekdayCodeOf, isUnscheduledType, unscheduledTypesHtml,
   isOnboarding, onboardingHtml, sectionVisibility, fabIntent, pageModeClasses,
   importErrorText,
   // #1909: die echten Aufrufer hinter den Fehler-Toasts, fuer test:waste-errors.

@@ -423,16 +423,18 @@ test('typeCardHtml: bei genau einer Abfallart bleibt nur das Anlegen einer Serie
   assert.match(only, /data-action="add-schedule"/);
 });
 
-test('scheduleRowHtml: die Loeschung liegt hinter dem Menue und ist als gefaehrlich markiert', () => {
+// R24 (Critique G2-Entsorgung-P3-2): EINE Ellipse je Karte. Die Terminzeile
+// trug ein eigenes "..." mit genau einem Eintrag (Loeschen) unter dem "..."
+// ihrer Art. Loeschen steht im Dialog, den die Zeile oeffnet (Fuss, mit Wort).
+test('scheduleRowHtml: die Terminzeile oeffnet ihren Dialog und traegt kein eigenes Menue', () => {
   const html = scheduleRowHtml({ id: 42, type_id: 7, active: true, freq: 'weekly', weekday: 1, interval: 1 });
-  assert.equal((html.match(/class="row-action"/g) ?? []).length, 1);
-  assert.match(html, /popovertarget="waste-schedule-menu-42"/);
-  assert.match(html, /<div class="popover-menu" id="waste-schedule-menu-42" popover role="menu">/);
-  assert.match(html, /class="row-action" popovertarget="waste-schedule-menu-42" aria-haspopup="menu" aria-expanded="false"/);
-  assert.match(html, /class="popover-menu__item popover-menu__item--danger" data-action="delete-schedule" data-id="42"/);
-  // Der nackte Muelltonnen-Knopf direkt in der Zeile ist weg - ein Fehlgriff
-  // daneben loeschte vorher sofort eine ganze Serie.
-  assert.doesNotMatch(html, /class="row-action" data-action="delete-schedule"/);
+  assert.doesNotMatch(html, /row-action|popover/, 'kein zweites "..." in der Karte');
+  assert.doesNotMatch(html, /data-action="delete-schedule"/, 'Loeschen nicht in der Zeile');
+  assert.match(html, /data-action="edit-schedule" data-id="42" role="button" tabindex="0" aria-label="common\.editNamed/,
+    'die Zeile ist der Weg in den Dialog, mit Namen');
+  assert.match(WASTE_SRC, /\$\{isEdit \? `<button type="button" class="btn btn--danger-outline" id="wsm-delete">/,
+    'Loeschen steht im Fuss des Bearbeiten-Dialogs');
+  assert.doesNotMatch(WASTE_SRC, /kind === 'delete-schedule'/, 'kein Handler fuer einen Knopf, den es nicht gibt');
 });
 
 test('scheduleRowHtml: eine pausierte Serie traegt ihren eigenen Chip', () => {
@@ -493,8 +495,9 @@ test('alle vier "..."-Knoepfe kuendigen ein Menue an, auch der vorbestehende der
   // Abfallart, Quelle) bauen ihr Markup separat und hatten diese zwei
   // Attribute keiner von ihnen - auch der Abholzeilen-Knopf nicht, der schon
   // vor diesem PR auf `main` stand.
+  // R24: die Serie hat kein eigenes "..." mehr (eine Ellipse je Karte).
   const rowActionButtons = WASTE_SRC.match(/<button type="button" class="row-action"[^>]*>/g) ?? [];
-  assert.equal(rowActionButtons.length, 4, 'Abholung, Serie, Abfallart und Quelle');
+  assert.equal(rowActionButtons.length, 3, 'Abholung, Abfallart und Quelle');
   for (const btn of rowActionButtons) {
     assert.match(btn, /aria-haspopup="menu"/, `${btn} kuendigt kein Menue an`);
     assert.match(btn, /aria-expanded="false"/, `${btn} traegt keinen Anfangszustand`);
@@ -680,8 +683,10 @@ test('jeder Schreib-Weg im Kopf bleibt hinter dem Nur-lesen-Riegel', () => {
   // Unterschied, auf dem dieses Modul seit der ersten Fassung besteht.
   assert.match(WASTE_SRC, /actions: readOnly\(\) \? '' : renderPageActions\(\[/);
   // Und die Zeilenmenues ebenso - je einmal pro Zeilentyp.
-  assert.equal((WASTE_SRC.match(/\$\{ro \? '' : `\n\s*<div class="row-actions">/g) ?? []).length, 2,
-    'Serien- und Typzeile unterdruecken ihre Aktionen ueber dasselbe `ro`');
+  assert.equal((WASTE_SRC.match(/\$\{ro \? '' : `\n\s*<div class="row-actions">/g) ?? []).length, 1,
+    'die Typzeile unterdrueckt ihre Aktionen ueber `ro` (die Serie hat seit R24 keine eigenen)');
+  assert.match(WASTE_SRC, /list-row__main\$\{ro \? '' : ' list-row__main--interactive'\}"\$\{ro \? '' : ` data-action="edit-schedule"/,
+    'die Serienzeile oeffnet bei `read` nichts');
   assert.match(WASTE_SRC, /\$\{readOnly\(\) \? '' : `\n\s*<div class="row-actions">/, 'die Quellenzeile ebenso');
 });
 
@@ -1067,3 +1072,50 @@ test('Typkarte ohne doppelte naechste Abholung, Leertext passend zu Vorlagen und
   const de = JSON.parse(readFileSync(new URL('../public/locales/de.json', import.meta.url), 'utf8')).waste;
   assert.doesNotMatch(de.emptyUpcomingDescription, /Abfallart und einen Termin/, 'die Liste erscheint erst mit Abfallart - sie verlangt keine zweite');
 });
+
+// --------------------------------------------------------------------------
+// Critique R24 (2026-10-28): G2-Entsorgung-P2-1 und P3-2
+// --------------------------------------------------------------------------
+
+test('R24 P2-1: der Wochentag eines neuen Termins kommt aus der ersten Abholung, "Aktiv" nur beim Bearbeiten', () => {
+  assert.equal(__test.weekdayCodeOf('2026-10-28'), 'WE');
+  assert.equal(__test.weekdayCodeOf('2026-11-01'), 'SU');
+  assert.equal(__test.weekdayCodeOf('kein Datum'), null);
+  assert.match(WASTE_SRC, /weekdayPickerHtml\(schedule\?\.weekdays \?\? weekdayCodeOf\(schedule\?\.anchor_date \?\? todayKey\(\)\)\)/,
+    'ein neuer Termin hat seinen Tag vorgewaehlt - kein Fehler erst nach dem Absenden');
+  assert.match(WASTE_SRC, /if \(ownWeekdays \|\| panel\.querySelector\('#wsm-kind'\)\?\.value !== 'weekly'\) return;/,
+    'der Tag zieht mit der ersten Abholung mit, bis man selbst waehlt');
+  assert.match(WASTE_SRC, /\$\{isEdit \? `<div class="form-group">\n\s*\$\{formSwitchRowHtml\(\{ label: t\('waste\.activeLabel'\)/,
+    '"Aktiv" fragt nur ein bestehender Termin');
+  assert.match(WASTE_SRC, /const active = panel\.querySelector\('#wsm-active'\)\?\.checked \?\? true;/, 'neu ist aktiv');
+});
+
+test('R24 P3-2: leere Abfallarten stehen in EINER Karte mit EINER Handlung', () => {
+  const rest = { id: 1, name: 'Restmuell', icon: 'trash-2', color: '#6B7280', archived: 0 };
+  const bio = { id: 2, name: 'Bio', icon: 'leaf', color: '#16A34A', archived: 0 };
+  const glas = { id: 3, name: 'Glas', icon: 'wine', color: '#0D9488', archived: 0 };
+  const alt = { id: 4, name: 'Alt', icon: 'box', color: '#000000', archived: 1 };
+  const schedules = [{ id: 9, type_id: 1 }];
+  const occurrences = [{ type_id: 3 }];
+  assert.equal(__test.isUnscheduledType(rest, schedules, occurrences), false, 'mit Serie: eigene Karte');
+  assert.equal(__test.isUnscheduledType(glas, schedules, occurrences), false, 'mit anstehender Abholung: eigene Karte');
+  assert.equal(__test.isUnscheduledType(alt, schedules, occurrences), false, 'archiviert: eigene Karte zum Wiederherstellen');
+  assert.equal(__test.isUnscheduledType(bio, schedules, occurrences), true);
+  const html = __test.unscheduledTypesHtml([bio, glas], false);
+  assert.match(html, /waste\.typesWithoutSchedule/);
+  assert.equal((html.match(/data-action="edit-type"/g) ?? []).length, 2, 'jeder Name oeffnet seine Art');
+  assert.equal((html.match(/data-action="add-schedule"/g) ?? []).length, 1, 'EINE Handlung fuer alle');
+  assert.doesNotMatch(html, /data-type-id/, 'sie fragt im Dialog nach der Art');
+  assert.doesNotMatch(__test.unscheduledTypesHtml([bio], true), /<button/, 'bei `read` keine Knoepfe');
+  assert.equal(__test.unscheduledTypesHtml([]), '');
+});
+
+test('R24 P3-2: die Abholung von heute traegt "Heute rausstellen" als Etikett', async () => {
+  // Derselbe Tagesschluessel wie im Code (Haushaltszone), nie toISOString().
+  const { todayKey } = await import('../public/utils/date.js');
+  const heute = __test.occurrenceRowHtml({ key: 'k', type_id: 1, type_name: 'Restmuell', date_key: todayKey(), origins: [] });
+  assert.match(heute, /<span class="tag waste-today-tag">waste\.putOutToday<\/span>/);
+  const morgen = __test.occurrenceRowHtml({ key: 'k2', type_id: 1, type_name: 'Restmuell', date_key: '2099-01-01', origins: [] });
+  assert.doesNotMatch(morgen, /waste-today-tag/);
+});
+

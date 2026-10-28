@@ -258,11 +258,121 @@
   color: var(--color-text-receded);
 }
 
+/* DIE TERMINE STEHEN UNTER DEM NAMEN IHRER ART (Critique R24,
+ * G2-Entsorgung-P3-2): zwischen Kopf und Terminzeile lagen 60px Luft (zwei
+ * 48er-Zeilen plus Polster), und die Zeile stand mit eigenem "..." eingerueckt
+ * wie eine zweite Karte. Jetzt rueckt sie unter den Namen (Polster der Zeile +
+ * Symbol + Abstand), ohne eigenes Polster des Traegers, und folgt dem Kopf im
+ * Takt einer Metazeile. */
 .waste-schedule-list {
-  padding: 0 var(--space-4) var(--space-3);
+  --waste-name-inset: calc(var(--space-3) + var(--icon-xl) + var(--space-3));
+  padding: 0 0 var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 0;
+}
+
+.waste-schedule-list > .waste-schedule-row {
+  min-height: var(--target-md);
+  padding-block: 0;
+  padding-inline-start: var(--waste-name-inset);
+}
+
+/* Der Kopf einer Art mit Terminen gibt sein unteres Polster an die Zeilen
+ * darunter ab - sie gehoeren zu ihm, nicht neben ihn. */
+.waste-type-card:has(.waste-schedule-row) > .waste-type-row {
+  padding-block-end: 0;
+}
+
+.waste-schedule-list > .waste-schedule-row .list-row__name {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.waste-schedule-list > .waste-schedule-row > .list-row__main > svg {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: var(--color-text-tertiary);
+}
+
+.waste-schedule-list > .waste-schedule-list__empty {
+  padding-inline: var(--waste-name-inset) var(--space-3);
+}
+
+/* LEERE ARTEN IN EINER KARTE (R24, G2-Entsorgung-P3-2; waste.js
+ * `unscheduledTypesHtml`): "Ohne Termin" als Etikett, die Namen mit ihrem
+ * Symbol als leise Knoepfe (jeder oeffnet seine Art), daneben EINE Handlung. */
+.waste-unscheduled {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3);
+}
+
+.waste-unscheduled__text {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+  flex: 1 1 12rem;
+}
+
+.waste-unscheduled__label {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.waste-unscheduled__names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+}
+
+.waste-unscheduled__name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1h);
+  min-height: var(--target-base);
+  margin-block: calc((var(--target-base) - 1lh) / -2);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.waste-unscheduled__name > svg {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  flex: none;
+}
+
+span.waste-unscheduled__name {
+  cursor: default;
+}
+
+@media (hover: hover) {
+  button.waste-unscheduled__name:hover > span {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.waste-unscheduled__name:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* HEUTE RAUSSTELLEN (R24, G2-Entsorgung-P3-2): das Etikett der Zeile, die
+ * heute zaehlt - getoent im Modulton, Text primaer (traegt auf der Toenung
+ * die volle Lesbarkeit), sonst dieselbe Form wie jedes `.tag`. */
+.tag.waste-today-tag {
+  background: color-mix(in srgb, var(--module-accent, var(--color-accent)) var(--tint-state), transparent);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
 }
 
 .waste-schedule-list__empty {

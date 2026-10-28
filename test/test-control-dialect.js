@@ -2167,7 +2167,7 @@ const PENDING = {
     'public/pages/notes.js': 1, 'public/pages/pantry.js': 1,
     'public/pages/recipes.js': 1, 'public/pages/schedule.js': 1,
     'public/pages/split-expenses.js': 3, 'public/pages/subscriptions.js': 1,
-    'public/pages/waste.js': 3, 'public/settings/pages/modules-health.js': 1, 'public/settings/pages/sync-contacts.js': 1,
+    'public/settings/pages/modules-health.js': 1, 'public/settings/pages/sync-contacts.js': 1,
   },
   'advanced-hint': {
     'public/pages/contacts.js': 1, 'public/pages/documents.js': 1, 'public/pages/health.js': 2, 'public/pages/meals.js': 1,
