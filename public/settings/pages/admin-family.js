@@ -19,6 +19,7 @@ import { openModal, closeModal, captureModalContext, captureOpenContext, isModal
 import { createRetryState, formSwitchRowHtml, settingSwitchRowHtml } from '/settings/components.js';
 import { formRowHtml, formRowsHtml } from '/utils/form-row.js';
 import { birthDateControlHtml, wireBirthDateField } from '/utils/birth-date.js';
+import { mediaPickerBadgeHtml } from '/utils/media-picker.js';
 import {
   renderUserMultiSelect, getSelectedUserIds, bindUserMultiSelect,
 } from '/components/user-multi-select.js';
@@ -119,18 +120,18 @@ function avatarHtml(user, className = 'settings-avatar') {
 function avatarEditorHtml(user, prefix) {
   return `
     <div class="settings-avatar-editor">
-      <button type="button" class="settings-avatar-button" id="${prefix}-avatar-preview" aria-label="${t('settings.profilePictureLabel')}">
-        ${avatarHtml(user, 'settings-avatar settings-avatar--lg')}
-      </button>
+      ${/* Dieselbe Bildwahl wie im Konto (R24, `.media-picker`): die Scheibe
+           ist der Knopf, Entfernen steht als Text nur mit Bild. */ ''}
+      <span class="media-picker">
+        <button type="button" class="settings-avatar-button" id="${prefix}-avatar-preview" aria-label="${t('settings.profilePictureLabel')}">
+          ${avatarHtml(user, 'settings-avatar settings-avatar--lg')}
+        </button>
+        ${mediaPickerBadgeHtml()}
+      </span>
       <input class="sr-only" type="file" id="${prefix}-avatar-file" accept="image/png,image/jpeg,image/webp"
         aria-label="${t('settings.profilePictureLabel')}" tabindex="-1" />
       <div class="settings-avatar-actions">
-        <button type="button" class="settings-avatar-action" id="${prefix}-avatar-edit" aria-label="${t('settings.profilePictureLabel')}" title="${t('settings.profilePictureLabel')}">
-          <i data-lucide="edit-2" aria-hidden="true"></i>
-        </button>
-        <button type="button" class="settings-avatar-action settings-avatar-action--danger" id="${prefix}-avatar-remove" aria-label="${t('settings.profilePictureRemove')}" title="${t('settings.profilePictureRemove')}">
-          <i data-lucide="trash-2" aria-hidden="true"></i>
-        </button>
+        <button type="button" class="btn btn--ghost btn--sm media-picker__remove" id="${prefix}-avatar-remove"${user?.avatar_data ? '' : ' hidden'}>${t('settings.profilePictureRemove')}</button>
       </div>
     </div>
   `;
@@ -139,6 +140,9 @@ function avatarEditorHtml(user, prefix) {
 function setAvatarPreview(container, selector, user) {
   const preview = container.querySelector(selector);
   if (!preview) return;
+  // Entfernen gibt es nur, wenn es ein Bild gibt (R24, `.media-picker`).
+  const remove = container.querySelector(selector.replace(/-preview$/, '-remove'));
+  if (remove) remove.hidden = !user?.avatar_data;
   preview.replaceChildren();
   preview.insertAdjacentHTML('beforeend', avatarHtml(user, 'settings-avatar settings-avatar--lg'));
   window.lucide?.createIcons({ el: preview });
@@ -146,12 +150,7 @@ function setAvatarPreview(container, selector, user) {
 
 function bindAvatarPicker(container, prefix) {
   const fileInput = container.querySelector(`#${prefix}-avatar-file`);
-  [
-    container.querySelector(`#${prefix}-avatar-preview`),
-    container.querySelector(`#${prefix}-avatar-edit`),
-  ].forEach((picker) => {
-    picker?.addEventListener('click', () => fileInput?.click());
-  });
+  container.querySelector(`#${prefix}-avatar-preview`)?.addEventListener('click', () => fileInput?.click());
 }
 
 function memberHtml(u, currentUserId, { orderable = false, aligned = false } = {}) {

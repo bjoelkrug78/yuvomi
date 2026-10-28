@@ -316,7 +316,6 @@ test('Gravatar: der Knopf steht im Bild-Editor, gesperrt ohne gespeicherte Adres
   const locked = buttonOf(avatarEditorHtml({ display_name: 'Ada', email: null }, on));
   assert.ok(locked, 'der Knopf existiert');
   assert.match(locked, /aria-disabled="true"/);
-  assert.match(locked, /aria-label="settings\.gravatarUse"/);
   assert.match(locked, /aria-describedby="profile-gravatar-hint"/);
   assert.doesNotMatch(locked, /\sdisabled[\s>]/, 'aria-disabled statt disabled: erreichbar bleiben');
   assert.equal(gravatarHintText({ email: null }), 'settings.gravatarNeedsEmail');
@@ -333,9 +332,16 @@ test('Gravatar: der Knopf steht im Bild-Editor, gesperrt ohne gespeicherte Adres
   assert.equal(gravatarHintText({ email: ' ada@example.org ' }), 'settings.gravatarHintUnnamed{"email":"ada@example.org"}');
   assert.equal(gravatarHintText({ email: null }, 'gravatar.com'), 'settings.gravatarNeedsEmail');
 
-  // Dieselbe Familie wie Hochladen und Entfernen daneben, mit Icon.
-  assert.match(free, /class="settings-avatar-action"/);
-  assert.match(avatarEditorHtml({ email: 'ada@example.org' }, on), /id="profile-avatar-gravatar"[^]*?data-lucide="cloud-download"/);
+  // R24 (`.media-picker`): Gravatar ist ein kleiner Textknopf mit Symbol und
+  // Wort; die Scheibe ist die Bildwahl (Abzeichen), Entfernen steht als Text
+  // nur mit Bild, kein Stift und kein nackter Papierkorb mehr daneben.
+  assert.match(free, /class="btn btn--secondary btn--sm"/);
+  const editor = avatarEditorHtml({ email: 'ada@example.org' }, on);
+  assert.match(editor, /id="profile-avatar-gravatar"[^]*?data-lucide="cloud-download"[^]*?settings\.gravatarUse/);
+  assert.match(editor, /<span class="media-picker">\s*<button type="button" class="settings-avatar-button" id="profile-avatar-preview"[^]*?<\/button>\s*<span class="media-picker__badge"/);
+  assert.doesNotMatch(editor, /profile-avatar-edit|settings-avatar-action(?!s)/);
+  assert.match(editor, /id="profile-avatar-remove" hidden>/, 'ohne Bild kein Entfernen');
+  assert.doesNotMatch(avatarEditorHtml({ email: 'ada@example.org', avatar_data: 'data:image/png;base64,AA' }, on), /id="profile-avatar-remove" hidden/);
 });
 
 test('Gravatar: die Hinweiszeile kommt leer aus dem HTML und wird als Text gefuellt - die Adresse steht woertlich da', async () => {

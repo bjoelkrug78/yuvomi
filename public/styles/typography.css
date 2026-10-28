@@ -368,9 +368,11 @@
  * Guard: test-typography.js, "der Zeilentitel ist eine Rolle".
  * ------------------------------------------------------------------------ */
 /* Die offene Anfrage der Belohnungen ist eine Zeile ihrer Liste und stand mit
- * einem Literal-Gewicht in 16/600 (R24, G0-Inv-4). */
+ * einem Literal-Gewicht in 16/600 (R24, G0-Inv-4). Der Modulname in Aktive
+ * Module und Navigation stand als nacktes `<strong>` in 16/700 (R24, S4-Rest). */
 .u-row-title,
 .rw-pending__title,
+.settings-module-row__name,
 .list-row__name,
 .budget-loan-card__title,
 .meal-card__title,

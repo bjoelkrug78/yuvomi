@@ -12,6 +12,7 @@ import { prefersInkText } from '/utils/contrast.js';
 import { settingRowHtml } from '/settings/components.js';
 import { colorPickerHtml, wireColorPicker } from '/utils/color-picker.js';
 import { birthDateControlHtml, wireBirthDateField } from '/utils/birth-date.js';
+import { mediaPickerBadgeHtml } from '/utils/media-picker.js';
 
 function avatarHtml(user, className = 'settings-avatar') {
   const safeName = esc(user?.display_name || '');
@@ -57,19 +58,22 @@ function avatarEditorHtml(user, { gravatarAvailable = false } = {}) {
   const gravatarReady = hasSavedEmail(user);
   return `
     <div class="settings-avatar-editor">
-      <button type="button" class="settings-avatar-button" id="profile-avatar-preview" aria-label="${t('settings.profilePictureLabel')}">
-        ${avatarHtml(user, 'settings-avatar settings-avatar--lg')}
-      </button>
+      ${/* EIN BEDIENELEMENT FUER DAS BILD (R24, Baustein `.media-picker` aus
+           S3 wie am Geburtstag): die Scheibe IST die Wahl, das Abzeichen sagt
+           es. Der Stift daneben oeffnete dieselbe Dateiwahl ein zweites Mal,
+           Entfernen und Gravatar waren nackte Symbole - jetzt Text, Entfernen
+           nur mit Bild. */ ''}
+      <span class="media-picker">
+        <button type="button" class="settings-avatar-button" id="profile-avatar-preview" aria-label="${t('settings.profilePictureLabel')}">
+          ${avatarHtml(user, 'settings-avatar settings-avatar--lg')}
+        </button>
+        ${mediaPickerBadgeHtml()}
+      </span>
       <input class="sr-only" type="file" id="profile-avatar-file" accept="image/png,image/jpeg,image/webp" aria-label="${t('settings.profilePictureLabel')}" aria-describedby="profile-error" tabindex="-1">
       <div class="settings-avatar-actions">
-        <button type="button" class="settings-avatar-action" id="profile-avatar-edit" aria-label="${t('settings.profilePictureLabel')}" title="${t('settings.profilePictureLabel')}">
-          <i data-lucide="edit-2" aria-hidden="true"></i>
-        </button>
-        <button type="button" class="settings-avatar-action settings-avatar-action--danger" id="profile-avatar-remove" aria-label="${t('settings.profilePictureRemove')}" title="${t('settings.profilePictureRemove')}">
-          <i data-lucide="trash-2" aria-hidden="true"></i>
-        </button>
-        ${gravatarAvailable ? `<button type="button" class="settings-avatar-action" id="profile-avatar-gravatar" aria-label="${t('settings.gravatarUse')}" title="${t('settings.gravatarUse')}" aria-describedby="profile-gravatar-hint"${gravatarReady ? '' : ' aria-disabled="true"'}>
-          <i data-lucide="cloud-download" aria-hidden="true"></i>
+        <button type="button" class="btn btn--ghost btn--sm media-picker__remove" id="profile-avatar-remove"${user?.avatar_data ? '' : ' hidden'}>${t('settings.profilePictureRemove')}</button>
+        ${gravatarAvailable ? `<button type="button" class="btn btn--secondary btn--sm" id="profile-avatar-gravatar" aria-describedby="profile-gravatar-hint"${gravatarReady ? '' : ' aria-disabled="true"'}>
+          <i data-lucide="cloud-download" class="icon-md" aria-hidden="true"></i><span class="btn__label">${t('settings.gravatarUse')}</span>
         </button>` : ''}
       </div>
     </div>
@@ -283,7 +287,7 @@ export function twoFactorCardHtml(state) {
       <p class="form-hint">${t('settings.twoFactorHint')}</p>
       ${state.required ? `<p class="form-error settings-2fa__note" role="status">${t('settings.twoFactorRequiredSetUpNow')}</p>` : ''}
       <div class="settings-form-actions settings-2fa__actions">
-        <button type="button" class="btn btn--primary" id="two-factor-start">${t('settings.twoFactorSetUp')}</button>
+        <button type="button" class="btn btn--secondary" id="two-factor-start">${t('settings.twoFactorSetUp')}</button>
       </div>
     `;
 
@@ -812,6 +816,8 @@ function bindEvents(container, user, profileState, { gravatarHost = '' } = {}) {
   wireColorPicker(container);
 
   const updatePreview = () => {
+    const remove = container.querySelector('#profile-avatar-remove');
+    if (remove) remove.hidden = !profileState.avatarData;
     setAvatarPreview(container, {
       display_name: displayName?.value || user?.display_name,
       avatar_color: avatarColor?.value || user?.avatar_color,
@@ -820,7 +826,6 @@ function bindEvents(container, user, profileState, { gravatarHost = '' } = {}) {
   };
 
   container.querySelector('#profile-avatar-preview')?.addEventListener('click', () => avatarFile?.click());
-  container.querySelector('#profile-avatar-edit')?.addEventListener('click', () => avatarFile?.click());
   displayName?.addEventListener('input', updatePreview);
   avatarColor?.addEventListener('input', updatePreview);
 
@@ -868,8 +873,8 @@ function bindEvents(container, user, profileState, { gravatarHost = '' } = {}) {
   // gefuellt - als Text, damit die Adresse woertlich dasteht.
   syncGravatarButton();
   const labelGravatarButton = (label) => {
-    gravatarButton.setAttribute('aria-label', label);
-    gravatarButton.title = label;
+    const text = gravatarButton?.querySelector('.btn__label');
+    if (text) text.textContent = label;
   };
   gravatarButton?.addEventListener('click', async () => {
     if (gravatarBusy || !hasSavedEmail(user)) return;
