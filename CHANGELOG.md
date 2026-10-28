@@ -50,6 +50,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   calendar's day and week view a shift block shows its name and time like an appointment, name above
   time, instead of large text side by side.
 
+### Security
+- **A member colour can only be a colour.** Your profile, member management and the
+  housekeeper form accepted any text as a member colour, and that text ended up in the
+  styles other household members see, so an account could lay its own styling over their
+  screens. Only `#RRGGBB` is accepted now, the app shows nothing else, and a stored value
+  that is not a colour falls back to the default blue on update.
+
 ### Fixed
 - **The password eye sits inside the field in the settings too.** The WebDAV backup target and the
   document storage showed a small eye next to the password field; it now sits inside the field like on

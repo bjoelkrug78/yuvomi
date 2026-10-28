@@ -31,7 +31,7 @@ import { esc } from '/utils/html.js';
 import { t } from '/i18n.js';
 import { openModal, closeModal } from '/components/modal.js';
 import { durationToken } from '/utils/ux.js';
-import { getReadableTextColor, AVATAR_FALLBACK_COLOR } from '/utils/color.js';
+import { getReadableTextColor, AVATAR_FALLBACK_COLOR, safeHexColor } from '/utils/color.js';
 import { initials, sharedSurname } from '/utils/initials.js';
 
 /**
@@ -146,9 +146,10 @@ export function syncFilterButton(button, count, labels = defaultFilterLabels()) 
  * @returns {string}
  */
 export function filterChipHtml({ filter, value, label, active, swatchColor = null, swatchLabel = '', srSuffix = '' }) {
-  const swatch = swatchColor
+  const hex = swatchColor ? safeHexColor(swatchColor) : null;
+  const swatch = hex
     ? `<span class="filter-chip__swatch" aria-hidden="true"`
-      + ` style="--swatch-color:${esc(String(swatchColor))};color:${getReadableTextColor(String(swatchColor))}">`
+      + ` style="--swatch-color:${hex};color:${getReadableTextColor(hex)}">`
       + `${esc(String(swatchLabel ?? ''))}</span>`
     : '';
   return `<button type="button" class="filter-chip filter-chip--sm${active ? ' filter-chip--active' : ''}"
