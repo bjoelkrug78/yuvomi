@@ -558,7 +558,6 @@
         "swipeDone": "Hotovo",
         "subtaskAdd": "Přidat podúkol",
         "subtaskAddNamed": "Přidat podúkol: {{title}}",
-        "subtaskToggle": "Zobrazit podúkoly",
         "subtaskMarkDone": "Označit {{title}} jako hotové",
         "subtaskRenamePrompt": "Dílčí úkol",
         "subtaskDeleteConfirm": "Opravdu smazat „{{title}}“?",
@@ -744,7 +743,9 @@
         "checkAllSubtasks": "Odškrtnout vše",
         "subtasksAllDone": "„{{title}}“ a všechny dílčí úkoly hotovo.",
         "doneSubtasksOpen_few": "„{{title}}“ hotovo - stále jsou otevřené {{count}} dílčí úkoly.",
-        "doneSubtasksOpen_many": "„{{title}}“ hotovo - stále otevřených dílčích úkolů: {{count}}."
+        "doneSubtasksOpen_many": "„{{title}}“ hotovo - stále otevřených dílčích úkolů: {{count}}.",
+        "seriesDoneNamed": "„{{title}}“ hotovo - příště: {{date}}",
+        "kanbanRestore": "Obnovit"
     },
     "shopping": {
         "importMealsPreviewMeals_few": "{{count}} jídla",

@@ -2166,7 +2166,7 @@ const PENDING = {
     'public/pages/calendar.js': 1, 'public/pages/documents.js': 1, 'public/pages/health.js': 7,
     'public/pages/housekeeping.js': 1, 'public/pages/notes.js': 1, 'public/pages/pantry.js': 1,
     'public/pages/recipes.js': 1, 'public/pages/rewards.js': 1, 'public/pages/schedule.js': 1,
-    'public/pages/split-expenses.js': 3, 'public/pages/subscriptions.js': 1, 'public/pages/tasks.js': 1,
+    'public/pages/split-expenses.js': 3, 'public/pages/subscriptions.js': 1,
     'public/pages/waste.js': 3, 'public/settings/pages/modules-health.js': 1, 'public/settings/pages/sync-contacts.js': 1,
   },
   'advanced-hint': {
@@ -2675,10 +2675,16 @@ test('R23 D13: Kanban-Wechsel ohne Zwischenbild - alte Ansicht bleibt, Kopf und 
   assert.match(set, /if \(!swap\(\)\) return;\s*renderTaskList\(container\)/, 'Liste und Brett zeichnen direkt nach dem Tausch');
 });
 
-test('R23 D13: der Kopf der Aufgaben behaelt seine Form - Filter abgeschaltet statt weg, angedockter FAB unsichtbar statt weg', () => {
+test('R23 D13 / R24: der Kopf der Aufgaben behaelt seine Form - der Filter haelt im Verlauf nur seinen Platz, angedockter FAB unsichtbar statt weg', () => {
   const chrome = fnBody(readPub('pages/tasks.js'), 'function syncViewChrome(', '\n}\n');
   assert.doesNotMatch(chrome, /filterBtn\.hidden\s*=\s*isHistory/, 'der Filterknopf verschwand im Verlauf und schob Segment und Menue');
-  assert.match(chrome, /filterBtn\.disabled\s*=\s*isHistory/);
+  // R24 (G2-Aufgaben-P3-3): nicht mehr ausgegraut (ein totes Werkzeug ohne
+  // Grund), sondern unsichtbar mit gehaltenem Platz.
+  assert.doesNotMatch(chrome, /filterBtn\.disabled\s*=\s*isHistory/, 'ausgegraut stand ein Werkzeug da, das nichts tut');
+  assert.match(chrome, /filterBtn\.classList\.toggle\('is-vacant',\s*isHistory\)/);
+  const vacant = rulesOf('styles/tasks.css').find((r) => r.selector.trim() === '.tasks-toolbar .is-vacant');
+  assert.ok(vacant, 'Regel fuer den gehaltenen Platz fehlt');
+  assert.match(vacant.body, /visibility:\s*hidden/, 'visibility haelt den Platz und nimmt Zeiger, Tab-Folge und Baum');
   const docked = rulesOf('styles/layout.css').find((r) => r.selector.includes('.is-selecting) .page-fab.page-fab--docked'));
   assert.ok(docked, 'Regel fuer den angedockten FAB im Auswahlmodus fehlt');
   assert.ok(docked.at.some((a) => /min-width:\s*1024px/.test(a)), 'nur dort, wo er angedockt ist');

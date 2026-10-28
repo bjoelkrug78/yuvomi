@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **A task's comment box is one line with the send arrow inside it.** It grows while you type, has no
+  resize handle any more, and the separate "Comment" button below it is gone, so on phones it no longer
+  sits half under the sheet's buttons. Cmd/Ctrl+Enter sends. The priority in a task's details now reads
+  in the same size as status and category.
+- **Subtasks are tidier.** A task with subtasks shows "1/2" with a small arrow in its detail line instead
+  of a full-width progress bar; tap it to unfold the subtasks, which now sit indented under the task's
+  title. "Add subtask" is a quiet row with a plus, in the list and in the details.
+- **The task board says what its buttons do.** Each card's button reads "Start", "Finish", "Reopen" or
+  "Restore" on wider screens, an empty "Archived" column is only as wide as its header, and on phones the
+  dots above the board are tabs with each column's name and count. The filter button no longer shows
+  greyed out in History; its place stays free so nothing in the header moves.
+- **Finishing a repeating task names it.** The message reads "“Water the plants” done - next due
+  4 Nov" instead of just "Done - next due 4 Nov".
 - **The wall display shows the day's appointments first.** "Today" on the wall lists all-day events,
   then appointments and meals by time, followed by the rest, the same way the overview does.
   Before, open tasks could push the evening's appointments out, and a smaller tablet showed different
@@ -141,6 +154,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   that is not a colour falls back to the default blue on update.
 
 ### Fixed
+- **Tapping a column tab on the phone board opens that column.** Jumping two columns ahead stopped at
+  the column in between.
 - **The password eye sits inside the field in the settings too.** The WebDAV backup target and the
   document storage showed a small eye next to the password field; it now sits inside the field like on
   the sign-in pages, and the field is as wide as the others. The backup schedule shows "Daily at 02:00"

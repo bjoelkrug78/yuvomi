@@ -507,7 +507,6 @@
         "swipeDone": "Completato",
         "subtaskAdd": "Aggiungi sotto-compito",
         "subtaskAddNamed": "Aggiungi sotto-compito a {{title}}",
-        "subtaskToggle": "Mostra sotto-compiti",
         "subtaskMarkDone": "Segna {{title}} come completato",
         "subtaskRenamePrompt": "Attività secondaria",
         "subtaskDeleteConfirm": "Eliminare «{{title}}»?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "«{{title}}» fatto - ancora {{count}} sottoattività aperte.",
         "doneSubtasksOpen_one": "«{{title}}» fatto - ancora una sottoattività aperta.",
         "checkAllSubtasks": "Spunta tutte",
-        "subtasksAllDone": "«{{title}}» e tutte le sottoattività fatte."
+        "subtasksAllDone": "«{{title}}» e tutte le sottoattività fatte.",
+        "seriesDoneNamed": "«{{title}}» fatto - prossima volta: {{date}}",
+        "kanbanRestore": "Ripristina"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} articolo eliminato.",

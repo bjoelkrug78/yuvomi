@@ -218,3 +218,95 @@ test('die Eingabezeile fuehrt neben dem Feld einen beschrifteten Absende-Knopf',
   assert.equal(submit.textContent, 'common.add', 'der Knopf traegt seinen Namen als sichtbaren Text aus t()');
   assert.ok(form.childNodes.indexOf(input) < form.childNodes.indexOf(submit), 'der Knopf steht hinter dem Feld');
 });
+
+// --------------------------------------------------------
+// R24 (Critique G2-Aufgaben-P2-2 / P3-2): Werte, Kommentar, Teilaufgaben
+// --------------------------------------------------------
+
+const { readFile } = await import('node:fs/promises');
+const { eachRule } = await import('./css-rules.js');
+const tasksCss = await readFile(new URL('../public/styles/tasks.css', import.meta.url), 'utf8');
+const detailCss = await readFile(new URL('../public/styles/detail-view.css', import.meta.url), 'utf8');
+const regel = (css, selector) => [...eachRule(css)].find((r) => r.selector.trim() === selector && !r.at.length);
+
+/** Die Abschnitte der echten Leseansicht. */
+function leseansicht(task) {
+  let gesehen = null;
+  globalThis.__openDetailView = (options) => { gesehen = options; };
+  try {
+    openTaskDetail({ task: { id: 7, title: 'Tisch decken', status: 'open', visibility: 'all', created_by: 2, subtasks: [], ...task }, currentUserId: 2 });
+  } finally {
+    delete globalThis.__openDetailView;
+  }
+  return gesehen.sections;
+}
+
+const knoten = (node, pred) => {
+  if (!node || typeof node !== 'object') return null;
+  if (pred(node)) return node;
+  for (const kind of node.childNodes ?? []) {
+    const hit = knoten(kind, pred);
+    if (hit) return hit;
+  }
+  return null;
+};
+
+test('R24: die Prioritaet ist in der Leseansicht ein Wert wie Status und Kategorie, kein Etikett der Metazeile', () => {
+  const prio = leseansicht({ priority: 'high' }).find((s) => s?.label === 'tasks.priorityLabel');
+  assert.ok(prio?.node, 'die Zeile Prioritaet fehlt');
+  assert.equal(prio.node.className, 'detail-priority', 'das 13px-Etikett `.priority-badge` stand zwischen Werten in Body 17');
+  assert.ok(knoten(prio.node, (n) => /priority-dot--high/.test(n.className ?? '')), 'die Rangmarke bleibt');
+  const r = regel(tasksCss, '.detail-priority');
+  assert.ok(r, '.detail-priority hat keine Regel');
+  assert.doesNotMatch(r.body, /font-size|color:/, 'Groesse und Farbe erbt der Wert (`.detail-row__value`)');
+});
+
+test('R24: der Kommentar ist EINE Zeile mit dem Senden-Pfeil im Feld, ohne Ziehgriff', () => {
+  const sec = leseansicht({}).find((s) => s?.label === 'tasks.commentsLabel');
+  const form = knoten(sec.node, (n) => n.tagName === 'form');
+  assert.ok(form, 'das Kommentarformular fehlt');
+  const box = knoten(form, (n) => n.className === 'task-comments__field');
+  const feld = knoten(box, (n) => n.tagName === 'textarea');
+  const senden = knoten(box, (n) => n.tagName === 'button');
+  assert.equal(feld?.rows, 1, 'einzeilig, waechst beim Tippen');
+  assert.ok(senden, 'der Senden-Knopf steht IM Feldtraeger, nicht in einer eigenen Zeile darunter');
+  assert.equal(senden.type, 'submit');
+  assert.equal(senden.getAttribute('aria-label'), 'tasks.commentSubmit', 'der Pfeil traegt seinen Namen');
+  assert.deepEqual(form.childNodes.filter((n) => n.tagName === 'button'), [], 'kein zweiter Knopf neben dem Feld');
+  const input = regel(tasksCss, 'textarea.task-comment__input');
+  assert.match(input?.body ?? '', /resize:\s*none/, 'kein nativer Ziehgriff (er schlug `textarea.input` in layout.css)');
+  assert.match(input.body, /field-sizing:\s*content/);
+  const pfeil = regel(tasksCss, '.task-comments__send');
+  assert.match(pfeil?.body ?? '', /position:\s*absolute/);
+  assert.match(pfeil.body, /inset-inline-end:\s*0/);
+});
+
+test('R24: der Stand der Teilaufgaben steht als Knopf in der Metazeile, die Liste rueckt unter den Titel', async () => {
+  const { __test: tasks } = await import('../public/pages/tasks.js');
+  const html = tasks.renderTaskCard({
+    id: 7, title: 'Tisch decken', status: 'open', visibility: 'all', created_by: 2,
+    subtask_total: 2, subtask_done: 1, assigned_users: [],
+    subtasks: [{ id: 8, title: 'Teller', status: 'done' }, { id: 9, title: 'Besteck', status: 'open' }],
+  });
+  const meta = /<div class="task-card__meta">([\s\S]*?)\n          <\/div>/.exec(html)?.[1] ?? '';
+  assert.match(meta, /<button type="button" class="subtask-toggle" data-action="toggle-subtasks"[^>]*aria-expanded="false"/,
+    'der Aufklapper steht IN der Metazeile');
+  assert.match(meta, /<span>1\/2<\/span>/, 'mit dem Stand als Text');
+  assert.doesNotMatch(html, /subtask-progress/, 'kein 26px-Balken mehr unter der Zeile');
+  const flaeche = regel(tasksCss, '.subtask-toggle::before');
+  assert.match(flaeche?.body ?? '', /inset-block:\s*calc\(50% - var\(--target-base\) \/ 2\)/, 'Trefferflaeche 44 hoch');
+  const metaRegel = regel(tasksCss, '.task-card__meta');
+  assert.match(metaRegel.body, /overflow-x:\s*clip/);
+  assert.doesNotMatch(metaRegel.body, /overflow:\s*hidden/, '`hidden` schnitt die Trefferflaeche auf die Textzeile');
+  const liste = regel(tasksCss, '.subtask-list');
+  assert.match(liste.body, /padding-inline:\s*var\(--task-title-inset\)/, 'die Ringe fluchten mit dem Titel');
+});
+
+test('R24: "Teilaufgabe hinzufuegen" ist eine ruhige Zeile, keine gestrichelte Kapsel - in der Liste wie im Detail', () => {
+  for (const [css, sel] of [[tasksCss, '.subtask-item__add'], [detailCss, '.detail-subtask--add']]) {
+    const r = regel(css, sel);
+    assert.ok(r, `${sel} hat keine Regel`);
+    assert.doesNotMatch(r.body, /dashed/, `${sel}: die einzige gestrichelte Kapsel der App`);
+    assert.doesNotMatch(r.body, /radius-full/, `${sel}: keine Kapsel`);
+  }
+});

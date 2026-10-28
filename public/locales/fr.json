@@ -507,7 +507,6 @@
         "swipeDone": "Terminé",
         "subtaskAdd": "Ajouter une sous-tâche",
         "subtaskAddNamed": "Ajouter une sous-tâche à {{title}}",
-        "subtaskToggle": "Afficher les sous-tâches",
         "subtaskMarkDone": "Marquer {{title}} comme terminé",
         "subtaskRenamePrompt": "Sous-tâche",
         "subtaskDeleteConfirm": "Supprimer « {{title}} » ?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "« {{title}} » terminé - encore {{count}} sous-tâches ouvertes.",
         "doneSubtasksOpen_one": "« {{title}} » terminé - encore {{count}} sous-tâche ouverte.",
         "checkAllSubtasks": "Tout cocher",
-        "subtasksAllDone": "« {{title}} » et toutes ses sous-tâches terminés."
+        "subtasksAllDone": "« {{title}} » et toutes ses sous-tâches terminés.",
+        "seriesDoneNamed": "« {{title}} » terminé - prochaine fois : {{date}}",
+        "kanbanRestore": "Restaurer"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} article supprimé.",

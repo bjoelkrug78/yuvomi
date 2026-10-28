@@ -507,7 +507,6 @@
         "swipeDone": "Ολοκληρώθηκε",
         "subtaskAdd": "Προσθήκη υποεργασίας",
         "subtaskAddNamed": "Προσθήκη υποεργασίας: {{title}}",
-        "subtaskToggle": "Εμφάνιση υποεργασιών",
         "subtaskMarkDone": "Επισήμανση {{title}} ως ολοκληρωμένο",
         "subtaskRenamePrompt": "Υποεργασία",
         "subtaskDeleteConfirm": "Να διαγραφεί το «{{title}}»;",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "«{{title}}» ολοκληρώθηκε - {{count}} υποεργασίες είναι ακόμα ανοιχτές.",
         "doneSubtasksOpen_one": "«{{title}}» ολοκληρώθηκε - μία υποεργασία είναι ακόμα ανοιχτή.",
         "checkAllSubtasks": "Σημείωση όλων",
-        "subtasksAllDone": "«{{title}}» και όλες οι υποεργασίες ολοκληρώθηκαν."
+        "subtasksAllDone": "«{{title}}» και όλες οι υποεργασίες ολοκληρώθηκαν.",
+        "seriesDoneNamed": "«{{title}}» ολοκληρώθηκε - επόμενη φορά: {{date}}",
+        "kanbanRestore": "Επαναφορά"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} είδος διαγράφηκε.",

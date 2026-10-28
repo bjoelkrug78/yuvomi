@@ -507,7 +507,6 @@
         "swipeDone": "完成",
         "subtaskAdd": "新增子任務",
         "subtaskAddNamed": "為 {{title}} 新增子任務",
-        "subtaskToggle": "顯示子任務",
         "subtaskMarkDone": "將 {{title}} 標記為完成",
         "subtaskRenamePrompt": "子任務",
         "subtaskDeleteConfirm": "要刪除「{{title}}」嗎？",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "「{{title}}」已完成 - 還有 {{count}} 個子任務未完成。",
         "doneSubtasksOpen_one": "「{{title}}」已完成 - 還有 1 個子任務未完成。",
         "checkAllSubtasks": "全部勾選",
-        "subtasksAllDone": "「{{title}}」及所有子任務已完成。"
+        "subtasksAllDone": "「{{title}}」及所有子任務已完成。",
+        "seriesDoneNamed": "「{{title}}」已完成 - 下次到期：{{date}}",
+        "kanbanRestore": "恢復"
     },
     "shopping": {
         "itemsRemovedToast_one": "已刪除 {{count}} 件商品。",

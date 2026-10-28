@@ -526,7 +526,6 @@
         "swipeDone": "완료",
         "subtaskAdd": "하위 작업 추가",
         "subtaskAddNamed": "{{title}}에 하위 작업 추가",
-        "subtaskToggle": "하위 작업 표시",
         "subtaskMarkDone": "{{title}} 완료로 표시",
         "subtaskRenamePrompt": "하위 작업",
         "subtaskDeleteConfirm": "「{{title}}」을(를) 삭제할까요?",
@@ -700,7 +699,9 @@
         "doneSubtasksOpen": "'{{title}}' 완료했습니다 - 하위 작업 {{count}}개가 아직 남아 있습니다.",
         "doneSubtasksOpen_one": "'{{title}}' 완료했습니다 - 하위 작업 1개가 아직 남아 있습니다.",
         "checkAllSubtasks": "모두 완료로 표시",
-        "subtasksAllDone": "'{{title}}'와 모든 하위 작업을 완료했습니다."
+        "subtasksAllDone": "'{{title}}'와 모든 하위 작업을 완료했습니다.",
+        "seriesDoneNamed": "'{{title}}' 완료 - 다음: {{date}}",
+        "kanbanRestore": "복원"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}}개 항목이 삭제되었습니다.",

@@ -510,7 +510,6 @@
         "swipeDone": "Ferdig",
         "subtaskAdd": "Legg til underoppgave",
         "subtaskAddNamed": "Legg til underoppgave til {{title}}",
-        "subtaskToggle": "Vis underoppgaver",
         "subtaskMarkDone": "Marker {{title}} som utført",
         "subtaskRenamePrompt": "Underoppgave",
         "subtaskDeleteConfirm": "Slett «{{title}}»?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "«{{title}}» utført - {{count}} deloppgaver er fortsatt åpne.",
         "doneSubtasksOpen_one": "«{{title}}» utført - én deloppgave er fortsatt åpen.",
         "checkAllSubtasks": "Huk av alle",
-        "subtasksAllDone": "«{{title}}» og alle deloppgaver utført."
+        "subtasksAllDone": "«{{title}}» og alle deloppgaver utført.",
+        "seriesDoneNamed": "«{{title}}» utført - neste gang: {{date}}",
+        "kanbanRestore": "Gjenopprett"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} vare slettet.",

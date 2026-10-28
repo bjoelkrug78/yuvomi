@@ -6,7 +6,7 @@
 
 import { api } from '/api.js';
 import { renderRRuleFields, bindRRuleEvents, getRRuleValues } from '/rrule-ui.js';
-import { openModal as openSharedModal, closeModal, whenModalClosed, wireBlurValidation, validateAll, btnError, btnLoading, promptModal, confirmModal, advancedSection, refocusAfterRender, captureModalContext } from '/components/modal.js';
+import { openModal as openSharedModal, closeModal, whenModalClosed, wireBlurValidation, validateAll, btnError, btnLoading, promptModal, confirmModal, advancedSection, refocusAfterRender, captureModalContext, dialogInitialFocus } from '/components/modal.js';
 import { whenHistorySettled } from '/utils/overlay-history.js';
 import { beginRowFill, drawRowIcons, flushRowFill } from '/utils/row-fill.js';
 import { stagger, vibrate, scheduleUndoableDelete, offerUndo, acknowledgeCheck, collapseOut, expandIn, wireScrollFade, isImeComposing, drawIconsInSightOrder } from '/utils/ux.js';
@@ -497,6 +497,26 @@ function renderLockedBadge(task) {
  * Anhänge werden zur reinen Glyphe: die Zahl daneben war die einzige Stelle der
  * Zeile, an der eine Anzahl OHNE ihren Gegenstand stand.
  */
+/**
+ * DER STAND DER TEILAUFGABEN IST EINE ANGABE DER METAZEILE (Critique R24,
+ * G2-Aufgaben-P3-2). Hier stand unter jeder Elternzeile ein 26px hoher Balken
+ * ueber die ganze Breite - ein Fortschrittsbalken als Knopf, kleiner als jedes
+ * Ziel der App und lauter als der Titel. Jetzt steht "0/2" mit Chevron in der
+ * Metazeile wie Faelligkeit und Prioritaet; der Knopf ist so klein wie seine
+ * Schrift, die Trefferflaeche 44 hoch (tasks.css `.subtask-toggle::before`).
+ * Ohne Listen-Zeichen davor: die Zeile ist schon mit Prioritaet, Faelligkeit
+ * und Etikett voll, und der Chevron sagt "klappt auf". Hilfstechnik hoert
+ * "Teilaufgaben 0/2", `aria-expanded` sagt den Zustand.
+ */
+function subtaskToggleHtml(task, expanded) {
+  return `<button type="button" class="subtask-toggle" data-action="toggle-subtasks" data-id="${task.id}"
+                    aria-expanded="${expanded ? 'true' : 'false'}" aria-controls="subtasks-${task.id}">
+              <span class="sr-only">${esc(t('tasks.subtasksLabel'))}</span>
+              <span>${task.subtask_done}/${task.subtask_total}</span>
+              <i data-lucide="chevron-down" class="icon-sm subtask-toggle__chevron" aria-hidden="true"></i>
+            </button>`;
+}
+
 function renderTaskCard(task, opts = {}) {
   const { expandedSubtasks = false, selecting = false, selected = false, showCategory = true, reorderable = false } = opts;
   const isDone = task.status === 'done';
@@ -504,9 +524,7 @@ function renderTaskCard(task, opts = {}) {
   // Gesperrte Aufgabe (#830): abhaken bleibt, umschreiben nicht. Die Knoepfe,
   // die in einem 403 endeten, stehen deshalb gar nicht erst da.
   const canEdit = canEditTaskDefinition(task);
-  const progress = task.subtask_total > 0
-    ? Math.round((task.subtask_done / task.subtask_total) * 100)
-    : null;
+  const hasSubtasks = task.subtask_total > 0;
 
   // WER DARF HIER PER TIPP ABHAKEN? Zwei Gruende sagen nein, und beide fuehren
   // zu DEMSELBEN Zeichen statt zu zwei Bauarten nebeneinander: ein Tablett hat
@@ -635,6 +653,7 @@ function renderTaskCard(task, opts = {}) {
             ${renderPriorityBadge(task.priority)}
             ${task.due_date ? '' : renderStartDateBadge(task.start_date)}
             ${renderDueDate(task.due_date, task.due_time, isDone || archived)}
+            ${hasSubtasks ? subtaskToggleHtml(task, expandedSubtasks) : ''}
             ${/* `role="img"`, sonst wertet keine Hilfstechnik das `aria-label` aus:
                 an einem generischen <span> ohne Rolle ist es wirkungslos. Solange
                 die Ziffer noch danebenstand, las der Screenreader wenigstens sie -
@@ -690,16 +709,6 @@ function renderTaskCard(task, opts = {}) {
           <i data-lucide="grip-vertical" class="icon-md" aria-hidden="true"></i>
         </button>` : ''}
       </div>
-
-      ${progress !== null ? `
-        <button type="button" class="subtask-progress" data-action="toggle-subtasks" data-id="${task.id}"
-                aria-expanded="${expandedSubtasks ? 'true' : 'false'}" aria-controls="subtasks-${task.id}"
-                aria-label="${t('tasks.subtaskToggle')}">
-          <div class="subtask-progress__bar-wrap">
-            <div class="subtask-progress__bar-fill" style="--progress-scale:${progress / 100}"></div>
-          </div>
-          <span class="subtask-progress__text">${task.subtask_done}/${task.subtask_total}</span>
-        </button>` : ''}
 
       ${task.subtasks?.length ? `
         <div class="subtask-list ${expandedSubtasks ? 'subtask-list--visible' : ''}"
@@ -1921,7 +1930,7 @@ function acknowledgeStatusToggle(container, taskId, nextStatus, answer, before =
   // `state.tasks`, und der Satz fiel auf das titellose "Als erledigt markiert."
   // zurueck - R22-D17 griff genau dort nicht, wo die Zeile geht.
   const snap = before ?? taskSnapshot(taskId);
-  const seriesText = seriesDoneText(response);
+  const seriesText = seriesDoneText(response, { title: snap?.title });
   // ELTERNAUFGABE MIT OFFENEN TEILAUFGABEN (R23, D6): sie schloss still, die
   // offenen Teilaufgaben blieben unsichtbar zurueck. Der Toast sagt es und
   // bietet "Alle abhaken" an; zurueck geht es ueber den Haken der Zeile. Eine
@@ -1958,7 +1967,7 @@ function acknowledgeStatusToggle(container, taskId, nextStatus, answer, before =
   });
   if (pending && nextStatus === 'done') {
     pending.then((res) => {
-      const text = seriesDoneText(res);
+      const text = seriesDoneText(res, { title: snap?.title });
       if (text) receipt?.update?.(text);
     }, () => {});
   }
@@ -2414,7 +2423,10 @@ function openTaskModal({ task = null, users = [], reminder = null, onChanged } =
     staged: !isEdit,
     size: 'lg',
     // Eine neue Aufgabe startet weiterhin mit dem Fokus im Titelfeld - hier ist
-    // Tippen die Absicht.
+    // Tippen die Absicht. Beim Bearbeiten dieselbe Regel wie jeder Dialog
+    // (DESIGN.md D4, `dialogInitialFocus`): am Zeiger ins erste Feld, am
+    // Finger keine Tastatur ueber dem Formular, das man erst lesen will.
+    initialFocus: dialogInitialFocus(isEdit),
     // `onChanged` nur ueber einer fremden Seite (openNewTask): ohne ihn gilt
     // der Default von wireTaskForm, die Liste dieser Seite.
     onSave(panel) { wireTaskForm(panel, { task, container, onChanged }); },
@@ -2869,7 +2881,7 @@ async function handleFormSubmit(e, { container = null, onChanged = () => loadTas
       // und wie in der Detailansicht haengt der Hinweis am Erledigen selbst:
       // PUT liefert `next_due_date` nur beim Uebergang nach „erledigt".
       const response = await api.put(`/tasks/${taskId}`, body);
-      const seriesText = body.status === 'done' ? seriesDoneText(response) : null;
+      const seriesText = body.status === 'done' ? seriesDoneText(response, { title: body.title }) : null;
       window.yuvomi.showToast(seriesText ?? t('tasks.savedToast'), 'success');
     } else {
       const res = await api.post('/tasks', body);
@@ -3103,7 +3115,7 @@ async function runColumnMove(task, column, container) {
   const scope = window.yuvomi?.feedbackScope?.() ?? null;
   try {
     const response = await moveTaskToColumn(before, column);
-    if (column === 'done') seriesText = seriesDoneText(response);
+    if (column === 'done') seriesText = seriesDoneText(response, { title: task.title });
   } catch (err) {
     window.yuvomi.showToast(errorSentence(err), 'danger');
   }
@@ -3130,6 +3142,18 @@ function renderKanbanCard(task) {
       : next === 'in_progress'
         ? t('tasks.kanbanMoveToInProgress')
         : t('tasks.kanbanMoveToOpen');
+  // DAS VERB STEHT DA (Critique R24, G2-Aufgaben-P3-4). Der Knopf war ein
+  // 24px-Kreis mit wechselndem Zeichen - gestrichelter Kreis, Haken, Pfeil
+  // zurueck - und sagte nur per Tooltip und aria-label, was er tut. Jetzt
+  // traegt er das kurze Verb der Leseansicht ("Starten", "Erledigen",
+  // "Wieder oeffnen"), dieselben Woerter wie ihr Fuss.
+  const nextVerb = archived
+    ? t('tasks.kanbanRestore')
+    : next === 'done'
+      ? t('tasks.detailFinish')
+      : next === 'in_progress'
+        ? t('tasks.detailStart')
+        : t('tasks.detailReopen');
   // DER NAME NENNT DIE AUFGABE (#1607). Der Knopf ist ein Icon ohne Text; mit
   // dem Verb allein hiessen alle Knoepfe einer Spalte gleich, und ein
   // Screenreader konnte sie nicht auseinanderhalten. Der Tooltip bleibt beim
@@ -3168,7 +3192,7 @@ function renderKanbanCard(task) {
         ${readOnly() ? '' : `
         <button class="kanban-card__status-btn" type="button"
                 data-next-status="${next}" title="${esc(nextLabel)}" aria-label="${esc(nextName)}">
-          <i data-lucide="${icon}" aria-hidden="true"></i>
+          <i data-lucide="${icon}" aria-hidden="true"></i><span class="kanban-card__status-verb">${esc(nextVerb)}</span>
         </button>`}
       </div>
     </div>`;
@@ -3206,7 +3230,7 @@ function renderKanban(container) {
     return;
   }
 
-  const kanbanHtml = kanbanPagerHtml(cols) + kanbanBoardHtml(cols, grouped);
+  const kanbanHtml = kanbanPagerHtml(cols, grouped) + kanbanBoardHtml(cols, grouped);
   listEl.replaceChildren();
   listEl.insertAdjacentHTML('beforeend', kanbanHtml);
 
@@ -3233,13 +3257,20 @@ function renderKanban(container) {
 let kanbanPage = null;
 let kanbanPagerObserver = null;
 
-function kanbanPagerHtml(cols) {
+/* PUNKTE -> TEXT-REITER (Critique R24, G2-Aufgaben-P3-4). Vier Punkte sagten
+ * nur die Lage; welche Spalte "der dritte" ist, wusste nur, wer das Brett am
+ * Desktop kannte (die Namen standen allein im aria-label). Jetzt nennt jeder
+ * Reiter seine Spalte und ihre Zahl - "Offen 11", "In Bearbeitung 1" - wie
+ * die Kapseln eines Segments; die Zeile scrollt, wenn eine Sprache sie
+ * sprengt. `grouped` fehlt nur im Test, dann ohne Zahl. */
+function kanbanPagerHtml(cols, grouped = null) {
   const current = cols.some((col) => col.status === kanbanPage) ? kanbanPage : cols[0]?.status;
   return `
     <div class="kanban-pager" role="group" aria-label="${esc(t('tasks.kanbanView'))}">
       ${cols.map((col) => `
-      <button type="button" class="kanban-pager__dot" data-kanban-page="${col.status}"
-              aria-label="${esc(col.label)}"${col.status === current ? ' aria-current="true"' : ''}></button>`).join('')}
+      <button type="button" class="kanban-pager__tab" data-kanban-page="${col.status}"${col.status === current ? ' aria-current="true"' : ''}>
+        <span>${esc(col.label)}</span>${grouped ? `<span class="kanban-pager__count">${grouped[col.status]?.length ?? 0}</span>` : ''}
+      </button>`).join('')}
     </div>`;
 }
 
@@ -3255,17 +3286,33 @@ function wireKanbanPager(container) {
     if (!status) return;
     kanbanPage = status;
     pager.querySelectorAll('[data-kanban-page]').forEach((dot) => {
-      if (dot.dataset.kanbanPage === status) dot.setAttribute('aria-current', 'true');
-      else dot.removeAttribute('aria-current');
+      if (dot.dataset.kanbanPage === status) {
+        dot.setAttribute('aria-current', 'true');
+        // Die Reiterzeile scrollt, wenn sie breiter ist als das Telefon: der
+        // aktuelle Reiter bleibt sichtbar - nur waagerecht in der Zeile
+        // (kein scrollIntoView: das zoege auch die Seite senkrecht mit).
+        const box = pager.getBoundingClientRect?.();
+        const tab = dot.getBoundingClientRect?.();
+        if (box && tab && typeof pager.scrollBy === 'function') {
+          if (tab.left < box.left) pager.scrollBy({ left: tab.left - box.left });
+          else if (tab.right > box.right) pager.scrollBy({ left: tab.right - box.right });
+        }
+      } else dot.removeAttribute('aria-current');
     });
   };
   // Relativ zur Lage im Traeger statt ueber offsetLeft: so stimmt es auch in
   // einer RTL-Sprache, wo die erste Spalte rechts steht.
+  //
+  // `scrollTo` AUF DIE ZIELLAGE, NICHT `scrollBy` UM DEN ABSTAND (R24): der
+  // Traeger rastet mit `scroll-snap-stop: always`, und Chromium behandelt ein
+  // weiches scrollBy wie einen Wisch - es hielt an der naechsten Spalte. Ein
+  // Tipp auf "Erledigt" aus "Offen" landete in "In Bearbeitung" (gemessen
+  // scrollLeft 370 statt 740). Eine absolute Lage waehlt die Spalte dort.
   const scrollToColumn = (status, behavior) => {
     const col = columnOf(status);
     if (!col) return;
     const delta = col.getBoundingClientRect().left - board.getBoundingClientRect().left;
-    if (delta) board.scrollBy({ left: delta, behavior });
+    if (delta) board.scrollTo({ left: (board.scrollLeft || 0) + delta, behavior });
   };
 
   pager.addEventListener('click', (e) => {
@@ -3378,9 +3425,14 @@ function kanbanBoardHtml(cols, grouped) {
     <div class="kanban-board">
       ${cols.map((col) => {
         const collapsed = isKanbanColCollapsed(col.status);
+        // DIE LEERE ABLAGE NIMMT KEIN VIERTEL (Critique R24, G2-Aufgaben-P3-1):
+        // "Archiviert" ohne Karte stand 280px breit mit "Keine Aufgaben" neben
+        // drei arbeitenden Spalten. Leer ist sie am Desktop nur so breit wie
+        // ihr Kopf (`.kanban-col--vacant`, tasks.css) - und bleibt Ablageziel.
+        const vacant = col.status === 'archived' && !grouped[col.status].length;
         const bodyId = `kanban-col-${col.status}`;
         return `
-        <div class="kanban-col${collapsed ? ' kanban-col--collapsed' : ''}" data-status="${col.status}">
+        <div class="kanban-col${collapsed ? ' kanban-col--collapsed' : ''}${vacant ? ' kanban-col--vacant' : ''}" data-status="${col.status}">
           <div class="kanban-col__header">
             <button type="button" class="kanban-col__toggle" data-kanban-toggle="${col.status}"
                     aria-expanded="${collapsed ? 'false' : 'true'}" aria-controls="${bodyId}"
@@ -5029,16 +5081,22 @@ function syncViewChrome(container) {
   // DER KOPF BEHAELT SEINE FORM (R23, D13; Critique G2 "Verlauf verschiebt
   // Kopf"). Der Filterknopf verschwand im Verlauf mit `hidden`, und Segment,
   // Menue und Primaerknopf rueckten um seine 48px nach rechts - der Kopf
-  // sprang bei jedem Wechsel. Er bleibt jetzt stehen und ist nur
-  // abgeschaltet: wie ein ausgegrautes Werkzeug in Apples Werkzeugleisten, die
-  // ihre Belegung je Ansicht nicht umbauen. Die Suche steht links vor dem
-  // Segment, ihr Weggang verschiebt nichts, was rechts steht.
+  // sprang bei jedem Wechsel. Er bleibt jetzt stehen. Die Suche steht links
+  // vor dem Segment, ihr Weggang verschiebt nichts, was rechts steht.
+  //
+  // SEIN PLATZ BLEIBT, DER KNOPF GEHT (Critique R24, G2-Aufgaben-P3-3). Seit
+  // R23 stand er im Verlauf ausgegraut da - ein Werkzeug, das sichtbar nichts
+  // tut und nicht sagt, warum. Jetzt haelt er nur seinen Platz
+  // (`.is-vacant` = `visibility: hidden`, tasks.css): nichts rueckt, und es
+  // gibt weder ein totes Ziel fuer den Finger noch eines fuer die Tastatur
+  // oder den Screenreader (`visibility` nimmt ihn aus beiden).
   const search = container.querySelector('.tasks-toolbar__search');
   if (search) search.hidden = isHistory;
   const filterBtn = container.querySelector('#tasks-filter-btn');
   if (filterBtn) {
     filterBtn.hidden = false;
-    filterBtn.disabled = isHistory;
+    filterBtn.disabled = false;
+    filterBtn.classList.toggle('is-vacant', isHistory);
   }
   if (!isList) {
     state.bulkSelectMode = false;

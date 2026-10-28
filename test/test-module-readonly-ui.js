@@ -5410,7 +5410,9 @@ test('Kanon R5: der Kanban-Statusknopf trifft auf --target-base, obwohl er 24px 
   assert.ok(flaeche, 'ohne ::before ist die 24px-Box die ganze Trefferflaeche');
   assert.match(flaeche.body, /content:\s*''/);
   assert.match(flaeche.body, /position:\s*absolute/);
-  assert.match(flaeche.body, /inset:\s*calc\(\(100% - var\(--target-base\)\) \/ 2\)/);
+  // Senkrecht auf --target-base; waagerecht etwas ueber die Kapsel hinaus,
+  // seit sie ihr Verb traegt (R24, G2-Aufgaben-P3-4) und breiter als hoch ist.
+  assert.match(flaeche.body, /inset-block:\s*calc\(\(100% - var\(--target-base\)\) \/ 2\)/);
 });
 
 // -------------------------------------------------------------------------

@@ -507,7 +507,6 @@
         "swipeDone": "完了",
         "subtaskAdd": "サブタスクを追加",
         "subtaskAddNamed": "{{title}}にサブタスクを追加",
-        "subtaskToggle": "サブタスクを表示",
         "subtaskMarkDone": "{{title}} を完了としてマーク",
         "subtaskRenamePrompt": "サブタスク",
         "subtaskDeleteConfirm": "「{{title}}」を削除しますか？",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "「{{title}}」を完了しました - サブタスクが{{count}}件残っています。",
         "doneSubtasksOpen_one": "「{{title}}」を完了しました - サブタスクが1件残っています。",
         "checkAllSubtasks": "すべて完了にする",
-        "subtasksAllDone": "「{{title}}」とすべてのサブタスクを完了しました。"
+        "subtasksAllDone": "「{{title}}」とすべてのサブタスクを完了しました。",
+        "seriesDoneNamed": "「{{title}}」を完了しました - 次回: {{date}}",
+        "kanbanRestore": "復元"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} 件を削除しました。",

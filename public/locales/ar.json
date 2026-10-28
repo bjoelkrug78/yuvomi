@@ -645,7 +645,6 @@
         "swipeDone": "منجز",
         "subtaskAdd": "إضافة مهمة فرعية",
         "subtaskAddNamed": "إضافة مهمة فرعية إلى {{title}}",
-        "subtaskToggle": "عرض المهام الفرعية",
         "subtaskMarkDone": "وضع علامة منجز على {{title}}",
         "subtaskRenamePrompt": "المهمة الفرعية",
         "subtaskDeleteConfirm": "هل تريد حذف «{{title}}»؟",
@@ -859,7 +858,9 @@
         "subtasksAllDone": "تم إنجاز «{{title}}» وجميع المهام الفرعية.",
         "doneSubtasksOpen_two": "تم إنجاز «{{title}}» - لا تزال مهمتان فرعيتان مفتوحتين.",
         "doneSubtasksOpen_few": "تم إنجاز «{{title}}» - لا تزال {{count}} مهام فرعية مفتوحة.",
-        "doneSubtasksOpen_many": "تم إنجاز «{{title}}» - لا تزال {{count}} مهمة فرعية مفتوحة."
+        "doneSubtasksOpen_many": "تم إنجاز «{{title}}» - لا تزال {{count}} مهمة فرعية مفتوحة.",
+        "seriesDoneNamed": "تم إنجاز «{{title}}» - المرة القادمة: {{date}}",
+        "kanbanRestore": "استعادة"
     },
     "shopping": {
         "importMealsPreviewMeals_few": "{{count}} وجبات",

@@ -526,7 +526,6 @@
         "swipeDone": "Selesai",
         "subtaskAdd": "Tambah subtugas",
         "subtaskAddNamed": "Tambah subtugas ke {{title}}",
-        "subtaskToggle": "Tampilkan subtugas",
         "subtaskMarkDone": "Tandai {{title}} selesai",
         "subtaskRenamePrompt": "Subtugas",
         "subtaskDeleteConfirm": "Hapus «{{title}}»?",
@@ -700,7 +699,9 @@
         "doneSubtasksOpen": "\"{{title}}\" selesai - masih ada {{count}} subtugas terbuka.",
         "doneSubtasksOpen_one": "\"{{title}}\" selesai - masih ada satu subtugas terbuka.",
         "checkAllSubtasks": "Centang semua",
-        "subtasksAllDone": "\"{{title}}\" dan semua subtugas selesai."
+        "subtasksAllDone": "\"{{title}}\" dan semua subtugas selesai.",
+        "seriesDoneNamed": "\"{{title}}\" selesai - berikutnya: {{date}}",
+        "kanbanRestore": "Pulihkan"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} item dihapus.",

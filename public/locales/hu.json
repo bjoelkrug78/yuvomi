@@ -510,7 +510,6 @@
         "swipeDone": "Kész",
         "subtaskAdd": "Alfeladat hozzáadása",
         "subtaskAddNamed": "Alfeladat hozzáadása: {{title}}",
-        "subtaskToggle": "Alfeladatok megjelenítése",
         "subtaskMarkDone": "Jelölés késznek: {{title}}",
         "subtaskRenamePrompt": "Részfeladat",
         "subtaskDeleteConfirm": "Törlöd a(z) „{{title}}” elemet?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "„{{title}}” kész - még {{count}} részfeladat nyitott.",
         "doneSubtasksOpen_one": "„{{title}}” kész - még egy részfeladat nyitott.",
         "checkAllSubtasks": "Összes kipipálása",
-        "subtasksAllDone": "„{{title}}” és minden részfeladat kész."
+        "subtasksAllDone": "„{{title}}” és minden részfeladat kész.",
+        "seriesDoneNamed": "„{{title}}” kész - legközelebb: {{date}}",
+        "kanbanRestore": "Visszaállítás"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} elem törölve.",

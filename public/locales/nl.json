@@ -510,7 +510,6 @@
         "swipeDone": "Klaar",
         "subtaskAdd": "Subtaak toevoegen",
         "subtaskAddNamed": "Subtaak toevoegen aan {{title}}",
-        "subtaskToggle": "Subtaken tonen",
         "subtaskMarkDone": "{{title}} als klaar markeren",
         "subtaskRenamePrompt": "Subtaak",
         "subtaskDeleteConfirm": "“{{title}}” verwijderen?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "‘{{title}}’ klaar - nog {{count}} subtaken open.",
         "doneSubtasksOpen_one": "‘{{title}}’ klaar - nog één subtaak open.",
         "checkAllSubtasks": "Alles afvinken",
-        "subtasksAllDone": "‘{{title}}’ en alle subtaken klaar."
+        "subtasksAllDone": "‘{{title}}’ en alle subtaken klaar.",
+        "seriesDoneNamed": "‘{{title}}’ klaar - volgende keer: {{date}}",
+        "kanbanRestore": "Herstellen"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} artikel verwijderd.",

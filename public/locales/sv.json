@@ -507,7 +507,6 @@
         "swipeDone": "Klart",
         "subtaskAdd": "Lägg till deluppgift",
         "subtaskAddNamed": "Lägg till deluppgift i {{title}}",
-        "subtaskToggle": "Visa deluppgifter",
         "subtaskMarkDone": "Markera {{title}} som klar",
         "subtaskRenamePrompt": "Deluppgift",
         "subtaskDeleteConfirm": "Ta bort ”{{title}}”?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "”{{title}}” klar - {{count}} deluppgifter är fortfarande öppna.",
         "doneSubtasksOpen_one": "”{{title}}” klar - en deluppgift är fortfarande öppen.",
         "checkAllSubtasks": "Bocka av alla",
-        "subtasksAllDone": "”{{title}}” och alla deluppgifter klara."
+        "subtasksAllDone": "”{{title}}” och alla deluppgifter klara.",
+        "seriesDoneNamed": "”{{title}}” klar - nästa gång: {{date}}",
+        "kanbanRestore": "Återställ"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} vara borttagen.",

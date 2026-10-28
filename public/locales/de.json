@@ -526,7 +526,6 @@
         "swipeDone": "Erledigt",
         "subtaskAdd": "Teilaufgabe hinzufügen",
         "subtaskAddNamed": "Teilaufgabe zu {{title}} hinzufügen",
-        "subtaskToggle": "Teilaufgaben anzeigen",
         "subtaskMarkDone": "{{title}} als erledigt markieren",
         "subtaskRenamePrompt": "Teilaufgabe",
         "subtaskDeleteConfirm": "„{{title}}“ wirklich löschen?",
@@ -700,7 +699,9 @@
         "doneSubtasksOpen": "„{{title}}“ erledigt - {{count}} Teilaufgaben noch offen.",
         "doneSubtasksOpen_one": "„{{title}}“ erledigt - eine Teilaufgabe noch offen.",
         "checkAllSubtasks": "Alle abhaken",
-        "subtasksAllDone": "„{{title}}“ und alle Teilaufgaben erledigt."
+        "subtasksAllDone": "„{{title}}“ und alle Teilaufgaben erledigt.",
+        "seriesDoneNamed": "„{{title}}“ erledigt - nächstes Mal am {{date}}",
+        "kanbanRestore": "Wiederherstellen"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} Artikel gelöscht.",

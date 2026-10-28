@@ -599,7 +599,6 @@
         "swipeDone": "Виконано",
         "subtaskAdd": "Додати підзавдання",
         "subtaskAddNamed": "Додати підзавдання: {{title}}",
-        "subtaskToggle": "Показати підзавдання",
         "subtaskMarkDone": "Позначити {{title}} як виконане",
         "subtaskRenamePrompt": "Підзавдання",
         "subtaskDeleteConfirm": "Видалити «{{title}}»?",
@@ -800,7 +799,9 @@
         "checkAllSubtasks": "Позначити всі",
         "subtasksAllDone": "«{{title}}» і всі підзавдання виконано.",
         "doneSubtasksOpen_few": "«{{title}}» виконано - ще відкриті {{count}} підзавдання.",
-        "doneSubtasksOpen_many": "«{{title}}» виконано - ще відкрито {{count}} підзавдань."
+        "doneSubtasksOpen_many": "«{{title}}» виконано - ще відкрито {{count}} підзавдань.",
+        "seriesDoneNamed": "«{{title}}» виконано - наступного разу: {{date}}",
+        "kanbanRestore": "Відновити"
     },
     "shopping": {
         "importMealsPreviewMeals_few": "{{count}} прийоми їжі",

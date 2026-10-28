@@ -526,7 +526,6 @@
         "swipeDone": "Tapos",
         "subtaskAdd": "Magdagdag ng subtask",
         "subtaskAddNamed": "Magdagdag ng subtask sa {{title}}",
-        "subtaskToggle": "Ipakita ang mga subtask",
         "subtaskMarkDone": "Markahang tapos ang {{title}}",
         "subtaskRenamePrompt": "Subtask",
         "subtaskDeleteConfirm": "Burahin ang \"{{title}}\"?",
@@ -700,7 +699,9 @@
         "doneSubtasksOpen": "Tapos na ang \"{{title}}\" - {{count}} subtask pa ang bukas.",
         "doneSubtasksOpen_one": "Tapos na ang \"{{title}}\" - {{count}} subtask pa ang bukas.",
         "checkAllSubtasks": "Markahan lahat",
-        "subtasksAllDone": "Tapos na ang \"{{title}}\" at lahat ng subtask."
+        "subtasksAllDone": "Tapos na ang \"{{title}}\" at lahat ng subtask.",
+        "seriesDoneNamed": "Tapos na ang \"{{title}}\" - susunod: {{date}}",
+        "kanbanRestore": "I-restore"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} ang item na natanggal.",

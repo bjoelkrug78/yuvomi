@@ -510,7 +510,6 @@
         "swipeDone": "Done",
         "subtaskAdd": "Add subtask",
         "subtaskAddNamed": "Add subtask to {{title}}",
-        "subtaskToggle": "Show subtasks",
         "subtaskMarkDone": "Mark {{title}} as done",
         "subtaskRenamePrompt": "Subtask",
         "subtaskDeleteConfirm": "Delete “{{title}}”?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "“{{title}}” done - {{count}} subtasks still open.",
         "doneSubtasksOpen_one": "“{{title}}” done - one subtask still open.",
         "checkAllSubtasks": "Check off all",
-        "subtasksAllDone": "“{{title}}” and all subtasks done."
+        "subtasksAllDone": "“{{title}}” and all subtasks done.",
+        "seriesDoneNamed": "“{{title}}” done - next due {{date}}",
+        "kanbanRestore": "Restore"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} item deleted.",

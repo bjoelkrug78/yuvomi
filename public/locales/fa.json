@@ -526,7 +526,6 @@
         "swipeDone": "انجام‌شده",
         "subtaskAdd": "افزودن زیرکار",
         "subtaskAddNamed": "افزودن زیرکار به {{title}}",
-        "subtaskToggle": "نمایش زیرکارها",
         "subtaskMarkDone": "علامت‌گذاری {{title}} به عنوان انجام‌شده",
         "subtaskRenamePrompt": "زیروظیفه",
         "subtaskDeleteConfirm": "«{{title}}» حذف شود؟",
@@ -700,7 +699,9 @@
         "doneSubtasksOpen": "«{{title}}» انجام شد - هنوز {{count}} زیرکار باز است.",
         "doneSubtasksOpen_one": "«{{title}}» انجام شد - هنوز {{count}} زیرکار باز است.",
         "checkAllSubtasks": "علامت زدن همه",
-        "subtasksAllDone": "«{{title}}» و همه زیرکارها انجام شد."
+        "subtasksAllDone": "«{{title}}» و همه زیرکارها انجام شد.",
+        "seriesDoneNamed": "«{{title}}» انجام شد - دفعهٔ بعد: {{date}}",
+        "kanbanRestore": "بازیابی"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} مورد حذف شد.",

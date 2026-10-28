@@ -6827,7 +6827,8 @@ test('Tasks and Notes expose every click target as a real control', () => {
   // Titel öffnet die Aufgabe, Fortschrittsbalken klappt die Unteraufgaben auf,
   // Kanban-Titel öffnet die Karte — alle drei waren Divs.
   assert.match(tasksPage, /<button type="button" class="task-card__title/);
-  assert.match(tasksPage, /<button type="button" class="subtask-progress"[\s\S]*aria-expanded=/);
+  // R24 (G2-Aufgaben-P3-2): der Stand steht als Knopf in der Metazeile.
+  assert.match(tasksPage, /<button type="button" class="subtask-toggle"[\s\S]*aria-expanded=/);
   assert.match(tasksPage, /<button type="button" class="kanban-card__title/);
 
   // Notizkarte: der einzige Tastaturweg in die Notiz.
@@ -11356,13 +11357,10 @@ test('dashboard and task progress bars animate with transforms instead of widths
   assert.match(dashboardPage, /style="--progress-scale:\$\{progress\s*\/\s*100\}"/);
   assert.doesNotMatch(dashboardPage, /shopping-widget-list__bar" style="width:/);
 
-  assert.match(
-    tasksCss,
-    /\.subtask-progress__bar-fill\s*\{[\s\S]*transform-origin:\s*left[\s\S]*transform:\s*scaleX\(var\(--progress-scale,\s*0\)\)[\s\S]*transition:\s*transform/,
-  );
-  assert.doesNotMatch(cssRuleBody(tasksCss, '.subtask-progress__bar-fill'), /transition:\s*width/);
-  assert.match(tasksPage, /style="--progress-scale:\$\{progress\s*\/\s*100\}"/);
-  assert.doesNotMatch(tasksPage, /subtask-progress__bar-fill" style="width:/);
+  // Der Teilaufgaben-Balken der Aufgabenzeile ist seit R24 (G2-Aufgaben-P3-2)
+  // eine Angabe "0/2" in der Metazeile - es gibt keinen Balken mehr, der
+  // ueber width animieren koennte.
+  assert.doesNotMatch(tasksPage, /subtask-progress__bar-fill/);
 });
 
 test('no module builds its own header "new" button - the shell docks the FAB (D3)', () => {

@@ -510,7 +510,6 @@
         "swipeDone": "Hoàn thành",
         "subtaskAdd": "Thêm nhiệm vụ phụ",
         "subtaskAddNamed": "Thêm nhiệm vụ phụ cho {{title}}",
-        "subtaskToggle": "Hiển thị nhiệm vụ phụ",
         "subtaskMarkDone": "Đánh dấu {{title}} là hoàn thành",
         "subtaskRenamePrompt": "Nhiệm vụ con",
         "subtaskDeleteConfirm": "Xóa «{{title}}»?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "Đã hoàn thành \"{{title}}\" - còn {{count}} việc con chưa xong.",
         "doneSubtasksOpen_one": "Đã hoàn thành \"{{title}}\" - còn một việc con chưa xong.",
         "checkAllSubtasks": "Đánh dấu tất cả",
-        "subtasksAllDone": "Đã hoàn thành \"{{title}}\" và mọi việc con."
+        "subtasksAllDone": "Đã hoàn thành \"{{title}}\" và mọi việc con.",
+        "seriesDoneNamed": "Đã hoàn thành \"{{title}}\" - lần tới: {{date}}",
+        "kanbanRestore": "Khôi phục"
     },
     "shopping": {
         "itemsRemovedToast_one": "Đã xóa {{count}} mục.",

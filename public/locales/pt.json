@@ -510,7 +510,6 @@
         "swipeDone": "Concluído",
         "subtaskAdd": "Adicionar subtarefa",
         "subtaskAddNamed": "Adicionar subtarefa a {{title}}",
-        "subtaskToggle": "Mostrar subtarefas",
         "subtaskMarkDone": "Marcar {{title}} como concluído",
         "subtaskRenamePrompt": "Subtarefa",
         "subtaskDeleteConfirm": "Excluir «{{title}}»?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "«{{title}}» concluído - ainda {{count}} subtarefas por fazer.",
         "doneSubtasksOpen_one": "«{{title}}» concluído - ainda {{count}} subtarefa por fazer.",
         "checkAllSubtasks": "Marcar todas",
-        "subtasksAllDone": "«{{title}}» e todas as subtarefas concluídos."
+        "subtasksAllDone": "«{{title}}» e todas as subtarefas concluídos.",
+        "seriesDoneNamed": "«{{title}}» concluído - próxima vez: {{date}}",
+        "kanbanRestore": "Restaurar"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} item excluído.",

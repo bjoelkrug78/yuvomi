@@ -507,7 +507,6 @@
         "swipeDone": "पूर्ण",
         "subtaskAdd": "उपकार्य जोड़ें",
         "subtaskAddNamed": "{{title}} में उपकार्य जोड़ें",
-        "subtaskToggle": "उपकार्य दिखाएं",
         "subtaskMarkDone": "{{title}} को पूर्ण के रूप में चिह्नित करें",
         "subtaskRenamePrompt": "उप-कार्य",
         "subtaskDeleteConfirm": "क्या «{{title}}» हटाएँ?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "\"{{title}}\" पूर्ण - {{count}} उपकार्य अभी खुले हैं।",
         "doneSubtasksOpen_one": "\"{{title}}\" पूर्ण - {{count}} उपकार्य अभी खुला है।",
         "checkAllSubtasks": "सभी पर निशान लगाएं",
-        "subtasksAllDone": "\"{{title}}\" और सभी उपकार्य पूर्ण।"
+        "subtasksAllDone": "\"{{title}}\" और सभी उपकार्य पूर्ण।",
+        "seriesDoneNamed": "\"{{title}}\" पूर्ण - अगली बार: {{date}}",
+        "kanbanRestore": "पुनर्स्थापित करें"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} आइटम हटाया गया।",

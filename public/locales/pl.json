@@ -618,7 +618,6 @@
         "swipeDone": "Zrobione",
         "subtaskAdd": "Dodaj podzadanie",
         "subtaskAddNamed": "Dodaj podzadanie: {{title}}",
-        "subtaskToggle": "Pokaż podzadania",
         "subtaskMarkDone": "Oznacz {{title}} jako zrobione",
         "subtaskRenamePrompt": "Podzadanie",
         "subtaskDeleteConfirm": "Usunąć „{{title}}”?",
@@ -818,7 +817,9 @@
         "checkAllSubtasks": "Odhacz wszystkie",
         "subtasksAllDone": "„{{title}}” i wszystkie podzadania zrobione.",
         "doneSubtasksOpen_few": "„{{title}}” zrobione - wciąż otwarte {{count}} podzadania.",
-        "doneSubtasksOpen_many": "„{{title}}” zrobione - wciąż otwartych {{count}} podzadań."
+        "doneSubtasksOpen_many": "„{{title}}” zrobione - wciąż otwartych {{count}} podzadań.",
+        "seriesDoneNamed": "„{{title}}” zrobione - następny raz: {{date}}",
+        "kanbanRestore": "Przywróć"
     },
     "shopping": {
         "importMealsPreviewMeals_few": "{{count}} posiłki",

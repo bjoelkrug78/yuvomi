@@ -507,7 +507,6 @@
         "swipeDone": "Tamamlandı",
         "subtaskAdd": "Alt görev ekle",
         "subtaskAddNamed": "{{title}} görevine alt görev ekle",
-        "subtaskToggle": "Alt görevleri göster",
         "subtaskMarkDone": "{{title}} tamamlandı olarak işaretle",
         "subtaskRenamePrompt": "Alt görev",
         "subtaskDeleteConfirm": "«{{title}}» silinsin mi?",
@@ -682,7 +681,9 @@
         "doneSubtasksOpen": "\"{{title}}\" tamamlandı - {{count}} alt görev hâlâ açık.",
         "doneSubtasksOpen_one": "\"{{title}}\" tamamlandı - bir alt görev hâlâ açık.",
         "checkAllSubtasks": "Tümünü işaretle",
-        "subtasksAllDone": "\"{{title}}\" ve tüm alt görevler tamamlandı."
+        "subtasksAllDone": "\"{{title}}\" ve tüm alt görevler tamamlandı.",
+        "seriesDoneNamed": "\"{{title}}\" tamamlandı - sıradaki: {{date}}",
+        "kanbanRestore": "Geri yükle"
     },
     "shopping": {
         "itemsRemovedToast_one": "{{count}} ürün silindi.",
