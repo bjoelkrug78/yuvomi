@@ -201,9 +201,7 @@
 
 .documents-folder-browser__title {
   margin: 0;
-  color: var(--color-text-secondary);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
 }
 
 /* Der Auslöser der aufklappbaren Auswahl stand hier als eigene Zeile im Kopf

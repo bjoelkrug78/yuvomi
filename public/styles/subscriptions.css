@@ -72,10 +72,10 @@
 
   /* Die Monatskosten fuehren die Spalte wie Saldo und Restschuld (R23, D12):
    * die Spalte meldet sich als Spalte, die Leitzahl steht in Large Title und
-   * die uebrigen in Title 2 - bis R23 stand sie hier in 28px, daneben 18px. */
+   * die uebrigen als Nebenzahl in Headline (panel.css, R24) - bis R23 stand
+   * sie hier in 28px, daneben 18px. */
   .budget-page .subscriptions-summary > .metric-grid--led {
     --metric-rail: ;
-    --metric-quiet-size: var(--text-2xl);
   }
 
   .budget-page .subscriptions-list-section {

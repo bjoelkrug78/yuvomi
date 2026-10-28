@@ -31,6 +31,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   task filters and the calendar show one row of chips with each person's colour, initials and first
   name, with "All" in front. On phones the task history showed only initials without names, and on
   desktop it cut names off ("Leo Joh…").
+- **Headings in the settings keep their size for everyone.** A section such as "Event defaults" stood
+  smaller for adults than for children, because "For me" and "For the household" sat above it as a
+  larger heading. Those now read as small group labels, like the groups in the settings list, the
+  overview on phones and the module groups in "Active modules" and "Navigation", and every section keeps
+  the same size.
+- **One number leads, the others step back clearly.** Next to the leading figure (balance, outstanding
+  loan, monthly cost), income, expenses and the other figures stand one size smaller than before, the
+  same size on every tab and on phones.
+- **Amounts look the same in every list.** Account balances, budget plan values and loan instalments
+  now match transactions in size and weight; a loan's or subscription's amount no longer stands bolder
+  than the rest, and the plan's limit stands quieter next to what was spent.
+- **Detail titles and calendar blocks read as one system.** The name of a selected task, contact,
+  recipe, item or health area stands a step larger above its details, the health charts and recent
+  measurements carry proper subtitles, and the documents' folder column has a real heading. In the
+  calendar's day and week view a shift block shows its name and time like an appointment, name above
+  time, instead of large text side by side.
 
 ### Fixed
 - **The password eye sits inside the field in the settings too.** The WebDAV backup target and the

@@ -282,18 +282,8 @@
  * darunter. Vorher trennten Haarlinien die Bereiche auf dem Grund - eine
  * Liste ohne Rand, an dem sie als ein Objekt fassbar waere. */
 .settings-overview__heading {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin: 0;
-  color: var(--color-text-primary);
-  font-size: var(--text-lg);
-}
-
-.settings-overview__heading-icon {
-  width: var(--space-5);
-  height: var(--space-5);
-  color: var(--module-settings);
+  margin: 0 var(--space-1);
+  color: var(--color-text-secondary);
 }
 
 .settings-overview__list {
@@ -389,10 +379,6 @@
 
   .settings-overview__section {
     gap: var(--space-2);
-  }
-
-  .settings-overview__heading {
-    font-size: var(--text-base);
   }
 
   .settings-overview__row {
@@ -754,13 +740,15 @@
   margin-top: var(--space-8);
 }
 
-/* Groesse und Gewicht kommen aus der Rolle (typography.css, Stufenleiter des
- * Einstellungsblatts): die Reichweite steht eine Stufe UEBER den Abschnitten,
- * die sie gliedert. Bis R16 stand sie in 16px Sekundaertext und war damit die
- * kleinste Ueberschrift des Blatts. */
+/* Groesse und Gewicht kommen aus der Rolle (typography.css, Gruppierungslabel):
+ * die Reichweite gruppiert Abschnitte wie die Spalte ihre Blaetter, sie ist
+ * keine Stufe ueber ihnen (R24). R16 hatte sie zur 20er-Ueberschrift gemacht,
+ * weil sie als 16px-Sekundaertext wie Lesetext aussah; dafuer wichen die
+ * Abschnitte darunter auf 17 aus. Das Label liest als Gruppe, nicht als Satz,
+ * und der Abschnitt bleibt in jedem Blatt 20. */
 .settings-scope__title {
-  margin: 0 0 var(--space-4) var(--space-1);
-  color: var(--color-text-primary);
+  margin: 0 0 var(--space-2) var(--space-1);
+  color: var(--color-text-secondary);
 }
 
 .settings-sheet-section {
@@ -1356,7 +1344,6 @@
 
 .settings-status-summary__title {
   color: var(--color-text-primary);
-  font-size: var(--text-base);
 }
 
 .settings-status-summary__status,
@@ -3242,7 +3229,8 @@
   font-weight: var(--font-weight-semibold);
 }
 
-/* Größe und Weight kommen aus der kompakten Titelrolle in typography.css;
+/* Größe und Weight kommen aus dem Gruppierungslabel in typography.css (R24:
+ * dieselbe Gruppe wie in der Seitenleiste, vorher 15/600 mit Haarlinie);
  * hier nur noch die Farbe. */
 .settings-navigation-group__title {
   color: var(--color-text-secondary);
@@ -3260,9 +3248,7 @@
 }
 
 .settings-navigation-group__title {
-  margin: 0;
-  padding-bottom: var(--space-2);
-  border-bottom: var(--space-px) solid var(--color-border-subtle);
+  margin: 0 var(--space-1);
 }
 
 /* Flächenlos: die Fläche gehört dem Träger. Kante und Radius stehen bewusst

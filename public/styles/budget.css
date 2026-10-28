@@ -512,12 +512,11 @@
 
   /* DER SALDO FUEHRT DIE SPALTE (Critique R18, 2026-10-07): er steht oben auf
    * einer Display-Stufe, Einnahmen und Ausgaben darunter als seine Herleitung
-   * in Title 2 (panel.css `.metric-card--lead`). Nur die Sicht-Reihenfolge
+   * als Nebenzahlen in Headline (panel.css, R24). Nur die Sicht-Reihenfolge
    * wechselt - im Markup bleibt die Rechnung (Einnahmen, Ausgaben, Saldo),
    * mobil steht er schon seit 2026-09-25 vorn. */
   .budget-overview__aside .metric-grid--led {
     --metric-rail: ;
-    --metric-quiet-size: var(--text-2xl);
   }
 
   .budget-overview__aside .metric-grid > .metric-card--lead {
@@ -856,9 +855,16 @@
  * Planwert, geteilte Ausgabe. Gemessen standen 600 (Buchung), 700 (Konto,
  * Plan) und 900 (Aufteilung) nebeneinander. Die KENNZAHL (`.metric-card__value`,
  * Title 1) ist seit 2026-10-26 ebenfalls semibold und hebt sich durch ihre
- * Groesse ab, nicht durch ihr Gewicht. Guard: test-budget-ui.js. */
+ * Groesse ab, nicht durch ihr Gewicht. Guard: test-budget-ui.js.
+ *
+ * UND EINE GROESSE (R24, Critique G4-Budget-P3-6): der Betrag einer Zeile
+ * steht in der Groesse ihres Namens, 16 - Buchung, Konto, Planwert, Rate,
+ * geteilte Ausgabe, Inventarwert. Gemessen standen 14 (Plan), 16 (Buchung,
+ * Aufteilung) und 18 (Konto) nebeneinander, die Rate fett (ein nacktes
+ * `<strong>`). Die Balken der Diagramme sind keine Zeilen: ihr Betrag folgt
+ * dem Label des Diagramms (13 bzw. 15), traegt aber dasselbe Gewicht. */
 .budget-account__balance {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   font-weight: var(--font-weight-semibold);
   white-space: nowrap;
 }
@@ -1618,7 +1624,7 @@ button.budget-bar-row:focus-visible {
  * flex:1-Balkenspuren gleich breit bleiben und die Balken vergleichbar sind. */
 .budget-bar-row__amount {
   font-size: var(--type-caption);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
   /* Label-Farbe statt Rot/Gruen je Zeile (Critique 2026-09-25): neun farbige
    * Betraege untereinander waren konkurrierender Alarm. Die Richtung steht im
@@ -1680,7 +1686,6 @@ button.budget-bar-row:focus-visible {
   /* Die Restschuld fuehrt die Spalte (panel.css `.metric-card--lead`). */
   .budget-loans > .metric-grid--led {
     --metric-rail: ;
-    --metric-quiet-size: var(--text-2xl);
   }
 }
 
@@ -1722,6 +1727,7 @@ button.budget-bar-row:focus-visible {
 .budget-loan-card__amounts strong {
   display: block;
   font-size: var(--text-base);
+  font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
   color: var(--color-text-primary);
   margin-top: var(--space-0h);
@@ -3306,8 +3312,14 @@ button.budget-entry__title {
  * Statistik daneben schon traegt (`.budget-bar-row__label`). Der Betrag steht
  * auf der ersten Zeile des Namens (baseline). */
 .budget-plan-row__label { flex: 1 1 auto; min-width: 0; font-weight: var(--font-weight-medium); color: var(--color-text-primary); overflow-wrap: anywhere; hyphens: auto; }
-.budget-plan-row__amounts { font-size: var(--text-sm); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; flex-shrink: 0; }
-.budget-plan-row__amounts strong { color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
+/* DER BETRAG IN DER GROESSE DER ZEILE, DAS ZIEL LEISER (R24, G4-Budget-P3-6):
+ * "1.620,99 €" ist der Betrag der Zeile (16, semibold, wie jede Buchung), das
+ * Limit dahinter steht wie das Ziel einer Kennzahl ("von 90,00 €") eine Stufe
+ * kleiner in Sekundaerfarbe. Beides in 16 haette bei 390px "Wohnen / Zuhause"
+ * umbrechen lassen; bis R24 stand die ganze Angabe in 14, der Stufe der
+ * Bedienelemente. */
+.budget-plan-row__amounts { font-size: var(--type-caption); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.budget-plan-row__amounts strong { font-size: var(--text-base); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
 
 .budget-plan-row__track {
   height: var(--space-2);
@@ -3408,6 +3420,17 @@ button.budget-entry__title {
 .split-expense__amount,
 .split-debt strong {
   font-variant-numeric: tabular-nums;
+}
+
+/* Ein Betrag als nacktes `<strong>` erbt das Fett des Browsers (700): Abo-
+ * Kosten, Abo-Diagramm und Darlehenskarte standen so eine Stufe ueber jeder
+ * anderen Zahl des Moduls (R24, G4-Budget-P3-6). Das Gewicht der Betragsregel
+ * gilt auch dort. */
+.subscription-card__cost > strong,
+.subscriptions-chart-row > strong,
+.subscriptions-chart__figure strong,
+.split-debt strong {
+  font-weight: var(--font-weight-semibold);
 }
 
 .budget-transfer-summary { margin-block-start: var(--space-3); }

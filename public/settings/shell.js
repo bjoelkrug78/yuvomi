@@ -554,10 +554,9 @@ function renderOverview(content, domains, user) {
     const heading = document.createElement('h2');
     heading.className = 'settings-overview__heading';
     heading.id = `${section.id}-heading`;
-    heading.append(
-      createIcon(domain.icon, 'settings-overview__heading-icon'),
-      document.createTextNode(domainLabel),
-    );
+    // Ohne Glyphe (R24): die Gruppe spricht wie in der Spalte und der
+    // Seitenleiste, das Zeichen tragen ihre Blaetter.
+    heading.textContent = domainLabel;
     section.setAttribute('aria-labelledby', heading.id);
 
     const list = document.createElement('div');
@@ -578,10 +577,7 @@ function renderOverview(content, domains, user) {
   const optionsHeading = document.createElement('h2');
   optionsHeading.className = 'settings-overview__heading';
   optionsHeading.id = 'settings-overview-options-heading';
-  optionsHeading.append(
-    createIcon('sliders-horizontal', 'settings-overview__heading-icon'),
-    document.createTextNode(t('settings.searchOptionsHeading')),
-  );
+  optionsHeading.textContent = t('settings.searchOptionsHeading');
   optionsSection.setAttribute('aria-labelledby', optionsHeading.id);
   const optionsList = document.createElement('div');
   optionsList.className = 'settings-overview__list';

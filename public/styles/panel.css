@@ -488,21 +488,20 @@
   font-size: var(--text-xl);
 }
 
+/* DIE NEBENZAHL: Headline 17, semibold, an jedem Ort (R24, Critique
+ * G4-Budget-P2-2). Neben der Leitzahl standen die uebrigen Werte je nach Ort
+ * in 22 (Seitenspalte, per `--metric-quiet-size` aus drei Modulblaettern), 20
+ * oder 18 (Container-Stufen der Reihe) - vier Grade fuer dieselbe Rolle, und
+ * in der Seitenspalte 22 unter 34: zwei Zahlen, die beide wie Kennzahlen
+ * aussahen. Jetzt fuehrt EINE Zahl (34 bzw. 28), und was neben ihr steht, ist
+ * eine Nebenzahl in Headline - dieselbe Stufe wie der Wert der mobilen
+ * Kurzzeile (`.budget-glance__value`). Eine feste Stufe braucht keine
+ * Container-Abfrage: 17px fassen "174.644,93 EUR" in jeder Karte, die eine
+ * Reihe hergibt. */
 .metric-grid--led > .metric-card:not(.metric-card--lead) > .metric-card__value {
-  font-size: var(--metric-quiet-size, var(--text-2xl));
+  font-size: var(--type-card-title);
   font-weight: var(--font-weight-semibold);
-}
-
-@container metric-grid (max-width: 600px) {
-  .metric-grid--led > .metric-card:not(.metric-card--lead) > .metric-card__value {
-    font-size: var(--metric-quiet-size, var(--text-xl));
-  }
-}
-
-@container metric-grid (max-width: 400px) {
-  .metric-grid--led > .metric-card:not(.metric-card--lead) > .metric-card__value {
-    font-size: var(--metric-quiet-size, var(--text-lg));
-  }
+  letter-spacing: var(--tracking-normal);
 }
 
 /* UND DIE REIHE BRICHT, STATT IHRE KARTEN ZU ZERQUETSCHEN.
@@ -1173,7 +1172,9 @@ svg.chart {
  * Kennzahl-Karte: Title 3 waere groesser als der Titel „Transaktionen"
  * darunter. Die Toene sind die der Saldo-Karte (panel.css). */
 .budget-glance__value {
-  font-size: var(--text-lg);
+  /* Headline wie die Nebenzahl einer Reihe (R24); bis dahin 18px, eine Stufe
+   * ausserhalb der Skala. */
+  font-size: var(--type-card-title);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
   font-variant-numeric: tabular-nums;

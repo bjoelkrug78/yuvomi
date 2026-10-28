@@ -277,9 +277,9 @@
   flex: 0 0 auto;
 }
 
-.health-detail-head__title {
-  font-size: var(--text-lg);
-}
+/* Groesse und Gewicht: Rolle Detailtitel (typography.css, R24) - hier stand
+ * ein zweites `--text-lg`, das die Rolle der Split-Views fuer die Gesundheit
+ * noch einmal festschrieb. */
 
 .health-toolbar__back-icon {
   width: var(--icon-lg);
@@ -777,8 +777,6 @@
 }
 
 .health-chart-section__title {
-  font-size: var(--text-lg);
-  font-weight: var(--font-weight-semibold, 600);
   color: var(--color-text-primary);
 }
 
@@ -3857,9 +3855,7 @@ button.cycle-cal__day:not(:disabled):hover { background: var(--color-surface-2);
 }
 
 .health-recent__title {
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   margin-bottom: var(--space-1);
 }
 

@@ -4127,8 +4127,7 @@ html.fab-steady .page-fab {
   flex: 1 1 auto;
   min-width: 0;
   margin: 0;
-  font-size: var(--text-lg);
-  font-weight: var(--font-weight-semibold);
+  /* Groesse und Gewicht: Rolle Detailtitel (typography.css, R24). */
   color: var(--color-text-primary);
   overflow-wrap: anywhere;
 }

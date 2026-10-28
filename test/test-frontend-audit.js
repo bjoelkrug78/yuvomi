@@ -21342,16 +21342,27 @@ test('R16: Werte im Kontakt-Leseblatt stehen in Textfarbe, das Zeilenzeichen tra
 /* R16 Schritt 2b (Critique 2026-10-05: "Ueberschriften im Einstellungsblatt
  * 22/16/20/17px", "'Termine' zweimal als H2"). Gegen den Stand davor rot
  * gelaufen. */
-test('R16: das Einstellungsblatt hat eine Stufenleiter - die Reichweite steht ueber ihren Abschnitten', () => {
+/* R24 (Critique G6-Einst-P2-2, "Titelleiter in sechs Stufen"): die Reichweite
+ * ist ein Gruppenlabel wie die Gruppen der Spalte, der Abschnitt bleibt in
+ * JEDEM Blatt 20 - vorher 17 unter einer Reichweite (Linda) und 20 ohne (Emma). */
+test('R16/R24: das Einstellungsblatt hat eine Stufenleiter - Blatt 22, Abschnitt 20, Karte 17, die Reichweite gruppiert', () => {
   const typo = rulesOf(read('../public/styles/typography.css')).filter((rule) => rule.at.length === 0);
   const rolle = (sel) => typo.filter((rule) => selectorsOf(rule).includes(sel)).map((rule) => rule.body).join(';');
-  assert.match(rolle('.settings-scope__title'), /font-size:\s*var\(--type-section-title\)/, 'Reichweite = Abschnittstitel (20px)');
-  assert.match(rolle('.settings-scope .settings-section__title'), /font-size:\s*var\(--type-card-title\)/, 'Abschnitt in einer Reichweite = eine Stufe darunter (17px)');
-  assert.ok(selectorsOf(typo.find((rule) => selectorsOf(rule).includes('.u-row-title')) ?? { selector: '' }).includes('.settings-scope .settings-card__title'),
-    'Karte in einer Reichweite = Zeilentitel (16px)');
-  const scope = rulesOf(read('../public/styles/settings.css')).filter((rule) => rule.selector.trim() === '.settings-scope__title').map((rule) => rule.body).join(';');
-  assert.doesNotMatch(scope, /font-size:|font-weight:/, 'settings.css setzt der Reichweite keine eigene Groesse entgegen');
-  assert.doesNotMatch(scope, /--color-text-secondary/, 'und nimmt sie nicht in den Sekundaerton zurueck');
+  assert.match(rolle('.settings-section__title'), /font-size:\s*var\(--type-section-title\)/, 'Abschnitt = 20px');
+  const alle = typo.flatMap((rule) => selectorsOf(rule));
+  assert.ok(!alle.some((sel) => /^\.settings-scope\s/.test(sel)), 'keine Rolle haengt an der Reichweite (kein Abschnitt, keine Karte eine Stufe tiefer)');
+  const gruppe = typo.find((rule) => selectorsOf(rule).includes('.nav-section-label'));
+  for (const sel of ['.settings-scope__title', '.settings-shell__navigation-heading', '.settings-overview__heading', '.settings-navigation-group__title']) {
+    assert.ok(selectorsOf(gruppe).includes(sel), `${sel} ist das Gruppierungslabel der Seitenleiste`);
+  }
+  assert.match(gruppe.body, /font-size:\s*var\(--text-xs\)/);
+  assert.match(rolle('.settings-card__title'), /font-size:\s*var\(--type-card-title\)/, 'Karte = 17px');
+  const settingsRules = rulesOf(read('../public/styles/settings.css'));
+  for (const sel of ['.settings-scope__title', '.settings-overview__heading', '.settings-navigation-group__title', '.settings-status-summary__title']) {
+    const body = settingsRules.filter((rule) => selectorsOf(rule).includes(sel)).map((rule) => rule.body).join(';');
+    assert.doesNotMatch(body, /font-size:|font-weight:/, `settings.css setzt ${sel} keine eigene Groesse entgegen`);
+  }
+  assert.doesNotMatch(read('../public/settings/shell.js'), /settings-overview__heading-icon/, 'die Gruppe der Uebersicht traegt keine eigene Glyphe');
   // Die Ebene im Baum: Abschnitte und Karten in einer Reichweite stehen eine Ebene tiefer.
   const shell = read('../public/settings/shell.js');
   assert.match(shell, /levelScopedHeadings\(leafContainer\);/);

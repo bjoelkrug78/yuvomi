@@ -6219,10 +6219,14 @@ test('R18: je Geld-Reiter fuehrt EINE Zahl, mobil in der Kurzzeile und in der Ke
   assert.doesNotMatch(panelText, /\d+(?:\.\d+)?(?:vw|cqi)\s*,\s*var\(--text-[345]xl\)/, 'keine Viewport-/Container-Leiter fuer die Leitzahl');
   assert.match(rule('.budget-glance__value').body, /white-space:\s*nowrap/, 'ein Betrag ueber zwei Zeilen ist keine Kennzahl');
   assert.match(rule('.budget-glance--lead .budget-glance__flows').body, /flex:\s*1 0 100%/, 'die Nebenwerte bekommen ihre eigene Zeile');
-  // In der Reihe treten die anderen zurueck - in jeder Stufe der Leiter.
+  // In der Reihe treten die anderen zurueck: R24 (G4-Budget-P2-2) als EINE
+  // feste Nebenzahl in Headline 17 - vorher 22/20/18 je nach Ort.
   const quiet = rules.filter((r) => r.selector.trim() === '.metric-grid--led > .metric-card:not(.metric-card--lead) > .metric-card__value');
-  assert.equal(quiet.length, 3, 'Grundregel plus die zwei Container-Stufen');
+  assert.equal(quiet.length, 1, 'EINE Regel, keine Container-Stufen fuer die Nebenzahl');
+  assert.equal(quiet[0].at.length, 0);
+  assert.equal(size('.metric-grid--led > .metric-card:not(.metric-card--lead) > .metric-card__value'), 'var(--type-card-title)', 'Nebenzahl = Headline 17');
   assert.match(quiet[0].body, /font-weight:\s*var\(--font-weight-semibold\)/);
+  assert.equal(size('.budget-glance__value'), 'var(--type-card-title)', 'der Wert der Kurzzeile ohne Leitzahl ist dieselbe Nebenzahl');
   // In der Seitenspalte steigt die Leitzahl auf Large Title: die Spalte sagt es
   // mit dem leeren `--metric-rail`, EINE Regel in panel.css setzt ihn vor die
   // Stufe. Ohne ihn ist `--_metric-lead` ungueltig und Title 1 greift.
@@ -6241,8 +6245,9 @@ test('R18: je Geld-Reiter fuehrt EINE Zahl, mobil in der Kurzzeile und in der Ke
   for (const sel of ['.budget-overview__aside .metric-grid--led', '.budget-loans > .metric-grid--led', '.budget-page .subscriptions-summary > .metric-grid--led']) {
     const r = [...eachRule(budgetCss + subsCss)].find((x) => x.selector.trim() === sel);
     assert(r && railOn.test(r.body), `${sel}: die Spalte meldet sich als Spalte`);
-    assert.match(r.body, /--metric-quiet-size:\s*var\(--text-2xl\)/, `${sel}: die anderen stehen in Title 2`);
+    assert.doesNotMatch(r.body, /--metric-quiet-size/, `${sel}: kein eigener Grad fuer die Nebenzahl (R24)`);
   }
+  assert.doesNotMatch(withoutComments(panelText + budgetCss + subsCss), /--metric-quiet-size/, 'die Stellschraube fuer einen zweiten Nebenzahl-Grad ist entfallen');
 });
 
 test('R23 D12: die Leitzahl wird nur kleiner, wenn sie nicht passt (fitMetricLeads)', async () => {
