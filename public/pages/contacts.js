@@ -1459,7 +1459,7 @@ function buildContactForm({ mode, contact = null }) {
       <div class="contact-mv-list" data-mv-list>${rows.map((r, i) => mvRow(kind, r, i === 0)).join('')}</div>
       ${mvLocked(kind)
         ? `<p class="form-hint" id="cm-email-locked">${t('contacts.emailLockedHint')}</p>`
-        : `<button type="button" class="btn btn--ghost contact-mv-add" data-mv-add>
+        : `<button type="button" class="btn btn--ghost btn--sm contact-mv-add" data-mv-add>
         <i data-lucide="plus" class="icon-sm" aria-hidden="true"></i>${t(addKey)}
       </button>`}
       ${kind === 'phone'

@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **A birthday photo is chosen with one control.** The photo itself is the button, with a small pencil
   badge; the separate pencil button next to it is gone, and "Remove picture" appears as text below only
   when there is a picture.
+- **Adding another phone number or email is a quiet line action.** In a contact, "+ Add phone number"
+  and "+ Add email address" stood as full-width buttons in the middle of the dialog; they now sit small
+  at the edge of the fields.
 - **Filtering by person looks the same in every module.** The task history, the rewards history, the
   task filters and the calendar show one row of chips with each person's colour, initials and first
   name, with "All" in front. On phones the task history showed only initials without names, and on

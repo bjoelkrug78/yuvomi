@@ -76,3 +76,15 @@ test('Bild: das Vorschaubild ist der EINE Knopf, das Abzeichen sagt "aenderbar",
   assert.match(badge?.body ?? '', /pointer-events:\s*none/, 'das Abzeichen nimmt dem Knopf keinen Tipp');
   assert.match(badge?.body ?? '', /position:\s*absolute/);
 });
+
+test('Kontakte: "+ Telefonnummer hinzufuegen" ist eine leise Zeilenaktion an der Feldkante, "Jahr unbekannt" ein Schalter', async () => {
+  const src = read('pages/contacts.js');
+  assert.match(src, /class="btn btn--ghost btn--sm contact-mv-add" data-mv-add/);
+  const { eachRule } = await import('./css-rules.js');
+  const add = [...eachRule(readFileSync(new URL('../public/styles/contacts.css', import.meta.url), 'utf8'))].find((r) => r.selector.trim() === '.contact-mv-add');
+  assert.match(add?.body ?? '', /align-self:\s*flex-start/);
+  // Der Geburtstag des Kontakts nimmt den geteilten Baustein, dessen "Jahr
+  // unbekannt" ein Schalter ist (role=switch) - kein Kaestchen.
+  assert.match(src, /birthDateFieldHtml\(\{\s*id: 'cm-birthday'/);
+  assert.match(read('utils/birth-date.js'), /<input type="checkbox" role="switch" id="\$\{esc\(id\)\}-year-unknown"/);
+});
