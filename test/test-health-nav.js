@@ -925,15 +925,16 @@ test('R22 D12: der Detailkopf fluchtet mit der Bereichsliste und klebt mit Absta
   assert.match(head.body, /margin-block-end:\s*var\(--space-3\)/, 'der Ring (--space-2) bleibt unter der Luft zum Inhalt');
 });
 
-test('R22 D12: Einnehmen heisst ueberall so und behaelt sein Wort - auch die Bedarfsdosis', async () => {
+test('R24 E10: auch die Bedarfsdosis nimmt man am Ring, mit dem Namen des Medikaments', async () => {
+  // R22 D12 gab beiden Dosen dasselbe Verb auf einem Kapselknopf; seit R24
+  // (E10) ist Einnehmen in beiden Zeilen der Abhak-Ring vor dem Namen.
   const { eachRule } = await import('./css-rules.js');
   const prn = HEALTH_JS.slice(HEALTH_JS.indexOf('function prnRowMarkup('), HEALTH_JS.indexOf('function prnListMarkup('));
-  assert.match(prn, /<span class="health-prn__take-label">\$\{esc\(t\('health\.meds\.take'\)\)\}<\/span>/, 'dasselbe Verb wie die geplante Dosis');
-  assert.match(prn, /aria-label="\$\{esc\(t\('health\.meds\.takeNamed', \{ name: med\.name \}\)\)\}"/, 'der Name beginnt mit dem sichtbaren Wort');
-  assert.match(prn, /class="icon-md health-dose__take-icon"/, 'dieselbe Tablette wie bei der geplanten Dosis');
+  assert.match(prn, /<button type="button" class="health-dose__check check-ring"\s+data-prn-take/, 'derselbe Ring wie bei der geplanten Dosis');
+  assert.match(prn, /aria-label="\$\{esc\(t\('health\.meds\.takeNamed', \{ name: med\.name \}\)\)\}"/, 'der Name nennt das Medikament');
+  assert.doesNotMatch(prn, /btn--primary|btn--ghost|health-prn__take/, 'kein Kapselknopf mehr');
+  assert.ok(prn.indexOf('${action}') < prn.indexOf('health-dose__name'), 'der Ring steht vor dem Namen');
   const rules = [...eachRule(read('public/styles/health.css'))];
-  const hidesWord = rules.filter((r) => /\.health-(?:dose|prn)__take-label/.test(r.selector) && /display:\s*none/.test(r.body));
-  assert.deepEqual(hidesWord.map((r) => `${r.at.join(' ')} ${r.selector}`), [], 'keine Breite nimmt dem Knopf sein Wort');
   // Bei 1920 brach "Ibuprofen · 400 / mg" neben "Noch nicht geno...": bis 32rem steht der Name allein.
   const wrap = rules.find((r) => r.at.some((a) => /list-rows \(max-width:\s*32rem\)/.test(a)) && r.selector.trim() === '.health-prn > .health-dose__name');
   assert.match(wrap?.body ?? '', /flex:\s*1 0 100%/);
@@ -949,36 +950,9 @@ test('R22 D12: das Erfassen-Formular steht in EINEM Traeger, der Tag-Titel brich
   assert.match(HEALTH_JS, /title: `\$\{t\('health\.cycle\.dayLog\.title'\)\}\\u00A0· \$\{dateText\(key\)\}`/, 'geschuetztes Leerzeichen vor dem Trenner');
 });
 
-// Sammel-Ticket R22-F, F4.5: der Einnehmen-Knopf trug seine Tablette am Desktop
-// nur auf der Medikamente-Seite - unter 26rem Zeilenbreite (Uebersicht 300-380px,
-// jedes Telefon) fiel sie weg. Gemessen mit Tablette 320-1920px in sechs Sprachen:
-// kein Ueberlauf, gleiche Zeilenhoehe. Keine Breite nimmt sie mehr.
-test('F4.5: Einnehmen traegt seine Tablette auf jeder Seite und bei jeder Breite', async () => {
-  const { eachRule } = await import('./css-rules.js');
-  const hides = [...eachRule(read('public/styles/health.css'))]
-    .filter((r) => /\.health-dose__take-icon/.test(r.selector) && /display:\s*none/.test(r.body));
-  assert.deepEqual(hides.map((r) => `${r.at.join(' ')} ${r.selector}`), [], 'eine Breite nimmt dem Knopf die Tablette - Uebersicht und Medikamente-Seite sahen verschieden aus');
-  assert.match(HEALTH_JS, /health-dose__take"[^>]*><i data-lucide="pill" class="icon-md health-dose__take-icon"/, 'die geplante Dosis traegt die Tablette');
-});
-
-// Nebenbefund zu F4.5: der Knopf "Einnehmen" hiess in 26 von 27 Sprachen wie
-// der ZUSTAND danach - en "Taken", fr "Pris", ja "服用済み" -, sein Name aber
-// "Take {{name}}". Ein Knopf, der "Taken" sagt, liest sich als erledigt, und
-// das sichtbare Wort stand nicht im Namen (WCAG 2.5.3 Label in Name: wer
-// "Taken" spricht, trifft "Take Vitamin D3" nicht). Das Wort ist jetzt das
-// Verb aus dem eigenen `takeNamed` jeder Sprache.
-test('F4.5: Einnehmen ist in jeder Sprache ein Verb, und sein Wort steht im Namen (WCAG 2.5.3)', () => {
-  const dir = join(ROOT, 'public/locales');
-  const files = readdirSync(dir).filter((f) => f.endsWith('.json'));
-  assert.ok(files.length >= 27, `nur ${files.length} Sprachen`);
-  const missing = [];
-  for (const file of files) {
-    const meds = JSON.parse(readFileSync(join(dir, file), 'utf8')).health.meds;
-    const named = meds.takeNamed.replace('{{name}}', '').toLocaleLowerCase();
-    if (!named.includes(meds.take.toLocaleLowerCase())) missing.push(`${file}: "${meds.take}" / "${meds.takeNamed}"`);
-  }
-  assert.deepEqual(missing, [], 'das sichtbare Wort fehlt im Namen des Knopfs');
-});
+// F4.5 (Tablette und Verb am Einnehmen-Knopf) ist mit R24 E10 gegenstandslos:
+// Einnehmen ist der Abhak-Ring vor der Zeile (test:health-meds "R24 E10"), das
+// sichtbare Wort "Einnehmen" und sein Key `health.meds.take` sind entfallen.
 
 // R24 E9 (Ulas 2026-10-28; Critique G5 P1-1, G0 P2-2, G5 P2-3): jede Ansicht
 // der Gesundheit hat ihren FAB. Uebersicht: „+ Erfassen" mit einem Menue am

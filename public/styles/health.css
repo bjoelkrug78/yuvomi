@@ -186,6 +186,17 @@
   background: var(--color-fill-well);
 }
 
+/* EINE STEUERHOEHE IM DESKTOP-KOPF (R24, G0-Shell-P3-2): am Zeiger misst
+ * die Personenwahl wie Suche, Werkzeug und angedockte Pille daneben
+ * (`--target-md`, layout.css) - sie stand mit 44px als einziges Kopf-
+ * element darueber. Am Finger bleibt `--target-base`. */
+@media (min-width: 1024px) and (hover: hover) {
+  .health-toolbar__person .health-person-switcher__trigger {
+    min-height: var(--target-md);
+    padding-block: 0;
+  }
+}
+
 .health-toolbar__person .health-person-switcher__name {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1052,17 +1063,58 @@
  * fuer alle Module, siehe oben). Hier bricht eine Zeile um, die das mit
  * Absicht tut - der Name traegt die volle Basis und die Reihenfolge, nichts
  * faellt dem Zufall der Breite zu. */
+/* MIT RING BLEIBT DIE GEPLANTE DOSIS EINE ZEILE (R24, E10): der Umbruch
+ * unten war die Antwort auf den Einnehmen-Knopf mit Wort neben dem Namen.
+ * Seit Einnehmen der Ring vorn ist, traegt das Ende nur den schmalen
+ * Mehr-Knopf, und Ring, Uhrzeit, Name und Mehr passen bei 320px in eine
+ * Zeile; ein langer Name bricht in seiner Spalte (zwei Zeilen, s. oben). */
 @container list-rows (max-width: 26rem) {
-  .health-dose {
+  .health-dose:not(.health-dose--check) {
     flex-wrap: wrap;
     row-gap: var(--space-1);
   }
 
-  .health-dose > .health-dose__name {
+  .health-dose:not(.health-dose--check) > .health-dose__name {
     order: -1;
     flex: 1 0 100%;
     min-width: 0;
   }
+}
+
+/* DER EINNEHMEN-RING (R24, E10): derselbe Ring wie an der Aufgabe
+ * (`.check-ring`, list-row.css) - hier Trefferflaeche und Stellung. Der
+ * 20px-Ring steht auf der Inhaltskante der Zeile, die halbe Differenz zur
+ * Trefferflaeche reicht in die Zeilenpolsterung (Bauart Haushaltshilfe). Der
+ * Haken ist das Kind (`.check-ring__check`) und erscheint erst, wenn der Ring
+ * voll ist. */
+.health-dose__check {
+  position: relative;
+  flex: none;
+  width: var(--target-base);
+  height: var(--target-base);
+  margin-inline-start: calc((var(--target-base) - var(--space-5)) / -2);
+  margin-inline-end: calc((var(--target-base) - var(--space-5)) / -2);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.health-dose__check:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset-inset);
+}
+
+.health-dose__check:active::after {
+  transform: scale(var(--press-scale-sm));
+}
+
+.check-ring--static.health-dose__check {
+  cursor: default;
 }
 
 .health-dose__actions {
@@ -1132,10 +1184,6 @@
   font-weight: var(--font-weight-medium, 500);
 }
 
-.health-prn__take {
-  flex: 0 0 auto;
-  margin-inline-start: var(--space-2);
-}
 
 /* DIE BEDARFSZEILE BRICHT FRUEHER UM ALS DIE GEPLANTE DOSIS (R22, Critique a5).
  * Sie fuehrt neben Name und Knopf eine Statusangabe; bei 1920 stand die Karte
@@ -1153,6 +1201,18 @@
     order: -1;
     flex: 1 0 100%;
     min-width: 0;
+  }
+
+  .health-prn.health-dose--check > .health-dose__check {
+    order: -2;
+  }
+
+  .health-prn.health-dose--check > .health-dose__name {
+    flex-basis: calc(100% - var(--space-5) - var(--space-3));
+  }
+
+  .health-prn.health-dose--check > .health-prn__status {
+    margin-inline-start: calc(var(--space-5) + var(--space-3));
   }
 }
 
@@ -1216,7 +1276,7 @@ button.health-med-card:hover {
   color: var(--color-text-receded);
 }
 
-.health-med-card.is-inactive .health-med-badge--muted {
+.health-med-card.is-inactive .tag.health-med-badge--muted {
   background: var(--color-surface-3);
 }
 
@@ -1242,16 +1302,8 @@ button.health-med-card:hover {
   flex: 0 0 auto;
 }
 
-.health-med-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-0h) var(--space-2);
-  border-radius: var(--radius-full);
-  font-size: var(--type-micro);
-  background: var(--color-fill-well);
-  color: var(--color-text-secondary);
-}
-
+/* Die Abzeichen sind das geteilte Etikett (`.tag`, list-row.css, R24);
+ * "Inaktiv" steht eine Stufe tiefer. */
 .health-med-badge--muted {
   background: var(--color-surface-2);
   color: var(--color-text-secondary);

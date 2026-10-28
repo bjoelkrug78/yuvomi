@@ -3521,23 +3521,18 @@ const OVERVIEW_DOSE_HOOKS = { take: 'data-ov-dose-take', skip: 'data-ov-dose-ski
 
 function doseActionsMarkup(dose, log, name, own, hooks = DOSE_HOOKS) {
   const status = log?.status;
-  if (status === 'taken') {
-    return `<span class="health-dose__status health-dose__status--taken"><i data-lucide="check" aria-hidden="true"></i>${esc(t('health.meds.status.taken'))}</span>`;
-  }
+  // Eingenommen sagt der volle Ring vorn (doseCheckMarkup), kein Wort am Ende.
+  if (status === 'taken') return '';
   if (status === 'skipped') {
     return `<span class="health-dose__status health-dose__status--skipped"><i data-lucide="x" aria-hidden="true"></i>${esc(t('health.meds.status.skipped'))}</span>`;
   }
   if (!own) {
     return `<span class="health-dose__status">${esc(t('health.meds.status.pending'))}</span>`;
   }
-  const data = `data-med-id="${esc(dose.medicationId)}" data-schedule-id="${esc(dose.scheduleId ?? '')}" data-scheduled-at="${esc(dose.scheduledAt)}" data-log-id="${esc(log?.id ?? '')}" data-dose="${esc(dose.dose_qty ?? '')}"`;
-  // EINNEHMEN SICHTBAR, UEBERSPRINGEN IM MEHR-KNOPF (R21, D10 Zeilen-Endzone:
-  // hoechstens EINE sichtbare Primaeraktion, dahinter der Mehr-Knopf). Bis
-  // dahin standen beide als Knopf mit Wort in der Zeile - die einzige Liste der
-  // App mit zwei gleichrangigen Handlungen je Zeile. Der Eintrag traegt dieselben
-  // Haken und Daten wie der Knopf vorher; wireMeds()/wireOverview() finden ihn
-  // ueber denselben Selektor. Das `aria-label` traegt den ganzen Satz weiter,
-  // wenn der sichtbare Text nach der Containerbreite faellt (health.css).
+  // UEBERSPRINGEN IM MEHR-KNOPF (R21, D10 Zeilen-Endzone). Einnehmen ist seit
+  // R24 (E10) der Ring VOR der Zeile (doseCheckMarkup); die Endzone traegt nur
+  // noch den Mehr-Knopf. Der Eintrag traegt dieselben Haken und Daten wie der
+  // Knopf vorher; wireMeds()/wireOverview() finden ihn ueber denselben Selektor.
   const skipAttrs = {
     [hooks.skip]: true,
     'data-med-id': dose.medicationId,
@@ -3549,7 +3544,6 @@ function doseActionsMarkup(dose, log, name, own, hooks = DOSE_HOOKS) {
   const menuId = `${hooks === OVERVIEW_DOSE_HOOKS ? 'ov' : 'meds'}-dose-menu-${dose.medicationId}-${String(dose.scheduledAt).replace(/[^\w-]/g, '')}`;
   return `
       <div class="health-dose__actions">
-        <button type="button" class="btn btn--sm btn--primary health-dose__take" ${hooks.take} ${data} aria-label="${esc(t('health.meds.takeNamed', { name }))}"><i data-lucide="pill" class="icon-md health-dose__take-icon" aria-hidden="true"></i><span class="health-dose__take-label">${esc(t('health.meds.take'))}</span></button>
         ${rowMenuHtml({
           id: menuId,
           label: t('common.moreActionsNamed', { name }),
@@ -3559,13 +3553,42 @@ function doseActionsMarkup(dose, log, name, own, hooks = DOSE_HOOKS) {
       </div>`;
 }
 
+/**
+ * EINNEHMEN IST ABHAKEN (R24, E10; Critique G5-Gesundheit-P2-1). Bis dahin
+ * stand "Einnehmen" als gefuellter Primaerknopf in jeder faelligen Zeile -
+ * zwei bis drei Primaere je Ansicht neben dem FAB. Einnehmen hat ein
+ * feststehendes Ergebnis wie das Erledigen einer Aufgabe, und dafuer gibt es
+ * EIN Zeichen (R23 D7): den Ring vor der Zeile (`.check-ring`, list-row.css).
+ * Tipp = eingenommen, der Toast nennt das Medikament und nimmt zurueck
+ * (acknowledgeDose). Eingenommen ist der Ring voll; ohne Recht oder nach dem
+ * Ueberspringen steht er als Zeichen (`--static`), nicht als Knopf.
+ */
+function doseCheckMarkup(dose, log, name, own, hooks = DOSE_HOOKS) {
+  const status = log?.status;
+  const tick = '<i data-lucide="check" class="check-ring__check" aria-hidden="true"></i>';
+  if (status === 'taken') {
+    return `<span class="health-dose__check check-ring check-ring--static check-ring--done" role="img" aria-label="${esc(t('health.meds.status.taken'))}">${tick}</span>`;
+  }
+  if (status === 'skipped' || !own) {
+    return `<span class="health-dose__check check-ring check-ring--static" aria-hidden="true">${tick}</span>`;
+  }
+  const data = `data-med-id="${esc(dose.medicationId)}" data-schedule-id="${esc(dose.scheduleId ?? '')}" data-scheduled-at="${esc(dose.scheduledAt)}" data-log-id="${esc(log?.id ?? '')}" data-dose="${esc(dose.dose_qty ?? '')}"`;
+  return `<button type="button" class="health-dose__check check-ring" ${hooks.take} ${data} aria-label="${esc(t('health.meds.takeNamed', { name }))}">${tick}</button>`;
+}
+
+/** Der Ring quittiert den Tipp sofort; scheitert die Buchung, wird er wieder leer. */
+function markDoseCheck(btn, on) {
+  if (btn?.classList?.contains('check-ring')) btn.classList.toggle('check-ring--done', on);
+}
+
 function dueRowMarkup(dose, med, log) {
   const name = med ? med.name : '';
   const own = canEditFor(meds.personId, meds.meId);
   const doseText = dose.dose_qty != null ? ` · ${t('health.meds.doseQty', { count: fmtNum(dose.dose_qty) })}` : '';
 
   return `
-    <li class="list-row health-dose">
+    <li class="list-row health-dose health-dose--check">
+      ${doseCheckMarkup(dose, log, name, own)}
       <span class="health-dose__time">${esc(dose.time)}</span>
       <span class="list-row__name health-dose__name">${esc(name)}${esc(doseText)}</span>
       ${doseActionsMarkup(dose, log, name, own)}
@@ -3668,25 +3691,22 @@ function prnRowMarkup(med, scope, own) {
     ? t('health.meds.doseQty', { count: fmtNum(med.prn_dose_qty) })
     : med.dosage_text || '';
 
-  // EIN VERB, IMMER MIT WORT (R22, D12; Critique a5 P2): die Bedarfsdosis
-  // hiess "Jetzt nehmen", die geplante "Einnehmen", und unter 21rem blieb von
-  // ihr nur ein Icon-Kreis (Uebersicht am Laptop). Jetzt derselbe Knopf wie
-  // bei der geplanten Dosis: Tablette und "Einnehmen", schmal gibt er zuerst
-  // die Tablette ab, nie das Wort (health.css).
+  // DERSELBE RING WIE BEI DER GEPLANTEN DOSIS (R24, E10): vorher ein
+  // Kapselknopf "Einnehmen" - gefuellt, solange die Dosis erlaubt war, ghost
+  // waehrend des Mindestabstands. Der Ring bleibt nach dem Tipp leer: eine
+  // Bedarfsdosis ist nie "fertig", die Statuszeile sagt, wann die naechste
+  // erlaubt ist. Wartend fragt der Tipp nach (handlePrnDose).
   const action = own
-    ? `<button type="button" class="btn btn--sm ${state.allowed ? 'btn--primary' : 'btn--ghost'} health-prn__take"
+    ? `<button type="button" class="health-dose__check check-ring"
                data-prn-take data-prn-scope="${esc(scope)}" data-med-id="${esc(med.id)}"
-               aria-label="${esc(t('health.meds.takeNamed', { name: med.name }))}">
-         <i data-lucide="pill" class="icon-md health-dose__take-icon" aria-hidden="true"></i>
-         <span class="health-prn__take-label">${esc(t('health.meds.take'))}</span>
-       </button>`
+               aria-label="${esc(t('health.meds.takeNamed', { name: med.name }))}"><i data-lucide="check" class="check-ring__check" aria-hidden="true"></i></button>`
     : '';
 
   return `
-    <li class="list-row health-dose health-prn${state.allowed ? '' : ' is-waiting'}">
+    <li class="list-row health-dose health-prn${own ? ' health-dose--check' : ''}${state.allowed ? '' : ' is-waiting'}">
+      ${action}
       <span class="list-row__name health-dose__name">${esc(med.name)}${doseText ? ` · ${esc(doseText)}` : ''}</span>
       ${prnStatusMarkup(state)}
-      ${action}
     </li>`;
 }
 
@@ -3797,6 +3817,7 @@ async function handlePrnDose(btn) {
   }
 
   setDoseBusy(medId, true);
+  markDoseCheck(btn, true);
   const dose = med.prn_dose_qty != null ? Number(med.prn_dose_qty) : null;
   let booked = null;
   try {
@@ -3820,6 +3841,7 @@ async function handlePrnDose(btn) {
   } catch (err) {
     console.error('[Health] prn dose error:', err);
     setDoseBusy(medId, false);
+    markDoseCheck(btn, false);
     reportError(err, 'health.meds.doseError', reloadMedViews, { fromDialog: false });
     return;
   }
@@ -4121,8 +4143,8 @@ function medCardMarkup(med) {
   const own = canEditFor(meds.personId, meds.meId);
 
   const badges = [];
-  if (!med.active) badges.push(`<span class="health-med-badge health-med-badge--muted">${esc(t('health.meds.badge.inactive'))}</span>`);
-  if (med.prn) badges.push(`<span class="health-med-badge">${esc(t('health.meds.badge.prn'))}</span>`);
+  if (!med.active) badges.push(`<span class="tag health-med-badge--muted">${esc(t('health.meds.badge.inactive'))}</span>`);
+  if (med.prn) badges.push(`<span class="tag">${esc(t('health.meds.badge.prn'))}</span>`);
 
   let stockHtml = '';
   if (rf.level !== 'none') {
@@ -4306,6 +4328,7 @@ async function handleDose(btn, action) {
   const dose = btn.dataset.dose !== '' ? Number(btn.dataset.dose) : null;
 
   setDoseBusy(medId, true);
+  if (action === 'take') markDoseCheck(btn, true);
   try {
     const booked = await sendScheduledDose({ medId, logId, scheduleId, scheduledAt, dose, action });
 
@@ -4317,6 +4340,7 @@ async function handleDose(btn, action) {
   } catch (err) {
     console.error('[Health] dose error:', err);
     setDoseBusy(medId, false);
+    markDoseCheck(btn, false);
     reportError(err, 'health.meds.doseError', reloadMedViews, { fromDialog: false });
   }
 }
@@ -7441,7 +7465,8 @@ function overviewDueRowMarkup(dose, med, log, own) {
   // hier fehlten einmal Klasse und Label-Span, und der Fix von dort erreichte
   // diese Zeile nicht (Critique 2026-08-13).
   return `
-    <li class="list-row health-dose">
+    <li class="list-row health-dose health-dose--check">
+      ${doseCheckMarkup(dose, log, name, own, OVERVIEW_DOSE_HOOKS)}
       <span class="health-dose__time">${esc(dose.time)}</span>
       <span class="list-row__name health-dose__name">${esc(name)}${esc(doseText)}</span>
       ${doseActionsMarkup(dose, log, name, own, OVERVIEW_DOSE_HOOKS)}
@@ -7458,6 +7483,7 @@ async function handleOverviewDose(btn, action) {
   const dose = btn.dataset.dose !== '' ? Number(btn.dataset.dose) : null;
 
   setDoseBusy(medId, true);
+  if (action === 'take') markDoseCheck(btn, true);
   try {
     const booked = await sendScheduledDose({ medId, logId, scheduleId, scheduledAt, dose, action });
 
@@ -7467,6 +7493,7 @@ async function handleOverviewDose(btn, action) {
   } catch (err) {
     console.error('[Health] overview dose error:', err);
     setDoseBusy(medId, false);
+    markDoseCheck(btn, false);
     reportError(err, 'health.meds.doseError', reloadMedViews, { fromDialog: false });
   }
 }

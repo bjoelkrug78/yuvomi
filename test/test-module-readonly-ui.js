@@ -2603,7 +2603,7 @@ test('R17 E7: ein Tipp auf die Geburtstagszeile oeffnet das Leseblatt, Bearbeite
   assert.equal(blatt.pane, undefined, 'als Blatt, nicht in der Spalte');
   assert.ok(blatt.sections.some((row) => row.value === 'Mag Kuchen'), 'die Notiz, die die Zeile am Telefon ausblendet');
   assert.deepEqual(blatt.actions.map((a) => [a.id, a.variant, a.align ?? 'end']), [
-    ['birthday-detail-delete', 'danger-ghost', 'start'],
+    ['birthday-detail-delete', 'danger-outline', 'start'],
     ['detail-view-edit', 'primary', 'end'],
   ], 'Loeschen zurueckgenommen am Anfang, Bearbeiten als Primaerknopf am Ende - wie im Termin');
 
@@ -3596,6 +3596,8 @@ test('Faellige Dosis mit `health: read`: kein Buchungsknopf, aber die Ansage „
       const html = health.dueRowMarkup(dosis(), medikament(), null);
       assert.doesNotMatch(html, /data-dose-take|data-dose-skip/);
       assert.doesNotMatch(html, /<button/);
+      // Der Ring bleibt als Zeichen (R24, E10), nicht als Knopf.
+      assert.match(html, /<span class="health-dose__check check-ring check-ring--static" aria-hidden="true">/);
       // ZUSTAND BLEIBT ALS ZEICHEN: die Zeile sagt weiter, woran sie ist.
       assert.match(html, /<span class="health-dose__status">health\.meds\.status\.pending<\/span>/);
       assert.match(html, /Ibuprofen/);
@@ -3606,8 +3608,9 @@ test('Faellige Dosis mit `health: read`: kein Buchungsknopf, aber die Ansage „
     for (const stufe of ['read', 'write']) {
       withAccess({ health: stufe }, () => {
         const html = health.dueRowMarkup(dosis(), medikament(), { id: 5, status: 'taken' });
-        assert.match(html, /health-dose__status--taken/);
-        assert.match(html, /health\.meds\.status\.taken/);
+        // Eingenommen sagt der volle Ring vorn (R24, E10), benannt fuer die Hilfstechnik.
+        assert.match(html, /class="health-dose__check check-ring check-ring--static check-ring--done" role="img" aria-label="health\.meds\.status\.taken"/);
+        assert.doesNotMatch(html, /<button/);
       });
     }
   });
@@ -5362,9 +5365,9 @@ test('Kanon R5: der Lesedialog einer Notiz fuehrt "Bearbeiten" als Primaerknopf,
       modalOptionen(() => notes.openNoteModal({ mode: 'edit', note: notiz() }))
     )));
     // R22 D20: Detail-Fuss-Kanon wie das Leseblatt der Kontakte - Bearbeiten
-    // gefuellt MIT Stift, Loeschen in der Leseansicht leise (danger-ghost).
+    // gefuellt MIT Stift, Loeschen umrandet mit Wort (R24: EINE Loeschen-Form).
     assert.match(offen.content, /<button type="button" class="btn btn--primary" id="note-modal-edit" data-reader-only>\s*<i data-lucide="pencil" class="icon-md" aria-hidden="true"><\/i><span class="btn__label">common\.edit<\/span>/);
-    assert.match(offen.content, /class="btn btn--danger-ghost" id="note-modal-delete">\s*<i data-lucide="trash-2"/, 'Loeschen leise als Textknopf mit Icon, links');
+    assert.match(offen.content, /class="btn btn--danger-outline" id="note-modal-delete">\s*<i data-lucide="trash-2"/, 'Loeschen als umrandeter Textknopf mit Icon, links');
     assert.doesNotMatch(offen.content, /id="note-modal-delete"[^>]*style=/, 'den Anfangsrand haelt .modal-panel__delete, kein Inline-Style');
     const neu = withAccess({ notes: 'write' }, () => modalOptionen(() => notes.openNoteModal({ mode: 'create' })));
     assert.doesNotMatch(neu.content, /note-modal-edit/, 'eine neue Notiz oeffnet im Editor - dort gibt es nichts umzuschalten');
