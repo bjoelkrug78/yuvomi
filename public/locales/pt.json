@@ -3189,7 +3189,6 @@
             "revoke": "Revogar",
             "revokeConfirm": "Revogar este convite? O link deixa de funcionar.",
             "revoked": "O convite foi revogado.",
-            "created": "O convite foi criado.",
             "revokeConfirmDetail": "Uma ligação já enviada ou copiada deixa de funcionar de imediato. A pessoa convidada já não consegue criar uma conta com ela; terias de a convidar novamente.",
             "presetLabel": "Permissões iniciais",
             "presetRestricted": "Sem as áreas pessoais",

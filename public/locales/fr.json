@@ -3189,7 +3189,6 @@
             "revoke": "Révoquer",
             "revokeConfirm": "Révoquer cette invitation ? Le lien cessera de fonctionner.",
             "revoked": "L'invitation a été révoquée.",
-            "created": "L'invitation a été créée.",
             "revokeConfirmDetail": "Un lien déjà envoyé ou copié cesse aussitôt de fonctionner. La personne invitée ne peut plus créer de compte avec ce lien ; il faudrait l'inviter à nouveau.",
             "presetLabel": "Autorisations de départ",
             "presetRestricted": "Sans les espaces personnels",

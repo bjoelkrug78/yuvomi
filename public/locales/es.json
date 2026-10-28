@@ -3189,7 +3189,6 @@
             "revoke": "Revocar",
             "revokeConfirm": "¿Revocar esta invitación? El enlace dejará de funcionar.",
             "revoked": "La invitación se ha revocado.",
-            "created": "La invitación se ha creado.",
             "revokeConfirmDetail": "Un enlace que ya hayas enviado o copiado deja de funcionar de inmediato. La persona invitada ya no podrá crear una cuenta con él; tendrías que invitarla de nuevo.",
             "presetLabel": "Permisos iniciales",
             "presetRestricted": "Sin las áreas personales",

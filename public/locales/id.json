@@ -3207,7 +3207,6 @@
             "revoke": "Cabut",
             "revokeConfirm": "Cabut undangan ini? Tautannya akan berhenti berfungsi.",
             "revoked": "Undangan telah dicabut.",
-            "created": "Undangan telah dibuat.",
             "revokeConfirmDetail": "Tautan yang sudah Anda kirim atau salin langsung berhenti berfungsi. Orang yang diundang tidak dapat lagi membuat akun dengannya; Anda harus mengundangnya lagi.",
             "presetLabel": "Izin awal",
             "presetRestricted": "Tanpa area pribadi",

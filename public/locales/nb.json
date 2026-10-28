@@ -3189,7 +3189,6 @@
             "revoke": "Tilbaketrekk",
             "revokeConfirm": "Tilbaketrekk denne invitasjonen? Lenken vil slutte å virke.",
             "revoked": "Invitasjonen ble trukket tilbake.",
-            "created": "Invitasjonen ble opprettet.",
             "revokeConfirmDetail": "En lenke du allerede har sendt eller kopiert, slutter å virke umiddelbart. Den inviterte personen kan ikke lenger opprette en konto med den; du må invitere dem på nytt.",
             "presetLabel": "Startrettigheter",
             "presetRestricted": "Uten personlige områder",

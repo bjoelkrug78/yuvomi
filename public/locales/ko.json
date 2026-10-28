@@ -3207,7 +3207,6 @@
             "revoke": "취소",
             "revokeConfirm": "이 초대를 취소할까요? 링크가 더 이상 작동하지 않습니다.",
             "revoked": "초대를 취소했습니다.",
-            "created": "초대를 만들었습니다.",
             "revokeConfirmDetail": "이미 보내거나 복사한 링크는 즉시 작동하지 않습니다. 초대받은 사람은 그 링크로 계정을 만들 수 없으므로 다시 초대해야 합니다.",
             "presetLabel": "초기 권한",
             "presetRestricted": "개인 영역 제외",

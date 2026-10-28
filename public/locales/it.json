@@ -3189,7 +3189,6 @@
             "revoke": "Revoca",
             "revokeConfirm": "Revocare questo invito? Il link smetterà di funzionare.",
             "revoked": "L'invito è stato revocato.",
-            "created": "L'invito è stato creato.",
             "revokeConfirmDetail": "Un link già inviato o copiato smette subito di funzionare. La persona invitata non potrà più creare un account; dovresti invitarla di nuovo.",
             "presetLabel": "Autorizzazioni iniziali",
             "presetRestricted": "Senza le aree personali",

@@ -3189,7 +3189,6 @@
             "revoke": "Thu hồi",
             "revokeConfirm": "Thu hồi lời mời này? Liên kết sẽ ngừng hoạt động.",
             "revoked": "Lời mời đã được thu hồi.",
-            "created": "Lời mời đã được tạo.",
             "revokeConfirmDetail": "Liên kết bạn đã gửi hoặc sao chép sẽ ngừng hoạt động ngay. Người được mời không thể tạo tài khoản bằng liên kết đó nữa; bạn sẽ phải mời lại.",
             "presetLabel": "Quyền ban đầu",
             "presetRestricted": "Không có khu vực cá nhân",

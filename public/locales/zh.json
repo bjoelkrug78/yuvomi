@@ -3189,7 +3189,6 @@
             "revoke": "撤销",
             "revokeConfirm": "撤销此邀请？链接将失效。",
             "revoked": "邀请已撤销。",
-            "created": "邀请已创建。",
             "revokeConfirmDetail": "已经发送或复制的链接会立即失效。受邀者无法再用它创建账户，你需要重新邀请一次。",
             "presetLabel": "初始权限",
             "presetRestricted": "不含个人板块",

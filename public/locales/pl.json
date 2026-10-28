@@ -3411,7 +3411,6 @@
             "revoke": "Unieważnij",
             "revokeConfirm": "Unieważnić to zaproszenie? Link przestanie działać.",
             "revoked": "Zaproszenie zostało unieważnione.",
-            "created": "Zaproszenie zostało utworzone.",
             "revokeConfirmDetail": "Wysłany lub skopiowany link natychmiast przestaje działać. Zaproszona osoba nie założy już z nim konta; trzeba by zaprosić ją ponownie.",
             "presetLabel": "Uprawnienia początkowe",
             "presetRestricted": "Bez obszarów osobistych",

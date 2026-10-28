@@ -3207,7 +3207,6 @@
             "revoke": "Widerrufen",
             "revokeConfirm": "Diese Einladung widerrufen? Der Link wird damit ungültig.",
             "revoked": "Die Einladung wurde widerrufen.",
-            "created": "Die Einladung wurde erstellt.",
             "revokeConfirmDetail": "Ein bereits verschickter oder kopierter Link hört sofort auf zu funktionieren. Die eingeladene Person kann damit kein Konto mehr anlegen; dafür musst du sie erneut einladen.",
             "presetLabel": "Startrechte",
             "presetRestricted": "Ohne persönliche Bereiche",

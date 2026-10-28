@@ -3189,7 +3189,6 @@
             "revoke": "Geri al",
             "revokeConfirm": "Bu davet geri alınsın mı? Bağlantı geçersiz olur.",
             "revoked": "Davet geri alındı.",
-            "created": "Davet oluşturuldu.",
             "revokeConfirmDetail": "Daha önce gönderdiğin ya da kopyaladığın bağlantı hemen çalışmaz olur. Davet edilen kişi onunla artık hesap oluşturamaz; yeniden davet etmen gerekir.",
             "presetLabel": "Başlangıç izinleri",
             "presetRestricted": "Kişisel alanlar olmadan",

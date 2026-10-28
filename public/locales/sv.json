@@ -3189,7 +3189,6 @@
             "revoke": "Återkalla",
             "revokeConfirm": "Återkalla inbjudan? Länken slutar då fungera.",
             "revoked": "Inbjudan återkallades.",
-            "created": "Inbjudan skapades.",
             "revokeConfirmDetail": "En länk du redan skickat eller kopierat slutar fungera direkt. Den inbjudna personen kan inte längre skapa ett konto med den; du måste bjuda in på nytt.",
             "presetLabel": "Startbehörigheter",
             "presetRestricted": "Utan de personliga områdena",

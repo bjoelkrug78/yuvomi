@@ -3189,7 +3189,6 @@
             "revoke": "撤銷",
             "revokeConfirm": "撤銷此邀請？連結將失效。",
             "revoked": "邀請已撤銷。",
-            "created": "邀請已建立。",
             "revokeConfirmDetail": "已經傳送或複製的連結會立即失效。受邀者無法再用它建立帳戶，你需要重新邀請一次。",
             "presetLabel": "初始權限",
             "presetRestricted": "不含個人板塊",

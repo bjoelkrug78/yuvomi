@@ -3189,7 +3189,6 @@
             "revoke": "Visszavonás",
             "revokeConfirm": "Visszavonod ezt a meghívót? A link ezzel érvénytelenné válik.",
             "revoked": "A meghívót visszavontuk.",
-            "created": "A meghívó elkészült.",
             "revokeConfirmDetail": "A már elküldött vagy kimásolt link azonnal működésképtelen lesz. A meghívott ezzel nem tud fiókot létrehozni; újra meg kellene hívnod.",
             "presetLabel": "Kezdő jogosultságok",
             "presetRestricted": "A személyes területek nélkül",

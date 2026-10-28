@@ -3189,7 +3189,6 @@
             "revoke": "Revoke",
             "revokeConfirm": "Revoke this invitation? The link stops working.",
             "revoked": "The invitation was revoked.",
-            "created": "The invitation was created.",
             "revokeConfirmDetail": "A link you already sent or copied stops working immediately. The invited person can no longer create an account with it; you would have to invite them again.",
             "presetLabel": "Starting permissions",
             "presetRestricted": "Without personal areas",
