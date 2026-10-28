@@ -1216,7 +1216,6 @@
         "localCalendarColor": "Màu lịch",
         "localCalendarEventCount": "{{count}} sự kiện",
         "localCalendarEventCount_other": "{{count}} sự kiện",
-        "localCalendarCreate": "Tạo lịch",
         "localCalendarEmpty": "Chưa có lịch nào.",
         "localCalendarCreated": "Đã tạo lịch",
         "localCalendarSaved": "Đã lưu lịch",
@@ -1242,7 +1241,10 @@
         "errorSeriesNoOccurrence": "Với kiểu lặp lại này sẽ không có sự kiện nào từ ngày bắt đầu.",
         "localCalendarUploadsHint": "Sự kiện trong lịch này được tải lên iCloud qua Apple Calendar.",
         "overlapOpenSchedule": "Mở lịch làm việc",
-        "syncTargetNoCalendarForPeople": "Không có lịch nào có đúng những người này làm người được giao mặc định, nên việc giao không chọn lịch nào. Thay vào đó dùng: {{target}}."
+        "syncTargetNoCalendarForPeople": "Không có lịch nào có đúng những người này làm người được giao mặc định, nên việc giao không chọn lịch nào. Thay vào đó dùng: {{target}}.",
+        "localCalendarEdit": "Sửa lịch",
+        "localCalendarNew": "Lịch mới",
+        "manageSubscriptionsLink": "Đăng ký và đồng bộ"
     },
     "noteCategories": {
         "categories": "Danh mục",

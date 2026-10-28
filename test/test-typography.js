@@ -1449,12 +1449,10 @@ test('R24: die Titelleiter - jede Ueberschrift nimmt eine Rolle, kein Modul setz
   for (const sel of ['.week-event__title', '.day-event__title', '.schedule-time-block__title']) {
     assert.deepEqual(eigen('calendar.css', sel, 'font-(?:size|weight)'), [], `calendar.css setzt ${sel} keine eigene Stufe`);
   }
+  // Seit R24 E5 ist die Schicht ein Band: EINE Zeile (das Kurzetikett), keine
+  // Zeitzeile mehr - die Uhrzeit sagen Band-Laenge, Name und Detail.
   const cal = [...eachRule(css('calendar.css'))];
-  const zeit = cal.find((rule) => rule.at.length === 0 && rule.selector.trim() === '.schedule-time-block__time' && /font-size/.test(rule.body));
-  assert.match(zeit?.body ?? '', /font-size:\s*var\(--text-xs\)/, 'die Zeitzeile der Schicht in Caption 1, nicht `<small>` (13 bzw. 10)');
-  assert.match(zeit.body, /font-weight:\s*var\(--font-weight-regular\)/);
-  const tag = cal.find((rule) => rule.at.length === 0 && rule.selector.trim() === '.day-event.schedule-time-block');
-  assert.match(tag?.body ?? '', /flex-direction:\s*column/, 'im Tag stehen Titel und Zeit untereinander wie beim Termin');
+  assert.ok(!cal.some((rule) => /\.schedule-time-block__time/.test(rule.selector)), 'keine eigene Zeitzeile im Schichtband');
 
   // Betrag: eine Groesse in der Zeile (16), ein Gewicht ueberall (semibold).
   const budget = [...eachRule(css('budget.css'))].filter((rule) => rule.at.length === 0);

@@ -1379,7 +1379,6 @@
         "localCalendarEventCount": "{{count}} подій",
         "localCalendarEventCount_one": "{{count}} подія",
         "localCalendarEventCount_few": "{{count}} події",
-        "localCalendarCreate": "Створити календар",
         "localCalendarEmpty": "Календарів ще немає.",
         "localCalendarCreated": "Календар створено",
         "localCalendarSaved": "Календар збережено",
@@ -1406,7 +1405,10 @@
         "errorSeriesNoOccurrence": "З таким повторенням від дати початку не було б жодної події.",
         "localCalendarUploadsHint": "Події цього календаря завантажуються в iCloud через Apple Calendar.",
         "overlapOpenSchedule": "Відкрити графік змін",
-        "syncTargetNoCalendarForPeople": "Жоден календар не має саме цих людей як призначення за замовчуванням, тож призначення не вибирає календар. Натомість: {{target}}."
+        "syncTargetNoCalendarForPeople": "Жоден календар не має саме цих людей як призначення за замовчуванням, тож призначення не вибирає календар. Натомість: {{target}}.",
+        "localCalendarEdit": "Редагувати календар",
+        "localCalendarNew": "Новий календар",
+        "manageSubscriptionsLink": "Підписки та синхронізація"
     },
     "noteCategories": {
         "categories": "Категорії",

@@ -1217,7 +1217,6 @@
         "localCalendarEventCount": "{{count}} hendelser",
         "localCalendarEventCount_one": "{{count}} hendelse",
         "localCalendarEventCount_other": "{{count}} hendelser",
-        "localCalendarCreate": "Opprett kalender",
         "localCalendarEmpty": "Ingen kalendere ennå.",
         "localCalendarCreated": "Kalender opprettet",
         "localCalendarSaved": "Kalender lagret",
@@ -1242,7 +1241,10 @@
         "errorSeriesNoOccurrence": "Med denne gjentakelsen ville det ikke vært en eneste avtale fra startdatoen.",
         "localCalendarUploadsHint": "Avtaler i denne kalenderen lastes opp til iCloud via Apple Calendar.",
         "overlapOpenSchedule": "Åpne planlegging",
-        "syncTargetNoCalendarForPeople": "Ingen kalender har nøyaktig disse personene som standardansvarlige, så tildelingen velger ingen. Brukes i stedet: {{target}}."
+        "syncTargetNoCalendarForPeople": "Ingen kalender har nøyaktig disse personene som standardansvarlige, så tildelingen velger ingen. Brukes i stedet: {{target}}.",
+        "localCalendarEdit": "Rediger kalender",
+        "localCalendarNew": "Ny kalender",
+        "manageSubscriptionsLink": "Abonnementer og synkronisering"
     },
     "noteCategories": {
         "categories": "Kategorier",

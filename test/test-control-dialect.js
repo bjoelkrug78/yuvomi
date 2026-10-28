@@ -2148,9 +2148,9 @@ const PENDING = {
   'action-hook': {},
   'cta-hook': {},
   // --- Critique R24 S3 (2026-10-28), E6: EIN Farbwaehler. ---
-  // Die Zeile in "Kalender verwalten" baut S7 als Zeilenliste mit
-  // Bearbeiten-Blatt (E6) - dort dann colorPickerHtml().
-  'native-color': { 'public/pages/calendar.js': 1 },
+  // "Kalender verwalten" ist seit S7 eine Zeilenliste mit Bearbeiten-Blatt
+  // (colorPickerHtml) - kein natives Farbfeld mehr ausserhalb des Bausteins.
+  'native-color': {},
   // Kuratierte TOKEN-Toene (Kontofarben, Kategorietoene) mit eigener
   // Verhaltensschicht `wireTablist`: S10 (Budget-Konto) zieht sie auf
   // colorPickerHtml({ options, custom: false }) - der Baustein nimmt

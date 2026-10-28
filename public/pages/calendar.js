@@ -6,7 +6,7 @@
 
 import { api } from '/api.js';
 import { renderRRuleFields, bindRRuleEvents, getRRuleValues, recurrenceRow } from '/rrule-ui.js';
-import { openModal as openSharedModal, closeModal, confirmModal, confirmOverModal, askOverModal, promptModal, advancedSection, wireBlurValidation, reportFieldError, reportFieldErrors, refocusAfterRender, renderKeepingFocus, captureModalContext, captureOpenContext, isModalContextCurrent } from '/components/modal.js';
+import { openModal as openSharedModal, closeModal, confirmModal, confirmOverModal, askOverModal, promptModal, advancedSection, wireBlurValidation, reportFieldError, reportFieldErrors, refocusAfterRender, renderKeepingFocus, captureModalContext, captureOpenContext, isModalContextCurrent, dialogInitialFocus } from '/components/modal.js';
 import { attachOverlay } from '/utils/overlay-history.js';
 import { inertOutside } from '/utils/background-inert.js';
 import { openDetailView, leaveDetailTo, visibilityRow, assignedRow } from '/components/detail-view.js';
@@ -4762,50 +4762,61 @@ function scheduleBlockTimeRange(entry) {
 }
 
 /**
- * Spalten-Position eines gelegten Blocks in CSS umrechnen - dieselbe Formel wie
- * renderWeekEvent()/renderDayEvent() fuer gewoehnliche Termine, aber mit den
- * Schichtplan-eigenen Aussenraendern (Woche: 2px beidseitig; Tag: 4px links /
- * 10px rechts, damit die Stunden-/Jetzt-Linie hinter dem Balken sichtbar bleibt).
- * Ohne Layout (Fallback) ergibt sich exakt der alte volle Balken (1 von 1 Spalte).
+ * DIE SCHICHT IST EIN BAND AN DER SPALTENKANTE (R24, Entscheidung E5 a,
+ * Critique G1-Kalender-P1-1 c). Seit R23 D14 stand jede Schicht als
+ * spaltenbreiter Block im Raster: eine Fruehschicht 06-14 tuenchte Mo-Fr, und
+ * Termine (Zahnarzt, Ausflug) lagen in voller Breite darueber - zwei Flaechen
+ * uebereinander, keine las sich. Jetzt bleibt die Schicht ein Zeitblock im
+ * Sinn von D14 (dieselbe Zeitspanne, dieselbe Stelle), aber als schmales Band
+ * vorn in der Spalte; der Termin bleibt das Lesbare. Ueberlappende Schichten
+ * (zwei Personen in Bereitschaft) liegen als Baender nebeneinander, Spur fuer
+ * Spur (`layoutScheduleBlocks`). Im Band steht senkrecht das Kurzetikett der
+ * Ganztagszeile („F · LJ"), es klebt an der sichtbaren Oberkante; Uhrzeit und
+ * eigene Felder tragen der zugaengliche Name, der Tooltip und das Detail beim
+ * Tipp - in 20px Breite stand die Zeitzeile nie lesbar.
+ *
+ * Das Band ist selbst die Schaltflaeche (frueher `pointer-events: none` mit
+ * klickbarem Text: der Vollblock nahm sonst der ganzen Spalte das Anlegen).
  */
-function scheduleLaneStyle(layout, gutter) {
+function renderScheduleTimeBlock(entry, layout = null) {
+  const type = entry.shift_type;
+  const { start, end } = scheduleBlockTimeRange(entry);
+  const lane = layout?.colIndex ?? 0;
+  return `<div class="schedule-time-block" style="top:${hourOffset(start)};height:calc(${hourOffset(end - start)} - 2px);--band-lane:${lane};--ev-color:${esc(type.color)}" title="${esc(scheduleEntryTitle(entry))}" role="button" tabindex="0" aria-label="${esc(scheduleEntryTitle(entry))}" data-action="view-schedule-entry" data-schedule-key="${esc(scheduleEntryMatchKey(entry))}"><span class="schedule-time-block__title" aria-hidden="true">${esc(scheduleEntryShortLabel(entry))}${scheduleEntryExtraBadge(entry)}</span></div>`;
+}
+
+/**
+ * Wie viele Baender ein Termin vorn freilassen muss: die Spuren der
+ * Schichten, die seine Zeit beruehren. Ein Termin ausserhalb jeder Schicht
+ * behaelt die volle Spalte (E5: „Termine behalten die volle Spalte").
+ */
+function scheduleBandLanes(range, blocks, layout) {
+  let lanes = 0;
+  for (const entry of blocks) {
+    const band = scheduleBlockTimeRange(entry);
+    if (band.start < range.end && range.start < band.end) lanes = Math.max(lanes, (layout?.get(entry)?.colIndex ?? 0) + 1);
+  }
+  return lanes;
+}
+
+/** Die Zahl der Baender vor einem Termin als Inline-Variable (0 = keine). */
+function bandInsetStyle(lanes) {
+  return lanes ? `--band-lanes:${lanes};` : '';
+}
+
+/**
+ * Lage und Breite eines Termins hinter Schichtbaendern: dieselbe Spurformel
+ * wie ohne Band, nur in der Restspalte hinter `--band-inset` (calendar.css,
+ * aus `--band-lanes`). `start`/`total`: die Aussenraender der Ansicht
+ * (Woche 2/4px, Tag 4/14px).
+ */
+function bandedEventBox(layout, start, total) {
   const cols = layout?.totalCols ?? 1;
   const idx = layout?.colIndex ?? 0;
   return {
-    left: `calc(${(idx / cols) * 100}% + ${gutter.left}px)`,
-    width: `calc(${100 / cols}% - ${gutter.total}px)`,
+    left: `calc(var(--band-inset) + (100% - var(--band-inset)) * ${idx / cols} + ${start}px)`,
+    width: `calc((100% - var(--band-inset)) / ${cols} - ${total}px)`,
   };
-}
-
-function renderScheduleTimeBlock(entry, className, layout = null) {
-  const type = entry.shift_type;
-  const start = timeToMinutes(type.start_time);
-  const end = timeToMinutes(type.end_time);
-  const duration = Math.max((end > start ? end : 24 * 60) - start, 30);
-  const gutter = className === 'week-event' ? { left: 2, total: 4 } : { left: 4, total: 14 };
-  const { left, width } = scheduleLaneStyle(layout, gutter);
-  // Sichtbar statt nur im title: .schedule-time-block traegt pointer-events:none
-  // (es ist eine Hintergrundflaeche, echte Termine malen darueber, siehe die
-  // Begruendung an der Klasse in calendar.css) - ein Hover erreicht dieses
-  // Element in der Praxis kaum je, der title blieb also meist ungelesen. Eine
-  // DRITTE Zeile war bei den ueblichen 30-60-min-Bloecken (Wochenansicht, schmale
-  // Spalte) nie zu sehen: Titel+Uhrzeit fuellten den Block schon als
-  // unvorhersehbar umgebrochener Fliesstext, bevor eine eigene Meta-Zeile
-  // ueberhaupt Platz gehabt haette. Jetzt zwei FESTE einzeilige Zeilen (Titel,
-  // Uhrzeit+Feldwert zusammen) statt Fliesstext - das Feld faehrt auf der
-  // Uhrzeit-Zeile mit, statt eine eigene zu brauchen, und wird selbst dort per
-  // Ellipse gekuerzt statt spurlos unter der Blockkante zu verschwinden.
-  const overlay = scheduleOverlayMeta(entry);
-  const time = esc(scheduleTimeLabel(type, { suffix: false }));
-  const timeLine = overlay ? `${time} · ${esc(overlay)}` : time;
-  // S-17: der Block selbst bleibt `pointer-events:none` (calendar.css) - die
-  // Spalte darunter muss weiter fuer "neuen Termin anlegen" klickbar bleiben.
-  // NUR die sichtbaren Titel-/Uhrzeit-Zeilen bekommen `pointer-events:auto`
-  // zurueck (calendar.css), sodass ein Klick GENAU auf den Text die
-  // Detailansicht oeffnet, waehrend der Rest der Spalte unveraendert bleibt.
-  // role="button"/tabindex traegt trotzdem der AEUSSERE Block: pointer-events
-  // wirkt nur auf Zeiger-Eingabe, Tastaturfokus/Enter/Space bleiben unberuehrt.
-  return `<div class="${className} schedule-time-block" style="top:${hourOffset(start)};height:calc(${hourOffset(duration)} - 4px);left:${left};width:${width};--ev-color:${esc(type.color)}" title="${esc(scheduleEntryTitle(entry))}" role="button" tabindex="0" data-action="view-schedule-entry" data-schedule-key="${esc(scheduleEntryMatchKey(entry))}"><span class="schedule-time-block__title">${esc(scheduleEntryLabel(entry))}${scheduleEntryExtraBadge(entry)}</span><small class="schedule-time-block__time">${timeLine}</small></div>`;
 }
 
 /**
@@ -4952,8 +4963,8 @@ function renderWeekView(container) {
             ${days.map((d, i) => `
               <div class="week-view__col" data-date="${d}">${timeGridHourLinesHtml()}
                 ${chronological([
-                  ...scheduleBlocks[i].map((entry) => ({ range: scheduleBlockTimeRange(entry), html: () => renderScheduleTimeBlock(entry, 'week-event', scheduleLayouts[i].get(entry)) })),
-                  ...timedEvs[i].map((ev) => ({ range: timeRangeForEvent(ev, d), html: () => renderWeekEvent(ev, layouts[i].get(ev), d) })),
+                  ...scheduleBlocks[i].map((entry) => ({ range: scheduleBlockTimeRange(entry), html: () => renderScheduleTimeBlock(entry, scheduleLayouts[i].get(entry)) })),
+                  ...timedEvs[i].map((ev) => ({ range: timeRangeForEvent(ev, d), html: () => renderWeekEvent(ev, layouts[i].get(ev), d, scheduleBandLanes(timeRangeForEvent(ev, d), scheduleBlocks[i], scheduleLayouts[i])) })),
                 ])}
                 ${d === state.today ? timeGridNowLineHtml(nowMinutes(), { id: 'now-line' }) : ''}
               </div>
@@ -4972,11 +4983,9 @@ function renderWeekView(container) {
 
   const weekCols = container.querySelector('#week-cols');
   weekCols.addEventListener('click', (e) => {
-    // S-17: ein Klick GENAU auf den sichtbaren Text eines Schichtblocks
-    // (pointer-events:auto, siehe calendar.css) oeffnet die Detailansicht;
-    // der Rest der Spalte (pointer-events:none auf dem Block selbst) gehoert
-    // der leeren Zeit - und die legt per Doppelklick oder langem Druck an
-    // (wireTimeGridCreate), nicht per Einzelklick.
+    // Ein Klick auf das Schichtband (E5) oeffnet die Detailansicht; der Rest
+    // der Spalte gehoert der leeren Zeit - und die legt per Doppelklick oder
+    // langem Druck an (wireTimeGridCreate), nicht per Einzelklick.
     const blockEl = e.target.closest('.schedule-time-block');
     if (blockEl) {
       const entry = findScheduleEntryByKey(blockEl.dataset.scheduleKey);
@@ -5292,7 +5301,7 @@ function scrollToHour(scroll, body) {
 function earliestBlockHour(body, bodyTop, hourHeight) {
   if (!(hourHeight > 0)) return undefined;
   let first = Infinity;
-  for (const el of body.querySelectorAll?.('.week-event, .day-event') ?? []) {
+  for (const el of body.querySelectorAll?.('.week-event, .day-event, .schedule-time-block') ?? []) {
     const offset = el.getBoundingClientRect().top - bodyTop;
     if (offset >= 1 && offset < first) first = offset;
   }
@@ -5470,20 +5479,26 @@ function renderWeekBand(band) {
          title="${[ev.title, bandSpokenWhen(ev), eventLocalCalendarDisplayName(ev)].filter(Boolean).map((part) => esc(part)).join(' · ')}${chipAssigneeTitleSuffix(ev)}">${continuesBefore ? bandContinuationHtml('before') : ''}${eventGlyphsHtml(ev)}<span class="allday-event__line"><span class="allday-event__label"><span>${esc(ev.title)}</span>${allDayChipTimeHtml(from)}</span>${until ? `<small class="allday-event__time cal-band__until">${esc(until)}</small>` : ''}${chipAssigneeStack(ev, { size: 14, maxVisible: 2 })}</span>${continuesAfter ? bandContinuationHtml('after') : ''}</div>`;
 }
 
-function renderWeekEvent(ev, layout = null, dayStr = null) {
+function renderWeekEvent(ev, layout = null, dayStr = null, bandLanes = 0) {
   const { start, end } = timeRangeForEvent(ev, dayStr);
   const duration = Math.max(end - start, 30);
 
   const top    = hourOffset(start);
   const height = `calc(${hourOffset(duration)} - 2px)`;
-  const left = layout ? `calc(${(layout.colIndex / layout.totalCols) * 100}% + 2px)` : '2px';
-  // Nie `auto`: der Block ist ein Groessen-Container (calendar.css, `container:
-  // ev-block / size`) und haette ohne feste Breite keine.
-  const width = layout ? `calc(${100 / layout.totalCols}% - 4px)` : 'calc(100% - 4px)';
+  // Beruehrt der Termin eine Schicht, beginnt seine Spalte hinter deren
+  // Baendern (`--band-inset`, calendar.css) - E5. Sonst die volle Spalte.
+  const { left, width } = bandLanes
+    ? bandedEventBox(layout, 2, 4)
+    : {
+      left: layout ? `calc(${(layout.colIndex / layout.totalCols) * 100}% + 2px)` : '2px',
+      // Nie `auto`: der Block ist ein Groessen-Container (calendar.css,
+      // `container: ev-block / size`) und haette ohne feste Breite keine.
+      width: layout ? `calc(${100 / layout.totalCols}% - 4px)` : 'calc(100% - 4px)',
+    };
 
   return `
     <div class="week-event" data-id="${ev.id}"
-         style="top:${top};height:${height};left:${left};width:${width};${eventSurfaceStyle(ev)}"
+         style="top:${top};height:${height};left:${left};width:${width};${bandInsetStyle(bandLanes)}${eventSurfaceStyle(ev)}"
          title="${esc(ev.title)}${chipAssigneeTitleSuffix(ev)}"${eventBlockAttrs(ev, eventTimeText(ev, dayStr), dayStr)}${occurrenceAttr(ev)}>
       <div class="week-event__title">${eventGlyphsHtml(ev)}<span>${esc(ev.title)}</span></div>
       <div class="week-event__time"><span class="week-event__when">${gridTimeText(ev, dayStr)}</span>${chipAssigneeStack(ev, { size: 14, maxVisible: 2 })}</div>
@@ -5648,8 +5663,8 @@ function renderDayView(container) {
           </div>
           <div class="day-view__col" data-date="${state.cursor}" id="day-col">${timeGridHourLinesHtml()}
             ${chronological([
-              ...scheduleBlocks.map((entry) => ({ range: scheduleBlockTimeRange(entry), html: () => renderScheduleTimeBlock(entry, 'day-event', scheduleLayout.get(entry)) })),
-              ...timed.map((ev) => ({ range: timeRangeForEvent(ev, state.cursor), html: () => renderDayEvent(ev, layout.get(ev), state.cursor) })),
+              ...scheduleBlocks.map((entry) => ({ range: scheduleBlockTimeRange(entry), html: () => renderScheduleTimeBlock(entry, scheduleLayout.get(entry)) })),
+              ...timed.map((ev) => ({ range: timeRangeForEvent(ev, state.cursor), html: () => renderDayEvent(ev, layout.get(ev), state.cursor, scheduleBandLanes(timeRangeForEvent(ev, state.cursor), scheduleBlocks, scheduleLayout)) })),
             ])}
             ${dayEvs.length === 0 && schedule.length === 0 ? `<div class="day-view__empty-hint" id="day-empty-hint" tabindex="-1" style="top:calc(${hourOffset(state.cursor === state.today ? nowMinutes() : 9 * 60)} + 16px)">${dayEmptyHintText()}</div>` : ''}
           </div>
@@ -5707,8 +5722,8 @@ function renderDayView(container) {
 
   const dayCol = container.querySelector('#day-col');
   dayCol.addEventListener('click', (e) => {
-    // S-17: ein Klick GENAU auf den sichtbaren Text eines Schichtblocks
-    // oeffnet die Detailansicht - siehe der gleiche Kommentar in renderWeekView().
+    // Ein Klick auf das Schichtband oeffnet die Detailansicht - siehe der
+    // gleiche Kommentar in renderWeekView().
     const blockEl = e.target.closest('.schedule-time-block');
     if (blockEl) {
       const entry = findScheduleEntryByKey(blockEl.dataset.scheduleKey);
@@ -6081,7 +6096,7 @@ function renderDayRail() {
  * angeschnittene zweite Zeile ist schlechter als keine. Die Zugewiesenen
  * erscheinen erst ab einer Stunde.
  */
-function renderDayEvent(ev, layout = null, dayStr = null) {
+function renderDayEvent(ev, layout = null, dayStr = null, bandLanes = 0) {
   const { start, end } = timeRangeForEvent(ev, dayStr);
   const duration = Math.max(end - start, 30);
   const roomy = duration >= 60;
@@ -6092,15 +6107,17 @@ function renderDayEvent(ev, layout = null, dayStr = null) {
   const idx    = layout?.colIndex ?? 0;
   // Links 4px, rechts 10px: der Balken laesst die Zeitachse an beiden Raendern
   // stehen, damit Stunden- und Now-Linie sichtbar hinter ihm weiterlaufen.
-  const left  = `calc(${(idx / cols) * 100}% + 4px)`;
-  const width = `calc(${100 / cols}% - 14px)`;
+  // Hinter den Schichtbaendern, die der Termin beruehrt (E5, wie in der Woche).
+  const { left, width } = bandLanes
+    ? bandedEventBox(layout, 4, 14)
+    : { left: `calc(${(idx / cols) * 100}% + 4px)`, width: `calc(${100 / cols}% - 14px)` };
 
   const place = ev.location ? ` · ${esc(fmtLocation(ev.location))}` : '';
   const timeText = gridTimeText(ev, dayStr);
 
   return `
     <div class="day-event${roomy ? '' : ' day-event--tight'}" data-id="${ev.id}"
-         style="top:${top};height:${height};left:${left};width:${width};${eventSurfaceStyle(ev)}"
+         style="top:${top};height:${height};left:${left};width:${width};${bandInsetStyle(bandLanes)}${eventSurfaceStyle(ev)}"
          title="${esc(ev.title)}${ev.location ? ' · ' + esc(fmtLocation(ev.location)) : ''}${chipAssigneeTitleSuffix(ev)}"${eventBlockAttrs(ev, eventTimeText(ev, dayStr), dayStr)}${occurrenceAttr(ev)}>
       <span class="day-event__text">
         <span class="day-event__title">${eventGlyphsHtml(ev)}<span class="day-event__name">${esc(ev.title)}</span></span>
@@ -6548,17 +6565,25 @@ function renderLocalCalendarRow(calendar) {
       },
     ],
   });
+  // DIE ZEILE IST PUNKT UND NAME (R24, Entscheidung E6, Critique
+  // G1-Kalender-P2-1). Bis R24 stand hier ein Formular je Kalender: Namensfeld,
+  // rohes Farbfeld neben dem Farbpunkt (dieselbe Farbe zweimal) und ein
+  // Disketten-Knopf zum Speichern - die Verwaltung las sich wie ein
+  // Admin-Formular. Jetzt eine Zeile wie in jeder Liste der App: der Tipp
+  // oeffnet das Bearbeiten-Blatt (Name, Farbreihe), das Seltene steht im „...".
+  const count = t('calendar.localCalendarEventCount', { count: calendar.event_count ?? 0 });
+  const main = writable
+    ? `<button type="button" class="list-row__main list-row__main--interactive js-calendar-edit">
+        <span class="list-row__name">${esc(calendar.name)}</span>
+        <span class="list-row__meta">${count}</span>
+      </button>`
+    : `<span class="list-row__main"><span class="list-row__name">${esc(calendar.name)}</span><span class="list-row__meta">${count}</span></span>`;
   return `
-    <div class="cal-calendar-row" data-calendar-id="${calendar.id}">
-      <span class="cal-calendar-row__swatch" style="background-color:${esc(calendar.color)}" aria-hidden="true"></span>
-      ${writable ? `<input class="form-input cal-calendar-row__name" maxlength="80" value="${esc(calendar.name)}" aria-label="${esc(t('calendar.localCalendarName'))}">
-      <input class="form-input cal-calendar-row__color" type="color" value="${esc(calendar.color)}" aria-label="${esc(t('calendar.localCalendarColor'))}">` : ''}
-      <span class="cal-calendar-row__count">${t('calendar.localCalendarEventCount', { count: calendar.event_count ?? 0 })}</span>
-      <div class="cal-calendar-row__actions">
-        ${writable ? rowActionHtml({ icon: 'save', label: `${t('common.save')} · ${calendar.name}`, className: 'js-calendar-save' }) : ''}
-        ${menu}
-      </div>
-    </div>
+    <li class="list-row cal-calendar-row" data-calendar-id="${calendar.id}">
+      <span class="list-row__lead" aria-hidden="true"><span class="cal-calendar-row__swatch" style="background-color:${esc(calendar.color)}"></span></span>
+      ${main}
+      ${menu}
+    </li>
   `;
 }
 
@@ -6571,24 +6596,82 @@ function renderLocalCalendarsContent() {
   }
   const rows = state.localCalendars.map(renderLocalCalendarRow).join('');
 
+  // „+ Kalender" ist eine Handlung NEBEN der Liste, nicht ihre Hauptsache:
+  // sekundaer und klein (vorher eine gefuellte Primaerpille mit Formular im
+  // Kopf des Dialogs). Unten fuehrt EIN Weg zu dem, was nicht hier lebt:
+  // Abos (ICS) und die Synchronisation stehen in den Einstellungen.
   return `
     <div class="cal-calendar-manager">
-      ${moduleAccess('calendar') === 'write' ? `<form class="cal-calendar-create" id="local-calendar-create">
-        <input class="form-input" id="local-calendar-name" maxlength="80" placeholder="${esc(t('calendar.localCalendarName'))}" aria-label="${esc(t('calendar.localCalendarName'))}">
-        <button class="btn btn--primary" type="submit">
-          <i data-lucide="plus" class="icon-md" aria-hidden="true"></i>${t('calendar.localCalendarCreate')}
-        </button>
-        ${colorPickerHtml({ id: 'local-calendar-color', value: USER_COLOR_DEFAULT, label: t('calendar.localCalendarColor'), className: 'cal-calendar-create__color' })}
-      </form>` : ''}
-      <div class="cal-calendar-list">
-        ${rows || emptyStateHTML({
-          icon: 'calendar-days',
-          title: t('calendar.localCalendarEmpty'),
-          compact: true,
-        })}
-      </div>
+      ${moduleAccess('calendar') === 'write' ? `<button type="button" class="btn btn--secondary btn--sm cal-calendar-manager__add js-calendar-add">
+          <i data-lucide="plus" class="icon-md" aria-hidden="true"></i>${esc(t('calendar.localCalendarLabel'))}
+        </button>` : ''}
+      ${rows ? `<ul class="row-carrier cal-calendar-list" aria-label="${esc(t('calendar.manageCalendars'))}">${rows}</ul>` : emptyStateHTML({
+        icon: 'calendar-days',
+        title: t('calendar.localCalendarEmpty'),
+        compact: true,
+      })}
+      <a class="cal-calendar-manager__link" href="/settings/modules/calendar" data-route="/settings/modules/calendar">
+        <span>${esc(t('calendar.manageSubscriptionsLink'))}</span><i data-lucide="chevron-right" class="icon-md" aria-hidden="true"></i>
+      </a>
     </div>
   `;
+}
+
+/**
+ * DAS BEARBEITEN-BLATT EINES KALENDERS (E6): Name und Farbe - die Farbe aus
+ * dem EINEN Farbwaehler (utils/color-picker.js), die Familientoene und
+ * „Eigene". Dasselbe Blatt legt an (ohne `calendar`). Es liegt UEBER der
+ * Verwaltung (askOverModal parkt sie) und loest mit `{ name, color }` oder
+ * `null` (abgebrochen) auf.
+ */
+function localCalendarSheet(calendar = null) {
+  const isEdit = Boolean(calendar);
+  return new Promise((resolve) => {
+    let resolved = false;
+    const finish = (value) => {
+      if (resolved) return;
+      resolved = true;
+      closeModal({ force: true });
+      resolve(value);
+    };
+    openSharedModal({
+      title: isEdit ? t('calendar.localCalendarEdit') : t('calendar.localCalendarNew'),
+      size: 'sm',
+      initialFocus: dialogInitialFocus(isEdit),
+      dirtyGuard: false,
+      content: `
+        <form class="form-stack" id="local-calendar-form" novalidate>
+          <div class="form-field">
+            <label class="form-label" for="local-calendar-name">${esc(t('calendar.localCalendarName'))}${REQUIRED_MARK}</label>
+            <input class="form-input" id="local-calendar-name" maxlength="80" required value="${esc(calendar?.name ?? '')}" autocomplete="off">
+          </div>
+          <div class="form-field">
+            <span class="form-label" id="local-calendar-color-label">${esc(t('calendar.localCalendarColor'))}</span>
+            ${colorPickerHtml({ id: 'local-calendar-color', value: calendar?.color ?? USER_COLOR_DEFAULT, labelledBy: 'local-calendar-color-label' })}
+          </div>
+          <div class="modal-panel__footer">
+            <button type="button" class="btn btn--secondary" id="local-calendar-cancel">${t('common.cancel')}</button>
+            <button type="submit" class="btn btn--primary">${isEdit ? t('common.save') : t('common.add')}</button>
+          </div>
+        </form>`,
+      onClose: () => finish(null),
+      onSave(panel) {
+        wireColorPicker(panel);
+        const form = panel.querySelector('#local-calendar-form');
+        const input = panel.querySelector('#local-calendar-name');
+        panel.querySelector('#local-calendar-cancel')?.addEventListener('click', () => finish(null));
+        form?.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = input.value.trim();
+          if (!name) {
+            reportFieldError(input, t('common.required'));
+            return;
+          }
+          finish({ name, color: panel.querySelector('#local-calendar-color')?.value || USER_COLOR_DEFAULT });
+        });
+      },
+    });
+  });
 }
 
 async function copyText(value, toastKey) {
@@ -6629,7 +6712,6 @@ async function refreshLocalCalendarsPanel(panel) {
   if (body) {
     body.replaceChildren();
     body.insertAdjacentHTML('beforeend', renderLocalCalendarsContent());
-    wireColorPicker(body);
     window.lucide?.createIcons({ el: body });
   }
   renderView();
@@ -6694,27 +6776,29 @@ async function openLocalCalendarsModal() {
   if (!panel) return;
   window.lucide?.createIcons({ el: panel });
   installPopoverMenus(panel);
-  wireColorPicker(panel);
-
-  panel.addEventListener('submit', async (e) => {
-    if (!e.target.closest('#local-calendar-create')) return;
-    e.preventDefault();
-    const name = panel.querySelector('#local-calendar-name')?.value.trim();
-    const color = panel.querySelector('#local-calendar-color')?.value || USER_COLOR_DEFAULT;
-    if (!name) return;
-    try {
-      await api.post('/calendar/calendars', { name, color });
-      window.yuvomi?.showToast(t('calendar.localCalendarCreated'), 'success');
-      await reloadAfterSave(() => refreshLocalCalendarsPanel(panel));
-      refocusAfterRender();
-    } catch (err) {
-      window.yuvomi?.showToast(localCalendarErrorSentence(err), 'danger');
-    }
-  });
 
   panel.addEventListener('click', async (e) => {
     if (e.target.closest('.js-calendar-retry-load')) {
       await refreshLocalCalendarsPanel(panel);
+      return;
+    }
+    const link = e.target.closest('.cal-calendar-manager__link');
+    if (link) {
+      e.preventDefault();
+      await closeModal();
+      window.yuvomi?.navigate?.(link.getAttribute('href'));
+      return;
+    }
+    if (e.target.closest('.js-calendar-add')) {
+      const answer = await askOverModal(() => localCalendarSheet());
+      if (!answer) return;
+      try {
+        await api.post('/calendar/calendars', answer);
+        window.yuvomi?.showToast(t('calendar.localCalendarCreated'), 'success');
+        await reloadAfterSave(() => refreshLocalCalendarsPanel(panel));
+      } catch (err) {
+        window.yuvomi?.showToast(localCalendarErrorSentence(err), 'danger');
+      }
       return;
     }
     const row = e.target.closest('.cal-calendar-row');
@@ -6728,14 +6812,17 @@ async function openLocalCalendarsModal() {
         if (!await moveLocalCalendar(id, direction)) return;
         await refreshLocalCalendarsPanel(panel);
         panel.querySelector(`.cal-calendar-row[data-calendar-id="${id}"] .popover-menu__trigger`)?.focus();
-      } else if (e.target.closest('.js-calendar-save')) {
-        const name = row.querySelector('.cal-calendar-row__name')?.value.trim();
-        const changes = { color: row.querySelector('.cal-calendar-row__color')?.value };
-        if (name !== calendar.name) changes.name = name;
+      } else if (e.target.closest('.js-calendar-edit')) {
+        const answer = await askOverModal(() => localCalendarSheet(calendar));
+        if (!answer) return;
+        const changes = {};
+        if (!sameColor(answer.color, calendar.color)) changes.color = answer.color;
+        if (answer.name !== calendar.name) changes.name = answer.name;
+        if (!Object.keys(changes).length) return;
         await api.put(`/calendar/calendars/${id}`, changes);
         window.yuvomi?.showToast(t('calendar.localCalendarSaved'), 'success');
         await reloadAfterSave(() => refreshLocalCalendarsPanel(panel));
-        refocusAfterRender();
+        panel.querySelector(`.cal-calendar-row[data-calendar-id="${id}"] .js-calendar-edit`)?.focus();
       } else if (e.target.closest('[data-action="calendar-enable-feed"]')) {
         await api.post(`/calendar/calendars/${id}/feed/regenerate`);
         await reloadAfterSave(() => refreshLocalCalendarsPanel(panel));
@@ -7490,6 +7577,7 @@ export const __test = {
   layoutScheduleBlocks,
   scheduleBlockTimeRange,
   renderScheduleTimeBlock,
+  scheduleBandLanes,
   renderWeekView,
   renderDayView,
   wasteEnabled,
@@ -8033,13 +8121,16 @@ async function openEventDetail(ev, anchor = null, { pane = null, formReady: form
   }];
 
   // ICS-Abos: Ein lokal geänderter Termin lässt sich auf das Original
-  // zurücksetzen. Die Aktion gehört zum Objekt, also in die Fußzeile.
+  // zurücksetzen. Die Aktion gehört zum Objekt, also in die Fußzeile - als
+  // seltene Handlung ins Fuß-Mehr (`more: true`, detail-view.js; R24, Übergabe
+  // aus S6): als Geisterknopf faltete sie mobil zum bloßen Zeichen neben
+  // Löschen und Bearbeiten.
   if (ev.external_source === 'ics' && ev.user_modified === 1 && !locked) {
     actions.push({
       id: 'detail-ics-reset',
       label: t('calendar.ics.reset'),
-      variant: 'ghost',
       icon: 'rotate-ccw',
+      more: true,
       onClick: async ({ close }) => {
         try {
           await api.post(`/calendar/${ev.id}/reset`, {});
@@ -9020,42 +9111,12 @@ function wireEventForm(panel, { mode, event = null, reminder = null }) {
   // als Sperre: der Erben-Swatch traegt sie, und wer stattdessen eine Farbe
   // waehlt, behaelt sie. Wer der Termin ist, sagt weiterhin der Avatar-Stack.
 
-  // Leerstring = der Erben-Swatch. Ein neuer Termin startet dort, und ein
-  // bestehender ohne eigene Farbe steht dort ebenfalls - beides ist seit #891
-  // ein ausdrueckbarer Zustand und nicht mehr der Palettenerste als Notloesung.
-  const selectedColor = isEdit ? (event?.color || COLOR_INHERIT) : COLOR_INHERIT;
-
-  // Farb-Auswahl: Auswahl + ARIA + Keyboard (Roving Tabindex)
-  function selectSwatch(target) {
-    panel.querySelectorAll('.color-swatch').forEach((s) => {
-      s.classList.remove('color-swatch--active');
-      s.setAttribute('aria-checked', 'false');
-      s.setAttribute('tabindex', '-1');
-    });
-    target.classList.add('color-swatch--active');
-    target.setAttribute('aria-checked', 'true');
-    target.setAttribute('tabindex', '0');
-  }
-  panel.querySelectorAll('.color-swatch').forEach((sw) => {
-    if (sameColor(sw.dataset.color, selectedColor)) selectSwatch(sw);
-    sw.addEventListener('click', () => { selectSwatch(sw); sw.focus(); });
-    sw.addEventListener('keydown', (e) => {
-      const swatches = [...panel.querySelectorAll('.color-swatch')];
-      const idx = swatches.indexOf(sw);
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        const next = swatches[(idx + 1) % swatches.length];
-        selectSwatch(next); next.focus();
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        const prev = swatches[(idx - 1 + swatches.length) % swatches.length];
-        selectSwatch(prev); prev.focus();
-      } else if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        selectSwatch(sw);
-      }
-    });
-  });
+  // Leerstring = der Erben-Swatch (der Wert im Markup, colorPickerHtml). Ein
+  // neuer Termin startet dort, und ein bestehender ohne eigene Farbe steht dort
+  // ebenfalls - beides ist seit #891 ein ausdrueckbarer Zustand und nicht mehr
+  // der Palettenerste als Notloesung.
+  // Farbwahl: Auswahl, ARIA, Pfeiltasten und "Eigene" bringt der Baustein mit.
+  wireColorPicker(panel);
 
   // Ganztägig-Toggle
   const alldayCheck = panel.querySelector('#modal-allday');
@@ -9621,25 +9682,21 @@ function buildEventModalContent({ mode, event, date, reminder = null, time = nul
 
     <div class="form-group">
       <label class="form-label" id="event-color-label">${t('calendar.colorLabel')}</label>
-      <div class="color-picker" id="event-color-picker" role="radiogroup" aria-labelledby="event-color-label">
-        <!-- Steht vorn, weil er der Standard ist: ein Termin, fuer den niemand
-             eine Farbe gewaehlt hat, traegt die der zugewiesenen Person (#891).
-             Traegt bewusst KEIN Inline-background - seine Optik kommt aus
-             calendar.css, weil sie eine Designentscheidung ist und keine
-             Nutzereinstellung. -->
-        <div class="color-swatch color-swatch--inherit" data-color=""
-             role="radio"
-             tabindex="0"
-             aria-checked="false"
-             aria-label="${esc(t('calendar.colorInherit'))}"
-             title="${esc(t('calendar.colorInheritHint'))}"></div>
-        ${pickerColors(isEdit ? event : null).map((c) => `
-          <div class="color-swatch" data-color="${esc(c)}" style="background-color:${esc(c)};"
-               role="radio"
-               tabindex="-1"
-               aria-checked="false"
-               aria-label="${esc(EVENT_COLOR_NAMES()[c] ?? t('calendar.colorCurrent'))}"></div>
-        `).join('')}
+      <!-- DER EINE FARBWAEHLER (R24, E6; utils/color-picker.js): vorn der
+           Erben-Swatch - er ist der Standard, ein Termin ohne eigene Farbe
+           traegt die der zugewiesenen Person (#891), seine Optik kommt aus
+           calendar.css -, dann die Terminpalette mit einer fremden Farbe des
+           Termins (pickerColors, #856), dahinter "Eigene". -->
+      <div id="event-color-picker">
+        ${colorPickerHtml({
+          id: 'modal-color',
+          value: isEdit ? (event?.color || COLOR_INHERIT) : COLOR_INHERIT,
+          labelledBy: 'event-color-label',
+          options: [
+            { value: COLOR_INHERIT, paint: '', label: t('calendar.colorInherit'), title: t('calendar.colorInheritHint'), className: 'color-swatch--inherit' },
+            ...pickerColors(isEdit ? event : null).map((c) => ({ value: c, label: EVENT_COLOR_NAMES()[c] ?? t('calendar.colorCurrent') })),
+          ],
+        })}
       </div>
     </div>
 

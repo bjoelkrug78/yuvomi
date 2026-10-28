@@ -1235,7 +1235,6 @@
         "localCalendarEventCount": "{{count}} kaganapan",
         "localCalendarEventCount_one": "{{count}} kaganapan",
         "localCalendarEventCount_other": "{{count}} kaganapan",
-        "localCalendarCreate": "Gumawa ng kalendaryo",
         "localCalendarEmpty": "Wala pang kalendaryo.",
         "localCalendarCreated": "Nagawa ang kalendaryo",
         "localCalendarSaved": "Nai-save ang kalendaryo",
@@ -1260,7 +1259,10 @@
         "errorSeriesNoOccurrence": "Sa pag-uulit na ito, walang kahit isang pangyayari mula sa petsa ng simula.",
         "localCalendarUploadsHint": "Ina-upload sa iCloud sa pamamagitan ng Apple Calendar ang mga event sa kalendaryong ito.",
         "overlapOpenSchedule": "Buksan ang iskedyul ng shift",
-        "syncTargetNoCalendarForPeople": "Walang kalendaryong may eksaktong mga taong ito bilang default na naaatasan, kaya walang pinipili ang pag-aatas. Ginagamit sa halip: {{target}}."
+        "syncTargetNoCalendarForPeople": "Walang kalendaryong may eksaktong mga taong ito bilang default na naaatasan, kaya walang pinipili ang pag-aatas. Ginagamit sa halip: {{target}}.",
+        "localCalendarEdit": "I-edit ang kalendaryo",
+        "localCalendarNew": "Bagong kalendaryo",
+        "manageSubscriptionsLink": "Mga subscription at sync"
     },
     "noteCategories": {
         "categories": "Mga kategorya",

@@ -1302,7 +1302,6 @@
         "localCalendarEventCount_one": "{{count}} událost",
         "localCalendarEventCount_few": "{{count}} události",
         "localCalendarEventCount_other": "{{count}} událostí",
-        "localCalendarCreate": "Vytvořit kalendář",
         "localCalendarEmpty": "Zatím žádné kalendáře.",
         "localCalendarCreated": "Kalendář vytvořen",
         "localCalendarSaved": "Kalendář uložen",
@@ -1327,7 +1326,10 @@
         "errorSeriesNoOccurrence": "S tímto opakováním by od data zahájení nebyl žádný termín.",
         "localCalendarUploadsHint": "Události v tomto kalendáři se nahrávají do iCloudu přes Apple Calendar.",
         "overlapOpenSchedule": "Otevřít rozpis směn",
-        "syncTargetNoCalendarForPeople": "Žádný kalendář nemá jako výchozí přiřazení přesně tyto osoby, proto přiřazení žádný nevybere. Místo toho platí: {{target}}."
+        "syncTargetNoCalendarForPeople": "Žádný kalendář nemá jako výchozí přiřazení přesně tyto osoby, proto přiřazení žádný nevybere. Místo toho platí: {{target}}.",
+        "localCalendarEdit": "Upravit kalendář",
+        "localCalendarNew": "Nový kalendář",
+        "manageSubscriptionsLink": "Odběry a synchronizace"
     },
     "noteCategories": {
         "categories": "Kategorie",

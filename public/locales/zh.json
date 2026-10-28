@@ -1216,7 +1216,6 @@
         "localCalendarColor": "日历颜色",
         "localCalendarEventCount": "{{count}} 个事件",
         "localCalendarEventCount_other": "{{count}} 个事件",
-        "localCalendarCreate": "创建日历",
         "localCalendarEmpty": "还没有日历。",
         "localCalendarCreated": "日历已创建",
         "localCalendarSaved": "日历已保存",
@@ -1242,7 +1241,10 @@
         "errorSeriesNoOccurrence": "按此重复设置，从开始日期起不会有任何日程。",
         "localCalendarUploadsHint": "此日历中的日程会通过 Apple Calendar 上传到 iCloud。",
         "overlapOpenSchedule": "打开排班",
-        "syncTargetNoCalendarForPeople": "没有日历的默认分配恰好是这些人，因此分配不会选择日历。改用：{{target}}。"
+        "syncTargetNoCalendarForPeople": "没有日历的默认分配恰好是这些人，因此分配不会选择日历。改用：{{target}}。",
+        "localCalendarEdit": "编辑日历",
+        "localCalendarNew": "新建日历",
+        "manageSubscriptionsLink": "订阅与同步"
     },
     "noteCategories": {
         "categories": "分类",

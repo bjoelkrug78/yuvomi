@@ -1216,7 +1216,6 @@
         "localCalendarColor": "カレンダーの色",
         "localCalendarEventCount": "{{count}}件の予定",
         "localCalendarEventCount_other": "{{count}}件の予定",
-        "localCalendarCreate": "カレンダーを作成",
         "localCalendarEmpty": "カレンダーはまだありません。",
         "localCalendarCreated": "カレンダーを作成しました",
         "localCalendarSaved": "カレンダーを保存しました",
@@ -1242,7 +1241,10 @@
         "errorSeriesNoOccurrence": "この繰り返しでは、開始日以降に予定が1件もありません。",
         "localCalendarUploadsHint": "このカレンダーの予定は Apple Calendar を通じて iCloud にアップロードされます。",
         "overlapOpenSchedule": "シフト表を開く",
-        "syncTargetNoCalendarForPeople": "ちょうどこれらの人を既定の割り当て先にしているカレンダーがないため、割り当てからはカレンダーを選びません。代わりに使用: {{target}}。"
+        "syncTargetNoCalendarForPeople": "ちょうどこれらの人を既定の割り当て先にしているカレンダーがないため、割り当てからはカレンダーを選びません。代わりに使用: {{target}}。",
+        "localCalendarEdit": "カレンダーを編集",
+        "localCalendarNew": "新しいカレンダー",
+        "manageSubscriptionsLink": "購読と同期"
     },
     "noteCategories": {
         "categories": "カテゴリー",

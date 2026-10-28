@@ -1217,7 +1217,6 @@
         "localCalendarEventCount": "{{count}} händelser",
         "localCalendarEventCount_one": "{{count}} händelse",
         "localCalendarEventCount_other": "{{count}} händelser",
-        "localCalendarCreate": "Skapa kalender",
         "localCalendarEmpty": "Inga kalendrar ännu.",
         "localCalendarCreated": "Kalender skapad",
         "localCalendarSaved": "Kalender sparad",
@@ -1242,7 +1241,10 @@
         "errorSeriesNoOccurrence": "Med den här upprepningen skulle det inte finnas en enda händelse från startdatumet.",
         "localCalendarUploadsHint": "Händelser i den här kalendern laddas upp till iCloud via Apple Calendar.",
         "overlapOpenSchedule": "Öppna skiftschema",
-        "syncTargetNoCalendarForPeople": "Ingen kalender har exakt dessa personer som standardtilldelning, så tilldelningen väljer ingen. Används i stället: {{target}}."
+        "syncTargetNoCalendarForPeople": "Ingen kalender har exakt dessa personer som standardtilldelning, så tilldelningen väljer ingen. Används i stället: {{target}}.",
+        "localCalendarEdit": "Redigera kalender",
+        "localCalendarNew": "Ny kalender",
+        "manageSubscriptionsLink": "Prenumerationer och synkronisering"
     },
     "noteCategories": {
         "categories": "Kategorier",

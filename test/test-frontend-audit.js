@@ -7720,7 +7720,6 @@ test('calendar month view uses tinted event surfaces derived from --ev-color', (
   // in der Datei und würde den ungebundenen Selektor-Match abfangen.
   const eventBody = cssRuleBody(calendar, '\n.month-day__event');
   const outsideEventBody = cssRuleBody(calendar, '.month-day--outside .month-day__event');
-  const outsideDayBody = cssRuleBody(calendar, '\n.month-day--outside');
 
   assert.match(gridBody, /background-color:\s*var\(--color-border-subtle\)/, 'month grid should expose clear cell boundaries');
   assert.match(gridBody, /gap:\s*var\(--space-px\)/, 'month grid boundaries should use tokenized one-pixel gaps');
@@ -7741,11 +7740,11 @@ test('calendar month view uses tinted event surfaces derived from --ev-color', (
   // ebenfalls randlose Tint-Bars; die Zellgrenze trägt das 1px-Gap des Grids.
   assert.doesNotMatch(eventBody, /border:/, 'month bars read flat: the cell gap carries the boundary, not a per-bar border');
   assert.doesNotMatch(eventBody, /box-shadow/, 'tinted event chips should read flat, without a drop shadow');
-  // Nachbarmonatstage dimmen über FLÄCHE und ZIFFER, nie über eine Opacity auf
+  // Nachbarmonatstage dimmen über ZIFFER und Bar, nie über eine Opacity auf
   // dem Text: gemessen fiel die frühere `opacity: 0.5` auf 2.3-3.4:1 (unter AA).
-  // Die Bars behalten dort ihr volles Ink-Rezept auf schwächerer Tönung.
-  assert.match(outsideDayBody, /background-color:\s*var\(--color-bg\)/, 'previous/next month cells dim via their surface, not via text opacity');
-  assert.doesNotMatch(outsideDayBody, /opacity:/, 'a blanket opacity on the cell would drag its text below AA');
+  // Die Fläche folgt seit R24 dem Wochentag (Critique G1-Kalender-P3-1, Guard
+  // in test-calendar.js); die Bars behalten ihr Ink-Rezept auf schwächerer Tönung.
+  assert.doesNotMatch(calendar, /\.month-day--outside\s*\{[^}]*opacity:/, 'a blanket opacity on the cell would drag its text below AA');
   // „Nur schwaecher" ist jetzt pruefbar statt behauptet: die Nachbarmonats-Bar
   // steht eine Sprosse UNTER der Bar im laufenden Monat (wash statt surface).
   // Vorher stand hier `\d+%` gegen `\d+%` - der Guard war gruen, egal welche

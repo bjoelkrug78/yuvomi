@@ -1092,7 +1092,8 @@ Subheadline 15, Footnote 13, Caption 2 11.
   17 auswichen). Eine Gruppe gliedert, sie ist keine Stufe ueber dem Abschnitt.
 - **Blocktitel im Zeitraster** (semibold, 12px, seit R24): der Name eines Blocks in Woche und
   Tag - Termin und Schicht in EINER Regel (typography.css). Der Schichtblock stand im Tag in 16/400
-  neben seiner Zeit, in der Woche in 12/500; die Zeitzeile darunter ist Caption 1 regular.
+  neben seiner Zeit, in der Woche in 12/500; die Zeitzeile des Termins darunter ist Caption 1
+  regular. Das Schichtband (R24 E5) traegt nur das Kurzetikett, senkrecht.
 - **Display** (bold, `clamp(48px, 9vw, 72px)`): die Wand-Uhr, und seit v2.5.0 der einzige
   Ort, an dem die zwei Display-Stufen ueberhaupt stehen. Sie existieren NUR fuer
   Anzeigewerte auf Distanz, nie fuer Ueberschriften; die Ueberschriften-Skala endet bewusst
@@ -4999,8 +5000,19 @@ Tinte `color-mix(in srgb, var(--ev-color) 35%, var(--color-text-primary))`; geme
 traegt das title-Attribut); Glyphen nach der Icon-Regel unten, wie in jeder Ansicht - hier
 stand bis 2026-09-24 „keine Icons im Monat", waehrend die Monatsbalken die Serienmarke laengst
 trugen. "Heute" ist NUR ein gefuellter Akzent-Kreis auf der Ziffer;
-Nachbarmonatstage dimmen ueber Flaeche UND Ziffer (AA-fest), nie ueber blosse Opacity auf
-Text allein.
+Nachbarmonatstage dimmen ueber Ziffer (tertiaer) und Bar (`--tint-wash`), nie ueber Opacity -
+ihre FLAECHE folgt seit R24 dem Wochentag (Werktag Arbeitsweiss, Wochenende der Well): mit
+eigener Flaeche (`--color-bg`) waren sie hell vom Wochenende kaum zu unterscheiden und der
+Nachbar-Sonntag stand heller als jedes Wochenende (Critique G1-Kalender-P3-1).
+
+**Schichten in Woche und Tag sind Baender (R24, Entscheidung E5 a).** Eine Schicht mit Uhrzeit
+steht als 20px-Band (`--cal-shift-band`) vorn in der Tagesspalte, ueber ihre Zeitspanne -
+Zeitblock im Sinn von R23 D14, aber nie mehr die Flaeche UNTER den Terminen: die Fruehschicht
+06-14 tuenchte jede Spalte, und Termin und Schicht lasen sich gegenseitig weg. Form und Farbe
+eines Termins (16-%-Toenung, Vollton-Kante, 35-%-Tinte), das Kurzetikett („F · LJ") senkrecht
+und klebend, Uhrzeit und Felder im Namen und im Detail. Ueberlappende Schichten liegen Spur an
+Spur; ein Termin, der eine Schicht beruehrt, beginnt hinter ihren Baendern (`--band-lanes` ->
+`--band-inset`), einer ausserhalb behaelt die volle Spalte. Das Band ist die Schaltflaeche.
 
 **Der Titel vor dem „Wer"** (Re-Kritik 2026-09-25, P2). In Woche und Ganztag darf der
 Avatar-Stack dem Titel keinen Platz nehmen; er schrumpfte nie und liess mobil von „Zahnarzt -
@@ -5161,10 +5173,12 @@ Unter 640px ist der Monat geteilt, nach der Messlatte (Apple Kalender „Liste",
 Outlook): **das Raster sagt, WO etwas ist, die Liste sagt, WAS.** Vorher sprang ein Tipp auf
 einen Tag in die Tagesansicht - wer lesen wollte, was am Dienstag steht, verliess den Monat.
 
-- **Ein Tipp WAEHLT den Tag.** Die Auswahl ist ein 2px-Ring in `--color-text-primary` mit
-  2px Luft (`outline-offset`) um die Ziffer; heute bleibt der gefuellte Akzentkreis, und am
-  gewaehlten Heute stehen beide. Ring statt zweiter Fuellung, weil zwei gefuellte Kreise
-  (Akzent und Neutral) nicht sagen, welcher der gewaehlte ist. Ein Tag aus dem Nachbarmonat
+- **Ein Tipp WAEHLT den Tag.** Die Auswahl toent die ZELLE (Zustandssprosse `--tint-state` im
+  Modulton ueber ihrer Flaeche, Ziffer fett); heute bleibt der gefuellte Akzentkreis, und am
+  gewaehlten Heute stehen beide ohne zweiten Ring. Bis R24 war die Auswahl ein 2px-Ring um die
+  Ziffer - um die Akzentscheibe von heute las er sich wie ein Fokusring (Critique
+  G1-Kalender-P3-2). Keine zweite Fuellung der Ziffer: zwei gefuellte Kreise (Akzent und
+  Neutral) sagten nicht, welcher der gewaehlte ist. Ein Tag aus dem Nachbarmonat
   blaettert dorthin und waehlt ihn. In die Tagesansicht fuehrt der Kopf der Liste (Datum mit
   Chevron) - Doppeltipp ist kein Weg.
 - **Die Liste spricht die Zeilensprache der Agenda** (dieselben Zeilen, derselbe Kopf: Datum

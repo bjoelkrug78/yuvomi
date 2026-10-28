@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **Shifts in the calendar's week and day are narrow bands.** A shift with a time now shows as a slim
+  coloured band at the edge of the day, with its short label running along it, instead of a block across
+  the whole column. Appointments during the shift start right next to the band and stay readable;
+  appointments outside it keep the full width. Tap the band for the shift's details.
+- **Managing calendars is a list.** "Calendars" shows each calendar as a row with its colour dot, name and
+  number of appointments. Tap a row to rename it or pick its colour from the family colours or your own;
+  "+ Calendar" adds one the same way. A link at the bottom leads to subscriptions and sync in Settings.
+- **An appointment's colour has "Custom".** Next to the calendar colours, the colour row in the
+  appointment form now offers your own colour, like every other colour choice in the app.
+- **The month reads more calmly.** Days from the previous and next month keep the background of their
+  weekday and are dimmed by their number, so they no longer look like weekend days. On phones the selected
+  day is a tinted cell instead of a dark ring around the number, so today's filled circle stays clear.
+- **Resetting a changed subscription event** is in the "..." menu of the appointment, with its name.
 - **Taking a medicine is a tick.** Due doses and as-needed medicines now have a circle in front of the
   name, like a task: tap it and the dose is taken, with Undo in the message. A taken dose shows a full
   circle. Before, every due dose carried a filled "Take" button, so a Health page could show three main

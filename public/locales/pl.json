@@ -1397,7 +1397,6 @@
         "localCalendarEventCount": "{{count}} wydarzeń",
         "localCalendarEventCount_one": "{{count}} wydarzenie",
         "localCalendarEventCount_few": "{{count}} wydarzenia",
-        "localCalendarCreate": "Utwórz kalendarz",
         "localCalendarEmpty": "Nie ma jeszcze kalendarzy.",
         "localCalendarCreated": "Kalendarz utworzony",
         "localCalendarSaved": "Kalendarz zapisany",
@@ -1424,7 +1423,10 @@
         "errorSeriesNoOccurrence": "Przy tym powtarzaniu od daty rozpoczęcia nie byłoby ani jednego wydarzenia.",
         "localCalendarUploadsHint": "Wydarzenia z tego kalendarza są przesyłane do iCloud przez Apple Calendar.",
         "overlapOpenSchedule": "Otwórz grafik",
-        "syncTargetNoCalendarForPeople": "Żaden kalendarz nie ma dokładnie tych osób jako domyślnego przypisania, więc przypisanie nie wybiera kalendarza. Zamiast tego: {{target}}."
+        "syncTargetNoCalendarForPeople": "Żaden kalendarz nie ma dokładnie tych osób jako domyślnego przypisania, więc przypisanie nie wybiera kalendarza. Zamiast tego: {{target}}.",
+        "localCalendarEdit": "Edytuj kalendarz",
+        "localCalendarNew": "Nowy kalendarz",
+        "manageSubscriptionsLink": "Subskrypcje i synchronizacja"
     },
     "noteCategories": {
         "categories": "Kategorie",

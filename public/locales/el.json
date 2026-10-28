@@ -1217,7 +1217,6 @@
         "localCalendarEventCount": "{{count}} συμβάντα",
         "localCalendarEventCount_one": "{{count}} συμβάν",
         "localCalendarEventCount_other": "{{count}} συμβάντα",
-        "localCalendarCreate": "Δημιουργία ημερολογίου",
         "localCalendarEmpty": "Δεν υπάρχουν ακόμη ημερολόγια.",
         "localCalendarCreated": "Το ημερολόγιο δημιουργήθηκε",
         "localCalendarSaved": "Το ημερολόγιο αποθηκεύτηκε",
@@ -1242,7 +1241,10 @@
         "errorSeriesNoOccurrence": "Με αυτή την επανάληψη δεν θα υπήρχε κανένα συμβάν από την ημερομηνία έναρξης.",
         "localCalendarUploadsHint": "Τα συμβάντα αυτού του ημερολογίου ανεβαίνουν στο iCloud μέσω του Apple Calendar.",
         "overlapOpenSchedule": "Άνοιγμα βαρδιών",
-        "syncTargetNoCalendarForPeople": "Κανένα ημερολόγιο δεν έχει ακριβώς αυτά τα άτομα ως προεπιλεγμένη ανάθεση, οπότε η ανάθεση δεν επιλέγει κανένα. Χρησιμοποιείται αντί αυτού: {{target}}."
+        "syncTargetNoCalendarForPeople": "Κανένα ημερολόγιο δεν έχει ακριβώς αυτά τα άτομα ως προεπιλεγμένη ανάθεση, οπότε η ανάθεση δεν επιλέγει κανένα. Χρησιμοποιείται αντί αυτού: {{target}}.",
+        "localCalendarEdit": "Επεξεργασία ημερολογίου",
+        "localCalendarNew": "Νέο ημερολόγιο",
+        "manageSubscriptionsLink": "Συνδρομές και συγχρονισμός"
     },
     "noteCategories": {
         "categories": "Κατηγορίες",

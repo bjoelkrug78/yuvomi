@@ -1461,7 +1461,6 @@
         "localCalendarEventCount_one": "{{count}} حدث",
         "localCalendarEventCount_few": "{{count}} أحداث",
         "localCalendarEventCount_other": "{{count}} أحداث",
-        "localCalendarCreate": "إنشاء تقويم",
         "localCalendarEmpty": "لا توجد تقاويم بعد.",
         "localCalendarCreated": "تم إنشاء التقويم",
         "localCalendarSaved": "تم حفظ التقويم",
@@ -1489,7 +1488,10 @@
         "errorSeriesNoOccurrence": "مع هذا التكرار لن يكون هناك أي موعد ابتداءً من تاريخ البداية.",
         "localCalendarUploadsHint": "تُرفع أحداث هذا التقويم إلى iCloud عبر Apple Calendar.",
         "overlapOpenSchedule": "فتح جدول المناوبات",
-        "syncTargetNoCalendarForPeople": "لا يوجد تقويم إسناده الافتراضي هؤلاء الأشخاص تمامًا، لذلك لا يختار الإسناد تقويمًا. المستخدم بدلًا من ذلك: {{target}}."
+        "syncTargetNoCalendarForPeople": "لا يوجد تقويم إسناده الافتراضي هؤلاء الأشخاص تمامًا، لذلك لا يختار الإسناد تقويمًا. المستخدم بدلًا من ذلك: {{target}}.",
+        "localCalendarEdit": "تعديل التقويم",
+        "localCalendarNew": "تقويم جديد",
+        "manageSubscriptionsLink": "الاشتراكات والمزامنة"
     },
     "noteCategories": {
         "categories": "الفئات",
