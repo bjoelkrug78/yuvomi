@@ -111,7 +111,10 @@
         "deletedNamed": "\"{{name}}\" हटाया गया।",
         "sortMode": "क्रम बदलें",
         "createdNamed": "\"{{name}}\" बनाया गया।",
-        "savedNamed": "\"{{name}}\" सहेजा गया।"
+        "savedNamed": "\"{{name}}\" सहेजा गया।",
+        "everyNDays": "हर {{count}} दिन",
+        "everyNWeeks": "हर {{count}} सप्ताह में",
+        "everyNMonths": "हर {{count}} महीने में"
     },
     "kitchen": {
         "noShoppingLists": "अभी कोई खरीद सूची नहीं है.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "उदाहरण: बाथरूम साफ़ करें",
         "taskArea": "क्षेत्र",
         "taskAreaPlaceholder": "उदाहरण: बाथरूम",
-        "taskFrequency": "आवृत्ति (दिन)",
+        "taskFrequency": "आवृत्ति",
         "taskCreatedToast": "गृहकार्य कार्य बनाया गया।",
         "reports": "रिपोर्ट",
         "visitsThisMonth": "इस माह विज़िट",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "शुक्र",
         "weekdaySat": "शनि",
         "weekdaySun": "रवि",
-        "intervalLabelWeekly": "हर N सप्ताह में",
-        "intervalLabelMonthly": "हर N महीने में",
         "anchorDateLabel": "पहला संग्रहण",
         "monthDayLabel": "महीने का दिन",
         "monthDayLastDay": "महीने का आखिरी दिन",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "अंतराल घटाएँ",
         "intervalIncrease": "अंतराल बढ़ाएँ",
         "scheduleSavedNamed": "\"{{name}}\" का शेड्यूल सहेजा गया।",
-        "pickupSavedNamed": "\"{{name}}\" का संग्रहण सहेजा गया।"
+        "pickupSavedNamed": "\"{{name}}\" का संग्रहण सहेजा गया।",
+        "intervalLabel": "अंतराल"
     },
     "rewards": {
         "title": "पुरस्कार",

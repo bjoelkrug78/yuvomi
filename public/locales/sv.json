@@ -111,7 +111,10 @@
         "deletedNamed": "”{{name}}” raderad.",
         "sortMode": "Ändra ordning",
         "createdNamed": "”{{name}}” skapad.",
-        "savedNamed": "”{{name}}” sparad."
+        "savedNamed": "”{{name}}” sparad.",
+        "everyNDays": "Var {{count}} dag",
+        "everyNWeeks": "Var {{count}}:e vecka",
+        "everyNMonths": "Var {{count}}:e månad"
     },
     "kitchen": {
         "noShoppingLists": "Det finns ingen inköpslista än.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "Exempel: städa badrum",
         "taskArea": "Område",
         "taskAreaPlaceholder": "Exempel: badrum",
-        "taskFrequency": "Frekvens (dagar)",
+        "taskFrequency": "Frekvens",
         "taskCreatedToast": "Städuppgift skapad.",
         "reports": "Rapporter",
         "visitsThisMonth": "Besök denna månad",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "fre",
         "weekdaySat": "lör",
         "weekdaySun": "sön",
-        "intervalLabelWeekly": "Var N:e vecka",
-        "intervalLabelMonthly": "Var N:e månad",
         "anchorDateLabel": "Första hämtningen",
         "monthDayLabel": "Dag i månaden",
         "monthDayLastDay": "Sista dagen i månaden",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Minska intervallet",
         "intervalIncrease": "Öka intervallet",
         "scheduleSavedNamed": "Schema för ”{{name}}” sparat.",
-        "pickupSavedNamed": "Hämtning av ”{{name}}” sparad."
+        "pickupSavedNamed": "Hämtning av ”{{name}}” sparad.",
+        "intervalLabel": "Intervall"
     },
     "rewards": {
         "title": "Belöningar",

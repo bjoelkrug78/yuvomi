@@ -111,7 +111,10 @@
         "deletedNamed": "‘{{name}}’ verwijderd.",
         "sortMode": "Volgorde wijzigen",
         "createdNamed": "‘{{name}}’ aangemaakt.",
-        "savedNamed": "‘{{name}}’ opgeslagen."
+        "savedNamed": "‘{{name}}’ opgeslagen.",
+        "everyNDays": "Elke {{count}} dagen",
+        "everyNWeeks": "Elke {{count}} weken",
+        "everyNMonths": "Elke {{count}} maanden"
     },
     "kitchen": {
         "noShoppingLists": "Er is nog geen boodschappenlijst.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "Voorbeeld: Badkamers schoonmaken",
         "taskArea": "Ruimte",
         "taskAreaPlaceholder": "Voorbeeld: Badkamer",
-        "taskFrequency": "Frequentie (dagen)",
+        "taskFrequency": "Frequentie",
         "taskCreatedToast": "Huishoudtaak aangemaakt.",
         "reports": "Rapporten",
         "visitsThisMonth": "Bezoeken deze maand",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "vr",
         "weekdaySat": "za",
         "weekdaySun": "zo",
-        "intervalLabelWeekly": "Elke N weken",
-        "intervalLabelMonthly": "Elke N maanden",
         "anchorDateLabel": "Eerste ophaling",
         "monthDayLabel": "Dag van de maand",
         "monthDayLastDay": "Laatste dag van de maand",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Interval verkleinen",
         "intervalIncrease": "Interval vergroten",
         "scheduleSavedNamed": "Schema voor ‘{{name}}’ opgeslagen.",
-        "pickupSavedNamed": "Ophaling voor ‘{{name}}’ opgeslagen."
+        "pickupSavedNamed": "Ophaling voor ‘{{name}}’ opgeslagen.",
+        "intervalLabel": "Interval"
     },
     "rewards": {
         "title": "Beloningen",

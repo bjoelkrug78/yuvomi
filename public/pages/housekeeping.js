@@ -32,6 +32,7 @@ import { todayKey } from '/utils/date.js';
 import { displayTimeZone, zonedDateKey } from '/utils/timezone.js';
 import { USER_COLOR_DEFAULT } from '/utils/color.js';
 import { colorPickerHtml, wireColorPicker } from '/utils/color-picker.js';
+import { intervalSentenceHtml } from '/utils/interval-sentence.js';
 import { renderPageColumns } from '/utils/page-layout.js';
 import { rowMenuHtml } from '/utils/row-action.js';
 import { installPopoverMenus } from '/utils/popover-menu.js';
@@ -1019,10 +1020,13 @@ function openTaskCreateModal(content) {
               <span>${esc(t('housekeeping.taskArea'))}${REQUIRED_MARK}</span>
               <input name="area" required maxlength="100" autocomplete="off" placeholder="${esc(t('housekeeping.taskAreaPlaceholder'))}">
             </label>
-            <label class="housekeeping-field">
-              <span>${esc(t('housekeeping.taskFrequency'))}${REQUIRED_MARK}</span>
-              <input name="frequency_days" required inputmode="numeric" type="number" min="1" step="1" value="7">
-            </label>
+            <div class="housekeeping-field">
+              <span id="housekeeping-create-frequency-label">${esc(t('housekeeping.taskFrequency'))}${REQUIRED_MARK}</span>
+              ${intervalSentenceHtml({
+                key: 'common.everyNDays', labelledBy: 'housekeeping-create-frequency-label',
+                countHtml: `<input name="frequency_days" required inputmode="numeric" type="number" min="1" step="1" value="7" aria-label="${esc(t('housekeeping.taskFrequency'))}">`,
+              })}
+            </div>
           </div>
           <div class="modal-panel__footer">
             <button class="btn btn--secondary" type="button" data-create-cancel>${esc(t('common.cancel'))}</button>
@@ -2120,10 +2124,13 @@ function openTaskEditModal(task, content) {
           <span>${esc(t('housekeeping.taskArea'))}${REQUIRED_MARK}</span>
           <input name="area" required maxlength="100" value="${esc(task.area)}">
         </label>
-        <label class="housekeeping-field">
-          <span>${esc(t('housekeeping.taskFrequency'))}${REQUIRED_MARK}</span>
-          <input name="frequency_days" required inputmode="numeric" type="number" min="1" step="1" value="${esc(task.frequency_days)}">
-        </label>
+        <div class="housekeeping-field">
+          <span id="housekeeping-edit-frequency-label">${esc(t('housekeeping.taskFrequency'))}${REQUIRED_MARK}</span>
+          ${intervalSentenceHtml({
+            key: 'common.everyNDays', labelledBy: 'housekeeping-edit-frequency-label',
+            countHtml: `<input name="frequency_days" required inputmode="numeric" type="number" min="1" step="1" value="${esc(task.frequency_days)}" aria-label="${esc(t('housekeeping.taskFrequency'))}">`,
+          })}
+        </div>
         <div class="modal-panel__footer modal-panel__footer--plain">
           <button class="btn btn--danger-outline" type="button" data-delete-task="${esc(task.id)}"
                   aria-label="${esc(t('common.deleteNamed', { name: task.name }))}">

@@ -111,7 +111,10 @@
         "deletedNamed": "«{{name}}» διαγράφηκε.",
         "sortMode": "Αλλαγή σειράς",
         "createdNamed": "«{{name}}» δημιουργήθηκε.",
-        "savedNamed": "«{{name}}» αποθηκεύτηκε."
+        "savedNamed": "«{{name}}» αποθηκεύτηκε.",
+        "everyNDays": "Κάθε {{count}} ημέρες",
+        "everyNWeeks": "Κάθε {{count}} εβδομάδες",
+        "everyNMonths": "Κάθε {{count}} μήνες"
     },
     "kitchen": {
         "noShoppingLists": "Δεν υπάρχει ακόμη λίστα αγορών.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "Παράδειγμα: καθαρισμός μπάνιου",
         "taskArea": "Περιοχή",
         "taskAreaPlaceholder": "Παράδειγμα: Μπάνιο",
-        "taskFrequency": "Συχνότητα (ημέρες)",
+        "taskFrequency": "Συχνότητα",
         "taskCreatedToast": "Η εργασία νοικοκυριού δημιουργήθηκε.",
         "reports": "Αναφορές",
         "visitsThisMonth": "Επισκέψεις τον μήνα",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "Παρ",
         "weekdaySat": "Σαβ",
         "weekdaySun": "Κυρ",
-        "intervalLabelWeekly": "Κάθε N εβδομάδες",
-        "intervalLabelMonthly": "Κάθε N μήνες",
         "anchorDateLabel": "Πρώτη αποκομιδή",
         "monthDayLabel": "Ημέρα του μήνα",
         "monthDayLastDay": "Τελευταία ημέρα του μήνα",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Μείωση διαστήματος",
         "intervalIncrease": "Αύξηση διαστήματος",
         "scheduleSavedNamed": "Το πρόγραμμα για «{{name}}» αποθηκεύτηκε.",
-        "pickupSavedNamed": "Η αποκομιδή για «{{name}}» αποθηκεύτηκε."
+        "pickupSavedNamed": "Η αποκομιδή για «{{name}}» αποθηκεύτηκε.",
+        "intervalLabel": "Διάστημα"
     },
     "rewards": {
         "title": "Επιβραβεύσεις",

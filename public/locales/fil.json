@@ -111,7 +111,10 @@
         "deletedNamed": "Nabura ang \"{{name}}\".",
         "sortMode": "Baguhin ang pagkakasunod",
         "createdNamed": "Nagawa ang \"{{name}}\".",
-        "savedNamed": "Na-save ang \"{{name}}\"."
+        "savedNamed": "Na-save ang \"{{name}}\".",
+        "everyNDays": "Tuwing {{count}} araw",
+        "everyNWeeks": "Bawat {{count}} linggo",
+        "everyNMonths": "Bawat {{count}} buwan"
     },
     "kitchen": {
         "noShoppingLists": "Wala pang listahan ng pamimili.",
@@ -4150,7 +4153,7 @@
         "taskNamePlaceholder": "Halimbawa: Linisin ang mga banyo",
         "taskArea": "Lugar",
         "taskAreaPlaceholder": "Halimbawa: Banyo",
-        "taskFrequency": "Dalas (araw)",
+        "taskFrequency": "Dalas",
         "taskCreatedToast": "Nagawa ang gawaing-bahay.",
         "reports": "Mga Ulat",
         "visitsThisMonth": "Mga pagbisita ngayong buwan",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "Biy",
         "weekdaySat": "Sab",
         "weekdaySun": "Lin",
-        "intervalLabelWeekly": "Bawat N linggo",
-        "intervalLabelMonthly": "Bawat N buwan",
         "anchorDateLabel": "Unang kolekta",
         "monthDayLabel": "Araw ng buwan",
         "monthDayLastDay": "Huling araw ng buwan",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Bawasan ang pagitan",
         "intervalIncrease": "Dagdagan ang pagitan",
         "scheduleSavedNamed": "Na-save ang iskedyul ng \"{{name}}\".",
-        "pickupSavedNamed": "Na-save ang kolekta ng \"{{name}}\"."
+        "pickupSavedNamed": "Na-save ang kolekta ng \"{{name}}\".",
+        "intervalLabel": "Pagitan"
     },
     "rewards": {
         "title": "Mga Gantimpala",

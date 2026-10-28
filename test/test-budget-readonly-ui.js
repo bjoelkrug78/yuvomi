@@ -1251,7 +1251,7 @@ test('Abo: die Leseansicht zeigt jeden Wert des Bearbeiten-Dialogs - ohne Handlu
       /^12,99\s€ · subscriptions\.monthlyEquivalent\{"amount":"12,99\s€"\}$/],
     'subscriptions.filterLabelStatus': [[/role="switch" id="subscription-enabled"[^>]*checked/], /^subscriptions\.active$/],
     'subscriptions.descriptionLabel': [[/id="subscription-description"[^>]*value="Premium"/], /^Premium$/],
-    'subscriptions.billingCycleLabel': [[/id="subscription-cycle" type="hidden" value="monthly"/, /id="subscription-interval"[^>]*value="1"/],
+    'subscriptions.billingCycleLabel': [[/id="subscription-cycle"[^>]*>[\s\S]*?<option value="monthly" selected>/, /id="subscription-interval"[^>]*value="1"/],
       /^subscriptions\.cycle\.monthly$/],
     'subscriptions.detailNextPaymentLabel': [[/id="subscription-next-date"[^>]*value="2026-10-01"/], /^[^,\s]+, 2026-10-01 · subscriptions\./],
     'subscriptions.reminderDaysLabel': [[/id="subscription-reminder"[^>]*value="3"/], /^subscriptions\.reminderMeta\{"count":3\}$/],

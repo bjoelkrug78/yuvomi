@@ -114,7 +114,10 @@
         "deletedNamed": "تم حذف «{{name}}».",
         "sortMode": "تغيير الترتيب",
         "createdNamed": "تم إنشاء «{{name}}».",
-        "savedNamed": "تم حفظ «{{name}}»."
+        "savedNamed": "تم حفظ «{{name}}».",
+        "everyNDays": "كل {{count}} أيام",
+        "everyNWeeks": "كل {{count}} أسابيع",
+        "everyNMonths": "كل {{count}} أشهر"
     },
     "kitchen": {
         "noShoppingLists": "لا توجد قائمة مشتريات بعد.",
@@ -4510,7 +4513,7 @@
         "taskNamePlaceholder": "مثال: تنظيف الحمام",
         "taskArea": "المنطقة",
         "taskAreaPlaceholder": "مثال: الحمام",
-        "taskFrequency": "التكرار (بالأيام)",
+        "taskFrequency": "التكرار",
         "taskCreatedToast": "تم إنشاء مهمة التدبير المنزلي.",
         "reports": "التقارير",
         "visitsThisMonth": "زيارات هذا الشهر",
@@ -6276,8 +6279,6 @@
         "weekdayFri": "الجمعة",
         "weekdaySat": "السبت",
         "weekdaySun": "الأحد",
-        "intervalLabelWeekly": "كل N أسابيع",
-        "intervalLabelMonthly": "كل N أشهر",
         "anchorDateLabel": "أول عملية جمع",
         "monthDayLabel": "يوم الشهر",
         "monthDayLastDay": "آخر يوم في الشهر",
@@ -6455,7 +6456,8 @@
         "intervalDecrease": "تقليل الفاصل",
         "intervalIncrease": "زيادة الفاصل",
         "scheduleSavedNamed": "تم حفظ جدول «{{name}}».",
-        "pickupSavedNamed": "تم حفظ عملية جمع «{{name}}»."
+        "pickupSavedNamed": "تم حفظ عملية جمع «{{name}}».",
+        "intervalLabel": "الفاصل"
     },
     "rewards": {
         "title": "المكافآت",

@@ -111,7 +111,10 @@
         "deletedNamed": "Đã xóa \"{{name}}\".",
         "sortMode": "Sắp xếp lại",
         "createdNamed": "Đã tạo \"{{name}}\".",
-        "savedNamed": "Đã lưu \"{{name}}\"."
+        "savedNamed": "Đã lưu \"{{name}}\".",
+        "everyNDays": "Mỗi {{count}} ngày",
+        "everyNWeeks": "Mỗi {{count}} tuần",
+        "everyNMonths": "Mỗi {{count}} tháng"
     },
     "kitchen": {
         "noShoppingLists": "Chưa có danh sách mua sắm.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "Ví dụ: Lau phòng tắm",
         "taskArea": "Khu vực",
         "taskAreaPlaceholder": "Ví dụ: Phòng tắm",
-        "taskFrequency": "Tần suất (ngày)",
+        "taskFrequency": "Tần suất",
         "taskCreatedToast": "Nhiệm vụ dọn dẹp đã tạo.",
         "reports": "Báo cáo",
         "visitsThisMonth": "Số lượt đến tháng này",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "T6",
         "weekdaySat": "T7",
         "weekdaySun": "CN",
-        "intervalLabelWeekly": "Mỗi N tuần",
-        "intervalLabelMonthly": "Mỗi N tháng",
         "anchorDateLabel": "Lần thu gom đầu tiên",
         "monthDayLabel": "Ngày trong tháng",
         "monthDayLastDay": "Ngày cuối cùng của tháng",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Giảm khoảng cách",
         "intervalIncrease": "Tăng khoảng cách",
         "scheduleSavedNamed": "Đã lưu lịch trình \"{{name}}\".",
-        "pickupSavedNamed": "Đã lưu lần thu gom \"{{name}}\"."
+        "pickupSavedNamed": "Đã lưu lần thu gom \"{{name}}\".",
+        "intervalLabel": "Khoảng cách"
     },
     "rewards": {
         "title": "Phần thưởng",

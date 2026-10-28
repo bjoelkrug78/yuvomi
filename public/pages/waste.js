@@ -29,6 +29,7 @@ import { popoverMenuHtml, installPopoverMenus } from '/utils/popover-menu.js';
 import { isNavModuleReadOnly } from '/permissions.js';
 import { createPageController } from '/utils/page-lifecycle.js';
 import { colorPickerHtml, setColorPickerValue, wireColorPicker } from '/utils/color-picker.js';
+import { intervalSentenceHtml, setIntervalSentenceKey } from '/utils/interval-sentence.js';
 import { USER_COLORS } from '/utils/color.js';
 import { redrawList } from '/utils/list-motion.js';
 import { errorSentence, isGone, isAlreadyDeleted } from '/utils/friendly-error.js';
@@ -1203,7 +1204,7 @@ function intervalStepperHtml(value) {
   const v = Math.min(52, Math.max(1, Number(value) || 1));
   return `<div class="waste-interval-stepper">`
     + `<button type="button" class="btn btn--secondary btn--icon" data-interval-step="-1" aria-controls="wsm-interval" aria-label="${esc(t('waste.intervalDecrease'))}"${v <= 1 ? ' disabled' : ''}><i data-lucide="minus" class="icon-md" aria-hidden="true"></i></button>`
-    + `<input type="number" class="form-input waste-interval-stepper__input" id="wsm-interval" min="1" max="52" step="1" inputmode="numeric" value="${esc(String(v))}">`
+    + `<input type="number" class="form-input waste-interval-stepper__input" id="wsm-interval" min="1" max="52" step="1" inputmode="numeric" value="${esc(String(v))}" aria-labelledby="wsm-interval-label">`
     + `<button type="button" class="btn btn--secondary btn--icon" data-interval-step="1" aria-controls="wsm-interval" aria-label="${esc(t('waste.intervalIncrease'))}"${v >= 52 ? ' disabled' : ''}><i data-lucide="plus" class="icon-md" aria-hidden="true"></i></button>`
     + `</div>`;
 }
@@ -1320,8 +1321,12 @@ function openScheduleModal(type, schedule = null) {
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label" for="wsm-interval" id="wsm-interval-label">${t(kind === 'weekly' ? 'waste.intervalLabelWeekly' : 'waste.intervalLabelMonthly')}</label>
-      ${intervalStepperHtml(schedule?.interval ?? 1)}
+      <span class="form-label" id="wsm-interval-label">${t('waste.intervalLabel')}</span>
+      ${intervalSentenceHtml({
+        key: kind === 'weekly' ? 'common.everyNWeeks' : 'common.everyNMonths',
+        countHtml: intervalStepperHtml(schedule?.interval ?? 1),
+        labelledBy: 'wsm-interval-label', className: 'wsm-interval-sentence',
+      })}
     </div>
     <div class="form-group">
       <label class="form-label" for="wsm-anchor">${t('waste.anchorDateLabel')}${REQUIRED_MARK}</label>
@@ -1376,7 +1381,8 @@ function openScheduleModal(type, schedule = null) {
         weeklyFields.hidden = kindSelect.value !== 'weekly';
         monthlyFields.hidden = kindSelect.value !== 'monthly_fixed_day';
         ordinalFields.hidden = kindSelect.value !== 'monthly_ordinal_weekday';
-        panel.querySelector('#wsm-interval-label').textContent = t(kindSelect.value === 'weekly' ? 'waste.intervalLabelWeekly' : 'waste.intervalLabelMonthly');
+        // "Alle [2] Wochen" / "Alle [2] Monate" - der Satz folgt der Wiederholung, das Feld behaelt den Wert.
+        setIntervalSentenceKey(panel.querySelector('.wsm-interval-sentence'), kindSelect.value === 'weekly' ? 'common.everyNWeeks' : 'common.everyNMonths');
         if (kindSelect.value === 'monthly_ordinal_weekday') refreshOrdinalAnchor();
       });
 

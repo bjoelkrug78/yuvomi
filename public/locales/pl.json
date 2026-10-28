@@ -113,7 +113,10 @@
         "deletedNamed": "„{{name}}” usunięte.",
         "sortMode": "Zmień kolejność",
         "createdNamed": "„{{name}}” utworzone.",
-        "savedNamed": "„{{name}}” zapisane."
+        "savedNamed": "„{{name}}” zapisane.",
+        "everyNDays": "Co {{count}} dni",
+        "everyNWeeks": "Co {{count}} tygodni",
+        "everyNMonths": "Co {{count}} miesięcy"
     },
     "kitchen": {
         "noShoppingLists": "Nie ma jeszcze listy zakupów.",
@@ -4392,7 +4395,7 @@
         "taskNamePlaceholder": "Przykład: Sprzątanie łazienki",
         "taskArea": "Obszar",
         "taskAreaPlaceholder": "Przykład: Łazienka",
-        "taskFrequency": "Częstotliwość (dni)",
+        "taskFrequency": "Częstotliwość",
         "taskCreatedToast": "Zadanie sprzątania utworzone.",
         "reports": "Raporty",
         "visitsThisMonth": "Wizyty w miesiącu",
@@ -6137,8 +6140,6 @@
         "weekdayFri": "pt",
         "weekdaySat": "sob",
         "weekdaySun": "nie",
-        "intervalLabelWeekly": "Co N tygodni",
-        "intervalLabelMonthly": "Co N miesięcy",
         "anchorDateLabel": "Pierwszy odbiór",
         "monthDayLabel": "Dzień miesiąca",
         "monthDayLastDay": "Ostatni dzień miesiąca",
@@ -6311,7 +6312,8 @@
         "intervalDecrease": "Zmniejsz odstęp",
         "intervalIncrease": "Zwiększ odstęp",
         "scheduleSavedNamed": "Harmonogram „{{name}}” zapisany.",
-        "pickupSavedNamed": "Odbiór „{{name}}” zapisany."
+        "pickupSavedNamed": "Odbiór „{{name}}” zapisany.",
+        "intervalLabel": "Odstęp"
     },
     "rewards": {
         "title": "Nagrody",

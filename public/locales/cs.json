@@ -112,7 +112,10 @@
         "deletedNamed": "„{{name}}“ smazáno.",
         "sortMode": "Změnit pořadí",
         "createdNamed": "„{{name}}“ vytvořeno.",
-        "savedNamed": "„{{name}}“ uloženo."
+        "savedNamed": "„{{name}}“ uloženo.",
+        "everyNDays": "Každých {{count}} dní",
+        "everyNWeeks": "Každých {{count}} týdnů",
+        "everyNMonths": "Každých {{count}} měsíců"
     },
     "kitchen": {
         "noShoppingLists": "Nákupní seznam ještě neexistuje.",
@@ -3775,7 +3778,7 @@
         "taskNamePlaceholder": "Příklad: Uklidit koupelnu",
         "taskArea": "Oblast",
         "taskAreaPlaceholder": "Příklad: Koupelna",
-        "taskFrequency": "Četnost (dny)",
+        "taskFrequency": "Četnost",
         "taskCreatedToast": "Úkol domácí péče vytvořen.",
         "reports": "Hlášení",
         "visitsThisMonth": "Návštěvy v měsíci",
@@ -6005,8 +6008,6 @@
         "weekdayFri": "pá",
         "weekdaySat": "so",
         "weekdaySun": "ne",
-        "intervalLabelWeekly": "Každých N týdnů",
-        "intervalLabelMonthly": "Každých N měsíců",
         "anchorDateLabel": "První svoz",
         "monthDayLabel": "Den v měsíci",
         "monthDayLastDay": "Poslední den měsíce",
@@ -6174,7 +6175,8 @@
         "intervalDecrease": "Zkrátit interval",
         "intervalIncrease": "Prodloužit interval",
         "scheduleSavedNamed": "Rozvrh pro „{{name}}“ uložen.",
-        "pickupSavedNamed": "Svoz „{{name}}“ uložen."
+        "pickupSavedNamed": "Svoz „{{name}}“ uložen.",
+        "intervalLabel": "Interval"
     },
     "rewards": {
         "title": "Odměny",

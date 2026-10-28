@@ -811,7 +811,9 @@
 
 .subscription-form__billing-grid {
   display: grid;
-  grid-template-columns: minmax(110px, 0.8fr) minmax(180px, 1.3fr) minmax(130px, 1fr) minmax(90px, 0.65fr);
+  /* Betrag, Waehrung, dann der Zyklus als Satz "Alle [1] [Monate]" (R24) -
+     bis dahin standen Zyklus und "Alle" als zwei Spalten nebeneinander. */
+  grid-template-columns: minmax(110px, 0.8fr) minmax(180px, 1.3fr) minmax(0, 1.65fr);
   gap: var(--space-3);
   align-items: end;
 }

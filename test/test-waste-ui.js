@@ -1015,7 +1015,7 @@ function openScheduleDialog(recurrenceKind) {
   opts.onSave({ querySelector: element, querySelectorAll: () => [], addEventListener() {} });
   return {
     content: opts.content,
-    label: () => element('#wsm-interval-label').textContent,
+    sentenceKey: () => element('.wsm-interval-sentence').dataset.intervalKey,
     chooseKind(value) {
       element('#wsm-kind').value = value;
       const fn = handlers.get('#wsm-kind:change');
@@ -1025,30 +1025,34 @@ function openScheduleDialog(recurrenceKind) {
   };
 }
 
-const intervalLabelAtOpen = (content) => {
-  const m = content.match(/<label\b[^>]*\bfor="wsm-interval"[^>]*>([^<]*)<\/label>/);
-  assert.ok(m, 'das Intervallfeld hat ein Label');
+// Seit Critique R24 ist das Intervall ein Satz (utils/interval-sentence.js):
+// "Alle [2] Wochen" - das Feld steht im Satz, die Gruppe heisst "Abstand".
+const intervalSentenceAtOpen = (content) => {
+  const m = content.match(/<div class="interval-sentence wsm-interval-sentence" role="group" aria-labelledby="wsm-interval-label" data-interval-key="([\w.]+)">([\s\S]*?)<\/div><\/div>/);
+  assert.ok(m, 'das Intervall steht als Satz-Gruppe');
+  assert.match(m[2], /id="wsm-interval"[^>]*aria-labelledby="wsm-interval-label"/, 'das Feld traegt den Namen der Gruppe');
+  assert.match(content, /<span class="form-label" id="wsm-interval-label">waste\.intervalLabel<\/span>/);
   return m[1];
 };
 
 for (const [kind, key] of [
-  ['weekly', 'waste.intervalLabelWeekly'],
-  ['monthly_fixed_day', 'waste.intervalLabelMonthly'],
-  ['monthly_ordinal_weekday', 'waste.intervalLabelMonthly'],
+  ['weekly', 'common.everyNWeeks'],
+  ['monthly_fixed_day', 'common.everyNMonths'],
+  ['monthly_ordinal_weekday', 'common.everyNMonths'],
 ]) {
-  test(`Termin-Dialog: eine Serie "${kind}" oeffnet mit dem Intervall-Label ${key}`, () => {
-    assert.equal(intervalLabelAtOpen(openScheduleDialog(kind).content), key);
+  test(`Termin-Dialog: eine Serie "${kind}" oeffnet mit dem Intervall-Satz ${key}`, () => {
+    assert.equal(intervalSentenceAtOpen(openScheduleDialog(kind).content), key);
   });
 }
 
-test('Termin-Dialog: der Wechsel der Wiederholung tauscht das Intervall-Label mit', () => {
+test('Termin-Dialog: der Wechsel der Wiederholung tauscht den Intervall-Satz mit', () => {
   const d = openScheduleDialog('weekly');
   d.chooseKind('monthly_fixed_day');
-  assert.equal(d.label(), 'waste.intervalLabelMonthly');
+  assert.equal(d.sentenceKey(), 'common.everyNMonths');
   d.chooseKind('weekly');
-  assert.equal(d.label(), 'waste.intervalLabelWeekly');
+  assert.equal(d.sentenceKey(), 'common.everyNWeeks');
   d.chooseKind('monthly_ordinal_weekday');
-  assert.equal(d.label(), 'waste.intervalLabelMonthly');
+  assert.equal(d.sentenceKey(), 'common.everyNMonths');
 });
 
 // R23 S10 (Critique G2 P2/P3, D14): die Typkarte nennt nur die Regel - die

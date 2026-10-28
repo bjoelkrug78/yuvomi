@@ -111,7 +111,10 @@
         "deletedNamed": "«{{name}}» eliminado.",
         "sortMode": "Reordenar",
         "createdNamed": "«{{name}}» criado.",
-        "savedNamed": "«{{name}}» guardado."
+        "savedNamed": "«{{name}}» guardado.",
+        "everyNDays": "A cada {{count}} dias",
+        "everyNWeeks": "A cada {{count}} semanas",
+        "everyNMonths": "A cada {{count}} meses"
     },
     "kitchen": {
         "noShoppingLists": "Ainda não existe lista de compras.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "Ex: Limpar banheiros",
         "taskArea": "Área",
         "taskAreaPlaceholder": "Ex: Banheiro",
-        "taskFrequency": "Frequência (dias)",
+        "taskFrequency": "Frequência",
         "taskCreatedToast": "Tarefa de faxina criada.",
         "reports": "Relatórios",
         "visitsThisMonth": "Visitas no mês",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "sex",
         "weekdaySat": "sáb",
         "weekdaySun": "dom",
-        "intervalLabelWeekly": "A cada N semanas",
-        "intervalLabelMonthly": "A cada N meses",
         "anchorDateLabel": "Primeira recolha",
         "monthDayLabel": "Dia do mês",
         "monthDayLastDay": "Último dia do mês",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Diminuir intervalo",
         "intervalIncrease": "Aumentar intervalo",
         "scheduleSavedNamed": "Horário de «{{name}}» guardado.",
-        "pickupSavedNamed": "Recolha de «{{name}}» guardada."
+        "pickupSavedNamed": "Recolha de «{{name}}» guardada.",
+        "intervalLabel": "Intervalo"
     },
     "rewards": {
         "title": "Recompensas",

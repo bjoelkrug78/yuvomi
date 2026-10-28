@@ -113,7 +113,10 @@
         "deletedNamed": "«{{name}}» видалено.",
         "sortMode": "Змінити порядок",
         "createdNamed": "«{{name}}» створено.",
-        "savedNamed": "«{{name}}» збережено."
+        "savedNamed": "«{{name}}» збережено.",
+        "everyNDays": "Кожні {{count}} днів",
+        "everyNWeeks": "Кожні {{count}} тижнів",
+        "everyNMonths": "Кожні {{count}} місяців"
     },
     "kitchen": {
         "noShoppingLists": "Списку покупок ще немає.",
@@ -4388,7 +4391,7 @@
         "taskNamePlaceholder": "Приклад: чисті ванні кімнати",
         "taskArea": "Площа",
         "taskAreaPlaceholder": "Приклад: Ванна кімната",
-        "taskFrequency": "Частота (дні)",
+        "taskFrequency": "Частота",
         "taskCreatedToast": "Створено завдання з прибирання.",
         "reports": "Звіти",
         "visitsThisMonth": "Відвідування цього місяця",
@@ -6137,8 +6140,6 @@
         "weekdayFri": "пт",
         "weekdaySat": "сб",
         "weekdaySun": "нд",
-        "intervalLabelWeekly": "Кожні N тижнів",
-        "intervalLabelMonthly": "Кожні N місяців",
         "anchorDateLabel": "Перше вивезення",
         "monthDayLabel": "День місяця",
         "monthDayLastDay": "Останній день місяця",
@@ -6311,7 +6312,8 @@
         "intervalDecrease": "Зменшити інтервал",
         "intervalIncrease": "Збільшити інтервал",
         "scheduleSavedNamed": "Графік «{{name}}» збережено.",
-        "pickupSavedNamed": "Вивезення «{{name}}» збережено."
+        "pickupSavedNamed": "Вивезення «{{name}}» збережено.",
+        "intervalLabel": "Інтервал"
     },
     "rewards": {
         "title": "Нагороди",

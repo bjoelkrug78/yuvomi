@@ -111,7 +111,10 @@
         "deletedNamed": "「{{name}}」を削除しました。",
         "sortMode": "並べ替え",
         "createdNamed": "「{{name}}」を作成しました。",
-        "savedNamed": "「{{name}}」を保存しました。"
+        "savedNamed": "「{{name}}」を保存しました。",
+        "everyNDays": "{{count}} 日ごと",
+        "everyNWeeks": "{{count}}週間ごと",
+        "everyNMonths": "{{count}}か月ごと"
     },
     "kitchen": {
         "noShoppingLists": "買い物リストがまだありません。",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "例: 浴室の掃除",
         "taskArea": "エリア",
         "taskAreaPlaceholder": "例: 浴室",
-        "taskFrequency": "頻度 (日)",
+        "taskFrequency": "頻度",
         "taskCreatedToast": "家事タスクを作成しました。",
         "reports": "レポート",
         "visitsThisMonth": "今月の訪問",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "金",
         "weekdaySat": "土",
         "weekdaySun": "日",
-        "intervalLabelWeekly": "N週間ごと",
-        "intervalLabelMonthly": "Nか月ごと",
         "anchorDateLabel": "最初の収集日",
         "monthDayLabel": "毎月の日",
         "monthDayLastDay": "月末日",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "間隔を短くする",
         "intervalIncrease": "間隔を長くする",
         "scheduleSavedNamed": "「{{name}}」のスケジュールを保存しました。",
-        "pickupSavedNamed": "「{{name}}」の収集を保存しました。"
+        "pickupSavedNamed": "「{{name}}」の収集を保存しました。",
+        "intervalLabel": "間隔"
     },
     "rewards": {
         "title": "ごほうび",

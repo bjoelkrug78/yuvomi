@@ -16,6 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   that is not in the row stays selected as its own swatch instead of being replaced.
 - **A shift type reads like an appointment.** Start and end stand side by side in one row, and a shift
   type without a symbol shows a plus on "Choose symbol" instead of a crossed-out picture.
+- **A repeat interval reads as a sentence.** Waste collection, subscriptions and the household help's
+  chores now ask "Every [2] weeks", "Every [1] [months]" and "Every [7] days" with the number inside the
+  sentence. Before, waste collection labelled the field "Every N weeks", subscriptions showed a search
+  field for the billing cycle next to a lone "Every" over a number, and chores asked for a bare number of
+  days.
 - **Filtering by person looks the same in every module.** The task history, the rewards history, the
   task filters and the calendar show one row of chips with each person's colour, initials and first
   name, with "All" in front. On phones the task history showed only initials without names, and on

@@ -113,7 +113,10 @@
         "deletedNamed": "«{{name}}» удалено.",
         "sortMode": "Изменить порядок",
         "createdNamed": "«{{name}}» создано.",
-        "savedNamed": "«{{name}}» сохранено."
+        "savedNamed": "«{{name}}» сохранено.",
+        "everyNDays": "Каждые {{count}} дн.",
+        "everyNWeeks": "Каждые {{count}} недель",
+        "everyNMonths": "Каждые {{count}} месяцев"
     },
     "kitchen": {
         "noShoppingLists": "Списка покупок ещё нет.",
@@ -4388,7 +4391,7 @@
         "taskNamePlaceholder": "Например: помыть ванную",
         "taskArea": "Зона",
         "taskAreaPlaceholder": "Например: ванная",
-        "taskFrequency": "Периодичность (дни)",
+        "taskFrequency": "Периодичность",
         "taskCreatedToast": "Задача по уборке создана.",
         "reports": "Отчёты",
         "visitsThisMonth": "Визитов за месяц",
@@ -6137,8 +6140,6 @@
         "weekdayFri": "пт",
         "weekdaySat": "сб",
         "weekdaySun": "вс",
-        "intervalLabelWeekly": "Каждые N недель",
-        "intervalLabelMonthly": "Каждые N месяцев",
         "anchorDateLabel": "Первый вывоз",
         "monthDayLabel": "День месяца",
         "monthDayLastDay": "Последний день месяца",
@@ -6311,7 +6312,8 @@
         "intervalDecrease": "Уменьшить интервал",
         "intervalIncrease": "Увеличить интервал",
         "scheduleSavedNamed": "График «{{name}}» сохранён.",
-        "pickupSavedNamed": "Вывоз «{{name}}» сохранён."
+        "pickupSavedNamed": "Вывоз «{{name}}» сохранён.",
+        "intervalLabel": "Интервал"
     },
     "rewards": {
         "title": "Награды",

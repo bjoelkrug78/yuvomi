@@ -7449,6 +7449,35 @@ dialog.dialog-surface.dialog-surface--closing::backdrop {
   outline-offset: var(--focus-ring-offset-inset);
 }
 
+/* EIN INTERVALL IST EIN SATZ (Critique R24; utils/interval-sentence.js):
+ * "Alle [2] Wochen" - das Feld steht im Satz, nicht unter einem Etikett "Alle".
+ * Bricht er um, dann zwischen den Woertern, nie im Feld. */
+.interval-sentence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.interval-sentence__word {
+  color: var(--color-text-primary);
+  /* Satz, kein Etikett: auch in Formularen, deren Feldtitel halbfett sind. */
+  font-weight: var(--font-weight-regular);
+}
+
+/* Drei Ziffern breit - ein Abstand von 365 Tagen ist das Laengste. */
+.interval-sentence > input[type="number"] {
+  flex: 0 0 auto;
+  inline-size: var(--space-16);
+  text-align: center;
+}
+
+.interval-sentence > select {
+  flex: 0 1 auto;
+  inline-size: auto;
+  min-inline-size: 0;
+}
+
 /* EIN FARBWAEHLER (Critique R24, E6; utils/color-picker.js). Eine Reihe
  * benannter Toene als radiogroup, dahinter "Eigene" fuer den Systemwaehler.
  * Stand bis R24 als `.color-swatch` in calendar.css und in vier Abschriften

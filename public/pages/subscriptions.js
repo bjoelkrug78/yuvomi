@@ -38,6 +38,7 @@ import { leadCardClass, fitMetricLeads } from '/utils/metric-card.js';
 import { errorSentence, isGone, isAlreadyDeleted } from '/utils/friendly-error.js';
 import { reloadAfterSave } from '/utils/reload-after-save.js';
 import { colorPickerHtml, familyColorOptions, setColorPickerValue, wireColorPicker } from '/utils/color-picker.js';
+import { intervalSentenceHtml } from '/utils/interval-sentence.js';
 
 const SUBSCRIPTION_COLOR_DEFAULT = '#0F766E';
 
@@ -1618,10 +1619,8 @@ export function openSubscriptionModal(subscription = null) {
   // Jedes Abo trägt seine eigene Währung; das Betragsfeld richtet sich danach
   // und wird beim Wechsel der Währungs-Combobox nachgezogen.
   const formCurrency = subscription?.currency || state.settings.base_currency;
-  const cycleItems = state.meta.billing_cycles.map((cycle) => ({
-    value: cycle,
-    label: t(`subscriptions.cycle.${cycle}`),
-  }));
+  const formCycle = subscription?.billing_cycle || 'monthly';
+  const cycleOptions = state.meta.billing_cycles.map((cycle) => `<option value="${esc(cycle)}"${cycle === formCycle ? ' selected' : ''}>${esc(t(`subscriptions.cyclePlural.${cycle}`))}</option>`).join('');
   const initialLogo = subscription?.logo_data || '';
   const initialName = subscription?.name || '';
 
@@ -1712,16 +1711,17 @@ export function openSubscriptionModal(subscription = null) {
             value: subscription?.currency || state.settings.base_currency,
             placeholder: t('subscriptions.currencySearchPlaceholder'),
           })}
-          ${comboboxMarkup({
-            id: 'subscription-cycle',
-            label: t('subscriptions.billingCycleLabel'),
-            items: cycleItems,
-            value: subscription?.billing_cycle || 'monthly',
-            placeholder: t('subscriptions.billingCycleLabel'),
-          })}
-          <div class="form-group">
-            <label class="form-label" for="subscription-interval">${t('subscriptions.intervalLabel')}</label>
-            <input class="form-input" id="subscription-interval" type="number" min="1" max="365" step="1" value="${subscription?.cycle_interval || 1}">
+          ${/* DER ZYKLUS IST EIN SATZ (Critique R24 G4-Budget-P3-3): "Alle [1] [Monate]"
+               statt "Abrechnungszyklus" als Suchfeld und daneben "Alle" ueber einer
+               nackten 1 (utils/interval-sentence.js). */ ''}
+          <div class="form-group subscription-form__cycle">
+            <span class="form-label" id="subscription-cycle-label">${t('subscriptions.billingCycleLabel')}</span>
+            ${intervalSentenceHtml({
+              prefix: t('subscriptions.intervalLabel'),
+              labelledBy: 'subscription-cycle-label',
+              countHtml: `<input class="form-input" id="subscription-interval" type="number" min="1" max="365" step="1" inputmode="numeric" value="${esc(String(subscription?.cycle_interval || 1))}" aria-labelledby="subscription-cycle-label">`,
+              unitHtml: `<select class="form-input" id="subscription-cycle" aria-labelledby="subscription-cycle-label">${cycleOptions}</select>`,
+            })}
           </div>
         </div>
         ${accountFieldHtml(subscription)}
@@ -1801,7 +1801,6 @@ export function openSubscriptionModal(subscription = null) {
       panel.querySelector('#subscription-currency').addEventListener('change', (event) => {
         setAmountCurrency(panel.querySelector('#subscription-amount'), event.target.value);
       });
-      wireCombobox(panel, 'subscription-cycle');
       wireCombobox(panel, 'subscription-category');
       wireCombobox(panel, 'subscription-method');
       wireAccountField(panel);

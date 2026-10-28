@@ -111,7 +111,10 @@
         "deletedNamed": "'{{name}}' 삭제했습니다.",
         "sortMode": "순서 변경",
         "createdNamed": "'{{name}}' 만들었습니다.",
-        "savedNamed": "'{{name}}' 저장했습니다."
+        "savedNamed": "'{{name}}' 저장했습니다.",
+        "everyNDays": "{{count}}일마다",
+        "everyNWeeks": "{{count}}주마다",
+        "everyNMonths": "{{count}}개월마다"
     },
     "kitchen": {
         "noShoppingLists": "아직 장보기 목록이 없습니다.",
@@ -4150,7 +4153,7 @@
         "taskNamePlaceholder": "예: 욕실 청소",
         "taskArea": "구역",
         "taskAreaPlaceholder": "예: 욕실",
-        "taskFrequency": "빈도 (일)",
+        "taskFrequency": "빈도",
         "taskCreatedToast": "가사 관리 작업이 생성되었습니다.",
         "reports": "보고서",
         "visitsThisMonth": "이번 달 방문",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "금",
         "weekdaySat": "토",
         "weekdaySun": "일",
-        "intervalLabelWeekly": "N주마다",
-        "intervalLabelMonthly": "N개월마다",
         "anchorDateLabel": "첫 수거일",
         "monthDayLabel": "매월 며칠",
         "monthDayLastDay": "매월 마지막 날",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "간격 줄이기",
         "intervalIncrease": "간격 늘리기",
         "scheduleSavedNamed": "'{{name}}' 일정을 저장했습니다.",
-        "pickupSavedNamed": "'{{name}}' 수거를 저장했습니다."
+        "pickupSavedNamed": "'{{name}}' 수거를 저장했습니다.",
+        "intervalLabel": "간격"
     },
     "rewards": {
         "title": "보상",

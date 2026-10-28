@@ -111,7 +111,10 @@
         "deletedNamed": "«{{name}}» slettet.",
         "sortMode": "Endre rekkefølge",
         "createdNamed": "«{{name}}» opprettet.",
-        "savedNamed": "«{{name}}» lagret."
+        "savedNamed": "«{{name}}» lagret.",
+        "everyNDays": "Hver {{count}} dager",
+        "everyNWeeks": "Hver {{count}}. uke",
+        "everyNMonths": "Hver {{count}}. måned"
     },
     "kitchen": {
         "noShoppingLists": "Det finnes ingen handleliste ennå.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "Eksempel: Rengjør badene",
         "taskArea": "Område",
         "taskAreaPlaceholder": "Eksempel: Bad",
-        "taskFrequency": "Frekvens (dager)",
+        "taskFrequency": "Frekvens",
         "taskCreatedToast": "Husarbeid opprettet.",
         "reports": "Rapporter",
         "visitsThisMonth": "Besøk denne måneden",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "Fre",
         "weekdaySat": "Lør",
         "weekdaySun": "Søn",
-        "intervalLabelWeekly": "Hver N. uke",
-        "intervalLabelMonthly": "Hver N. måned",
         "anchorDateLabel": "Første henting",
         "monthDayLabel": "Dag i måneden",
         "monthDayLastDay": "Siste dag i måneden",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Reduser intervallet",
         "intervalIncrease": "Øk intervallet",
         "scheduleSavedNamed": "Tidsplan for «{{name}}» lagret.",
-        "pickupSavedNamed": "Henting av «{{name}}» lagret."
+        "pickupSavedNamed": "Henting av «{{name}}» lagret.",
+        "intervalLabel": "Intervall"
     },
     "rewards": {
         "title": "Belønninger",

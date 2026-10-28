@@ -111,7 +111,10 @@
         "deletedNamed": "\"{{name}}\" silindi.",
         "sortMode": "Sırayı değiştir",
         "createdNamed": "\"{{name}}\" oluşturuldu.",
-        "savedNamed": "\"{{name}}\" kaydedildi."
+        "savedNamed": "\"{{name}}\" kaydedildi.",
+        "everyNDays": "Her {{count}} günde bir",
+        "everyNWeeks": "Her {{count}} haftada bir",
+        "everyNMonths": "Her {{count}} ayda bir"
     },
     "kitchen": {
         "noShoppingLists": "Henüz alışveriş listesi yok.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "Örnek: banyoyu temizle",
         "taskArea": "Alan",
         "taskAreaPlaceholder": "Örnek: Banyo",
-        "taskFrequency": "Sıklık (gün)",
+        "taskFrequency": "Sıklık",
         "taskCreatedToast": "Ev işi görevi oluşturuldu.",
         "reports": "Raporlar",
         "visitsThisMonth": "Bu ayki ziyaretler",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "Cum",
         "weekdaySat": "Cmt",
         "weekdaySun": "Paz",
-        "intervalLabelWeekly": "Her N haftada bir",
-        "intervalLabelMonthly": "Her N ayda bir",
         "anchorDateLabel": "İlk alım",
         "monthDayLabel": "Ayın günü",
         "monthDayLastDay": "Ayın son günü",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Aralığı azalt",
         "intervalIncrease": "Aralığı artır",
         "scheduleSavedNamed": "\"{{name}}\" programı kaydedildi.",
-        "pickupSavedNamed": "\"{{name}}\" alımı kaydedildi."
+        "pickupSavedNamed": "\"{{name}}\" alımı kaydedildi.",
+        "intervalLabel": "Aralık"
     },
     "rewards": {
         "title": "Ödüller",

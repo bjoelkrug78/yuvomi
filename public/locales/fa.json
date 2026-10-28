@@ -111,7 +111,10 @@
         "deletedNamed": "«{{name}}» حذف شد.",
         "sortMode": "تغییر ترتیب",
         "createdNamed": "«{{name}}» ایجاد شد.",
-        "savedNamed": "«{{name}}» ذخیره شد."
+        "savedNamed": "«{{name}}» ذخیره شد.",
+        "everyNDays": "هر {{count}} روز",
+        "everyNWeeks": "هر {{count}} هفته",
+        "everyNMonths": "هر {{count}} ماه"
     },
     "kitchen": {
         "noShoppingLists": "هنوز فهرست خریدی وجود ندارد.",
@@ -4150,7 +4153,7 @@
         "taskNamePlaceholder": "مثال: نظافت حمام",
         "taskArea": "ناحیه",
         "taskAreaPlaceholder": "مثال: حمام",
-        "taskFrequency": "دفعات (روز)",
+        "taskFrequency": "دفعات",
         "taskCreatedToast": "کار نظافت خانه ایجاد شد.",
         "reports": "گزارش‌ها",
         "visitsThisMonth": "بازدیدهای این ماه",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "جمعه",
         "weekdaySat": "شنبه",
         "weekdaySun": "یکشنبه",
-        "intervalLabelWeekly": "هر N هفته",
-        "intervalLabelMonthly": "هر N ماه",
         "anchorDateLabel": "اولین جمع‌آوری",
         "monthDayLabel": "روز ماه",
         "monthDayLastDay": "آخرین روز ماه",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "کاهش فاصله",
         "intervalIncrease": "افزایش فاصله",
         "scheduleSavedNamed": "برنامه «{{name}}» ذخیره شد.",
-        "pickupSavedNamed": "جمع‌آوری «{{name}}» ذخیره شد."
+        "pickupSavedNamed": "جمع‌آوری «{{name}}» ذخیره شد.",
+        "intervalLabel": "فاصله"
     },
     "rewards": {
         "title": "پاداش‌ها",

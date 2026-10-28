@@ -111,7 +111,10 @@
         "deletedNamed": "„{{name}}” törölve.",
         "sortMode": "Sorrend módosítása",
         "createdNamed": "„{{name}}” létrehozva.",
-        "savedNamed": "„{{name}}” mentve."
+        "savedNamed": "„{{name}}” mentve.",
+        "everyNDays": "Minden {{count}} nap",
+        "everyNWeeks": "Minden {{count}}. héten",
+        "everyNMonths": "Minden {{count}}. hónapban"
     },
     "kitchen": {
         "noShoppingLists": "Még nincs bevásárlólista.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "Példa: Fürdőszobák takarítása",
         "taskArea": "Terület",
         "taskAreaPlaceholder": "Példa: Fürdőszoba",
-        "taskFrequency": "Gyakoriság (nap)",
+        "taskFrequency": "Gyakoriság",
         "taskCreatedToast": "Háztartási feladat létrehozva.",
         "reports": "Jelentések",
         "visitsThisMonth": "Látogatások ebben a hónapban",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "P",
         "weekdaySat": "Szo",
         "weekdaySun": "V",
-        "intervalLabelWeekly": "Minden N. héten",
-        "intervalLabelMonthly": "Minden N. hónapban",
         "anchorDateLabel": "Első elszállítás",
         "monthDayLabel": "A hónap napja",
         "monthDayLastDay": "A hónap utolsó napja",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Időköz csökkentése",
         "intervalIncrease": "Időköz növelése",
         "scheduleSavedNamed": "„{{name}}” ütemezése mentve.",
-        "pickupSavedNamed": "„{{name}}” elszállítása mentve."
+        "pickupSavedNamed": "„{{name}}” elszállítása mentve.",
+        "intervalLabel": "Gyakoriság"
     },
     "rewards": {
         "title": "Jutalmak",

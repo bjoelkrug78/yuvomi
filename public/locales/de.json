@@ -111,7 +111,10 @@
         "deletedNamed": "„{{name}}“ gelöscht.",
         "sortMode": "Reihenfolge ändern",
         "createdNamed": "„{{name}}“ angelegt.",
-        "savedNamed": "„{{name}}“ gespeichert."
+        "savedNamed": "„{{name}}“ gespeichert.",
+        "everyNDays": "Alle {{count}} Tage",
+        "everyNWeeks": "Alle {{count}} Wochen",
+        "everyNMonths": "Alle {{count}} Monate"
     },
     "kitchen": {
         "noShoppingLists": "Es gibt noch keine Einkaufsliste.",
@@ -4150,7 +4153,7 @@
         "taskNamePlaceholder": "Beispiel: Badezimmer reinigen",
         "taskArea": "Bereich",
         "taskAreaPlaceholder": "Beispiel: Bad",
-        "taskFrequency": "Häufigkeit (Tage)",
+        "taskFrequency": "Häufigkeit",
         "taskCreatedToast": "Aufgabe für die Haushaltshilfe erstellt.",
         "reports": "Berichte",
         "visitsThisMonth": "Besuche im Monat",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "Fr",
         "weekdaySat": "Sa",
         "weekdaySun": "So",
-        "intervalLabelWeekly": "Alle N Wochen",
-        "intervalLabelMonthly": "Alle N Monate",
         "anchorDateLabel": "Erste Abholung",
         "monthDayLabel": "Tag im Monat",
         "monthDayLastDay": "Letzter Tag des Monats",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Abstand verringern",
         "intervalIncrease": "Abstand erhöhen",
         "scheduleSavedNamed": "Termin für „{{name}}“ gespeichert.",
-        "pickupSavedNamed": "Abholung für „{{name}}“ gespeichert."
+        "pickupSavedNamed": "Abholung für „{{name}}“ gespeichert.",
+        "intervalLabel": "Abstand"
     },
     "rewards": {
         "title": "Belohnungen",

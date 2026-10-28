@@ -111,7 +111,10 @@
         "deletedNamed": "「{{name}}」已刪除。",
         "sortMode": "調整順序",
         "createdNamed": "「{{name}}」已建立。",
-        "savedNamed": "「{{name}}」已儲存。"
+        "savedNamed": "「{{name}}」已儲存。",
+        "everyNDays": "每 {{count}} 天",
+        "everyNWeeks": "每 {{count}} 週一次",
+        "everyNMonths": "每 {{count}} 個月一次"
     },
     "kitchen": {
         "noShoppingLists": "還沒有購物清單。",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "例如：打掃浴室",
         "taskArea": "區域",
         "taskAreaPlaceholder": "例如：浴室",
-        "taskFrequency": "頻率（天）",
+        "taskFrequency": "頻率",
         "taskCreatedToast": "家務任務已建立。",
         "reports": "報告",
         "visitsThisMonth": "本月上門次數",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "五",
         "weekdaySat": "六",
         "weekdaySun": "日",
-        "intervalLabelWeekly": "每 N 週一次",
-        "intervalLabelMonthly": "每 N 個月一次",
         "anchorDateLabel": "首次收運",
         "monthDayLabel": "每月第幾天",
         "monthDayLastDay": "每月最後一天",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "縮短間隔",
         "intervalIncrease": "延長間隔",
         "scheduleSavedNamed": "「{{name}}」的計劃已儲存。",
-        "pickupSavedNamed": "「{{name}}」的收運已儲存。"
+        "pickupSavedNamed": "「{{name}}」的收運已儲存。",
+        "intervalLabel": "間隔"
     },
     "rewards": {
         "title": "獎勵",

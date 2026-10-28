@@ -111,7 +111,10 @@
         "deletedNamed": "“{{name}}” deleted.",
         "sortMode": "Reorder",
         "createdNamed": "“{{name}}” created.",
-        "savedNamed": "“{{name}}” saved."
+        "savedNamed": "“{{name}}” saved.",
+        "everyNDays": "Every {{count}} days",
+        "everyNWeeks": "Every {{count}} weeks",
+        "everyNMonths": "Every {{count}} months"
     },
     "kitchen": {
         "noShoppingLists": "There is no shopping list yet.",
@@ -4146,7 +4149,7 @@
         "taskNamePlaceholder": "Example: Clean bathrooms",
         "taskArea": "Area",
         "taskAreaPlaceholder": "Example: Bathroom",
-        "taskFrequency": "Frequency (days)",
+        "taskFrequency": "Frequency",
         "taskCreatedToast": "Housekeeping task created.",
         "reports": "Reports",
         "visitsThisMonth": "Visits this month",
@@ -5861,8 +5864,6 @@
         "weekdayFri": "Fri",
         "weekdaySat": "Sat",
         "weekdaySun": "Sun",
-        "intervalLabelWeekly": "Every N weeks",
-        "intervalLabelMonthly": "Every N months",
         "anchorDateLabel": "First pickup",
         "monthDayLabel": "Day of month",
         "monthDayLastDay": "Last day of the month",
@@ -6025,7 +6026,8 @@
         "intervalDecrease": "Decrease interval",
         "intervalIncrease": "Increase interval",
         "scheduleSavedNamed": "Schedule for “{{name}}” saved.",
-        "pickupSavedNamed": "Pickup for “{{name}}” saved."
+        "pickupSavedNamed": "Pickup for “{{name}}” saved.",
+        "intervalLabel": "Interval"
     },
     "rewards": {
         "title": "Rewards",
