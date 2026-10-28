@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Esc closes a menu in a detail column.** On a wide screen, Esc in the fasting "..." menu (and any
   menu in the right-hand column of a list) left the menu open and jumped to the list; it closes the
   menu again, and the next Esc returns to the list as before.
+- **The settings search is visible in dark mode.** The search field in the settings column had the
+  same colour as the column itself; the column now uses the card colour, and the field stands out.
 
 ## [2.82.0] - 2026-10-28
 

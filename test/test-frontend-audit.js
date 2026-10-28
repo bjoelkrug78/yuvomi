@@ -23883,3 +23883,70 @@ test('DW-P2-3: die Uebersicht zieht ueber den geteilten Baustein - kein natives 
   assert.ok(dragRules >= 2, `Reichweite: nur ${dragRules} Zieh-Regeln in dashboard.css gesehen`);
   assert.deepEqual(offenders, [], `Zieh-Regeln der Uebersicht mit eigener Deckkraft oder draggable-Selektor:\n  ${offenders.join('\n  ')}`);
 });
+
+// ── FELD UND TRAEGER (R24, Critique G6 P2-1) ─────────────────────────────────
+// Im Dunkeln war das Suchfeld der Einstellungsspalte unsichtbar: die Spalte
+// trug `--color-surface-raised`, das Feld `--color-fill-field`, und beide sind
+// dunkel #37332E - gemessen rgb(55,51,46) auf rgb(55,51,46), keine Kante. Die
+// Regel ist "das gefuellte Feld hebt sich vom Traeger ab, in BEIDEN Themes";
+// geprueft an den Traegern, in denen das Suchfeld der Shell steht.
+function themeTokens() {
+  const css = read('../public/styles/tokens.css');
+  const light = new Map();
+  const dark = new Map();
+  const decls = (body) => [...body.matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)].map(([, k, v]) => [k, v.trim()]);
+  for (const r of eachRule(css)) {
+    const isDarkMedia = r.at.some((a) => /prefers-color-scheme:\s*dark/.test(a));
+    const sel = r.selector.trim();
+    if (!isDarkMedia && sel === ':root') for (const [k, v] of decls(r.body)) light.set(k, v);
+    if (isDarkMedia && /^:root\b/.test(sel)) for (const [k, v] of decls(r.body)) dark.set(k, v);
+  }
+  const resolve = (map, value, depth = 0) => {
+    const m = /^var\((--[\w-]+)(?:,\s*([^)]+))?\)$/.exec(value);
+    if (!m || depth > 20) return value;
+    const next = map.get(m[1]) ?? light.get(m[1]) ?? m[2];
+    return next == null ? value : resolve(map, next.trim(), depth + 1);
+  };
+  return { light: (v) => resolve(light, v), dark: (v) => resolve(dark, v) };
+}
+
+function luminance(hex) {
+  const m = /^#([0-9a-f]{6})$/i.exec(hex);
+  if (!m) return null;
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16) / 255)
+    .map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+test('R24 G6 P2-1: das Suchfeld hebt sich in beiden Themes von seinem Traeger ab', () => {
+  const tokens = themeTokens();
+  const field = [...eachRule(read('../public/styles/page-search.css'))]
+    .find((r) => !r.at.length && r.selector.split(',').map((s) => s.trim()).includes('.page-search__input') && /background(-color)?\s*:/.test(r.body));
+  assert.ok(field, 'die Flaeche des Suchfelds (page-search.css) nicht gefunden');
+  const fieldBg = /background(?:-color)?\s*:\s*([^;]+)/.exec(field.body)[1].trim();
+  // Die Spalte selbst und der klebende Streifen, in dem das Feld am Desktop
+  // steht (er malt "im Grund der Leiste" und deckt beim Scrollen die Liste).
+  const carriers = [
+    ['.settings-shell__navigation', '../public/styles/settings.css'],
+    ['.settings-shell__navigation-search', '../public/styles/settings.css'],
+  ];
+  const offenders = [];
+  const pairs = [];
+  for (const [selector, file] of carriers) {
+    const rules = [...eachRule(read(file))].filter((r) => r.selector.trim() === selector && /background(-color)?\s*:/.test(r.body));
+    assert.ok(rules.length, `${selector}: keine Flaeche gefunden`);
+    for (const rule of rules) pairs.push([selector, /background(?:-color)?\s*:\s*([^;]+)/.exec(rule.body)[1].trim()]);
+  }
+  for (const [selector, carrierBg] of pairs) {
+    for (const theme of ['light', 'dark']) {
+      const a = tokens[theme](fieldBg);
+      const b = tokens[theme](carrierBg);
+      const la = luminance(a);
+      const lb = luminance(b);
+      assert.ok(la != null && lb != null, `${selector} ${theme}: ${fieldBg} -> ${a}, ${carrierBg} -> ${b} sind keine Hex-Farben`);
+      const ratio = (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+      if (ratio < 1.1) offenders.push(`${selector} ${theme}: Feld ${a} auf Traeger ${b} (${ratio.toFixed(2)}:1)`);
+    }
+  }
+  assert.deepEqual(offenders, [], `Suchfeld ohne Abstand zum Traeger:\n  ${offenders.join('\n  ')}`);
+});

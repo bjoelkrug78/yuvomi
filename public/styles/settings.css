@@ -46,10 +46,14 @@
 
 .settings-shell__navigation {
   padding: var(--space-3);
-  /* Randlose Karte auf dem Grouped-Grund (tokens.css, Kasten-in-Kasten). */
+  /* Randlose Karte auf dem Grouped-Grund (tokens.css, Kasten-in-Kasten):
+   * `--color-surface` wie jede Karte dort. Hier stand `--color-surface-raised`,
+   * und das ist dunkel dieselbe Farbe wie das gefuellte Suchfeld der Spalte
+   * (`--color-fill-field`, #37332E) - das Feld war unsichtbar (R24, Critique
+   * G6 P2-1; haelt test:frontend-audit "Feld und Traeger"). */
   border: none;
   border-radius: var(--radius-lg);
-  background: var(--color-surface-raised);
+  background: var(--color-surface);
   box-shadow: var(--shadow-sm);
 }
 
@@ -1496,7 +1500,7 @@
     z-index: 1;
     margin: calc(-1 * var(--space-3)) calc(-1 * var(--space-3)) var(--space-3);
     padding: var(--space-3);
-    background: var(--color-surface-raised);
+    background: var(--color-surface);
   }
 
   /* DIE BEREICHE ALS WEG (R22, D13; shell.js createNavigationIndex): klebt
@@ -1515,7 +1519,7 @@
     margin: var(--space-3) calc(-1 * var(--space-3)) calc(-1 * var(--space-3));
     padding: var(--space-1) var(--space-3);
     border-block-start: var(--space-px) solid var(--color-border-subtle);
-    background: var(--color-surface-raised);
+    background: var(--color-surface);
   }
 
   .settings-shell__navigation:has(> .settings-shell__navigation-results:not([hidden])) .settings-shell__navigation-index {
