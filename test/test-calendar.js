@@ -7274,6 +7274,36 @@ test('#1462: am Desktop wird der Status zum Zeichen, wenn die Zeile sonst nicht 
   assert(/display:\s*none/.test(iconRule?.body ?? ''), 'die Shell kennt die Zeichen-Form am Desktop');
 });
 
+// R24, Critique G1 P1-1: Woche und Tag begannen um 07:00, auch wenn eine
+// Fruehschicht um 06:00 beginnt - ihr Titel stand ueber dem Bild. Der Morgen
+// kommt jetzt aus dem fruehesten Block im Raster (wie im Schichtplan, R22 D6),
+// und der Schichttitel klebt an der sichtbaren Oberkante seines Blocks.
+await test('R24 G1 P1-1: Woche/Tag beginnen mit dem fruehesten Block, nicht fest um 07:00', () => {
+  const HOUR = 56;
+  const prevDate = globalThis.Date;
+  // 09:18 Haushaltszeit: ohne Block steht das Raster um 07:00.
+  class Fixed extends prevDate { constructor(...a) { if (a.length) super(...a); else super('2026-10-28T09:18:00'); } static now() { return new prevDate('2026-10-28T09:18:00').getTime(); } }
+  globalThis.Date = Fixed;
+  try {
+    const block = (hour) => ({ getBoundingClientRect: () => ({ top: 100 + hour * HOUR }) });
+    const grid = (hours) => ({
+      getBoundingClientRect: () => ({ top: 100, height: 24 * HOUR }),
+      querySelectorAll: (sel) => { assert(/\.week-event/.test(sel) && /\.day-event/.test(sel), `misst ${sel}`); return hours.map(block); },
+    });
+    const port = () => ({ scrollTop: 0, scrollHeight: 24 * HOUR + 60, clientHeight: 800 });
+    const run = (hours) => { const p = port(); calendarHelpers.scrollToHour(p, grid(hours)); return p.scrollTop / HOUR; };
+    assert(run([]) === 7, `ohne Block 07:00, bekommen ${run([])}`);
+    assert(run([6, 10]) === 6, `Fruehschicht 06:00 -> 06:00, bekommen ${run([6, 10])}`);
+    assert(run([5.5]) === 5, `Block 05:30 -> 05:00, bekommen ${run([5.5])}`);
+    assert(run([0, 8]) === 7, `was um 00:00 beginnt (Fortsetzung von gestern), zaehlt nicht: ${run([0, 8])}`);
+    assert(run([9]) === 7, `ein spaeter Block verschiebt den Morgen nie nach hinten: ${run([9])}`);
+  } finally {
+    globalThis.Date = prevDate;
+  }
+  const sticky = [...eachRule(calendarCss)].find((r) => r.selector.trim() === '.schedule-time-block__title' && /position:\s*sticky/.test(r.body));
+  assert(sticky && /(^|[;\s])top:\s*0/.test(sticky.body), 'der Schichttitel klebt nicht an der sichtbaren Oberkante seines Blocks');
+});
+
 // --------------------------------------------------------
 // Ergebnis
 // --------------------------------------------------------

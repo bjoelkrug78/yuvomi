@@ -3924,6 +3924,17 @@
   opacity: .85;
 }
 
+/* DER SCHICHTTITEL BLEIBT IM BILD (R24, Critique G1 P1-1). Eine Fruehschicht
+ * 06:00-14:00 ist ein 444px hoher Block; beginnt das Bild spaeter als die
+ * Schicht, stand ihr Name oben ausserhalb, und sichtbar war eine namenlose
+ * Saeule. Wie der Titel eines Termins (`.week-event__title`) klebt er an der
+ * SICHTBAREN Oberkante seines Blocks. Der Block clippt (`overflow: clip`),
+ * erzeugt also keinen eigenen Scrollport - der Bezug bleibt das Raster. */
+.schedule-time-block__title {
+  position: sticky;
+  top: 0;
+}
+
 /* Form und Farbe gibt der Status-Slot der Shell (layout.css, #1462). */
 .cal-toolbar__schedule-warning {
   font-size: var(--text-sm);

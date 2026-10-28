@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Birthdays found by search are named in your language.** The command palette and the phone search
   listed a birthday or name day as "Birthday: Emma" whatever the language; they now read like the
   calendar and the overview do.
+- **Early shifts are named in the calendar's week and day.** The grid opened at 07:00 even when a
+  shift began at 06:00, so its name sat above the view and only nameless coloured columns showed;
+  the day now opens at the earliest block, and a shift's name stays at the top of the view while you
+  scroll, like an appointment's title.
 
 ## [2.82.0] - 2026-10-28
 

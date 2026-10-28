@@ -3816,7 +3816,8 @@ unter den Falz schob. Vier Antworten, je eine Bauart, gemessen bei 390x844:
 - **EIN Wochenraster: Schichtplan auf dem Raster des Kalenders (R22, D6; Critique a3 P2).**
   Tageskopf („MO 19" nebeneinander, mittig, heute im Akzentkreis), 24-Stunden-Achse in
   `--cal-hour-height`, Stundenlinien, Jetzt-Linie und der Scroll zur laufenden Stunde
-  (`alignedHourScroll`, morgens ab 07:00 bzw. ab der ersten frueheren Schicht) kommen aus EINEM
+  (`alignedHourScroll`, morgens ab 07:00 bzw. ab dem ersten frueheren Block - im Kalender seit R24
+  auch in Woche/Tag, gemessen am Raster, der Schichttitel klebt an der sichtbaren Blockkante) kommen aus EINEM
   Baustein: `utils/time-grid.js` + `styles/time-grid.css` (per `@import` in calendar.css und
   schedule.css, `PAGE_STYLE_IMPORTS` im Router). Die verdichtete Stundenskala des Schichtplans
   (nur belegte Stunden) ist entfallen. Die Uebersicht scrollt mit der SEITE: der Kopf dockt wie

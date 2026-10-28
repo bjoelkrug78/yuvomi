@@ -5265,13 +5265,36 @@ function wireTimeGridCreate(surface, {
  */
 function scrollToHour(scroll, body) {
   if (!scroll || !body) return;
-  const hourHeight = body.getBoundingClientRect().height / 24;
+  const bodyRect = body.getBoundingClientRect();
+  const hourHeight = bodyRect.height / 24;
   scroll.scrollTop = alignedHourScroll({
     hour: nowFields().hour,
     hourHeight,
     max: scroll.scrollHeight - scroll.clientHeight,
     visible: scroll.clientHeight,
+    morning: earliestBlockHour(body, bodyRect.top, hourHeight),
   });
+}
+
+/**
+ * DER MORGEN BEGINNT MIT DEM ERSTEN BLOCK (R22 D6 fuer den Kalender, R24
+ * Critique G1 P1-1). Der Schichtplan uebergab `morning` schon (schedule.js,
+ * alignOverviewToNow), der Kalender nicht: seit die Schichten als Bloecke im
+ * Raster stehen (R23 D14), begann die Woche um 07:00 und jede Fruehschicht
+ * 06:00 stand mit ihrem Titel 56px ueber dem Bild - sichtbar waren namenlose
+ * Saeulen. Gemessen wird am Raster: die Oberkante des fruehesten Termins oder
+ * Schichtblocks. Was um 00:00 beginnt, zaehlt nicht - das ist die Fortsetzung
+ * von gestern, nicht der Morgen (dieselbe Regel wie im Schichtplan).
+ * @returns {number|undefined} Stunde oder undefined (dann MORNING_HOUR)
+ */
+function earliestBlockHour(body, bodyTop, hourHeight) {
+  if (!(hourHeight > 0)) return undefined;
+  let first = Infinity;
+  for (const el of body.querySelectorAll?.('.week-event, .day-event') ?? []) {
+    const offset = el.getBoundingClientRect().top - bodyTop;
+    if (offset >= 1 && offset < first) first = offset;
+  }
+  return Number.isFinite(first) ? Math.floor(first / hourHeight + 1e-6) : undefined;
 }
 
 // MORNING_HOUR, EARLY_HOUR und alignedHourScroll() stehen im geteilten
@@ -7353,6 +7376,8 @@ export const __test = {
   renderMonthList,
   sidebarShown,
   alignedHourScroll,
+  // R24 G1 P1-1: der Morgen von Woche/Tag beginnt mit dem fruehesten Block.
+  scrollToHour,
   // R19: die Seitenleiste ab ca. 1600px - Mini-Monat, Filter aus EINER Quelle, Als Naechstes.
   miniMonthHtml, sidebarFiltersHtml, calendarFilterParts, upNextEvents,
   // Review #2049: ein gescheiterter Abruf ist ein Fehler, kein leerer Tag.
