@@ -2572,8 +2572,9 @@ Zielgroessen-Regel halten (**Ebene 3**, `die Groesse des Icon-Knopfs gehoert der
   (`--seg-active-bg` + `--seg-active-shadow`), Modulton NUR als Tinte
   (`color-mix(in srgb, <Akzent> var(--tint-ink), var(--color-text-primary))`); inaktiv
   Sekundaertext, Hover hebt nur die Textfarbe. Gilt identisch fuer Aufgaben-Gruppentoggle,
-  Kalender-Ansichtswahl, Budget-Tabs, Sub-Tabs, Kuechen-Tabs, Dokumenten-View-Toggle,
-  Listen-Tabs, Gesundheits-Zeitraum und die Settings-Schalter. Der Traeger ist ein Well
+  Kalender-Ansichtswahl, Dokumenten-View-Toggle, Gesundheits-Zeitraum und die
+  Settings-Schalter - fuer jede ANSICHTSWAHL. Reiter tragen seit R24 eine eigene Flaeche
+  (naechster Absatz). Der Traeger ist ein Well
   (`--color-surface-3`), sonst ist die Pille kein Zustand. Der Daumen ist in BEIDEN Themes die
   HELLERE Flaeche: hell Weiss auf dem Well (1.20:1), dunkel die Stufe UEBER dem Well
   (`--_seg-active-bg` #443E37 auf #37332E, 1.19:1) - mit `--color-surface` lag er im Dark
@@ -2582,6 +2583,19 @@ Zielgroessen-Regel halten (**Ebene 3**, `die Groesse des Icon-Knopfs gehoert der
   beiden Themes Weiss, die An-Bahn traegt `--color-btn-primary`. Innenradius konzentrisch:
   `--radius-sm` (10px) im `--radius-md`-Traeger (12px) mit 2px Polster (panel.css,
   `.segmented__item`). Kein 3px-Akzentstreifen unter aktiven Tabs.
+- **Ein Reiter ist kein Segment (R24, E3, Ulas 2026-10-28).** Der aktive Reiter - Budget,
+  Belohnungen, Haushaltshilfe, Schichtplan, Kueche (`.sub-tab`) und die Listen-Kapseln des
+  Einkaufs (`.list-tab`) - ist in BEIDEN Themes eine getoente Kapsel im Modulton
+  (`--tint-state`), ohne Ring und ohne Schatten; die Tinte bleibt die Segment-Tinte. Vorher
+  trug er den Segment-Daumen: hell eine weisse Kapsel mit grauem Ring auf dem Seitengrund, die
+  sich als Umrandungs-Knopf las, dunkel eine graue Platte. Ein Reiter steht auf keiner Bahn -
+  der Ring zeichnete die Kante eines Traegers, den es nicht gibt. So bleiben Reiter (welcher
+  Bereich, welche Liste) und Segment (welche Ansicht) auf einen Blick unterscheidbar. Die
+  gleitende Kapsel nimmt die Flaeche an, wo ihre Leiste aus `.sub-tab` besteht
+  (`.has-seg-indicator:has(> .sub-tab) > .seg-indicator`), ein Zaehler auf dem aktiven
+  Reiter bleibt neutral (`--color-fill-well`). Gemessen 1440px, Tinte auf Kapsel: hell
+  5,80-6,74:1, dunkel 7,88-9,01:1; den Zustand sagen Flaeche, Tinte und Semibold zusammen.
+  Guard: `test:kitchen-tabs` "R24 E3".
 - **Der Daumen traegt in beiden Themes eine Kante (R23, Critique G6-1, WCAG 1.4.11).** 1,19:1
   (dunkel) und 1,20:1 (hell) sind ein Abstand, kein Zustand, und ein Schatten zeichnet die Form
   nur optisch. `--seg-active-shadow` fuehrt deshalb einen 1px-Innenring (`--_seg-active-ring`) in
@@ -3660,7 +3674,11 @@ Kontakten und Vorrat (Port erst bei y179), und unter der Glas-Kapsel lief nie In
    (`pageToolsMenuHtml`, utils/popover-menu.js, Vorbild `documents-tools-btn`). Traegt ein
    Modul Sub-Tabs, ist die Tab-Leiste die ganze Zeile 2 (Schichtplan, Haushaltshilfe,
    Belohnungen). Die Primaeraktion bleibt mobil der FAB in der Kapsel, am Desktop die
-   angedockte Kopf-Pille. Ziel ausgeklappt <= 114px, mit Stepper <= 122px. Gemessen
+   angedockte Kopf-Pille. Ziel ausgeklappt <= 114px, mit Stepper <= 122px. **Ein Kopf mit
+   Bar-Zeile misst EINEN Wert (R24, G0 P2-3):** Titel- und Bar-Zeile stehen 4px auseinander,
+   ob die Zeile Reiter oder einen Zeitraum traegt (390px: 117px, Bar-Zeile auf y60 -
+   Belohnungen, Haushaltshilfe und Schichtplan standen mit 8px auf 121/y64, und die Leiste
+   sprang beim Modulwechsel; Guard `test:mobile-chrome` "R24"). Gemessen
    2026-09-27 (R11, 390px): Aufgaben, Notizen, Kontakte, Dokumente, Inventar, Geburtstage,
    Entsorgung, Einstellungen 114-120px, Kalender 117px, Budget 162px (seit R16 117px, siehe unten).
    Bis R11 stand hier, Such-Icon und Menue sassen in Zeile 1 neben dem Titel - gebaut war

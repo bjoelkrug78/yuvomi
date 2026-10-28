@@ -104,21 +104,29 @@
  * Die ~3.5:1 aus dem Absatz darüber galten vor den Familientönen (v2.1.0):
  * heute hält selbst der rohe Ton 5.04:1 hell und 4.82:1 dunkel, die
  * --tint-ink-Mischung 7.37:1 / 6.61:1. Der Ton darf deshalb wieder Tinte sein,
- * und der Zustand kommt aus der erhabenen Pille (tokens.css, Abschnitt 6c). */
+ * und der Zustand kommt aus der erhabenen Pille (tokens.css, Abschnitt 6c).
+ *
+ * SEIT R24 (E3) DIE FLAECHE DES AKTIVEN REITERS: die Listen-Kapseln sind
+ * Reiter (welche Liste), keine Ansichtswahl, und stehen direkt unter der
+ * Kuechen-Leiste - dort trug der aktive Reiter jetzt die getoente Kapsel, die
+ * Liste darunter noch den weissen Daumen mit Ring. Zwei Zustandsbilder
+ * uebereinander fuer dieselbe Frage. Jetzt dieselbe getoente Kapsel ohne Ring
+ * (sub-tabs.css, `.sub-tab--active`). */
 .list-tab--active {
-  background-color: var(--seg-active-bg);
-  box-shadow: var(--seg-active-shadow);
+  background-color: color-mix(in srgb, var(--module-accent, var(--color-accent)) var(--tint-state), transparent);
+  box-shadow: none;
   border-color: transparent;
   color: color-mix(in srgb, var(--module-accent, var(--color-accent)) var(--tint-ink), var(--color-text-primary));
   font-weight: var(--font-weight-semibold);
 }
 
-/* Getönte Marke auf der Surface-Pille - gleiche Rechnung wie
- * .sub-tab--active .sub-tab__badge. Die frühere Umkehr (weiß auf Vollton)
- * wäre auf der hellen Pille eine weiße Marke auf Weiß. */
+/* Neutrale Marke auf der getoenten Kapsel - gleiche Rechnung wie
+ * .sub-tab--active .sub-tab__badge (R24, E3): eine Toenung auf der Toenung
+ * naennte den Modulton zweimal blass. Die fruehere Umkehr (weiss auf Vollton)
+ * waere eine weisse Marke auf heller Flaeche. */
 .list-tab--active .list-tab__count {
-  background-color: color-mix(in srgb, var(--module-accent, var(--color-accent)) var(--tint-state), transparent);
-  color: color-mix(in srgb, var(--module-accent, var(--color-accent)) var(--tint-ink), var(--color-text-primary));
+  background-color: var(--color-fill-well);
+  color: var(--color-text-primary);
 }
 
 .list-tab__count {
