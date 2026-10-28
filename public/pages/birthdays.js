@@ -38,6 +38,9 @@ import { birthDateText, birthDateShort, birthDateFieldHtml, wireBirthDateField }
 
 let state = {
   birthdays: [],
+  // Jahrestage liegen neben den Geburtstagen; `mode` sagt, welche Liste zu sehen ist.
+  anniversaries: [],
+  mode: 'birthdays',
   query: '',
   loading: true,
 };
@@ -378,6 +381,12 @@ async function loadData() {
   updateBirthdayBadge();
 }
 
+/** Die Jahrestage laden. Eigener Aufruf, damit ein Geburtstags-Reload bei einem Geburtstag bleibt. */
+async function loadAnniversaries() {
+  const res = await api.get('/anniversaries');
+  state.anniversaries = res.data ?? [];
+}
+
 /**
  * How many birthday or name-day occurrences are imminent?
  * The server computes both distances (`hydrateBirthday`); this function only
@@ -507,6 +516,131 @@ function birthdayListHtml(list) {
   }).join('');
 }
 
+// Der Umschalter zwischen Geburtstagen und Jahrestagen: derselbe segmentierte
+// Baustein wie im Budget, gleiche Reiter-Semantik (role="tab").
+function renderModeSwitchHtml() {
+  const modes = [
+    { id: 'birthdays', label: t('anniversaries.modeBirthdays') },
+    { id: 'anniversaries', label: t('anniversaries.modeAnniversaries') },
+  ];
+  return `
+    <div class="segmented birthdays-mode" role="tablist" aria-label="${esc(t('birthdays.title'))}">
+      ${modes.map((m) => {
+        const on = m.id === state.mode;
+        return `<button type="button" role="tab" class="segmented__item${on ? ' is-active' : ''}"
+          data-tab-id="${m.id}" aria-selected="${on}" tabindex="${on ? '0' : '-1'}">${esc(m.label)}</button>`;
+      }).join('')}
+    </div>`;
+}
+
+// ---------------------------------------------------------------
+// Jahrestage: Liste, Suche, Leerzustand, Zeile
+// ---------------------------------------------------------------
+
+/** Die Namen beider Seiten, wie der Server sie im Titel zusammensetzt. */
+export function anniversaryNamesText(a) {
+  return [a.person_a_linked_name ?? a.person_a_name, a.person_b_linked_name ?? a.person_b_name]
+    .filter(Boolean)
+    .join(' & ');
+}
+
+// Ordinalzahl wie auf dem Server (server/services/anniversaries.js): die Seite
+// kann dort nicht importieren, also dieselbe kleine Regel hier.
+function ordinal(n) {
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 13) return `${n}th`;
+  const suffix = { 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] ?? 'th';
+  return `${n}${suffix}`;
+}
+
+/** Die Anzahl Jahre seit dem Tag, nur bei bekanntem Jahr (#2095). */
+export function anniversaryYears(a, today = todayKey()) {
+  if (a.year_unknown === 1) return null;
+  const start = parseInt(String(a.anniversary_date).slice(0, 4), 10);
+  const now = parseInt(String(today).slice(0, 4), 10);
+  const years = now - start;
+  return years > 0 ? years : null;
+}
+
+function filteredAnniversaries() {
+  const q = state.query.trim().toLowerCase();
+  const list = !q ? state.anniversaries : state.anniversaries.filter((a) =>
+    anniversaryNamesText(a).toLowerCase().includes(q) ||
+    (a.notes || '').toLowerCase().includes(q)
+  );
+  return [...list].sort((x, y) => anniversaryNextKey(x).localeCompare(anniversaryNextKey(y)));
+}
+
+/**
+ * Der nächste Termin als Sortierschlüssel: der Monat und Tag im laufenden oder
+ * im nächsten Jahr. Ohne bekanntes Jahr zählt nur Monat und Tag, mit Jahr zählt
+ * der nächste Jahrestag ab heute.
+ */
+function anniversaryNextKey(a, today = todayKey()) {
+  const md = String(a.anniversary_date).slice(5, 10);
+  const year = parseInt(String(today).slice(0, 4), 10);
+  const thisYear = `${year}-${md}`;
+  return thisYear >= today ? thisYear : `${year + 1}-${md}`;
+}
+
+function anniversaryEmptyStateHtml() {
+  if (state.query.trim()) {
+    return searchEmptyHTML({ query: state.query, resetAttrs: { id: 'birthdays-reset-search' } });
+  }
+  const ro = readOnly();
+  return sharedEmptyStateHTML({
+    icon: 'heart',
+    title: t('anniversaries.emptyTitle'),
+    description: ro ? '' : t('anniversaries.emptyDescription'),
+    hint: '',
+    action: ro ? null : { label: t('anniversaries.addButton'), attrs: { id: 'birthdays-empty-cta' } },
+  });
+}
+
+/**
+ * Eine Jahrestag-Zeile. Dieselbe Bauform wie die Geburtstagszeile (Wischen,
+ * Menue, Leseweg bei `read`), nur mit zwei Namen und dem Datum.
+ */
+export function anniversaryItemHtml(a) {
+  const ro = readOnly();
+  const years = anniversaryYears(a);
+  const yearsText = years != null ? t('anniversaries.yearsLabel', { count: years, ordinal: ordinal(years) }) : '';
+  const hauptspalte = `
+        <strong class="list-row__name birthday-item__name">${esc(anniversaryNamesText(a))}</strong>
+        <span class="list-row__meta birthday-item__meta">
+          <span class="birthday-item__when">${esc(dateText(a.anniversary_date, { yearUnknown: a.year_unknown === 1 }))}</span>
+          ${yearsText ? `<span class="birthday-item__name-day">${esc(yearsText)}</span>` : ''}
+          ${a.notes ? `<span class="birthday-item__notes">${esc(a.notes)}</span>` : ''}
+        </span>`;
+  return `
+    <div class="swipe-row${ro ? ' swipe-row--static' : ''}" data-swipe-id="${a.id}" data-kind="anniversary">
+      ${ro ? '' : `
+      <div class="swipe-reveal swipe-reveal--edit swipe-reveal--leading" aria-hidden="true">
+        <i data-lucide="pencil" class="icon-md"></i>
+        <span>${t('common.edit')}</span>
+      </div>
+      <div class="swipe-reveal swipe-reveal--delete swipe-reveal--trailing" aria-hidden="true">
+        <i data-lucide="trash-2" class="icon-md"></i>
+        <span>${t('common.delete')}</span>
+      </div>`}
+    <article class="list-row birthday-item" data-id="${a.id}" data-md-id="${a.id}">
+      <div class="birthday-item__media"><span class="birthday-avatar birthday-avatar--fallback"><i data-lucide="heart" aria-hidden="true"></i></span></div>
+      <button type="button" class="list-row__main list-row__main--interactive" data-open-anniversary="${a.id}" data-md-focus>${hauptspalte}${ro ? readRowHintHtml() : ''}</button>
+      ${ro ? '' : `
+      <div class="row-actions birthday-item__actions">
+        ${rowMenuHtml({
+          id: `anniversary-menu-${a.id}`,
+          label: t('common.moreActionsNamed', { name: anniversaryNamesText(a) }),
+          items: [
+            { action: 'edit-anniversary', id: a.id, icon: 'pencil', label: t('common.edit') },
+            { action: 'delete-anniversary', id: a.id, icon: 'trash-2', label: t('common.delete'), danger: true },
+          ],
+        })}
+      </div>`}
+    </article>
+    </div>`;
+}
+
 function emptyStateHtml() {
   // `cake` ist dasselbe Zeichen wie CAKE_SVG - das Inline-SVG oben ist die
   // Lucide-Torte, von Hand kopiert, damit sie neben einem Namen stehen kann.
@@ -558,11 +692,14 @@ function drawList(host, { repaint = false } = {}) {
     return;
   }
   host.removeAttribute('aria-busy');
-  const list = filteredBirthdays();
+  const anniversaries = state.mode === 'anniversaries';
+  const list = anniversaries ? filteredAnniversaries() : filteredBirthdays();
   if (!list.length) {
     host.replaceChildren();
-    host.insertAdjacentHTML('beforeend', emptyStateHtml());
-    host.querySelector('#birthdays-empty-cta')?.addEventListener('click', () => openBirthdayModal({ mode: 'create' }));
+    host.insertAdjacentHTML('beforeend', anniversaries ? anniversaryEmptyStateHtml() : emptyStateHtml());
+    host.querySelector('#birthdays-empty-cta')?.addEventListener('click', () => (
+      anniversaries ? openAnniversaryModal({ mode: 'create' }) : openBirthdayModal({ mode: 'create' })
+    ));
     host.querySelector('#birthdays-reset-search')?.addEventListener('click', () => {
       state.query = '';
       _search?.clear();
@@ -575,7 +712,9 @@ function drawList(host, { repaint = false } = {}) {
   }
 
   host.replaceChildren();
-  host.insertAdjacentHTML('beforeend', birthdayListHtml(list));
+  host.insertAdjacentHTML('beforeend', anniversaries
+    ? list.map((a) => anniversaryItemHtml(a)).join('')
+    : birthdayListHtml(list));
 
   if (window.lucide) window.lucide.createIcons({ el: host });
   // Der Nudge-Hinweis gehoert zur GESTE und steht deshalb in deren Verdrahtung:
@@ -683,15 +822,18 @@ function renderPage() {
       narrow: true,
       titleTools: true,
       className: 'birthdays-toolbar',
-      title: renderPageTitle(t('birthdays.title')),
-      center: renderPageSearch({
+      // Der Titel steht im Markup dieser Seite, nicht nur im Helfer: die
+      // Leisten-Pruefung (test-frontend-audit) liest den Kopf aus dem Quelltext
+      // der Seite. Ausgabe wie renderPageTitle(), dieselbe Klasse.
+      title: `<h1 class="page-toolbar__title">${t('birthdays.title')}</h1>`,
+      center: `${renderModeSwitchHtml()}${renderPageSearch({
         id: 'birthdays-search',
         label: t('birthdays.searchPlaceholder'),
         placeholder: t('birthdays.searchPlaceholder'),
         value: state.query,
         clearLabel: t('common.searchClear'),
         className: 'birthdays-toolbar__search page-toolbar__center',
-      }),
+      })}`,
       // Actions slot: Import + desktop-docked primary (dockFabIntoToolbar).
       // Welche zwei Rechte der Import-Knopf braucht, steht an
       // `importActionHtml()`; die Durchsetzung bleibt serverseitig.
@@ -731,7 +873,10 @@ function renderPage() {
 function bindEvents() {
   // Den FAB blendet CSS aus (html[data-module-readonly]); der Handler bleibt
   // trotzdem gesperrt - ausgeblendet ist nicht unerreichbar.
-  findPageFab('fab-new-birthday').addEventListener('click', () => openBirthdayModal({ mode: 'create' }));
+  findPageFab('fab-new-birthday').addEventListener('click', () => {
+    if (state.mode === 'anniversaries') openAnniversaryModal({ mode: 'create' });
+    else openBirthdayModal({ mode: 'create' });
+  });
   // Werkzeugmenue: der Eintrag laeuft ueber data-action (popover-menu.js
   // schliesst das Panel in der Capture-Phase, bevor der Dialog aufgeht).
   installPopoverMenus(_container);
@@ -761,6 +906,34 @@ function bindEvents() {
   });
 
   _container.querySelector('#birthdays-list').addEventListener('click', onListClick);
+
+  // Umschalter: zwischen den beiden Listen wechseln, Suche bleibt stehen.
+  _container.querySelector('.birthdays-mode')?.addEventListener('click', (e) => {
+    const tab = e.target.closest('[data-tab-id]');
+    if (!tab || tab.dataset.tabId === state.mode) return;
+    setMode(tab.dataset.tabId);
+  });
+}
+
+/**
+ * Wechselt die Liste. Die Kopfzeile und die Aufschrift des Neu-Knopfs folgen
+ * dem Modus; die Liste zeichnet sich neu. Das Detail schliesst sich, weil es
+ * den Eintrag der anderen Liste zeigen wuerde.
+ */
+function setMode(mode) {
+  state.mode = mode;
+  _container.querySelectorAll('.birthdays-mode [data-tab-id]').forEach((b) => {
+    const on = b.dataset.tabId === mode;
+    b.classList.toggle('is-active', on);
+    b.setAttribute('aria-selected', String(on));
+    b.tabIndex = on ? 0 : -1;
+  });
+  const fab = _container.querySelector('#fab-new-birthday');
+  if (fab) {
+    const label = mode === 'anniversaries' ? t('anniversaries.addButton') : t('birthdays.addButton');
+    fab.setAttribute('aria-label', label);
+  }
+  renderList();
 }
 
 /**
@@ -774,6 +947,21 @@ function bindEvents() {
  * zusaetzliche Wege.
  */
 async function onListClick(e) {
+  const openAnniversary = e.target.closest('[data-open-anniversary]');
+  if (openAnniversary) {
+    const a = state.anniversaries.find((item) => item.id === Number(openAnniversary.dataset.openAnniversary));
+    if (a) openAnniversaryModal({ mode: readOnly() ? 'read' : 'edit', anniversary: a });
+    return;
+  }
+  const anniversaryAction = e.target.closest('[data-action]');
+  if (anniversaryAction && /-anniversary$/.test(anniversaryAction.dataset.action)) {
+    if (readOnly()) return;
+    const a = state.anniversaries.find((item) => item.id === Number(anniversaryAction.dataset.id));
+    if (!a) return;
+    if (anniversaryAction.dataset.action === 'edit-anniversary') openAnniversaryModal({ mode: 'edit', anniversary: a });
+    if (anniversaryAction.dataset.action === 'delete-anniversary') deleteAnniversary(a.id);
+    return;
+  }
   const open = e.target.closest('[data-open]');
   if (open) {
     // Ab der Schwelle waehlt der Tipp aus (Detailspalte), darunter oeffnet er
@@ -1339,6 +1527,257 @@ function openBirthdayModal({ mode, birthday = null }) {
   });
 }
 
+// ---------------------------------------------------------------
+// Jahrestage: Lese- und Bearbeitungsdialog, Löschen
+// ---------------------------------------------------------------
+
+function anniversaryReadHtml(a) {
+  const years = anniversaryYears(a);
+  return `
+    <div class="birthday-modal birthday-modal--read" data-view="read" data-anniversary-id="${a.id}">
+      <div class="birthday-modal__identity">
+        <div class="birthday-modal__fields detail-view">
+          <div class="detail-view__rows">
+            ${readRowHtml({ icon: 'users', label: t('anniversaries.personA'), value: a.person_a_linked_name ?? a.person_a_name ?? '' })}
+            ${readRowHtml({ icon: 'users', label: t('anniversaries.personB'), value: a.person_b_linked_name ?? a.person_b_name ?? '' })}
+            ${readRowHtml({ icon: 'calendar-heart', label: t('anniversaries.anniversaryDateLabel'), value: dateText(a.anniversary_date, { yearUnknown: a.year_unknown === 1 }) })}
+            ${years != null ? readRowHtml({ icon: 'heart', label: '', value: t('anniversaries.yearsLabel', { ordinal: ordinal(years) }) }) : ''}
+            ${readRowHtml({ icon: 'align-left', label: t('anniversaries.notesLabel'), value: a.notes || '', multiline: true })}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/**
+ * Der Dialog für einen Jahrestag: zwei Personen, jede als Verknüpfung zu einem
+ * Geburtstag oder als Freitext, dazu Datum, Erinnerung und Notizen.
+ */
+function openAnniversaryModal({ mode, anniversary = null }) {
+  if (readOnly()) {
+    if (mode === 'edit' && anniversary) openAnniversaryReadModal(anniversary);
+    return;
+  }
+  if (mode === 'read' && anniversary) {
+    openAnniversaryReadModal(anniversary);
+    return;
+  }
+  const isEdit = mode === 'edit';
+  const a = anniversary;
+  const today = todayKey();
+
+  openSharedModal({
+    staged: !isEdit,
+    title: isEdit ? t('anniversaries.editTitle') : t('anniversaries.newTitle'),
+    content: `
+      <div class="birthday-modal anniversary-modal">
+        <div class="birthday-modal__fields">
+          ${anniversaryPersonFieldHtml('a', a)}
+          ${anniversaryPersonFieldHtml('b', a)}
+          ${birthDateFieldHtml({
+            id: 'an-date',
+            label: t('anniversaries.anniversaryDateLabel'),
+            value: a?.anniversary_date || '',
+            yearUnknown: a?.year_unknown === 1,
+            max: today,
+            required: true,
+          })}
+        </div>
+        ${advancedSection(`
+          <div class="form-group">
+            <label class="form-label" for="an-notes">${t('anniversaries.notesLabel')}</label>
+            <textarea class="form-input" id="an-notes" rows="3" placeholder="${t('anniversaries.notesPlaceholder')}">${esc(a?.notes || '')}</textarea>
+          </div>
+          ${renderBirthdayReminderSection(a ? { reminder_offset: a.reminder_offset, reminder_custom_amount: a.reminder_custom_amount, reminder_custom_unit: a.reminder_custom_unit } : null)}`,
+          { open: isEdit && (!!a?.notes || reminderOpensAdvanced(a)),
+            hint: t('birthdays.notesLabel') })}
+        <div class="birthday-modal__hint">${t('birthdays.calendarHint')}</div>
+        <div class="modal-panel__footer modal-panel__footer--plain">
+          ${isEdit ? `<button type="button" class="btn btn--danger-outline" id="an-delete">
+            <i data-lucide="trash-2" class="icon-md" aria-hidden="true"></i>${t('common.delete')}
+          </button>` : '<div></div>'}
+          <div class="birthday-modal__footer-actions">
+            <button class="btn btn--secondary" type="button" id="an-cancel">${t('common.cancel')}</button>
+            <button class="btn btn--primary" type="button" id="an-save">${isEdit ? t('common.save') : t('common.add')}</button>
+          </div>
+        </div>
+      </div>
+    `,
+    size: 'md',
+    onSave(panel) {
+      const dateField = wireBirthDateField(panel, 'an-date');
+      wireAnniversaryPersonFields(panel);
+
+      const reminderOffset = panel.querySelector('#bd-reminder-offset');
+      const reminderCustom = panel.querySelector('#bd-reminder-custom');
+      reminderOffset?.addEventListener('change', () => {
+        if (reminderCustom) reminderCustom.hidden = reminderOffset.value !== 'custom';
+      });
+
+      panel.querySelector('#an-cancel').addEventListener('click', closeModal);
+      panel.querySelector('#an-delete')?.addEventListener('click', async () => {
+        await closeModal({ force: true });
+        deleteAnniversary(a.id);
+      });
+
+      panel.querySelector('#an-save').addEventListener('click', async () => {
+        const saveBtn = panel.querySelector('#an-save');
+        const date = dateField.read();
+        const dateRaw = date.raw;
+        const dateValue = date.yearUnknown ? date.date : parseDateInput(dateRaw);
+        const dateMissing = !dateValue || !isDateInputValid(dateRaw);
+        if (reportFieldErrors([
+          date.yearUnknown && (!date.complete || dateMissing)
+            && [panel.querySelector('#an-date-month'), t('birthdays.yearlessIncomplete')],
+          !date.yearUnknown && dateMissing && [panel.querySelector('#an-date'), t('common.required')],
+        ])) return;
+
+        const sideA = readAnniversarySide(panel, 'a');
+        const sideB = readAnniversarySide(panel, 'b');
+        if (!sideA.ok || !sideB.ok) {
+          window.yuvomi?.showToast(t('anniversaries.needsName'), 'warning');
+          return;
+        }
+
+        const { reminder, invalid } = reminderToSave({
+          reminder_offset: panel.querySelector('#bd-reminder-offset').value,
+          reminder_custom_amount: panel.querySelector('#bd-reminder-custom-amount').value,
+          reminder_custom_unit: panel.querySelector('#bd-reminder-custom-unit').value,
+        });
+        if (invalid) {
+          window.yuvomi?.showToast(t('birthdays.reminderAmountInvalid', { max: REMINDER_AMOUNT_MAX }), 'warning');
+          panel.querySelector('#bd-reminder-custom-amount')?.focus();
+          return;
+        }
+
+        const body = {
+          person_a_birthday_id: sideA.birthdayId,
+          person_a_name: sideA.name,
+          person_b_birthday_id: sideB.birthdayId,
+          person_b_name: sideB.name,
+          anniversary_date: dateValue,
+          year_unknown: date.yearUnknown,
+          notes: panel.querySelector('#an-notes').value.trim(),
+          ...reminder,
+        };
+
+        saveBtn.disabled = true;
+        const owner = _container;
+        const dialog = captureModalContext();
+        try {
+          if (isEdit) {
+            await api.put(`/anniversaries/${a.id}`, body);
+            window.yuvomi?.showToast(t('anniversaries.updatedToast'), 'success');
+          } else {
+            await api.post('/anniversaries', body);
+            window.yuvomi?.showToast(t('anniversaries.createdToast'), 'success');
+          }
+          await reloadAfterSave(() => loadAnniversaries());
+          renderList({ repaint: true, motion: true });
+          closeModal({ force: true, context: dialog });
+        } catch (err) {
+          window.yuvomi?.showToast(errorSentence(err), 'danger');
+          saveBtn.disabled = false;
+          if (isEdit && isAlreadyDeleted(err, 'anniversaries_not_found')) {
+            closeModal({ force: true, context: dialog });
+            state.anniversaries = state.anniversaries.filter((item) => item.id !== a.id);
+            if (_container === owner) renderList({ repaint: true });
+          }
+        }
+      });
+    },
+  });
+}
+
+function openAnniversaryReadModal(a) {
+  openSharedModal({
+    title: anniversaryNamesText(a),
+    size: 'md',
+    content: anniversaryReadHtml(a),
+    onSave(panel) {
+      window.lucide?.createIcons({ el: panel });
+    },
+  });
+}
+
+/**
+ * Eine Seite des Paars: entweder eine Verknüpfung zu einem Geburtstag (Auswahl)
+ * oder ein Freitext-Name. Die Auswahl zeigt alle Geburtstage des Haushalts.
+ */
+function anniversaryPersonFieldHtml(side, a) {
+  const label = side === 'a' ? t('anniversaries.personA') : t('anniversaries.personB');
+  const linkedId = a ? (a[`person_${side}_birthday_id`] ?? '') : '';
+  const freeName = a ? (a[`person_${side}_name`] ?? '') : '';
+  const options = [
+    `<option value="">${esc(t('anniversaries.personLinkNone'))}</option>`,
+    ...state.birthdays.map((b) => `<option value="${b.id}"${String(b.id) === String(linkedId) ? ' selected' : ''}>${esc(b.name)}</option>`),
+  ].join('');
+  return `
+    <div class="form-group">
+      <label class="form-label" for="an-${side}-link">${esc(label)} · ${esc(t('anniversaries.personLinkLabel'))}</label>
+      <select class="form-input" id="an-${side}-link">${options}</select>
+    </div>
+    <div class="form-group" id="an-${side}-name-group">
+      <label class="form-label" for="an-${side}-name">${esc(t('anniversaries.personNameLabel'))}</label>
+      <input class="form-input" id="an-${side}-name" type="text" value="${esc(freeName)}" ${linkedId ? 'disabled' : ''}>
+    </div>`;
+}
+
+/** Freitext nur, wenn keine Verknüpfung gewählt ist; das Feld folgt der Auswahl. */
+function wireAnniversaryPersonFields(panel) {
+  for (const side of ['a', 'b']) {
+    const link = panel.querySelector(`#an-${side}-link`);
+    const name = panel.querySelector(`#an-${side}-name`);
+    link?.addEventListener('change', () => {
+      if (name) name.disabled = link.value !== '';
+    });
+  }
+}
+
+/**
+ * Liest eine Seite aus dem Dialog. Eine Verknüpfung gewinnt; sonst zählt der
+ * getippte Name. Keines von beiden heisst: die Seite ist nicht ausgefüllt.
+ */
+function readAnniversarySide(panel, side) {
+  const link = panel.querySelector(`#an-${side}-link`).value;
+  const name = panel.querySelector(`#an-${side}-name`).value.trim();
+  if (link !== '') return { ok: true, birthdayId: Number(link), name: null };
+  if (name !== '') return { ok: true, birthdayId: null, name };
+  return { ok: false, birthdayId: null, name: null };
+}
+
+function deleteAnniversary(id) {
+  if (readOnly()) return;
+  const index = state.anniversaries.findIndex((a) => a.id === id);
+  if (index === -1) return;
+  const anniversary = state.anniversaries[index];
+
+  state.anniversaries = state.anniversaries.filter((a) => a.id !== id);
+  const owner = _container;
+  const row = owner?.querySelector(`#birthdays-list .swipe-row[data-swipe-id="${id}"]`) ?? null;
+  collapseRow(row).then(() => { if (_container === owner) renderList({ motion: true }); });
+
+  scheduleUndoableDelete({
+    message: t('anniversaries.deletedToast'),
+    commit: async ({ keepalive }) => {
+      try {
+        await api.delete(`/anniversaries/${id}`, { keepalive });
+      } catch (err) {
+        if (!isAlreadyDeleted(err, 'anniversaries_not_found')) throw err;
+      }
+    },
+    restore: (err) => {
+      state.anniversaries = [
+        ...state.anniversaries.slice(0, index),
+        anniversary,
+        ...state.anniversaries.slice(index),
+      ];
+      if (_container === owner) renderList({ motion: true });
+      if (err) window.yuvomi?.showToast(errorSentence(err), 'danger');
+    },
+  });
+}
+
 function importCandidateRowHtml(c) {
   if (c.already_imported) {
     return `
@@ -1853,7 +2292,7 @@ export async function render(container, { signal } = {}) {
   state.loading = true;
   renderPage();
   bindEvents();
-  await loadData();
+  await Promise.all([loadData(), loadAnniversaries()]);
   if (signal?.aborted) return;
   state.loading = false;
   renderList();

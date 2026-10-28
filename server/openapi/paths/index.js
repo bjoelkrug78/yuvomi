@@ -17,6 +17,7 @@ import { calendarPaths } from './calendar.js';
 import { notesPaths } from './notes.js';
 import { contactsPaths } from './contacts.js';
 import { birthdaysPaths } from './birthdays.js';
+import { anniversariesPaths } from './anniversaries.js';
 import { budgetPaths } from './budget.js';
 import { documentsPaths } from './documents.js';
 import { weatherPaths } from './weather.js';
@@ -57,6 +58,7 @@ export function buildPaths() {
     ...notesPaths(),
     ...contactsPaths(),
     ...birthdaysPaths(),
+    ...anniversariesPaths(),
     ...budgetPaths(),
     ...documentsPaths(),
     ...weatherPaths(),
