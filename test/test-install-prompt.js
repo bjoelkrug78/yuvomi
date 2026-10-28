@@ -61,3 +61,28 @@ test('Klicks im Rundgang zaehlen nicht, Klicks in der App schon', () => {
   assert.equal(shown, 1, 'nach zwei Klicks in der App kommt der Hinweis');
   assert.equal(listeners.filter((l) => l.type === 'click').length, 0, 'danach haengt kein Zaehler mehr');
 });
+
+/* EIN SATZ FUER DIE INSTALLATION AUF iOS (Critique R24, G6-Rand-P3-2). Der
+ * Hinweis sagte 'Tippe auf ⇧ → "Zum Home-Bildschirm"' mit geraden
+ * Anfuehrungszeichen und Pfeil, die Einstellungen "Teilen-Menue oeffnen und Zum
+ * Home-Bildschirm auswaehlen" - zwei Formulierungen fuer denselben Weg. Jetzt
+ * EIN Satz (tippen, waehlen) mit dem Menuepunkt in den Anfuehrungszeichen der
+ * Sprache, in jeder Locale Hinweis, Einstellungen und Toast mit demselben Namen. */
+test('R24: Install-Hinweis, Einstellungen und Toast sagen auf iOS denselben Satz', async () => {
+  const { readFileSync, readdirSync } = await import('node:fs');
+  const dir = new URL('../public/locales/', import.meta.url);
+  const de = JSON.parse(readFileSync(new URL('de.json', dir), 'utf8'));
+  assert.equal(`${de.install.iosTip1}⇧${de.install.iosTip2}`, 'Tippe auf ⇧ und wähle „Zum Home-Bildschirm“.');
+  assert.equal(de.settings.pwaInstallIosToast, 'Tippe auf Teilen und wähle „Zum Home-Bildschirm“.');
+  assert.ok(de.settings.pwaInstallIosHint.endsWith(`: ${de.settings.pwaInstallIosToast}`),
+    'der Hinweis der Einstellungen ist derselbe Satz mit Geraet davor');
+  for (const file of readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+    const { install, settings } = JSON.parse(readFileSync(new URL(file, dir), 'utf8'));
+    assert.doesNotMatch(install.iosTip2, /[→←]/, `${file}: kein Pfeil statt Verb`);
+    // Der Name des Menuepunkts steht im Hinweis UND in Einstellungen und Toast.
+    const label = install.iosTip2.match(/[“„«‘'"”「]\s?([^“”„«»‘’'"「」]+?)\s?[”“»’'"」]/)?.[1];
+    assert.ok(label, `${file}: der Menuepunkt steht in Anfuehrungszeichen`);
+    assert.ok(settings.pwaInstallIosHint.includes(label) && settings.pwaInstallIosToast.includes(label),
+      `${file}: "${label}" steht auch in Einstellungen und Toast`);
+  }
+});

@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Installing on iPhone is explained in one sentence.** The install hint, the Device settings and the
+  note after "Install" now all say "Tap Share and choose “Add to Home Screen”", with the menu item in
+  proper quotation marks; before, the hint used straight quotes and an arrow, and the settings worded it
+  differently.
 - **The offline page looks like Yuvomi's own.** When the server cannot be reached at all, the page now
   stands on the same lit stage with the app mark as the sign-in pages, and it is called "Connection
   lost" like the same state inside the app, instead of a plain grey card titled "No connection".
