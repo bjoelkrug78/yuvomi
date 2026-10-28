@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **One way to pick a colour, everywhere.** Shift types, the household help's calendar and profile
+  colour, subscriptions and their categories, new calendars, calendar subscriptions and imports,
+  holiday colours, member and account colours, waste types, notes and quick links now offer the same
+  row of named family colours with "Custom" behind it for any other shade. Before, some showed a bare
+  violet colour bar, some a round colour button and some their own swatch row. A colour you set earlier
+  that is not in the row stays selected as its own swatch instead of being replaced.
+- **A shift type reads like an appointment.** Start and end stand side by side in one row, and a shift
+  type without a symbol shows a plus on "Choose symbol" instead of a crossed-out picture.
+
 ### Fixed
 - **The welcome tour explains a control next to it.** The tour card stayed in the middle of the screen
   while the highlighted sidebar, tab bar or + button was elsewhere; it now sits beside the control it

@@ -2987,7 +2987,7 @@ test('P9: every shift preset colour comes from the shared user palette, none in 
     assert.ok(!['#6C3AED', '#7C3AED'].includes(hex), `${hex} ist die Stimme`);
   }
   const { __test } = await import('../public/pages/schedule.js');
-  const fresh = /name="color" type="color" value="(#[0-9A-Fa-f]{6})"/.exec(__test.shiftFields({}))?.[1];
+  const fresh = /<input type="hidden" name="color" value="(#[0-9A-Fa-f]{6})">/.exec(__test.shiftFields({}))?.[1];
   assert.equal(fresh?.toUpperCase(), USER_COLOR_DEFAULT.toUpperCase(), 'eine neue Schichtart startet auf der Palettenvorgabe');
 });
 

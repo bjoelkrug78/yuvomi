@@ -25,6 +25,7 @@ import { hourOffset, alignedHourScroll, timeGridDayHeadHtml, timeGridHoursHtml, 
 import { nowFields } from '/utils/timezone.js';
 import { isNavModuleReadOnly } from '/permissions.js';
 import { USER_COLOR_DEFAULT } from '/utils/color.js';
+import { colorPickerHtml, setColorPickerValue, wireColorPicker } from '/utils/color-picker.js';
 import { reminderOffsetOptions } from '/utils/schedule-reminder-offset.js';
 import { scheduleViewFromPath, scheduleRouteForView } from '/utils/schedule-tabs.js';
 import { reloadAfterSave } from '/utils/reload-after-save.js';
@@ -899,7 +900,7 @@ function shiftPresetOptions() {
 
 function setShiftIconButtonIcon(button, iconName) {
   button.querySelectorAll('i[data-lucide], svg.lucide').forEach((el) => el.remove());
-  button.insertAdjacentHTML('afterbegin', '<i data-lucide="' + esc(iconName || 'image-off') + '" aria-hidden="true"></i>');
+  button.insertAdjacentHTML('afterbegin', '<i data-lucide="' + esc(iconName || 'plus') + '" aria-hidden="true"></i>');
   window.lucide?.createIcons({ el: button });
 }
 
@@ -910,7 +911,7 @@ function applyShiftPreset(form) {
   form.elements.short_code.value = presetShortCode(selected);
   form.elements.start_time.value = selected.startTime;
   form.elements.end_time.value = selected.endTime;
-  form.elements.color.value = selected.color;
+  setColorPickerValue(form.querySelector('[data-color-picker]'), selected.color);
   form.elements.icon.value = selected.icon ?? '';
   const iconButton = form.querySelector('[data-action="pick-shift-icon"]');
   if (iconButton) setShiftIconButtonIcon(iconButton, selected.icon);
@@ -968,17 +969,34 @@ function formField(label, control, className = '', { star = true } = {}) {
   return '<div class="form-field ' + className + '"><label class="form-label"' + forAttr + '>' + esc(label) + mark + '</label>' + html + '</div>';
 }
 
+// Die Farbe ist der geteilte Waehler (utils/color-picker.js, Critique R24
+// E6): eine radiogroup, also eine Gruppe mit sichtbarem Namen statt eines
+// `<label for>` - formField() wuerde sonst das "Eigene"-Feld darin benennen.
+function colorField(value) {
+  const labelId = 'schedule-color-label-' + (++formFieldSeq);
+  return '<div class="form-field schedule-color-field"><span class="form-label" id="' + labelId + '">' + esc(t('schedule.color')) + '</span>'
+    + colorPickerHtml({ name: 'color', value: value ?? SHIFT_COLOR_FALLBACK, labelledBy: labelId }) + '</div>';
+}
+
 function shiftFields(type = {}) {
   return [
     formField(t('schedule.name'), '<input class="form-input" required name="name" maxlength="200" value="' + esc(type.name ?? '') + '">'),
     formField(t('schedule.shortCode'), '<input class="form-input" name="short_code" maxlength="12" value="' + esc(type.short_code ?? '') + '">'),
-    formField(t('schedule.color'), '<input class="form-input form-input--color" required name="color" type="color" value="' + esc(type.color ?? SHIFT_COLOR_FALLBACK) + '">', 'schedule-color-field'),
+    colorField(type.color),
+    // EIN Bedienelement fuer das Symbol (Critique R24 G1-Schichtplan-P2-3):
+    // ohne Symbol steht kein durchgestrichenes Bild ("image-off" las sich wie
+    // ein Fehler), sondern das Plus der Auswahl, die man gleich oeffnet.
     formField(t('schedule.icon'), '<button type="button" class="btn btn--secondary schedule-icon-picker" data-action="pick-shift-icon">'
-      + (type.icon ? '<i data-lucide="' + esc(type.icon) + '" aria-hidden="true"></i>' : '<i data-lucide="image-off" aria-hidden="true"></i>')
+      + '<i data-lucide="' + esc(type.icon || 'plus') + '" aria-hidden="true"></i>'
       + '<span>' + esc(t('schedule.chooseIcon')) + '</span></button>'
       + '<input type="hidden" name="icon" value="' + esc(type.icon ?? '') + '">'),
-    formField(t('schedule.startTime'), '<yuvomi-datepicker name="start_time" type="time" label="' + esc(t('schedule.startTime')) + '" value="' + esc(type.start_time ?? '') + '"></yuvomi-datepicker>'),
-    formField(t('schedule.endTime'), '<yuvomi-datepicker name="end_time" type="time" label="' + esc(t('schedule.endTime')) + '" value="' + esc(type.end_time ?? '') + '"></yuvomi-datepicker>'),
+    // Beginn und Ende in EINER Zeile (`.form-pair`, Critique R24
+    // G1-Schichtplan-P2-3) - die Zeitspanne liest sich wie im Termin-Dialog
+    // als ein Paar; im schmalen Blatt faellt sie von selbst untereinander.
+    '<div class="form-pair schedule-time-pair">'
+      + formField(t('schedule.startTime'), '<yuvomi-datepicker name="start_time" type="time" label="' + esc(t('schedule.startTime')) + '" value="' + esc(type.start_time ?? '') + '"></yuvomi-datepicker>')
+      + formField(t('schedule.endTime'), '<yuvomi-datepicker name="end_time" type="time" label="' + esc(t('schedule.endTime')) + '" value="' + esc(type.end_time ?? '') + '"></yuvomi-datepicker>')
+      + '</div>',
   ].join('');
 }
 
@@ -2783,6 +2801,7 @@ function openScheduleCreateModal(view, { mode = 'pattern' } = {}) {
     onSave: (modal) => {
       const form = modal.querySelector('#schedule-create-form');
       form?.querySelector('[name="shift_preset"]')?.addEventListener('change', () => applyShiftPreset(form));
+      wireColorPicker(form);
       // Wie der Fuell-Umschalter direkt darunter: das Modal haengt an
       // document.body, ausserhalb von `root` - der Klick-Delegierte in
       // action() erreicht es nicht, also eigens verdrahten.
@@ -3113,6 +3132,7 @@ function editorAction(button) {
 }
 
 function wireEditorActions(form) {
+  wireColorPicker(form);
   form?.addEventListener('click', (event) => {
     const button = event.target.closest('[data-action]');
     if (button && button.dataset.action !== 'close-modal') editorAction(button);

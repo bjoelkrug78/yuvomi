@@ -7399,6 +7399,118 @@ dialog.dialog-surface.dialog-surface--closing::backdrop {
   --form-pair-min: 11rem;
 }
 
+/* EIN FARBWAEHLER (Critique R24, E6; utils/color-picker.js). Eine Reihe
+ * benannter Toene als radiogroup, dahinter "Eigene" fuer den Systemwaehler.
+ * Stand bis R24 als `.color-swatch` in calendar.css und in vier Abschriften
+ * (waste, notes, budget, Schnellzugriffe) - eine geteilte Form, deren CSS in
+ * einem Modul wohnt, ist nur dort eine Form.
+ * Der Swatch ist 28px gross; die Trefferflaeche holt `::before` auf 48px
+ * zurueck (28 + 2 x 10), ohne die Palette aufzublasen. Kein `overflow` am
+ * Swatch: er schnitte das `::before` ab. */
+.color-picker {
+  --swatch-size: calc(var(--space-6) + var(--space-1));
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+/* Bricht die Reihe um, bleibt "Eigene" am Ende der letzten Zeile stehen,
+   statt allein in eine eigene zu fallen. */
+.color-picker__swatches {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  gap: var(--space-2) var(--space-3);
+}
+
+.color-picker__custom {
+  flex: 0 0 auto;
+}
+
+.color-swatch {
+  position: relative;
+  inline-size: var(--swatch-size, calc(var(--space-6) + var(--space-1)));
+  block-size: var(--swatch-size, calc(var(--space-6) + var(--space-1)));
+  padding: 0;
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  background: var(--swatch, transparent);
+  background-clip: padding-box;
+  /* Eine ruhige Innenkante in beiden Themes: im Dark lief ein Swatch ohne
+     Kante in den Kartengrund (Re-Critique 2026-09-28, P9). */
+  box-shadow: inset 0 0 0 1px var(--color-border);
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.color-swatch::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--space-2h));
+  border-radius: var(--radius-full);
+}
+
+@media (hover: hover) {
+  .color-swatch:hover { transform: scale(1.1); }
+}
+
+/* Der Ring nimmt die Textfarbe, nicht den Akzent: er muss gegen JEDE
+   Fuellung bestehen, auch gegen den Akzent selbst. Ebenso der Fokusring. */
+.color-swatch.color-swatch--active {
+  border-color: var(--color-text-primary);
+  box-shadow: inset 0 0 0 2px var(--color-surface-raised);
+}
+
+.color-swatch:focus-visible {
+  --focus-ring-color: var(--color-text-primary);
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* "Eigene": ein runder Knopf im Well mit Plus, darueber unsichtbar der
+   Systemwaehler (das Feld selbst traegt Namen und Fokus). Die gewaehlte
+   eigene Farbe steht als Swatch davor, nicht im Knopf - der Knopf heisst
+   immer dasselbe. */
+.color-picker__custom {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--swatch-size);
+  block-size: var(--swatch-size);
+  border-radius: var(--radius-full);
+  background: var(--color-fill-well);
+  color: var(--color-text-secondary);
+}
+
+.color-picker__custom svg {
+  inline-size: var(--icon-md);
+  block-size: var(--icon-md);
+  pointer-events: none;
+}
+
+.color-picker .color-picker__native {
+  /* Doppelte Klasse: Modulregeln wie `.housekeeping-field input` (0,1,1)
+     haetten das Feld sonst wieder sichtbar und breit gemacht. */
+  position: absolute;
+  inset: calc(-1 * var(--space-2h));
+  inline-size: calc(100% + 2 * var(--space-2h));
+  min-inline-size: 0;
+  block-size: calc(100% + 2 * var(--space-2h));
+  min-block-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  opacity: 0;
+  cursor: pointer;
+}
+
+.color-picker__custom:has(.color-picker__native:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--color-text-primary);
+  outline-offset: var(--focus-ring-offset);
+}
+
 /* Gleich hohe Karten/Boxen in Modal-Grids */
 .modal-panel__body .grid {
   align-items: stretch;
@@ -8855,7 +8967,7 @@ textarea::placeholder {
 :is(.modal-panel__body, .form-advanced__body, .form-stack, .form-pair, .modal-grid,
     .rrule-row, .reminder-fields, .reminder-section,
     .subscription-form__identity-fields, .subscription-form__billing-grid,
-    .shopping-import-meals-form, .settings-name-color-row) > .form-group,
+    .shopping-import-meals-form) > .form-group,
 :is(.modal-panel__body, .form-advanced__body, .form-stack, .birthday-modal__identity) > * > .form-group:last-child {
   margin-bottom: 0;
 }

@@ -981,6 +981,47 @@ export function scanNativeDate(src, file = '') {
   return found;
 }
 
+/**
+ * EIN FARBWAEHLER (Critique R24, E6): ein natives Farbfeld gibt es nur noch
+ * als "Eigene" im Baustein utils/color-picker.js - sonst stand es als
+ * violetter Balken (Schichtplan, Haushaltshilfe, Abos) oder als runder Knopf
+ * (Konto, Kalender-Import) neben fuenf Swatch-Reihen.
+ */
+export function scanNativeColor(src, file = '') {
+  if (file === 'public/utils/color-picker.js') return [];
+  const found = [];
+  const re = /<input\b[^>]*\btype=(["'])color\1[^>]*>|\.type\s*=\s*(["'])color\2|setAttribute\(\s*(["'])type\3\s*,\s*(["'])color\4\s*\)/g;
+  let m;
+  while ((m = re.exec(src))) {
+    if (inComment(src, m.index)) continue;
+    found.push({ line: lineOf(src, m.index), what: m[0].slice(0, 80) });
+  }
+  return found;
+}
+
+/**
+ * Eine Swatch-Reihe mit eigener Klasse (`.waste-color-swatch`,
+ * `.note-color-swatch`, `.budget-color-swatch` ...) statt `.color-swatch` aus
+ * colorPickerHtml(): jede Abschrift hatte eigene Geometrie, eigene Tasten und
+ * eigenen Ring. Gezaehlt wird jede Klasse auf `-swatch`, die als Radio waehlt.
+ */
+export function scanSwatchDialect(src, file = '') {
+  if (file === 'public/utils/color-picker.js') return [];
+  const found = [];
+  const re = /<(?:div|button|span)\b[^>]*>/g;
+  let m;
+  while ((m = re.exec(src))) {
+    const tag = m[0];
+    if (!/role=(["'])radio\1/.test(tag)) continue;
+    const hit = /class="([^"]*)"|class='([^']*)'/.exec(tag);
+    const cls = (hit?.[1] ?? hit?.[2] ?? '').replace(/\$\{[^}]*\}/g, ' ');
+    const own = cls.split(/\s+/).find((c) => /-swatch$/.test(c) && c !== 'color-swatch');
+    if (!own || inComment(src, m.index)) continue;
+    found.push({ line: lineOf(src, m.index), what: own });
+  }
+  return found;
+}
+
 /** Ende des Elements, dessen Tag bei `openIdx` beginnt (balancierte div-Tiefe); ohne Schluss +800. */
 function elementEnd(src, openIdx) {
   const re = /<div\b|<\/div>/g;
@@ -1530,6 +1571,34 @@ test('Scanner: native-date faengt das native Datumsfeld (Template und DOM) und l
   assert.deepEqual(scanNativeDate(bad, 'public/components/datepicker.js'), [], 'der Baustein selbst zaehlt nicht');
 });
 
+test('Scanner: native-color faengt das native Farbfeld (Template und DOM) und laesst den Baustein durch', () => {
+  const bad = `
+    <input class="form-input form-input--color" name="color" type="color" value="\${esc(c)}">
+    <input class="settings-color-button" type='color' id="x">
+    field.type = 'color';
+    input.setAttribute("type", "color");`;
+  assert.equal(scanNativeColor(bad, 'public/pages/x.js').length, 4);
+  const good = `
+    \${colorPickerHtml({ name: 'color', value, labelledBy: 'l' })}
+    // <input type="color"> stand hier bis R24
+    <input type="text" class="form-input">`;
+  assert.deepEqual(scanNativeColor(good, 'public/pages/x.js'), []);
+  assert.deepEqual(scanNativeColor(bad, 'public/utils/color-picker.js'), [], 'der Baustein selbst zaehlt nicht');
+});
+
+test('Scanner: swatch-dialect faengt die eigene Swatch-Klasse als Radio und laesst .color-swatch und Schmuck durch', () => {
+  const bad = `
+    <div class="note-color-swatch \${on ? 'note-color-swatch--active' : ''}" data-color="x"
+         role="radio" tabindex="0"></div>
+    <button type="button" role="radio" class="budget-color-swatch is-active" style="--swatch:x"></button>`;
+  assert.deepEqual(scanSwatchDialect(bad, 'public/pages/x.js').map((h) => h.what), ['note-color-swatch', 'budget-color-swatch']);
+  const good = `
+    <button type="button" class="color-swatch color-swatch--active" role="radio" aria-checked="true"></button>
+    <span class="filter-chip__swatch" aria-hidden="true"></span>
+    <span class="cal-calendar-row__swatch" style="background-color:x" aria-hidden="true"></span>`;
+  assert.deepEqual(scanSwatchDialect(good, 'public/pages/x.js'), []);
+});
+
 test('Scanner: section-action faengt btn--ghost und btn--secondary ohne --sm im Abschnittskopf und laesst Kanon durch', () => {
   const bad = `
     <div class="split-section-actions">
@@ -1972,6 +2041,15 @@ const PENDING = {
   // --- Issue #2119 (2026-10-25): Haken mit Gegenstueck - leer ab Beginn. ---
   'action-hook': {},
   'cta-hook': {},
+  // --- Critique R24 S3 (2026-10-28), E6: EIN Farbwaehler. ---
+  // Die Zeile in "Kalender verwalten" baut S7 als Zeilenliste mit
+  // Bearbeiten-Blatt (E6) - dort dann colorPickerHtml().
+  'native-color': { 'public/pages/calendar.js': 1 },
+  // Kuratierte TOKEN-Toene (Kontofarben, Kategorietoene) mit eigener
+  // Verhaltensschicht `wireTablist`: S10 (Budget-Konto) zieht sie auf
+  // colorPickerHtml({ options, custom: false }) - der Baustein nimmt
+  // Token-Ausdruecke als `paint`; der Kategorie-Verwalter folgt mit.
+  'swatch-dialect': { 'public/pages/budget.js': 1, 'public/components/category-manager.js': 1 },
 };
 
 const HEAD_SEARCH = headSearchClasses(JS);
@@ -2005,6 +2083,8 @@ const RULES = {
   'section-action': { files: JS, scan: (s) => scanSectionAction(s), canon: 'genau EINE `btn--secondary btn--sm` (Icon + Wort) im Abschnittskopf; Nebenaktionen hinter `popover-menu__trigger` mit `<modul>-section-tools` (DESIGN.md D5)' },
   'section-toolbar-create': { files: JS, scan: (s) => scanSectionToolbarCreate(s), canon: 'Erstell-Aktion im Abschnittskopf hinter `popover-menu__trigger`, kein nackter `btn--icon` mit Plus-Icon (DESIGN.md D5)' },
   'action-hook': { files: JS, scan: (s, f) => scanActionHook(s, importedSources(s, f, JS_BY_FILE)), canon: 'jedes `[data-action="x"]` im Listener hat ein `x` im Markup derselben Datei oder eines importierten Moduls (#2119)' },
+  'native-color': { files: JS, scan: (s, f) => scanNativeColor(s, f), canon: '`colorPickerHtml()` + `wireColorPicker()` (utils/color-picker.js) - Familientoene, "Eigene" dahinter (E6)' },
+  'swatch-dialect': { files: JS, scan: (s, f) => scanSwatchDialect(s, f), canon: '`.color-swatch` aus `colorPickerHtml()` (utils/color-picker.js), keine eigene Swatch-Klasse je Modul' },
   'cta-hook': { files: JS, scan: (s) => scanCtaHook(s), canon: 'eine Leerzustand-Aktion ohne `onClick` traegt einen Haken (`attrs: { \'data-action\' }`, `id`, Klasse), den die Datei bindet (#2210)' },
 };
 

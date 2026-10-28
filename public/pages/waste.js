@@ -28,6 +28,7 @@ import { findPageFab, setPageFabAction } from '/utils/fab.js';
 import { popoverMenuHtml, installPopoverMenus } from '/utils/popover-menu.js';
 import { isNavModuleReadOnly } from '/permissions.js';
 import { createPageController } from '/utils/page-lifecycle.js';
+import { colorPickerHtml, setColorPickerValue, wireColorPicker } from '/utils/color-picker.js';
 import { USER_COLORS } from '/utils/color.js';
 import { redrawList } from '/utils/list-motion.js';
 import { errorSentence, isGone, isAlreadyDeleted } from '/utils/friendly-error.js';
@@ -128,19 +129,6 @@ const TYPE_PRESETS = [
  * Palette ist.
  */
 const WASTE_TYPE_COLORS = USER_COLORS;
-
-const WASTE_TYPE_COLOR_NAMES = () => ({
-  '#78808C': t('waste.colorGray'),
-  '#3B82F6': t('waste.colorBlue'),
-  '#16A34A': t('waste.colorGreen'),
-  '#D97706': t('waste.colorOcher'),
-  '#059669': t('waste.colorEmerald'),
-  '#D946EF': t('waste.colorFuchsia'),
-  '#EF4444': t('waste.colorRed'),
-  '#0891B2': t('waste.colorCyan'),
-  '#EA580C': t('waste.colorOrange'),
-  '#EC4899': t('waste.colorPink'),
-});
 
 let _container = null;
 let state = { types: [], schedules: [], occurrences: [], sources: [], loading: true, error: null, upcomingExpanded: false };
@@ -1067,55 +1055,6 @@ async function pickTypeIcon(button) {
   setTypeIconButtonIcon(button, chosen);
 }
 
-/**
- * Pure: liest die Farbe des aktuell aktiven Swatch aus einem Dialog-Panel,
- * mit Rueckfall auf die Farbe, mit der der Dialog geoeffnet wurde (kein
- * Swatch aktiv waere ein Zustand, den die Tastatur-/Klick-Verdrahtung oben
- * eigentlich nie zulaesst - der Rueckfall ist trotzdem kein leerer Wert).
- *
- * Eigens herausgezogen (Review-Nice-to-have), weil die Speicherlogik sonst
- * nirgends bindend testbar war: ein Gegenbeweis am PR-Kopf zeigte, dass das
- * Speichern immer die Oeffnungsfarbe schicken konnte, ohne dass
- * `test:waste-ui` das bemerkt haette.
- *
- * @param {ParentNode} panel
- * @param {string} fallback
- * @returns {string}
- */
-function activeSwatchColor(panel, fallback) {
-  return panel.querySelector('.waste-color-swatch--active')?.dataset.color ?? fallback;
-}
-
-/**
- * Pure: welche Swatches der Farb-Dialog zeigt, und mit welchem (gross-
- * geschriebenen) Wert der aktive Swatch verglichen wird.
- *
- * GROSS-/KLEINSCHREIBUNG: `<input type="color">` liefert seinen Wert laut
- * HTML-Spec IMMER klein geschrieben zurueck - auch fuer eine Preset-Farbe,
- * die selbst genau diesen Weg gesetzt hat. Abfallarten aus der Zeit vor
- * diesem Umbau (und jede ueber ein Preset angelegte) tragen deshalb z.B.
- * `#16a34a`, waehrend `WASTE_TYPE_COLORS` grossgeschrieben ist. Ein
- * case-sensitiver Vergleich faende hier nie eine Uebereinstimmung und haengte
- * einen elften, optisch identischen "Aktuelle Farbe"-Swatch an. Der Vergleich
- * normalisiert deshalb auf Grossschreibung; das Raster selbst bleibt in
- * seiner eigenen Schreibweise, die im `data-color`/`style` unveraendert bleibt.
- *
- * EINE BESTEHENDE FARBE AUSSERHALB DER PALETTE WIRD NICHT STILL UEBERSCHRIEBEN.
- * Abfallarten aus der Zeit des freien Waehlers tragen beliebige Hex-Werte;
- * stuenden sie nicht im Raster, waere beim ersten Speichern die Farbe des
- * Nutzers weg, ohne dass er es angefasst hat. Derselbe Weg, den Notizen und
- * Kalender fuer ihren Altbestand gehen: der Wert bekommt einen eigenen
- * Swatch am Ende und heisst dort „Aktuelle Farbe".
- *
- * @param {string} selColor
- * @returns {{ swatchColors: string[], selColorUpper: string }}
- */
-function resolveSwatchColors(selColor) {
-  const selColorUpper = selColor.toUpperCase();
-  const swatchColors = WASTE_TYPE_COLORS.includes(selColorUpper) ? WASTE_TYPE_COLORS : [...WASTE_TYPE_COLORS, selColor];
-  return { swatchColors, selColorUpper };
-}
-
 function openTypeModal(type = null) {
   const isEdit = !!type;
   const presetOptions = TYPE_PRESETS.map((p) => `<option value="${p.key}">${esc(t(`waste.preset${p.key.charAt(0).toUpperCase()}${p.key.slice(1)}`))}</option>`).join('');
@@ -1123,7 +1062,6 @@ function openTypeModal(type = null) {
   // (vorher `#22C55E`, das in keinem Raster auftauchte und den Dialog damit
   // ohne aktiven Swatch geoeffnet haette).
   const selColor = isEdit ? (type.color || WASTE_TYPE_COLORS[0]) : WASTE_TYPE_COLORS[2];
-  const { swatchColors, selColorUpper } = resolveSwatchColors(selColor);
 
   const content = `
     ${isEdit ? '' : `
@@ -1143,28 +1081,8 @@ function openTypeModal(type = null) {
       <div id="wtm-icon-wrap">${iconButtonHtml(isEdit ? type.icon : 'trash-2')}</div>
     </div>
     <div class="form-group">
-      <label class="form-label" id="wtm-color-label">${t('waste.typeColorLabel')}</label>
-      <div class="waste-color-picker" role="radiogroup" aria-labelledby="wtm-color-label">
-        ${(() => {
-          // Ein Kartenaufbau je Renderdurchlauf statt je Swatch (Nice-to-have,
-          // Review): `WASTE_TYPE_COLOR_NAMES()` ruft `t()` fuer alle zehn
-          // Farben auf, egal welcher Swatch gerade dran ist - das gehoert vor
-          // die Schleife, nicht in sie hinein.
-          const colorNames = WASTE_TYPE_COLOR_NAMES();
-          return swatchColors.map((c) => {
-            const active = c.toUpperCase() === selColorUpper;
-            return `
-          <div class="waste-color-swatch${active ? ' waste-color-swatch--active' : ''}"
-               data-color="${esc(c)}"
-               style="background-color:${esc(c)}"
-               role="radio"
-               tabindex="${active ? '0' : '-1'}"
-               aria-checked="${active ? 'true' : 'false'}"
-               aria-label="${esc(colorNames[c.toUpperCase()] ?? t('waste.colorCurrent'))}"></div>
-        `;
-          }).join('');
-        })()}
-      </div>
+      <span class="form-label" id="wtm-color-label">${t('waste.typeColorLabel')}</span>
+      ${colorPickerHtml({ id: 'wtm-color', value: selColor, labelledBy: 'wtm-color-label' })}
     </div>
     <div class="modal-panel__footer modal-panel__footer--plain">
       ${isEdit ? `
@@ -1189,38 +1107,10 @@ function openTypeModal(type = null) {
       panel.querySelector('#wtm-cancel').addEventListener('click', () => closeModal());
       panel.querySelector('[data-action="pick-type-icon"]').addEventListener('click', (e) => pickTypeIcon(e.currentTarget));
 
-      // Farb-Swatch: Auswahl + ARIA + Keyboard (Roving Tabindex) - dieselbe
-      // Mechanik wie in notes.js/calendar.js, nur auf `waste-` getauft.
-      function selectSwatch(target) {
-        if (!target) return;
-        panel.querySelectorAll('.waste-color-swatch').forEach((s) => {
-          s.classList.remove('waste-color-swatch--active');
-          s.setAttribute('aria-checked', 'false');
-          s.setAttribute('tabindex', '-1');
-        });
-        target.classList.add('waste-color-swatch--active');
-        target.setAttribute('aria-checked', 'true');
-        target.setAttribute('tabindex', '0');
-      }
-      panel.querySelectorAll('.waste-color-swatch').forEach((sw) => {
-        sw.addEventListener('click', () => { selectSwatch(sw); sw.focus(); });
-        sw.addEventListener('keydown', (e) => {
-          const swatches = [...panel.querySelectorAll('.waste-color-swatch')];
-          const idx = swatches.indexOf(sw);
-          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-            e.preventDefault();
-            const next = swatches[(idx + 1) % swatches.length];
-            selectSwatch(next); next.focus();
-          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-            e.preventDefault();
-            const prev = swatches[(idx - 1 + swatches.length) % swatches.length];
-            selectSwatch(prev); prev.focus();
-          } else if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            selectSwatch(sw);
-          }
-        });
-      });
+      // Die Farbe ist der geteilte Waehler (utils/color-picker.js, Critique
+      // R24 E6) - Familientoene, "Eigene" dahinter, eine Bestandsfarbe
+      // ausserhalb der Reihe bleibt als eigener Swatch gewaehlt.
+      wireColorPicker(panel);
 
       panel.querySelector('#wtm-preset')?.addEventListener('change', (e) => {
         const preset = TYPE_PRESETS.find((p) => p.key === e.target.value);
@@ -1231,7 +1121,7 @@ function openTypeModal(type = null) {
         // markiert die Vorlage jetzt einen Swatch, statt ein Eingabefeld zu
         // fuellen. Das Raster bleibt danach frei bedienbar - eine Vorlage ist
         // ein Startpunkt, keine Festlegung.
-        selectSwatch(panel.querySelector(`.waste-color-swatch[data-color="${preset.color}"]`));
+        setColorPickerValue(panel.querySelector('[data-color-picker]'), preset.color);
         const hidden = panel.querySelector('input[name="icon"]');
         hidden.value = preset.icon;
         setTypeIconButtonIcon(panel.querySelector('[data-action="pick-type-icon"]'), preset.icon);
@@ -1271,10 +1161,9 @@ function openTypeModal(type = null) {
         const body = {
           name,
           icon: panel.querySelector('input[name="icon"]').value || 'trash-2',
-          // Der Rueckfall greift nur, wenn gar kein Swatch aktiv ist - dann
-          // gilt der Stand, mit dem der Dialog geoeffnet wurde, nicht etwa
-          // eine leere Farbe.
-          color: activeSwatchColor(panel, selColor),
+          // Der Rueckfall greift nur bei leerem Wertfeld - dann gilt der
+          // Stand, mit dem der Dialog geoeffnet wurde, nicht etwa eine leere Farbe.
+          color: panel.querySelector('#wtm-color')?.value || selColor,
         };
         const modalContext = captureModalContext();
         try {
@@ -2915,7 +2804,6 @@ export const __test = {
   // nicht mehr am Markup ablesen kann - welcher Eintrag bei welcher Position
   // im Menue steht, und dass die Preset-Farben allesamt im Raster liegen.
   typeCardHtml, scheduleRowHtml, sourceRowHtml, TYPE_PRESETS, typeWithoutScheduleHtml, remainingTypePresets, remainingPresetsHtml, WASTE_TYPE_COLORS,
-  activeSwatchColor, resolveSwatchColors,
   isOnboarding, onboardingHtml, sectionVisibility, fabIntent, pageModeClasses,
   importErrorText,
   // #1909: die echten Aufrufer hinter den Fehler-Toasts, fuer test:waste-errors.

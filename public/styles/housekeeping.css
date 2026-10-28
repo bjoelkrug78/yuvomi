@@ -487,12 +487,14 @@
   resize: vertical;
 }
 
-.housekeeping-field--inline {
-  min-width: 180px;
+/* Die Farbreihen (Critique R24 E6) nehmen die ganze Zeile - in einer
+   Rasterzelle brachen zehn Swatches dreimal um. */
+.housekeeping-field--color {
+  grid-column: 1 / -1;
 }
 
-.housekeeping-field--color input {
-  padding: var(--space-1);
+.housekeeping-field--inline {
+  min-width: 180px;
 }
 
 .housekeeping-task-form,

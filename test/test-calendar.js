@@ -2303,7 +2303,8 @@ test('Kalender verwalten: unter 640px steht das Namensfeld des Anlegen-Formulars
   const open = 'id="local-calendar-create"';
   const at = calSrc.indexOf(open) + open.length;
   const form = calSrc.slice(at, calSrc.indexOf('</form>', at));
-  const fields = [...form.matchAll(/id="(local-calendar-[a-z]+)"/g)].map((m) => m[1]);
+  // Seit R24 (E6) steht die Farbe als Farbwaehler: `id: '...'` im Aufruf.
+  const fields = [...form.matchAll(/id(?:="|: ')(local-calendar-[a-z]+)['"]/g)].map((m) => m[1]);
   assert(JSON.stringify(fields) === JSON.stringify(['local-calendar-name', 'local-calendar-color']), 'das Formular traegt Name, dann Farbe - keine Scheibe davor');
   const phone = [...eachRule(calendarCss)].filter((r) =>
     r.at.some((a) => /max-width:\s*639px/.test(a))

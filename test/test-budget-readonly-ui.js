@@ -1268,7 +1268,7 @@ test('Abo: die Leseansicht zeigt jeden Wert des Bearbeiten-Dialogs - ohne Handlu
     assert.equal(lesend.title, 'Streamingdienst');
     jederWert(werte, editor.content, zeilen(lesend.sections), 'Abo');
     // Die Markenfarbe ist keine Zeile, sondern der Farbstreifen der Ansicht.
-    assert.match(editor.content, /id="subscription-color" type="color" value="#E50914"/);
+    assert.match(editor.content, /<input type="hidden" id="subscription-color" value="#E50914">/);
     assert.equal(lesend.accentColor, '#E50914');
 
     assert.equal(withAccess({ budget: 'read' }, () => modalOptionen(() => abos.openSubscriptionModal(eintrag))), null,

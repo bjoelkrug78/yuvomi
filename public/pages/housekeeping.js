@@ -31,6 +31,7 @@ import { pathAccess, mayWritePath } from '/utils/module-access.js';
 import { todayKey } from '/utils/date.js';
 import { displayTimeZone, zonedDateKey } from '/utils/timezone.js';
 import { USER_COLOR_DEFAULT } from '/utils/color.js';
+import { colorPickerHtml, wireColorPicker } from '/utils/color-picker.js';
 import { renderPageColumns } from '/utils/page-layout.js';
 import { rowMenuHtml } from '/utils/row-action.js';
 import { installPopoverMenus } from '/utils/popover-menu.js';
@@ -2511,10 +2512,10 @@ function openStaffModal(worker, content, options = {}) {
             <span>${esc(t('housekeeping.hourlyRate'))}</span>
             <input name="hourly_rate"${amountInputAttrs(state.currency, item.hourly_rate ?? 0)}>
           </label>
-          <label class="housekeeping-field housekeeping-field--color">
-            <span>${esc(t('housekeeping.calendarColor'))}</span>
-            <input name="calendar_color" type="color" value="${esc(item.calendar_color || USER_COLOR_DEFAULT)}">
-          </label>
+          <div class="housekeeping-field housekeeping-field--color">
+            <span id="housekeeping-calendar-color-label">${esc(t('housekeeping.calendarColor'))}</span>
+            ${colorPickerHtml({ name: 'calendar_color', value: item.calendar_color || USER_COLOR_DEFAULT, labelledBy: 'housekeeping-calendar-color-label' })}
+          </div>
           <label class="housekeeping-field">
             <span>${esc(t('housekeeping.paymentSchedule'))}</span>
             <select name="payment_schedule">
@@ -2523,10 +2524,10 @@ function openStaffModal(worker, content, options = {}) {
               <option value="monthly"${!item.payment_schedule || item.payment_schedule === 'monthly' ? ' selected' : ''}>${esc(t('housekeeping.scheduleMonthly'))}</option>
             </select>
           </label>
-          <label class="housekeeping-field housekeeping-field--color">
-            <span>${esc(t('housekeeping.profileColor'))}</span>
-            <input name="avatar_color" type="color" value="${esc(item.avatar_color || USER_COLOR_DEFAULT)}">
-          </label>
+          <div class="housekeeping-field housekeeping-field--color">
+            <span id="housekeeping-profile-color-label">${esc(t('housekeeping.profileColor'))}</span>
+            ${colorPickerHtml({ name: 'avatar_color', value: item.avatar_color || USER_COLOR_DEFAULT, labelledBy: 'housekeeping-profile-color-label' })}
+          </div>
         </div>
         <label class="housekeeping-field">
           <span>${esc(t('housekeeping.workerNotes'))}</span>
@@ -2539,6 +2540,7 @@ function openStaffModal(worker, content, options = {}) {
       </form>
     `,
     onSave: (panel) => {
+      wireColorPicker(panel);
       // Geburtstag ohne Jahr wie im Geburtstags-Editor (#2095).
       const workerBirthField = panel.querySelector('#housekeeping-worker-birth-date')
         ? wireBirthDateField(panel, 'housekeeping-worker-birth-date')

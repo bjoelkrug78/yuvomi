@@ -2497,39 +2497,8 @@
  * Calendar-Modal Content-Styles (Overlay/Panel via shared modal.js)
  * -------------------------------------------------------- */
 
-/* Farbauswahl */
-.color-picker {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.color-swatch {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-full);
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: transform var(--transition-fast), border-color var(--transition-fast);
-  position: relative;
-}
-
-.color-swatch::before {
-  content: '';
-  position: absolute;
-  inset: -10px;
-  border-radius: var(--radius-full);
-}
-
-.color-swatch:hover {
-  transform: scale(1.15);
-}
-
-.color-swatch--active {
-  border-color: var(--color-text-primary);
-  transform: scale(1.1);
-}
-
+/* Farbauswahl: der geteilte Baustein steht in layout.css (utils/color-picker.js,
+   Critique R24 E6); hier nur der Erben-Swatch des Termins. */
 /* "Keine eigene Farbe" - der Termin leiht sich die der zugewiesenen Person
    (#891). Er traegt bewusst keinen Farbwert, sondern zeigt als einziger Swatch
    ein Symbol: eine Farbflaeche waere von einer Wahl nicht zu unterscheiden, und
@@ -3815,9 +3784,15 @@
 
 .cal-calendar-create {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--space-12) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: var(--space-2);
   align-items: center;
+}
+
+/* Die Farbreihe des neuen Kalenders steht unter Name und Knopf
+   (utils/color-picker.js, Critique R24 E6). */
+.cal-calendar-create__color {
+  grid-column: 1 / -1;
 }
 
 .cal-calendar-list {
@@ -3861,10 +3836,10 @@
   /* Das Formular hat KEINE Farbscheibe vorn: mit der Zeilenvorlage fiel sein
    * Namensfeld in die 16px der Scheibenspalte und das Farbfeld in die freie
    * Breite - ein blauer Balken neben einem Feld ohne lesbaren Platzhalter.
-   * Name und Farbe stehen deshalb in eigener Vorlage, „Erstellen" darunter
-   * ueber die volle Breite. */
+   * Das Formular hat deshalb eine eigene Vorlage: eine Spalte, Name,
+   * „Erstellen" und die Farbreihe (seit R24 E6) untereinander. */
   .cal-calendar-create {
-    grid-template-columns: minmax(0, 1fr) var(--space-12);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .cal-calendar-create .btn {

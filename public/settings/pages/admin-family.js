@@ -8,7 +8,8 @@ import { dateText } from '/utils/date-format.js';
 import { esc, REQUIRED_MARK } from '/utils/html.js';
 import { initials } from '/utils/initials.js';
 import { prefersInkText } from '/utils/contrast.js';
-import { AVATAR_COLORS } from '/utils/color.js';
+import { USER_COLORS, USER_COLOR_DEFAULT } from '/utils/color.js';
+import { colorPickerHtml, wireColorPicker } from '/utils/color-picker.js';
 import { sortMembers } from '/utils/member-order.js';
 import { makeSortable } from '/utils/sortable.js';
 import { vibrate } from '/utils/ux.js';
@@ -24,7 +25,9 @@ import {
 
 const FAMILY_ROLES = ['dad', 'mom', 'parent', 'child', 'grandparent', 'relative', 'other'];
 
-const randomAvatarColor = () => AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
+// Aus den Familientoenen, die der Farbwaehler auch anbietet (Critique R24 E6):
+// die Vorgabe steht dann als gewaehlter Swatch in der Reihe, nicht als "Eigene".
+const randomAvatarColor = () => USER_COLORS[Math.floor(Math.random() * USER_COLORS.length)];
 
 /**
  * Ist auf diesem Server SSO konfiguriert? (#847)
@@ -291,8 +294,8 @@ function addMemberFormHtml() {
               control: '<input class="form-input" type="text" id="new-display-name" required />',
             }),
             formRowHtml({
-              label: t('settings.colorLabel'), labelFor: 'new-avatar-color',
-              control: `<input class="settings-color-button" type="color" id="new-avatar-color" value="${randomAvatarColor()}" />`,
+              label: t('settings.colorLabel'), labelId: 'new-avatar-color-label', stacked: true,
+              control: colorPickerHtml({ id: 'new-avatar-color', value: randomAvatarColor(), labelledBy: 'new-avatar-color-label' }),
             }),
             ssoAvailable ? switchRowHtml({
               id: 'new-member-sso-only', label: t('settings.memberSsoOnlyLabel'), hint: t('settings.memberSsoOnlyHint'),
@@ -1046,15 +1049,13 @@ async function openEditMemberModal(member, currentUser, users, container) {
               <label class="form-label" for="edit-member-username">${t('settings.usernameLabel')}${REQUIRED_MARK}</label>
               <input class="form-input" type="text" id="edit-member-username" value="${esc(member.username)}" required autocomplete="off" />
             </div>
-            <div class="settings-name-color-row">
-              <div class="form-group settings-name-color-row__name">
-                <label class="form-label" for="edit-member-display-name">${t('settings.displayNameLabel')}${REQUIRED_MARK}</label>
-                <input class="form-input" type="text" id="edit-member-display-name" value="${esc(member.display_name)}" required maxlength="128" />
-              </div>
-              <div class="form-group settings-color-field">
-                <label class="form-label" for="edit-member-avatar-color">${t('settings.colorLabel')}</label>
-                <input class="settings-color-button" type="color" id="edit-member-avatar-color" value="${esc(member.avatar_color || '#007AFF')}" />
-              </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-member-display-name">${t('settings.displayNameLabel')}${REQUIRED_MARK}</label>
+              <input class="form-input" type="text" id="edit-member-display-name" value="${esc(member.display_name)}" required maxlength="128" />
+            </div>
+            <div class="form-group">
+              <span class="form-label" id="edit-member-avatar-color-label">${t('settings.colorLabel')}</span>
+              ${colorPickerHtml({ id: 'edit-member-avatar-color', value: member.avatar_color || USER_COLOR_DEFAULT, labelledBy: 'edit-member-avatar-color-label' })}
             </div>
           </div>
         </div>
@@ -1114,6 +1115,7 @@ async function openEditMemberModal(member, currentUser, users, container) {
       </form>
     `,
     onSave(panel) {
+      wireColorPicker(panel);
       const fileInput = panel.querySelector('#edit-member-avatar-file');
       const errorEl = panel.querySelector('#edit-member-error');
       bindAvatarPicker(panel, 'edit-member');
@@ -1265,6 +1267,7 @@ function openAddMemberModal(container, currentUser, users) {
     size: 'md',
     content: addMemberFormHtml(),
     onSave(panel) {
+      wireColorPicker(panel);
       const form = panel.querySelector('#add-member-form');
       form.querySelector('#new-member-sso-only')
         ?.addEventListener('change', () => syncSsoOnlyField(panel));

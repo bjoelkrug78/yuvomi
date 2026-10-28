@@ -37,6 +37,9 @@ import { toggleRowHtml, formSwitchRowHtml } from '/settings/components.js';
 import { leadCardClass, fitMetricLeads } from '/utils/metric-card.js';
 import { errorSentence, isGone, isAlreadyDeleted } from '/utils/friendly-error.js';
 import { reloadAfterSave } from '/utils/reload-after-save.js';
+import { colorPickerHtml, familyColorOptions, setColorPickerValue, wireColorPicker } from '/utils/color-picker.js';
+
+const SUBSCRIPTION_COLOR_DEFAULT = '#0F766E';
 
 // Auslastung, ab der ein Budget „knapp" ist - dieselbe Zahl wie im Plan
 // (budget-plans.js `toneForRatio`), damit beide Tabs dieselbe Grenze ziehen.
@@ -1063,7 +1066,7 @@ function endInfoLabel(subscription) {
 // Beschreibung `<span>` statt `<h3>`/`<p>`: Content-Model eines `<button>` ist
 // Phrasing Content. Was der Knopf TUT, kommt als sr-only Zusatz ans Ende.
 function renderCard(subscription) {
-  const brandColor = subscription.brand_color || subscription.category_color || '#0F766E';
+  const brandColor = subscription.brand_color || subscription.category_color || SUBSCRIPTION_COLOR_DEFAULT;
   const status = statusMeta(subscription);
   const endInfo = endInfoLabel(subscription);
   // BEI `budget: read` OEFFNET DER ZEILENKOERPER DIE LESEANSICHT statt des
@@ -1627,7 +1630,7 @@ export function openSubscriptionModal(subscription = null) {
   const advancedOpen = edit && (
     !!subscription.category_id
     || !!subscription.payment_method_id
-    || (!!subscription.brand_color && subscription.brand_color !== '#0F766E')
+    || (!!subscription.brand_color && subscription.brand_color !== SUBSCRIPTION_COLOR_DEFAULT)
     || !!subscription.notes
     || subscription.enabled === false
     || (state.meta.budget_mode === 'personal' && subscription.visibility === 'private')
@@ -1641,8 +1644,8 @@ export function openSubscriptionModal(subscription = null) {
           ${metaComboboxMarkup('subscription-category', subscription?.category_id || '')}
           ${metaComboboxMarkup('subscription-method', subscription?.payment_method_id || '')}
           <div class="form-group subscription-form__color">
-            <label class="form-label" for="subscription-color">${t('subscriptions.brandColorLabel')}</label>
-            <input class="form-input form-input--color" id="subscription-color" type="color" value="${esc(subscription?.brand_color || '#0F766E')}">
+            <span class="form-label" id="subscription-color-label">${t('subscriptions.brandColorLabel')}</span>
+            ${colorPickerHtml({ id: 'subscription-color', value: subscription?.brand_color || SUBSCRIPTION_COLOR_DEFAULT, labelledBy: 'subscription-color-label', options: subscriptionColorOptions() })}
           </div>
         </div>
       </section>
@@ -1781,6 +1784,7 @@ export function openSubscriptionModal(subscription = null) {
     content,
     size: 'lg',
     onSave(panel) {
+      wireColorPicker(panel);
       let searchedLogoData = null;
       const logoPreview = panel.querySelector('#subscription-logo-preview');
       const showLogo = (data) => {
@@ -2311,7 +2315,7 @@ function metadataRows(items, kind) {
       </div>
       <div class="subscriptions-metadata-row__edit" hidden>
         <input class="form-input subscriptions-metadata-edit-name" value="${esc(isCat ? categoryLabel(item) : paymentMethodLabel(item))}" data-original-name="${esc(item.name ?? '')}" maxlength="100" aria-label="${editLabel}">
-        ${isCat ? `<input class="form-input form-input--color subscriptions-metadata-edit-color" type="color" value="${esc(item.color)}" aria-label="${t('subscriptions.brandColorLabel')}">` : ''}
+        ${isCat ? colorPickerHtml({ value: item.color, label: t('subscriptions.brandColorLabel'), options: subscriptionColorOptions(), inputClass: 'subscriptions-metadata-edit-color', className: 'subscriptions-metadata-row__color' }) : ''}
         <div class="subscriptions-metadata-row__actions">
           <button class="btn btn--icon" data-act="save" aria-label="${t('common.save')}">
             <i data-lucide="check" aria-hidden="true"></i>
@@ -2441,6 +2445,15 @@ function moveMetaRow(row, delta, target) {
   return persistMetaOrder(list, rows.map((li) => Number(li.dataset.id)));
 }
 
+/**
+ * DIE FARBREIHE DER ABOS (Critique R24 E6): vorn die Standardfarbe des Moduls
+ * (`#0F766E`, auch der Rueckfall jeder Zeile ohne Markenfarbe), dahinter die
+ * Familientoene und "Eigene" fuer die echte Markenfarbe.
+ */
+function subscriptionColorOptions() {
+  return [{ value: SUBSCRIPTION_COLOR_DEFAULT, label: t('colorPicker.standard') }, ...familyColorOptions()];
+}
+
 function openMetadataModal() {
   if (readOnly()) return;
   const content = `
@@ -2450,8 +2463,8 @@ function openMetadataModal() {
         <ul id="subscription-category-list">${metadataRows(state.meta.categories, 'categories')}</ul>
         <div class="subscriptions-metadata-add">
           <input class="form-input" id="subscription-new-category" placeholder="${t('subscriptions.newCategoryPlaceholder')}">
-          <input class="form-input form-input--color" id="subscription-new-category-color" type="color" value="#0F766E">
           <button class="btn btn--primary" id="subscription-add-category">${t('common.add')}</button>
+          ${colorPickerHtml({ id: 'subscription-new-category-color', value: SUBSCRIPTION_COLOR_DEFAULT, label: t('subscriptions.brandColorLabel'), options: subscriptionColorOptions(), className: 'subscriptions-metadata-add__color' })}
         </div>
       </section>
       <section>
@@ -2473,6 +2486,7 @@ function openMetadataModal() {
     size: 'xl',
     onClose: () => metaSortables.clear(),
     onSave(panel) {
+      wireColorPicker(panel);
       panel.querySelector('#subscriptions-metadata-close').addEventListener('click', closeModal);
       panel.querySelector('#subscription-add-category').addEventListener('click', async () => {
         if (readOnly()) return;
@@ -2540,7 +2554,7 @@ function openMetadataModal() {
           const nameInput = editRow.querySelector('.subscriptions-metadata-edit-name');
           nameInput.value = nameInput.defaultValue;
           const colorInput = editRow.querySelector('.subscriptions-metadata-edit-color');
-          if (colorInput) colorInput.value = colorInput.defaultValue;
+          if (colorInput) setColorPickerValue(colorInput, colorInput.defaultValue);
           editRow.hidden = true;
           li.querySelector('.subscriptions-metadata-row__view').hidden = false;
           // Fokus zurück, statt ins Leere (der Cancel-Button wird gerade

@@ -5,6 +5,7 @@
  */
 
 import { api } from '/api.js';
+import { colorPickerHtml, wireColorPicker } from '/utils/color-picker.js';
 import { openModal as openSharedModal, closeModal, btnError, advancedSection, reportFieldError, captureModalContext, decorateFooterDelete } from '/components/modal.js';
 import { wireCategoryScopeHelp } from '/components/category-manager.js';
 import { stagger, vibrate, scheduleUndoableDelete, wireScrollFade, acknowledgeCheck, isImeComposing } from '/utils/ux.js';
@@ -1044,10 +1045,8 @@ function openNoteModal({ mode, note = null }) {
   const isEdit      = mode === 'edit';
   const selColor    = (isEdit ? note.color : null) || NOTE_COLORS[0];
   // Bestehende Notizen können Farben außerhalb der Palette tragen (Alt-Daten,
-  // frühere Paletten). Die aktuelle Farbe wird dann als eigener Swatch
-  // vorangestellt: sonst wäre nichts selektiert und die Radio-Gruppe hätte
-  // keinen Tastatur-Einstieg (kein tabindex="0" im Roving-Muster).
-  const swatchColors = NOTE_COLORS.includes(selColor) ? NOTE_COLORS : [selColor, ...NOTE_COLORS];
+  // frühere Paletten): der Farbwaehler zeigt sie als eigenen, gewaehlten
+  // Swatch (colorPickerHtml), statt sie still zu ersetzen.
   // Bestehende Notizen öffnen im Lese-Modus (#507); neue direkt im Editor.
   const initialView = isEdit ? 'read' : 'edit';
   let editorClosed = false;
@@ -1097,18 +1096,9 @@ function openNoteModal({ mode, note = null }) {
     ${renderCategoryEditor(isEdit ? (note.categories || []).map((category) => category.id) : [])}
     ${advancedSection(`
       <div class="form-group">
-        <label class="form-label" id="note-color-label">${t('notes.colorLabel')}</label>
-        <div class="note-color-picker" role="radiogroup" aria-labelledby="note-color-label">
-          ${swatchColors.map((c) => `
-            <div class="note-color-swatch ${c === selColor ? 'note-color-swatch--active' : ''}"
-                 data-color="${esc(c)}"
-                 style="background-color:${esc(c)};border:2px solid ${c === NOTE_COLORS[7] ? 'var(--color-border)' : esc(c)};"
-                 role="radio"
-                 tabindex="${c === selColor ? '0' : '-1'}"
-                 aria-checked="${c === selColor ? 'true' : 'false'}"
-                 aria-label="${esc(NOTE_COLOR_NAMES()[c] ?? t('notes.colorCurrent'))}"></div>
-          `).join('')}
-        </div>
+        <span class="form-label" id="note-color-label">${t('notes.colorLabel')}</span>
+        ${colorPickerHtml({ id: 'note-color', value: selColor, labelledBy: 'note-color-label', custom: false,
+          options: NOTE_COLORS.map((c) => ({ value: c, label: NOTE_COLOR_NAMES()[c] })) })}
       </div>
       <div class="form-group">
         ${formSwitchRowHtml({ label: t('notes.pinnedLabel'), checked: Boolean(isEdit && note.pinned), attrs: { id: 'note-pinned' } })}
@@ -1223,7 +1213,7 @@ function openNoteModal({ mode, note = null }) {
         if (view === 'read') {
           // Live-Spiegelung: Farbe aus dem aktiven Swatch, Inhalt frisch gerendert
           // — Lesemodus zeigt ungespeicherte Änderungen.
-          const c = panel.querySelector('.note-color-swatch--active')?.dataset.color;
+          const c = panel.querySelector('#note-color')?.value;
           if (c) noteModal.style.setProperty('--note-color', c);
           syncHeaderTitle();
           readPane.replaceChildren();
@@ -1300,36 +1290,10 @@ function openNoteModal({ mode, note = null }) {
         setTimeout(() => panel.querySelector('.note-mode-switch .sub-tab--active')?.focus(), 80);
       }
 
-      // Farb-Swatch: Auswahl + ARIA + Keyboard (Roving Tabindex)
-      function selectSwatch(target) {
-        panel.querySelectorAll('.note-color-swatch').forEach((s) => {
-          s.classList.remove('note-color-swatch--active');
-          s.setAttribute('aria-checked', 'false');
-          s.setAttribute('tabindex', '-1');
-        });
-        target.classList.add('note-color-swatch--active');
-        target.setAttribute('aria-checked', 'true');
-        target.setAttribute('tabindex', '0');
-      }
-      panel.querySelectorAll('.note-color-swatch').forEach((sw) => {
-        sw.addEventListener('click', () => { selectSwatch(sw); sw.focus(); });
-        sw.addEventListener('keydown', (e) => {
-          const swatches = [...panel.querySelectorAll('.note-color-swatch')];
-          const idx = swatches.indexOf(sw);
-          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-            e.preventDefault();
-            const next = swatches[(idx + 1) % swatches.length];
-            selectSwatch(next); next.focus();
-          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-            e.preventDefault();
-            const prev = swatches[(idx - 1 + swatches.length) % swatches.length];
-            selectSwatch(prev); prev.focus();
-          } else if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            selectSwatch(sw);
-          }
-        });
-      });
+      // Die Notizfarbe ist der geteilte Waehler (utils/color-picker.js,
+      // Critique R24 E6) - kuratierte Pastelltoene als Kartengrund, deshalb
+      // ohne "Eigene": auf einem frei gewaehlten Grund gibt es keine Tinte.
+      wireColorPicker(panel);
 
       // Formatierungs-Toolbar (geteilt mit den Aufgaben-Notizen, #731)
       const textarea = panel.querySelector('#note-content');
@@ -1591,7 +1555,7 @@ function openNoteModal({ mode, note = null }) {
         const saveBtn = saveButton;
         const title   = panel.querySelector('#note-title').value.trim() || null;
         const cnt     = panel.querySelector('#note-content').value.trim();
-        const color   = panel.querySelector('.note-color-swatch--active')?.dataset.color || NOTE_COLORS[0];
+        const color   = panel.querySelector('#note-color')?.value || NOTE_COLORS[0];
         const pinned  = panel.querySelector('#note-pinned').checked ? 1 : 0;
         const category_ids = [...panel.querySelectorAll('input[name="note-category"]:checked')]
           .map((input) => Number(input.value));

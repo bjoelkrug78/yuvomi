@@ -818,13 +818,15 @@
 
 .subscription-form__organization-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 90px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-3);
   align-items: end;
 }
 
-.subscription-form__color .form-input--color {
-  width: 100%;
+/* Die Markenfarbe ist die Farbreihe (Critique R24 E6) und nimmt die ganze
+   Zeile; die 90px-Spalte war fuer das nackte Farbfeld. */
+.subscription-form__color {
+  grid-column: 1 / -1;
 }
 
 .subscriptions-combobox {
@@ -1081,10 +1083,16 @@
   min-width: 0;
 }
 
-.subscriptions-metadata-row__edit .form-input--color {
-  width: 44px;
-  flex: 0 0 44px;
-  padding: 2px;
+/* Die Farbreihe der Kategorie bricht unter den Namen (Critique R24 E6) -
+   neben Name und zwei Knoepfen haetten elf Swatches keinen Platz. */
+.subscriptions-metadata-row__edit {
+  flex-wrap: wrap;
+}
+
+.subscriptions-metadata-row__color,
+.subscriptions-metadata-add__color {
+  order: 1;
+  flex: 1 0 100%;
 }
 
 .subscriptions-metadata-row__view > i {
@@ -1097,9 +1105,8 @@
   align-items: stretch;
 }
 
-.subscriptions-metadata-add .form-input--color {
-  width: 52px;
-  flex: 0 0 52px;
+.subscriptions-metadata-add {
+  flex-wrap: wrap;
 }
 
 .subscriptions-metadata > .subscriptions-modal-footer {

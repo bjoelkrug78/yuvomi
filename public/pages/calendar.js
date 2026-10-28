@@ -39,6 +39,8 @@ import {
   shiftSeriesStart,
 } from '/utils/recurrence-scope.js';
 import { getReadableTextColor } from '/utils/color.js';
+import { USER_COLOR_DEFAULT } from '/utils/color.js';
+import { colorPickerHtml, wireColorPicker } from '/utils/color-picker.js';
 import { resolveEventColor } from '/utils/event-color.js';
 import { EVENT_ICON_CATEGORIES, CUSTOM_EVENT_ICON_PATHS, eventIconName, hasEventIcon, eventIconHtml } from '/utils/event-icon.js';
 import { packLanes } from '/utils/week-strip.js';
@@ -6587,10 +6589,10 @@ function renderLocalCalendarsContent() {
     <div class="cal-calendar-manager">
       ${moduleAccess('calendar') === 'write' ? `<form class="cal-calendar-create" id="local-calendar-create">
         <input class="form-input" id="local-calendar-name" maxlength="80" placeholder="${esc(t('calendar.localCalendarName'))}" aria-label="${esc(t('calendar.localCalendarName'))}">
-        <input class="form-input" id="local-calendar-color" type="color" value="#007AFF" aria-label="${esc(t('calendar.localCalendarColor'))}">
         <button class="btn btn--primary" type="submit">
           <i data-lucide="plus" class="icon-md" aria-hidden="true"></i>${t('calendar.localCalendarCreate')}
         </button>
+        ${colorPickerHtml({ id: 'local-calendar-color', value: USER_COLOR_DEFAULT, label: t('calendar.localCalendarColor'), className: 'cal-calendar-create__color' })}
       </form>` : ''}
       <div class="cal-calendar-list">
         ${rows || emptyStateHTML({
@@ -6641,6 +6643,7 @@ async function refreshLocalCalendarsPanel(panel) {
   if (body) {
     body.replaceChildren();
     body.insertAdjacentHTML('beforeend', renderLocalCalendarsContent());
+    wireColorPicker(body);
     window.lucide?.createIcons({ el: body });
   }
   renderView();
@@ -6705,12 +6708,13 @@ async function openLocalCalendarsModal() {
   if (!panel) return;
   window.lucide?.createIcons({ el: panel });
   installPopoverMenus(panel);
+  wireColorPicker(panel);
 
   panel.addEventListener('submit', async (e) => {
     if (!e.target.closest('#local-calendar-create')) return;
     e.preventDefault();
     const name = panel.querySelector('#local-calendar-name')?.value.trim();
-    const color = panel.querySelector('#local-calendar-color')?.value || '#007AFF';
+    const color = panel.querySelector('#local-calendar-color')?.value || USER_COLOR_DEFAULT;
     if (!name) return;
     try {
       await api.post('/calendar/calendars', { name, color });

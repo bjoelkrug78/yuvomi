@@ -4180,9 +4180,12 @@ test('R19: umgestellte Blaetter sprechen den Zeilen-Dialekt', async () => {
   const account = await readFile(new URL('../public/settings/pages/personal-account.js', import.meta.url), 'utf8');
   // Re-Kritik 2026-10-17: auch Anzeigename und Farbe neben dem Bild (vorher
   // Felder unter Etiketten, zwei Dialekte in einer Karte).
-  for (const id of ['profile-display-name', 'profile-avatar-color', 'profile-phone', 'profile-email', 'profile-birth-date', 'current-password', 'new-password', 'confirm-password']) {
+  for (const id of ['profile-display-name', 'profile-phone', 'profile-email', 'profile-birth-date', 'current-password', 'new-password', 'confirm-password']) {
     assert.match(account, new RegExp(`settingRowHtml\\(\\{\\s*label: t\\('settings\\.[a-zA-Z]+'\\), labelFor: '${id}'`), `Konto: ${id} als Zeile`);
   }
+  // Die Farbe ist eine Gruppe (Farbwaehler, Critique R24 E6): Zeile mit
+  // Etikett-id, die Reihe darunter.
+  assert.match(account, /label: t\('settings\.colorLabel'\), labelId: 'profile-avatar-color-label', stacked: true,\s*control: colorPickerHtml\(\{ id: 'profile-avatar-color'/, 'Konto: Farbe als Zeile mit Farbwaehler');
   const profile = account.slice(account.indexOf('<div class="settings-profile-editor">'), account.indexOf('id="profile-error"'));
   assert.ok(profile.length > 0, 'Vorbedingung: das Profil steht im Konto-Blatt');
   assert.doesNotMatch(profile, /class="form-group/, 'Konto: das Profil fuehrt keine gestapelten Felder mehr');

@@ -10,6 +10,7 @@ import { confirmModal, reportFieldError, reportFieldErrors } from '/components/m
 import { errorSentence } from '/utils/friendly-error.js';
 import { prefersInkText } from '/utils/contrast.js';
 import { settingRowHtml } from '/settings/components.js';
+import { colorPickerHtml, wireColorPicker } from '/utils/color-picker.js';
 import { birthDateControlHtml, wireBirthDateField } from '/utils/birth-date.js';
 
 function avatarHtml(user, className = 'settings-avatar') {
@@ -699,8 +700,10 @@ function renderPage(container, user, refreshFailed, accessNotice, oidcState, oid
                 control: `<input class="form-input" type="text" id="profile-display-name" maxlength="128" value="${esc(user?.display_name || '')}" autocomplete="name" aria-describedby="profile-error" required>`,
               })}
               ${settingRowHtml({
-                label: t('settings.colorLabel'), labelFor: 'profile-avatar-color',
-                control: `<input class="settings-color-button" type="color" id="profile-avatar-color" value="${esc(user?.avatar_color || '')}" aria-describedby="profile-error">`,
+                // EIN FARBWAEHLER (Critique R24 E6): die Familientoene als Reihe
+                // UNTER dem Etikett (wie eine Chip-Gruppe), "Eigene" dahinter.
+                label: t('settings.colorLabel'), labelId: 'profile-avatar-color-label', stacked: true,
+                control: colorPickerHtml({ id: 'profile-avatar-color', value: user?.avatar_color || '', labelledBy: 'profile-avatar-color-label' }),
               })}
               ${settingRowHtml({
                 label: t('settings.usernameLabel'), labelId: 'profile-username-label',
@@ -806,6 +809,7 @@ function bindEvents(container, user, profileState, { gravatarHost = '' } = {}) {
   const avatarFile = container.querySelector('#profile-avatar-file');
   const displayName = container.querySelector('#profile-display-name');
   const avatarColor = container.querySelector('#profile-avatar-color');
+  wireColorPicker(container);
 
   const updatePreview = () => {
     setAvatarPreview(container, {
