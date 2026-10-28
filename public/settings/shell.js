@@ -733,9 +733,27 @@ function renderToolbar(toolbar, content, { activeLeaf, domain }) {
     // Name hier ist die Ortsangabe der Shell wie in jedem Modul.
     const moduleTitle = document.createElement('p');
     moduleTitle.className = 'page-toolbar__title settings-toolbar__module-title';
-    moduleTitle.textContent = t('settings.title');
+    const moduleName = document.createElement('span');
+    moduleName.className = 'settings-toolbar__module-name';
+    moduleName.textContent = t('settings.title');
+    // DIE LEISTE TRAEGT DEN LARGE TITLE (R24, E4, Ulas 2026-10-28). Mobil
+    // stand „< Einstellungen" allein in einer 65px-Zeile, darunter Zahnrad,
+    // Large Title und Beschreibung - die erste Karte bei y180, die Rechte erst
+    // bei y750 bedienbar. Jetzt EINE Zeile wie im Gesundheitsbereich: Rueckweg,
+    // das Zeichen des BLATTS (nicht das Zahnrad) und sein Name im Large Title;
+    // der Kopf ist einzeilig (Kopfregel 1a) und steht in jedem Scrollstand
+    // gleich. Der Name hier ist Bild, die Ueberschrift bleibt das <h1> des
+    // Blatts (mobil im Baum, settings.css) - darum aria-hidden.
+    const leafName = document.createElement('span');
+    leafName.className = 'settings-toolbar__leaf-name';
+    leafName.setAttribute('aria-hidden', 'true');
+    const leafLabel = document.createElement('span');
+    leafLabel.className = 'settings-toolbar__leaf-label';
+    leafLabel.textContent = settingsLeafLabel(activeLeaf, t);
+    leafName.append(createLeafMark(activeLeaf, 'settings-toolbar__leaf-seal'), leafLabel);
+    moduleTitle.append(moduleName, leafName);
     toolbar.dataset.mode = 'leaf';
-    toolbar.classList.remove('page-toolbar--title-tools');
+    toolbar.classList.add('page-toolbar--title-tools');
     toolbar.replaceChildren(back, moduleTitle);
     hydrateIcons(toolbar);
     return;

@@ -3640,9 +3640,14 @@ test('R16: die Sprungmarken sind Links im Blatt, eine scrollende Zeile, und spri
   const row = rules.find((r) => r.selector.trim() === '.settings-sheet-jump__list' && !r.at.length);
   assert.match(row?.body ?? '', /overflow-x:\s*auto/);
   assert.match(row?.body ?? '', /flex-wrap:\s*nowrap/, 'eine Zeile: umgebrochen kosteten fuenf Marken mobil drei Reihen vor dem ersten Schalter');
-  // R20: am Desktop schnitt die Zeile im Kalender-Blatt zwei Marken ab (999px in 660px).
-  const wide = rules.find((r) => r.selector.trim() === '.settings-sheet-jump__list' && r.at.some((a) => /min-width:\s*768px/.test(a)));
-  assert.match(wide?.body ?? '', /flex-wrap:\s*wrap/, 'ab 768px brechen die Marken um, statt an der Kante zu enden');
+  // R20 brach die Zeile ab 768px um (am Desktop schnitt sie im Kalender-Blatt
+  // zwei Marken ohne Anriss ab). R24 (G6-Einst-P3-6): der Umbruch liess
+  // „Termine" allein in Reihe zwei stehen; seit R22 D13 traegt die Zeile den
+  // Anriss, also bleibt sie in jeder Breite eine Zeile.
+  const wide = rules.filter((r) => r.selector.trim() === '.settings-sheet-jump__list' && r.at.length);
+  assert.ok(wide.every((r) => !/flex-wrap:\s*wrap/.test(r.body)), 'keine Breite bricht die Marken um');
+  assert.match(shell.slice(shell.indexOf('function createSheetJump('), shell.indexOf('function syncJumpLabels(')), /wireScrollFade\(list\)/,
+    'der Anriss zeigt in jeder Breite, dass es weitergeht');
 });
 
 test('R16/R20: mobil ist die Blattbeschreibung hoechstens drei Zeilen lang', async () => {
@@ -5723,4 +5728,36 @@ test('#2166: Darstellung - Waehrung und Zone stehen kurz in der Auswahl, voll vo
   assert.match(page, /currencySelect\?\.addEventListener\('change', async \(\) => \{\s*if \(currencySelect\.disabled\) return;\s*(?:\/\/[^\n]*\n\s*)*syncCurrencyHint\(container\);/);
   assert.match(page, /\} catch \(error\) \{\s*syncCurrencyHint\(container\);\s*showError\(errorElement, errorSentence\(error, 'settings\.preferenceSaveFailed'\)\);/);
   assert.match(page, /if \(currencySelect\) currencySelect\.value = preset\.currency;\s*syncCurrencyHint\(container\);/);
+});
+
+// R24 E4 (Ulas 2026-10-28; Critique G6-Einst-P2-3): mobil traegt EINE Leiste
+// den Rueckweg, das Zeichen des Blatts und seinen Namen im Large Title. Vorher
+// stand „< Einstellungen" allein in einer Zeile, darunter Zahnrad, Large Title
+// und Beschreibung - erste Karte y180 (gemessen 390px), danach y81.
+test('R24 E4: das Blatt nennt sich mobil in der Leiste, mit seinem Zeichen, ohne Beschreibung', async () => {
+  const shell = await readFile(new URL('../public/settings/shell.js', import.meta.url), 'utf8');
+  const leaf = shell.match(/if \(activeLeaf && domain\) \{[\s\S]*?\n    return;\n  \}/)?.[0] ?? '';
+  assert.match(leaf, /toolbar\.classList\.add\('page-toolbar--title-tools'\)/, 'eine Zeile (Kopfregel 1a)');
+  assert.match(leaf, /leafName\.setAttribute\('aria-hidden', 'true'\)/, 'Bild, die Ueberschrift bleibt das h1 des Blatts');
+  assert.match(leaf, /createLeafMark\(activeLeaf, 'settings-toolbar__leaf-seal'\)/, 'das Zeichen des Blatts, nicht das Zahnrad');
+  assert.match(leaf, /settingsLeafLabel\(activeLeaf, t\)/);
+  const css = await readFile(new URL('../public/styles/settings.css', import.meta.url), 'utf8');
+  const phone = [...eachRule(css)].filter((r) => r.at.some((a) => /\(max-width:\s*767px\)/.test(a)));
+  const header = phone.find((r) => r.selector.trim() === '.settings-leaf-header');
+  assert.match(header?.body ?? '', /clip:\s*rect\(0, 0, 0, 0\)/, 'Kopf im Inhalt nur im Baum (Titel + Beschreibung)');
+  assert.ok(phone.some((r) => r.selector.includes(".settings-toolbar__leaf-name") && /display:\s*flex/.test(r.body)), 'der Blattname steht mobil in der Leiste');
+  assert.ok(phone.some((r) => r.selector.includes('.settings-toolbar__back-label') && /display:\s*none/.test(r.body)), 'der Rueckweg ist neben dem Titel ein Zeichen');
+});
+
+// R24 (Critique G6-Einst-P3-2): die drei Mobil-Plaetze sind EINE Karte mit drei
+// Optionszeilen (Label links, randlose Auswahl rechts) - vorher je Platz eine
+// Karte mit vollbreitem Feld (rund 450px fuer drei Werte).
+test('R24: die Mobil-Plaetze stehen als Optionszeilen in einem Traeger', async () => {
+  const src = await readFile(new URL('../public/settings/pages/modules-navigation.js', import.meta.url), 'utf8');
+  const slot = src.slice(src.indexOf('function mobileSlotHtml('), src.indexOf('function desktopGroupHtml('));
+  assert.match(slot, /return settingRowHtml\(\{/, 'die Zeile der Einstellungen');
+  assert.match(slot, /labelFor: id/, 'das Label benennt die Auswahl (kein aria-label-Ersatz)');
+  assert.match(src, /<div class="row-carrier settings-group settings-mobile-nav-slots">/, 'ein Traeger fuer alle drei');
+  const css = await readFile(new URL('../public/styles/settings.css', import.meta.url), 'utf8');
+  assert.ok(![...eachRule(css)].some((r) => r.selector.trim() === '.settings-mobile-nav-slot'), 'keine eigene Karte je Platz');
 });

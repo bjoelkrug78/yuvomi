@@ -2,7 +2,7 @@ import { api } from '/api.js';
 import { t } from '/i18n.js';
 import { esc } from '/utils/html.js';
 import { getPreferences, savePreferences } from '/settings/preferences-cache.js';
-import { bindDisclosure, createRetryState, thirdPartyStatusLabel } from '/settings/components.js';
+import { bindDisclosure, createRetryState, thirdPartyStatusLabel, settingRowHtml } from '/settings/components.js';
 import {
   BUILT_IN_MODULES,
   DEFAULT_MODULE_ACCENT,
@@ -370,24 +370,30 @@ function mobileCandidateRows(rows) {
   ));
 }
 
+/* DIE DREI PLAETZE SIND EINE KARTE MIT DREI OPTIONSZEILEN (R24, Critique
+ * G6-Einst-P3-2). Vorher stand jeder Platz als eigene Karte mit vollbreitem
+ * Auswahlfeld darunter - mobil drei Kaesten untereinander (rund 450px) fuer
+ * drei Werte. Jetzt die Zeile der Einstellungen (`settingRowHtml`): „Position
+ * 1" links, die randlose Auswahl mit dem Wert rechts, wie Sprache oder Region. */
 function mobileSlotHtml(rows, selectedIds, index) {
   const selectedId = selectedIds[index] ?? '';
   const selectedElsewhere = new Set(selectedIds.filter((_, slot) => slot !== index));
   const label = t('settings.mobileNavigationSlotLabel', { position: index + 1 });
+  const id = `mobile-nav-slot-${index + 1}`;
 
-  return `
-    <label class="settings-mobile-nav-slot">
-      <span class="settings-mobile-nav-slot__label">${esc(label)}</span>
-      <select class="form-input" data-mobile-nav-slot aria-label="${esc(label)}"${selectedId ? '' : ' disabled'}>
+  return settingRowHtml({
+    label,
+    labelFor: id,
+    className: 'settings-mobile-nav-slot',
+    control: `<select class="form-input" id="${id}" data-mobile-nav-slot${selectedId ? '' : ' disabled'}>
         ${selectedId ? '' : `<option value="" selected>${esc(t('settings.mobileNavigationEmptyOption'))}</option>`}
         ${rows.map((row) => `
           <option value="${esc(row.orderId)}"${row.orderId === selectedId ? ' selected' : ''}${selectedElsewhere.has(row.orderId) ? ' disabled' : ''}>
             ${esc(row.label)}
           </option>
         `).join('')}
-      </select>
-    </label>
-  `;
+      </select>`,
+  });
 }
 
 function desktopGroupHtml(section, rows) {
@@ -420,7 +426,7 @@ function renderPage(container, rows, mobileOrder) {
       <section class="settings-navigation-panel">
         <h2 class="settings-navigation-panel__title">${t('settings.mobileNavigationTitle')}</h2>
         <p class="form-hint">${t('settings.mobileNavigationHint')}</p>
-        <div class="settings-mobile-nav-slots">
+        <div class="row-carrier settings-group settings-mobile-nav-slots">
           ${[0, 1, 2].map((index) => mobileSlotHtml(mobileRows, mobileOrder, index)).join('')}
         </div>
       </section>

@@ -2252,9 +2252,17 @@ sind Dokumente (ein Werkzeugmenue), Kalender (Filterblatt, Dialogfuss) und der B
   Eine Mitgliederzeile oeffnet per Tipp (der Name ist der Knopf, seine Flaeche deckt die
   Zeile) und endet in [Mehr][Griff]; der Geburtstag steht nicht in der Zeile. Was an zwei Orten
   wohnt (Wetter: Mein Wetter / Fotos und Wetter; Wand: Dieses Geraet / Wandtabletts), verweist
-  gegenseitig per Satz + Link - kein Zusammenlegen. Links in Hinweisen tragen Akzenttinte. Das
-  Siegel steht unter 1024px am Blatt-Titel (der Kopf zeigt dort nur "< Einstellungen"), ab
-  1024px im Kopf mit dem Modulnamen. Laeuft die Seitenleiste ueber, klebt an ihrem unteren Rand
+  gegenseitig per Satz + Link - kein Zusammenlegen. Links in Hinweisen tragen Akzenttinte.
+  **Unter 768px ist der Kopf eines Blatts EINE Leiste (R24, E4, Ulas 2026-10-28):** Rueckweg
+  als Zeichen (Name „Zurueck zu Einstellungen" im aria-label), das Zeichen des BLATTS im
+  Siegelrang (Ton des Moduls, sonst das Grau der Einstellungen - wie in der Liste, nie das
+  Zahnrad) und der Blattname im Large Title, einzeilig nach Kopfregel 1a wie der
+  Gesundheitsbereich. Titel und Beschreibung des Blatts stehen mobil nur noch im Baum (Gliederung,
+  Fokusziel); die Beschreibung steht im Bild nur auf der Wurzel. Gemessen 390px: erste Karte
+  y180 -> y81, erstes Bedienelement im Konto y131. Zwischen 768 und 1023px fuehrt der
+  Breadcrumb, ab 1024px traegt der Kopf den Modulnamen mit dem Zahnrad. Die Sprungmarken sind
+  in jeder Breite EINE Zeile mit Anriss (`wireScrollFade`) - der Umbruch ab 768px (R20) liess
+  „Termine" allein in einer zweiten Reihe stehen. Laeuft die Seitenleiste ueber, klebt an ihrem unteren Rand
   eine Zeile mit den drei Gruppen als Weg (`createNavigationIndex`). Guard:
   `test:settings-navigation` ("R22 D13"), `test:manager-endzone`.
 

@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   button (Documents showed two arrows), the Documents view switch is as wide as the buttons beside it,
   and Tasks shows either the view's icon or, on wide screens, its name - never both. The Overview's tools
   and "+ New" stand at the same height as in every module, and on phones "Today" starts higher up.
+- **A settings page on the phone starts right under its header.** The header shows the back arrow, the
+  page's own symbol and its name in large type in one bar; the separate "Settings" row, the gear and the
+  description below it are gone, so the first card moves up from about a fifth of the screen to just
+  below the bar. The jump links at the top of long pages stay one row on every screen width, and the
+  three bottom-bar positions in Navigation are one card with a row per position.
 - **The budget plan's button says what it adds.** It reads "+ Category budget" instead of repeating the
   module's name.
 - **One way to pick a colour, everywhere.** Shift types, the household help's calendar and profile

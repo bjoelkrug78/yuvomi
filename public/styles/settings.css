@@ -464,6 +464,76 @@
   }
 }
 
+/* DER BLATTNAME STEHT MOBIL IN DER LEISTE (R24, E4; shell.js renderToolbar).
+ * Unter 768px: Rueckweg als Zeichen (sein Name „Zurueck zu Einstellungen"
+ * steht im aria-label), das Zeichen des Blatts im Siegelrang des Large Title
+ * und der Blattname im Large Title - eine Zeile wie der Gesundheitsbereich,
+ * der Titel gibt nach (Kopfregel 1a). Ab 1024px nennt der Kopf das Modul,
+ * zwischen 768 und 1023 fuehrt der Breadcrumb (der Kopf ist dort aus). */
+.settings-toolbar__leaf-name {
+  display: none;
+}
+
+.settings-toolbar__leaf-seal {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--target-sm);
+  height: var(--target-sm);
+  border-radius: var(--radius-full);
+}
+
+.settings-toolbar__leaf-seal-glyph {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+}
+
+@media (max-width: 767px) {
+  .settings-shell-header[data-mode='leaf'] > .settings-toolbar__module-title {
+    display: block;
+  }
+
+  .settings-shell-header[data-mode='leaf'] .settings-toolbar__module-name {
+    display: none;
+  }
+
+  .settings-shell-header[data-mode='leaf'] .settings-toolbar__leaf-name {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .settings-toolbar__leaf-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Der Rueckweg ist neben dem Titel ein Zeichen; sein Wort traegt das
+   * aria-label (wie „<" im Gesundheitsbereich). */
+  .settings-shell-header[data-mode='leaf'] .settings-toolbar__back-label {
+    display: none;
+  }
+
+  /* Der Kopf des Blatts im Inhalt: Ueberschrift und Beschreibung bleiben im
+   * Baum (Gliederung, Fokusziel nach dem Wechsel, Screenreader), im Bild steht
+   * der Name schon in der Leiste. Die Beschreibung steht nur auf der Wurzel
+   * (E4) - die erste Karte beginnt direkt unter dem Kopf (390px: y180 -> y81). */
+  .settings-leaf-header {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
 @media (min-width: 1024px) {
   .settings-shell-header .settings-toolbar__back {
     display: none;
@@ -683,18 +753,13 @@
   }
 }
 
-/* AB 768px BRECHEN DIE MARKEN UM (R20, Re-Critique 2026-10-17 a5 P3). Die
- * eine scrollende Zeile ist eine Telefonregel (dort kosteten fuenf Marken drei
- * Reihen); am Desktop schnitt sie im Kalender-Blatt zwei von sechs Marken an
- * der Kante ab - ohne sichtbare Leiste, die zeigt, dass es weitergeht
- * (gemessen 999px Inhalt in 660px bei 1280). Dort ist Platz fuer eine zweite
- * Reihe. */
-@media (min-width: 768px) {
-  .settings-sheet-jump__list {
-    flex-wrap: wrap;
-    overflow-x: visible;
-  }
-}
+/* EINE ZEILE IN JEDER BREITE (R24, Critique G6-Einst-P3-6). Ab 768px brachen
+ * die Marken seit R20 um, weil die scrollende Zeile am Desktop zwei Marken
+ * ohne Anriss abschnitt; dafuer stand im Kalender-Blatt „Termine" allein in
+ * einer zweiten Reihe und las sich wie ein eigener Block. Seit R22 (D13) traegt
+ * die Zeile den geteilten Anriss (wireScrollFade, shell.js createSheetJump) -
+ * damit ist das Abschneiden kein stilles mehr, und die Zeile bleibt eine
+ * Zeile, wie jede Chip- und Reiterleiste der App. */
 
 /* Bis die Abschnitte stehen, haelt die Zeile nur ihren Platz (shell.js,
  * syncJumpLabels): die Marken heissen wie die Ueberschriften darunter. */
@@ -3188,10 +3253,10 @@
   flex-direction: column;
 }
 
+/* Die drei Plaetze: EINE Karte (`row-carrier settings-group`) mit drei
+ * Optionszeilen (R24, G6-Einst-P3-2) - Flaeche, Trennlinien und Zeilenmass
+ * kommen aus dem Traeger und der Einstellungszeile. */
 .settings-mobile-nav-slots {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-3);
   margin-top: var(--space-4);
 }
 
@@ -3213,21 +3278,6 @@
   color: var(--color-text-primary);
 }
 
-.settings-mobile-nav-slot {
-  display: grid;
-  gap: var(--space-2);
-  padding: var(--space-3);
-  /* Randlose Karte auf dem Grouped-Grund (tokens.css, Kasten-in-Kasten). */
-  border: none;
-  border-radius: var(--radius-md);
-  background: var(--color-surface-raised);
-}
-
-.settings-mobile-nav-slot__label {
-  color: var(--color-text-secondary);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-semibold);
-}
 
 /* Größe und Weight kommen aus dem Gruppierungslabel in typography.css (R24:
  * dieselbe Gruppe wie in der Seitenleiste, vorher 15/600 mit Haarlinie);
@@ -3607,10 +3657,6 @@
 }
 
 @media (max-width: 639px) {
-  .settings-mobile-nav-slots {
-    grid-template-columns: 1fr;
-  }
-
   .settings-module-row {
     gap: var(--space-2) var(--space-3);
     padding: var(--space-3);
