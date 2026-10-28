@@ -72,7 +72,6 @@
         "errorRateLimited": "Troppe richieste in questo momento. Attendi un attimo, poi riprova.",
         "requiredFields": "Compila tutti i campi obbligatori.",
         "invalidInput": "Input non valido.",
-        "togglePasswordVisibility": "Mostra/nascondi password",
         "errorOfflineMutation": "Le modifiche non sono possibili offline. Riconnettiti.",
         "retry": "Riprova",
         "loadErrorDescription": "Controlla la connessione e riprova.",

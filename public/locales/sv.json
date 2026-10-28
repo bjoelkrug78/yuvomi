@@ -72,7 +72,6 @@
         "errorRateLimited": "För många förfrågningar just nu. Vänta en stund och försök sedan igen.",
         "requiredFields": "Fyll i alla obligatoriska fält.",
         "invalidInput": "Ogiltig inmatning.",
-        "togglePasswordVisibility": "Visa/dölj lösenord",
         "errorOfflineMutation": "Ändringar går inte att göra offline. Anslut igen.",
         "retry": "Försök igen",
         "loadErrorDescription": "Kontrollera anslutningen och försök igen.",

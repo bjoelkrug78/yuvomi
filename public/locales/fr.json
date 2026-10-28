@@ -72,7 +72,6 @@
         "errorRateLimited": "Trop de requêtes pour le moment. Patientez un instant, puis réessayez.",
         "requiredFields": "Veuillez remplir tous les champs obligatoires.",
         "invalidInput": "Saisie invalide.",
-        "togglePasswordVisibility": "Afficher/masquer le mot de passe",
         "errorOfflineMutation": "Les modifications sont impossibles hors ligne. Veuillez vous reconnecter.",
         "retry": "Réessayer",
         "loadErrorDescription": "Vérifiez votre connexion et réessayez.",

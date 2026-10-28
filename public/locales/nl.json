@@ -72,7 +72,6 @@
         "errorRateLimited": "Er komen nu te veel verzoeken binnen. Wacht even en probeer het dan opnieuw.",
         "requiredFields": "Vul alle verplichte velden in.",
         "invalidInput": "Ongeldige invoer.",
-        "togglePasswordVisibility": "Wachtwoord tonen/verbergen",
         "errorOfflineMutation": "Wijzigingen zijn offline niet mogelijk. Maak opnieuw verbinding.",
         "retry": "Opnieuw proberen",
         "loadErrorDescription": "Controleer je verbinding en probeer het opnieuw.",

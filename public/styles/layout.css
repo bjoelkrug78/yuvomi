@@ -7399,6 +7399,56 @@ dialog.dialog-surface.dialog-surface--closing::backdrop {
   --form-pair-min: 11rem;
 }
 
+/* DAS AUGE IM PASSWORTFELD (wirePasswordToggle, utils/auth-ui.js). Bis
+   Critique R24 (G6-Einst-P3-4) stand die Regel in auth.css und galt nur vor
+   der Anmeldung; Sicherung und Dokumentablage bauten ein eigenes Auge AUSSER-
+   HALB des Felds (13px-Glyphe). Jetzt global, fuer `.input` und `.form-input`. */
+.input-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.input-password-wrapper :is(.input, .form-input) {
+  flex: 1;
+  min-width: 0;
+  /* logisch statt physisch, damit der Toggle-Platz in RTL auf der richtigen
+   * Seite reserviert wird (ar/fa) */
+  padding-inline-end: calc(var(--target-lg) + var(--space-1));
+}
+
+.password-toggle {
+  position: absolute;
+  inset-inline-end: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Komfortable Daumen-Trefferfläche (≥44 px) statt der bisherigen 40 px */
+  width: var(--target-lg);
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  /* logische Ecken: rundet in RTL automatisch die richtige Seite */
+  border-start-start-radius: 0;
+  border-start-end-radius: var(--radius-md);
+  border-end-end-radius: var(--radius-md);
+  border-end-start-radius: 0;
+  transition: color var(--transition-fast);
+}
+
+.password-toggle:hover {
+  color: var(--color-text-primary);
+}
+
+.password-toggle:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset-inset);
+}
+
 /* EIN FARBWAEHLER (Critique R24, E6; utils/color-picker.js). Eine Reihe
  * benannter Toene als radiogroup, dahinter "Eigene" fuer den Systemwaehler.
  * Stand bis R24 als `.color-swatch` in calendar.css und in vier Abschriften

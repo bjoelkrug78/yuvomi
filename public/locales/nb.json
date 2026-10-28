@@ -72,7 +72,6 @@
         "errorRateLimited": "For mange forespørsler akkurat nå. Vent litt, og prøv igjen.",
         "requiredFields": "Vennligst fyll ut alle påkrevde felt.",
         "invalidInput": "Ugyldig inndata.",
-        "togglePasswordVisibility": "Veksle passordvisning",
         "errorOfflineMutation": "Endringer er ikke mulige mens du er offline. Vennligst koble til på nytt.",
         "retry": "Prøv igjen",
         "loadErrorDescription": "Vennligst sjekk tilkoblingen din og prøv igjen.",

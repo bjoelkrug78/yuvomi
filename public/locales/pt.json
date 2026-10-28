@@ -72,7 +72,6 @@
         "errorRateLimited": "Demasiados pedidos neste momento. Aguarde um instante e tente novamente.",
         "requiredFields": "Preencha todos os campos obrigatórios.",
         "invalidInput": "Entrada inválida.",
-        "togglePasswordVisibility": "Mostrar/ocultar senha",
         "errorOfflineMutation": "Não é possível fazer alterações offline. Reconecte-se.",
         "retry": "Tentar novamente",
         "loadErrorDescription": "Verifique a ligação e tente novamente.",

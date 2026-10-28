@@ -72,7 +72,6 @@
         "errorRateLimited": "Hiện có quá nhiều yêu cầu. Vui lòng đợi một lát rồi thử lại.",
         "requiredFields": "Vui lòng điền tất cả các trường bắt buộc.",
         "invalidInput": "Đầu vào không hợp lệ.",
-        "togglePasswordVisibility": "Hiện/ẩn mật khẩu",
         "errorOfflineMutation": "Không thể thay đổi khi ngoại tuyến. Vui lòng kết nối lại.",
         "retry": "Thử lại",
         "loadErrorDescription": "Hãy kiểm tra kết nối và thử lại.",

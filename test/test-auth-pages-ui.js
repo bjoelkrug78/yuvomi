@@ -487,3 +487,22 @@ test('R24: jede Zugangsseite meldet am Feld, rot, mit Fokus - EIN Fehlerbild', a
   assert.equal(de.join.displayNameLabel, 'Anzeigename (optional)');
   assert.doesNotMatch(join, /id="join-display-name"[^>]*\brequired\b/);
 });
+
+// Critique R24 G6-Einst-P3-4: die Sicherung (und die Dokumentablage) bauten
+// ihr eigenes Auge AUSSERHALB des Felds (13px-Glyphe, `data-reveal-target`),
+// und der Zeitplan zeigte den Cron-Ausdruck jedem unter dem Klartext.
+test('R24: das Auge sitzt auch in den Einstellungen im Feld, der Cron-Ausdruck hinter "Mehr dazu"', async () => {
+  const { eachRule } = await import('./css-rules.js');
+  for (const page of ['admin-backup', 'documents-storage']) {
+    const src = read(`../public/settings/pages/${page}.js`);
+    assert.doesNotMatch(src, /data-reveal-target|settings-webdav-reveal-btn|settings-webdav-pw-wrap/, `${page}.js baut kein eigenes Auge`);
+    assert.match(src, /wirePasswordToggle\(form\.querySelector\(["']#(?:webdav|document-storage)-password["']\)/, `${page}.js nimmt den einen Baustein`);
+  }
+  const layout = [...eachRule(read('../public/styles/layout.css'))].filter((r) => !r.at.length).map((r) => r.selector.trim());
+  assert.ok(layout.includes('.password-toggle'), 'die Regel des Auges ist global (layout.css), nicht nur auf den Zugangsseiten');
+  assert.ok(layout.includes('.input-password-wrapper :is(.input, .form-input)'), 'auch ein .form-input macht dem Auge Platz');
+  assert.ok(![...eachRule(read('../public/styles/auth.css'))].some((r) => r.selector.trim() === '.password-toggle'), 'keine zweite Fassung in auth.css');
+  const backup = read('../public/settings/pages/admin-backup.js');
+  const cell = backup.slice(backup.indexOf('function scheduleValue('), backup.indexOf('\n}\n', backup.indexOf('function scheduleValue(')));
+  assert.match(cell, /createElement\('details'\)[\s\S]*summary\.textContent = t\('settings\.hintMore'\)[\s\S]*more\.append\(summary, expression\)/, 'der Ausdruck liegt im Aufklapper');
+});

@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   desktop it cut names off ("Leo Joh…").
 
 ### Fixed
+- **The password eye sits inside the field in the settings too.** The WebDAV backup target and the
+  document storage showed a small eye next to the password field; it now sits inside the field like on
+  the sign-in pages, and the field is as wide as the others. The backup schedule shows "Daily at 02:00"
+  and keeps the cron expression behind "Learn more".
 - **Sign-up mistakes show at the field on every page.** Joining from an invitation showed a problem in
   a box above the form with the field left grey, and first-time setup did not colour the field either;
   now every sign-in page puts the message under the field, colours it red and moves the cursor there.

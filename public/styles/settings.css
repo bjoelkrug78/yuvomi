@@ -995,6 +995,7 @@
  * Es fuellt jetzt die Deckelung der Bedienspalte (50cqi). Nur als einziges
  * Kind - steht ein Knopf daneben, teilen sich beide die Spalte wie bisher. */
 .settings-group .settings-setting-row__control > input.form-input:only-child:is([type="text"], [type="email"], [type="tel"], [type="url"], [type="password"], [type="search"], :not([type])),
+.settings-group .settings-setting-row__control > .input-password-wrapper:only-child,
 .settings-group .settings-setting-row__control > .birth-date-field {
   /* EINE KANTE JE SEITE (R21 S7): hoechstens --layout-field-max, damit Felder
    * in verschieden breiten Zeilen (Profil neben dem Bild, Kontaktdaten,
@@ -1045,18 +1046,21 @@
  * traegt die halbe Zeile den Wert). `:has()` ist hier Verbesserung: ohne
  * bleibt die zweispaltige Zeile, die vorher galt. */
 @media (max-width: 639px) {
-  .settings-group > .settings-setting-row:has(> .settings-setting-row__control > input.form-input:only-child:is([type="text"], [type="email"], [type="tel"], [type="url"], [type="password"], :not([type]))) {
+  .settings-group > .settings-setting-row:has(> .settings-setting-row__control > input.form-input:only-child:is([type="text"], [type="email"], [type="tel"], [type="url"], [type="password"], :not([type]))),
+  .settings-group > .settings-setting-row:has(> .settings-setting-row__control > .input-password-wrapper:only-child) {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-1h);
     padding-block: var(--space-3);
   }
 
-  .settings-group > .settings-setting-row:has(> .settings-setting-row__control > input.form-input:only-child:is([type="text"], [type="email"], [type="tel"], [type="url"], [type="password"], :not([type]))) > .settings-setting-row__control {
+  .settings-group > .settings-setting-row:has(> .settings-setting-row__control > input.form-input:only-child:is([type="text"], [type="email"], [type="tel"], [type="url"], [type="password"], :not([type]))) > .settings-setting-row__control,
+  .settings-group > .settings-setting-row:has(> .settings-setting-row__control > .input-password-wrapper:only-child) > .settings-setting-row__control {
     grid-area: auto;
     max-inline-size: none;
   }
 
-  .settings-group > .settings-setting-row:has(> .settings-setting-row__control > input.form-input:only-child:is([type="text"], [type="email"], [type="tel"], [type="url"], [type="password"], :not([type]))) > .settings-setting-row__control > input.form-input {
+  .settings-group > .settings-setting-row:has(> .settings-setting-row__control > input.form-input:only-child:is([type="text"], [type="email"], [type="tel"], [type="url"], [type="password"], :not([type]))) > .settings-setting-row__control > input.form-input,
+  .settings-group > .settings-setting-row:has(> .settings-setting-row__control > .input-password-wrapper:only-child) > .settings-setting-row__control > .input-password-wrapper {
     inline-size: 100%;
   }
 }
@@ -2773,22 +2777,6 @@
   display: grid;
   gap: var(--space-1);
   margin-bottom: var(--space-4);
-}
-
-/* Password-Eingabe mit Reveal-Button nebeneinander */
-.settings-webdav-pw-wrap {
-  display: flex;
-  gap: var(--space-2);
-  align-items: center;
-}
-
-.settings-webdav-pw-wrap .form-input {
-  flex: 1;
-  min-width: 0;
-}
-
-.settings-webdav-reveal-btn {
-  flex-shrink: 0;
 }
 
 /* --------------------------------------------------------

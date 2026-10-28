@@ -72,7 +72,6 @@
         "errorRateLimited": "Masyadong maraming kahilingan ngayon. Maghintay sandali, saka subukang muli.",
         "requiredFields": "Pakipunan ang lahat ng kinakailangang field.",
         "invalidInput": "Hindi wastong input.",
-        "togglePasswordVisibility": "I-toggle ang pagpapakita ng password",
         "errorOfflineMutation": "Hindi posible ang mga pagbabago habang offline. Pakikonekta muli.",
         "retry": "Subukang muli",
         "loadErrorDescription": "Pakisuri ang iyong koneksyon at subukang muli.",

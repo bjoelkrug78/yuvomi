@@ -72,7 +72,6 @@
         "errorRateLimited": "当前请求过多。请稍候片刻再重试。",
         "requiredFields": "请填写所有必填字段。",
         "invalidInput": "输入无效。",
-        "togglePasswordVisibility": "显示/隐藏密码",
         "errorOfflineMutation": "离线时无法进行更改。请重新连接。",
         "retry": "重试",
         "loadErrorDescription": "请检查网络连接后重试。",

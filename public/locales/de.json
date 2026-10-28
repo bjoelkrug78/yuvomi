@@ -72,7 +72,6 @@
         "errorRateLimited": "Gerade kommen zu viele Anfragen an. Warte einen Moment und versuche es dann erneut.",
         "requiredFields": "Bitte alle Pflichtfelder ausfüllen.",
         "invalidInput": "Ungültige Eingabe.",
-        "togglePasswordVisibility": "Passwort anzeigen/verbergen",
         "errorOfflineMutation": "Änderungen sind offline nicht möglich. Bitte erneut verbinden.",
         "retry": "Erneut versuchen",
         "loadErrorDescription": "Bitte prüfe die Verbindung und versuche es erneut.",

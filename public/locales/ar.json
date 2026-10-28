@@ -75,7 +75,6 @@
         "errorRateLimited": "هناك طلبات كثيرة جداً الآن. انتظر لحظة ثم حاول مجدداً.",
         "requiredFields": "يرجى ملء جميع الحقول المطلوبة.",
         "invalidInput": "إدخال غير صالح.",
-        "togglePasswordVisibility": "إظهار/إخفاء كلمة المرور",
         "errorOfflineMutation": "لا يمكن إجراء تغييرات دون اتصال. يرجى إعادة الاتصال.",
         "retry": "أعد المحاولة",
         "loadErrorDescription": "تحقق من الاتصال وحاول مرة أخرى.",

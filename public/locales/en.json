@@ -72,7 +72,6 @@
         "errorRateLimited": "Too many requests right now. Wait a moment, then try again.",
         "requiredFields": "Please fill in all required fields.",
         "invalidInput": "Invalid input.",
-        "togglePasswordVisibility": "Toggle password visibility",
         "errorOfflineMutation": "Changes aren't possible while offline. Please reconnect.",
         "retry": "Try again",
         "loadErrorDescription": "Please check your connection and try again.",

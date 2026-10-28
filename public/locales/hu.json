@@ -72,7 +72,6 @@
         "errorRateLimited": "Jelenleg túl sok kérés érkezik. Várjon egy kicsit, majd próbálja újra.",
         "requiredFields": "Kérjük, töltse ki az összes kötelező mezőt.",
         "invalidInput": "Érvénytelen bevitel.",
-        "togglePasswordVisibility": "Jelszó láthatóságának váltása",
         "errorOfflineMutation": "Offline állapotban nem lehet módosítani. Csatlakozz újra.",
         "retry": "Újra",
         "loadErrorDescription": "Ellenőrizd a kapcsolatot, és próbáld újra.",

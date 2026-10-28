@@ -72,7 +72,6 @@
         "errorRateLimited": "Şu anda çok fazla istek var. Biraz bekleyip tekrar deneyin.",
         "requiredFields": "Lütfen tüm zorunlu alanları doldurun.",
         "invalidInput": "Geçersiz giriş.",
-        "togglePasswordVisibility": "Şifreyi göster/gizle",
         "errorOfflineMutation": "Çevrimdışıyken değişiklik yapılamaz. Lütfen yeniden bağlanın.",
         "retry": "Tekrar dene",
         "loadErrorDescription": "Bağlantınızı kontrol edip tekrar deneyin.",

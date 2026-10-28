@@ -72,7 +72,6 @@
         "errorRateLimited": "Terlalu banyak permintaan saat ini. Tunggu sebentar, lalu coba lagi.",
         "requiredFields": "Harap isi semua bidang wajib.",
         "invalidInput": "Masukan tidak valid.",
-        "togglePasswordVisibility": "Tampilkan/sembunyikan kata sandi",
         "errorOfflineMutation": "Perubahan tidak dapat dilakukan saat offline. Harap sambungkan kembali.",
         "retry": "Coba lagi",
         "loadErrorDescription": "Periksa koneksi Anda dan coba lagi.",

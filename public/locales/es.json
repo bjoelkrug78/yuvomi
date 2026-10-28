@@ -72,7 +72,6 @@
         "errorRateLimited": "Hay demasiadas solicitudes en este momento. Espera un momento y vuelve a intentarlo.",
         "requiredFields": "Completa todos los campos obligatorios.",
         "invalidInput": "Entrada no válida.",
-        "togglePasswordVisibility": "Mostrar/ocultar contraseña",
         "errorOfflineMutation": "No se pueden hacer cambios sin conexión. Vuelve a conectarte.",
         "retry": "Reintentar",
         "loadErrorDescription": "Comprueba tu conexión e inténtalo de nuevo.",

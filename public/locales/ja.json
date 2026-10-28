@@ -72,7 +72,6 @@
         "errorRateLimited": "現在リクエストが多すぎます。少し待ってから、もう一度お試しください。",
         "requiredFields": "必須項目をすべて入力してください。",
         "invalidInput": "無効な入力です。",
-        "togglePasswordVisibility": "パスワードを表示/非表示",
         "errorOfflineMutation": "オフラインでは変更できません。再接続してください。",
         "retry": "再試行",
         "loadErrorDescription": "接続を確認してもう一度お試しください。",

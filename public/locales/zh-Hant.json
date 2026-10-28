@@ -72,7 +72,6 @@
         "errorRateLimited": "目前請求過多。請稍候片刻再重試。",
         "requiredFields": "請填寫所有必填欄位。",
         "invalidInput": "輸入無效。",
-        "togglePasswordVisibility": "顯示/隱藏密碼",
         "errorOfflineMutation": "離線時無法進行更改。請重新連線。",
         "retry": "重試",
         "loadErrorDescription": "請檢查網路連線後重試。",
