@@ -4897,9 +4897,18 @@ html.fab-steady .page-fab {
  * uebereinander: Zeitraum und Tab-Leiste bringen ihre Luft in 48px-
  * Trefferflaechen mit, der Large Title in seiner Zeilenhoehe. Selektorform der
  * Large-Title-Regel oben plus die Modifier-Klasse - mit blossem
- * `.page-toolbar--period` verlor der Wert still gegen 0,3,0. */
+ * `.page-toolbar--period` verlor der Wert still gegen 0,3,0.
+ *
+ * DIESELBE LUFT FUER JEDE BAR-ZEILE (R24, Critique G0 P2-3). Die Regel galt
+ * nur den Zeitraum-Koepfen; die Reiter-Koepfe (Belohnungen, Haushaltshilfe,
+ * Schichtplan) bekamen den vollen Zeilenabstand der Large-Title-Regel - ihre
+ * Reiter standen bei 390px auf y64 statt y60, der Kopf mass 121 statt 117px,
+ * und beim Wechsel Budget -> Belohnungen sprang die Leiste um 4px. Die
+ * Begruendung oben gilt fuer die Reiter genauso (48px-Ziele bringen ihre Luft
+ * mit), also gilt die Regel jedem Kopf mit Bar-Zeile: EINE Kopfhoehe mobil. */
 @media (max-width: 767px) {
-  .page-toolbar.page-toolbar--period:not(.page-toolbar--in-group):has(> .page-toolbar__title) {
+  .page-toolbar.page-toolbar--period:not(.page-toolbar--in-group):has(> .page-toolbar__title),
+  .page-toolbar:not(.page-toolbar--in-group):has(> .page-toolbar__title):has(> .page-toolbar__bar) {
     row-gap: var(--space-1);
   }
 }

@@ -845,3 +845,19 @@ test('R24 G5 P0-1: in der Zyklus-Spalte nimmt die Kennzahlseite die volle Breite
   const side = all.find((r) => r.selector === '.cycle-hero > .cycle-hero__side' && r.at.some((a) => /max-width:\s*639px/.test(a)));
   assert.equal(decl(side?.body ?? '', 'align-self'), 'stretch', '.cycle-hero__side streckt sich in der schmalen Spalte nicht');
 });
+
+// R24 (Critique G0 P2-3): EINE Kopfhoehe mobil. Die Zeitraum-Koepfe (Budget,
+// Kalender) trugen unter 768px den halben Zeilenabstand, die Reiter-Koepfe
+// (Belohnungen, Haushaltshilfe, Schichtplan) den vollen - gemessen 390px Kopf
+// 117 gegen 121px, die Reiter auf y60 gegen y64. Jetzt traegt jeder Kopf mit
+// Bar-Zeile denselben Abstand, mit genug Spezifitaet gegen die Large-Title-Regel.
+test('R24: jeder mobile Kopf mit Bar-Zeile hat denselben Zeilenabstand wie der Zeitraum-Kopf', () => {
+  const gap = rules(layoutCss).filter((r) => r.at.some((a) => /max-width:\s*767px/.test(a)) && decl(r.body, 'row-gap') === 'var(--space-1)');
+  const selectors = gap.flatMap((r) => r.selector.split(/,\s*/).map((s) => s.trim()));
+  assert.ok(selectors.includes('.page-toolbar.page-toolbar--period:not(.page-toolbar--in-group):has(> .page-toolbar__title)'), 'Zeitraum-Kopf');
+  assert.ok(selectors.includes('.page-toolbar:not(.page-toolbar--in-group):has(> .page-toolbar__title):has(> .page-toolbar__bar)'),
+    'jeder Kopf mit Bar-Zeile (Reiter) - sonst 121 statt 117px');
+  const large = rules(layoutCss).find((r) => r.selector === '.page-toolbar:not(.page-toolbar--in-group):has(> .page-toolbar__title)'
+    && r.at.some((a) => /max-width:\s*1023px/.test(a)) && decl(r.body, 'row-gap'));
+  assert.equal(decl(large.body, 'row-gap'), 'var(--space-2)', 'die Large-Title-Regel selbst bleibt (Koepfe ohne Bar-Zeile)');
+});
