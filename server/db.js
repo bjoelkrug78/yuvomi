@@ -11684,6 +11684,41 @@ const MIGRATIONS = [
        WHERE avatar_color NOT GLOB '#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]';
     `,
   },
+  {
+    version: 270,
+    description: 'anniversaries: couple anniversaries next to birthdays',
+    // Ein Jahrestag hat zwei Personen. Jede Seite ist entweder eine Verknuepfung
+    // zu einem Geburtstag (person_a_birthday_id) oder ein Freitext-Name
+    // (person_a_name), nie beides leer. Die Kalenderfelder spiegeln die des
+    // Geburtstags, damit der Sync dieselben Wege nehmen kann.
+    up: `
+      CREATE TABLE IF NOT EXISTS anniversaries (
+        id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+        person_a_birthday_id  INTEGER REFERENCES birthdays(id) ON DELETE SET NULL,
+        person_a_name         TEXT,
+        person_b_birthday_id  INTEGER REFERENCES birthdays(id) ON DELETE SET NULL,
+        person_b_name         TEXT,
+        anniversary_date      TEXT    NOT NULL,
+        year_unknown          INTEGER NOT NULL DEFAULT 0 CHECK(year_unknown IN (0, 1)),
+        notes                 TEXT,
+        calendar_event_id     INTEGER REFERENCES calendar_events(id) ON DELETE SET NULL,
+        reminder_offset       TEXT,
+        reminder_custom_amount INTEGER,
+        reminder_custom_unit  TEXT,
+        created_by            INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        created_at            TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+        updated_at            TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+        CHECK (person_a_birthday_id IS NOT NULL OR (person_a_name IS NOT NULL AND person_a_name <> '')),
+        CHECK (person_b_birthday_id IS NOT NULL OR (person_b_name IS NOT NULL AND person_b_name <> ''))
+      );
+      CREATE INDEX IF NOT EXISTS idx_anniversaries_date ON anniversaries(anniversary_date);
+      CREATE INDEX IF NOT EXISTS idx_anniversaries_created_by ON anniversaries(created_by);
+      CREATE INDEX IF NOT EXISTS idx_anniversaries_calendar_ref ON anniversaries(calendar_event_id);
+      CREATE TRIGGER IF NOT EXISTS trg_anniversaries_updated_at
+        AFTER UPDATE ON anniversaries FOR EACH ROW
+        BEGIN UPDATE anniversaries SET updated_at = strftime('%Y-%m-%dT%H:%M:%SZ', 'now') WHERE id = OLD.id; END;
+    `,
+  },
 ];
 
 /**
