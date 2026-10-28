@@ -23218,6 +23218,7 @@ test('a starred label marks a required field, and a required field in a mixed fo
     'public/settings/pages/personal-account.js #two-factor-code', // nur der Code
     'public/settings/pages/personal-account.js #two-factor-confirm-code', // nur der Code
     'public/settings/pages/admin-displays.js #display-name', // das Koppelformular hat nur den Namen
+    'public/pages/pair-display.js #pair-code', // /pair fragt nur den Code (R24: der Stern dort war der einzige auf einer Zugangsseite)
     'public/pages/waste.js #wmm-date', // Abholung verschieben: nur das neue Datum
   ]);
   const files = walkJsFiles('../public/').filter((f) => !f.includes('/vendor/') && !AUTH.test(f));

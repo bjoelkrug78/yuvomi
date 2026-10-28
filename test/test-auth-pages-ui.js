@@ -205,11 +205,12 @@ test('Befund 15: die Pruefungen der Auth-Seiten markieren ihr Feld', () => {
   };
   for (const [page, fields] of Object.entries(expected)) {
     const src = read(`../public/pages/${page}.js`);
-    assert.match(src, /import \{[^}]*\bflagField\b[^}]*\} from '\/utils\/auth-ui\.js'/, `${page}.js importiert flagField nicht`);
+    assert.match(src, /import \{[^}]*\b(?:flagField|showAuthError)\b[^}]*\} from '\/utils\/auth-ui\.js'/, `${page}.js importiert weder flagField noch showAuthError`);
     for (const f of fields) {
       // R23 D14: die Einrichtung meldet am Feld mit showAuthError (markiert per
-      // flagField und setzt den Fokus) - das zaehlt wie ein flagField.
-      assert.match(src, new RegExp(`(?:flagField\\((?:form\\.)?${f}\\b|showAuthError\\(errorEl, [^\\n]*form\\.${f}\\)|form\\.${f}\\b[^\\n]*\\]\\.filter\\(Boolean\\))`), `${page}.js: kein flagField fuer ${f}`);
+      // flagField und setzt den Fokus) - das zaehlt wie ein flagField. Seit
+      // R24 (G6-Zugang-P2-1) auch die Einladung.
+      assert.match(src, new RegExp(`(?:flagField\\((?:form\\.)?${f}\\b|showAuthError\\(errorEl, [^\\n]*(?:form\\.)?${f}\\)|form\\.${f}\\b[^\\n]*\\]\\.filter\\(Boolean\\))`), `${page}.js: kein flagField fuer ${f}`);
     }
   }
 });
@@ -451,4 +452,38 @@ test('R23: /pair prueft die zehn Zeichen vorab und traegt die Marke', () => {
   const serverLen = Number(/const CODE_LENGTH = (\d+);/.exec(server)?.[1]);
   const clientLen = Number(/const PAIR_CODE_LENGTH = (\d+);/.exec(src)?.[1]);
   assert.equal(clientLen, serverLen, 'dieselbe Laenge wie der Server');
+});
+
+// Critique R24 G6-Zugang-P2-1: drei Fehler-Dialekte auf den Zugangsseiten.
+// Die Einladung meldete im Kasten ueber dem Formular (Fokus auf dem Kasten,
+// Feld grau), die Einrichtung markierte das Feld nur fuer Vorlesehilfen, die
+// Anmeldung faerbte es rot. Jetzt: EIN Weg - showAuthError zieht die Meldung
+// unter das Feld, flagField faerbt es (form-group--error), Fokus ins Feld.
+test('R24: jede Zugangsseite meldet am Feld, rot, mit Fokus - EIN Fehlerbild', async () => {
+  const { flagField, hideAuthError } = await import('../public/utils/auth-ui.js');
+  const classes = new Set();
+  const group = { classList: { add: (c) => classes.add(c), remove: (c) => classes.delete(c) }, appendChild() {} };
+  const attrs = new Map();
+  const field = {
+    closest: (sel) => (sel === '.form-group' ? group : null), addEventListener() {},
+    setAttribute: (k, v) => attrs.set(k, String(v)), getAttribute: (k) => attrs.get(k) ?? null, removeAttribute: (k) => attrs.delete(k),
+  };
+  const errorEl = { id: 'join-error', hidden: false };
+  flagField(field, errorEl);
+  assert.ok(classes.has('form-group--error'), 'das Feld wird rot');
+  hideAuthError({ querySelectorAll: () => [field] }, errorEl);
+  assert.ok(!classes.has('form-group--error'), 'mit der Meldung geht die Farbe');
+  const join = read('../public/pages/join.js');
+  assert.doesNotMatch(join, /flagField\([^)]*\);\s*fail\(/, 'kein Kasten ueber dem Formular fuer einen Feldfehler');
+  for (const key of ['usernameRequired', 'usernameInvalid', 'displayNameTooLong', 'tooShort', 'mismatch', 'usernameTaken']) {
+    assert.match(join, new RegExp(`showAuthError\\(errorEl, t\\('join\\.${key}'\\), `), `join.${key} steht am Feld`);
+  }
+  // Keine Platzhalter mehr nur in der Einrichtung, kein Stern nur auf /pair.
+  const setup = read('../public/pages/setup.js');
+  assert.doesNotMatch(setup, /placeholder=/, 'Einrichtung ohne Platzhalter wie die anderen Zugangsseiten');
+  assert.doesNotMatch(read('../public/pages/pair-display.js'), /REQUIRED_MARK/, '/pair ohne Stern - ein Formular aus einem Feld');
+  // Das einzige Kannfeld einer Zugangsseite sagt es selbst.
+  const de = JSON.parse(read('../public/locales/de.json'));
+  assert.equal(de.join.displayNameLabel, 'Anzeigename (optional)');
+  assert.doesNotMatch(join, /id="join-display-name"[^>]*\brequired\b/);
 });

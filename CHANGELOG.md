@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   type without a symbol shows a plus on "Choose symbol" instead of a crossed-out picture.
 
 ### Fixed
+- **Sign-up mistakes show at the field on every page.** Joining from an invitation showed a problem in
+  a box above the form with the field left grey, and first-time setup did not colour the field either;
+  now every sign-in page puts the message under the field, colours it red and moves the cursor there.
+  The optional display name on the invitation page says "(optional)", the pairing page drops its lone
+  required star, and setup drops its placeholder names.
 - **The welcome tour explains a control next to it.** The tour card stayed in the middle of the screen
   while the highlighted sidebar, tab bar or + button was elsewhere; it now sits beside the control it
   describes and moves with the highlight. After a tap the "Next" button no longer shows a focus ring.
