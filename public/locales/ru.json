@@ -6464,7 +6464,8 @@
         "ownLedger": "Твои записи",
         "toastApprovedNamed": "«{{reward}}» одобрено для: {{name}}.",
         "toastRejectedNamed": "«{{reward}}» отклонено для: {{name}}.",
-        "toastCancelledNamed": "«{{reward}}» отозвано."
+        "toastCancelledNamed": "«{{reward}}» отозвано.",
+        "ledgerFilterLabel": "Фильтр по участнику"
     },
     "datepicker": {
         "openCalendar": "Открыть календарь",

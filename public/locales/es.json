@@ -6178,7 +6178,8 @@
         "ownLedger": "Tus movimientos",
         "toastApprovedNamed": "«{{reward}}» aprobado para {{name}}.",
         "toastRejectedNamed": "«{{reward}}» rechazado para {{name}}.",
-        "toastCancelledNamed": "«{{reward}}» retirado."
+        "toastCancelledNamed": "«{{reward}}» retirado.",
+        "ledgerFilterLabel": "Filtrar por persona"
     },
     "datepicker": {
         "openCalendar": "Abrir calendario",

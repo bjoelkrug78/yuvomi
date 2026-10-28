@@ -6178,7 +6178,8 @@
         "ownLedger": "내 내역",
         "toastApprovedNamed": "{{name}} 님의 '{{reward}}'을 승인했습니다.",
         "toastRejectedNamed": "{{name}} 님의 '{{reward}}'을 거절했습니다.",
-        "toastCancelledNamed": "'{{reward}}' 요청을 취소했습니다."
+        "toastCancelledNamed": "'{{reward}}' 요청을 취소했습니다.",
+        "ledgerFilterLabel": "사람별 필터"
     },
     "datepicker": {
         "openCalendar": "캘린더 열기",

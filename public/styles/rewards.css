@@ -577,10 +577,12 @@
 /* --------------------------------------------------------
    Verlauf (Ledger)
    -------------------------------------------------------- */
-.rw-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-/* Die Chips selbst sind `.filter-chip filter-chip--sm` (filter-chip.css) -
- * hier stand bis zur Re-Critique 2026-09-28 ein eigener `.rw-chip` mit 31px
- * Hoehe und ohne Zustand fuer den Screenreader. */
+/* Die Personenzeile ist `personChipsHtml` auf `.page-chip-row` (Critique R24
+ * G2-Quer-P2-1): sie scrollt erst bei Ueberlauf. Die Chips selbst sind
+ * `.filter-chip filter-chip--sm` (filter-chip.css) - hier stand bis zur
+ * Re-Critique 2026-09-28 ein eigener `.rw-chip` mit 31px Hoehe und ohne
+ * Zustand fuer den Screenreader. */
+.rw-chips { min-inline-size: 0; }
 
 /* Verlaufsliste: Traeger und Zeile kommen aus list-row.css (`.row-carrier` +
  * `.list-row`) - Flaeche, Radius, Trennlinie, Polster und der Schnitt des

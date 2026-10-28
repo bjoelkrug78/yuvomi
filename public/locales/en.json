@@ -6178,7 +6178,8 @@
         "ownLedger": "Your entries",
         "toastApprovedNamed": "“{{reward}}” approved for {{name}}.",
         "toastRejectedNamed": "“{{reward}}” rejected for {{name}}.",
-        "toastCancelledNamed": "“{{reward}}” withdrawn."
+        "toastCancelledNamed": "“{{reward}}” withdrawn.",
+        "ledgerFilterLabel": "Filter by person"
     },
     "datepicker": {
         "openCalendar": "Open calendar",

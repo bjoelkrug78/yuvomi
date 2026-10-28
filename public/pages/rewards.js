@@ -33,6 +33,7 @@ import {
 } from '/utils/money.js';
 import { amountProblemText } from '/utils/amount-field.js';
 import { reloadAfterSave } from '/utils/reload-after-save.js';
+import { personChipsHtml } from '/utils/filter-sheet.js';
 import { errorSentence, isAlreadyDeleted, isGone } from '/utils/friendly-error.js';
 
 const TABS = ['overview', 'catalog', 'ledger'];
@@ -962,15 +963,18 @@ function renderBalancesRail() {
 
 function renderLedger(el) {
   el.replaceChildren();
-  const filterChips = [{ id: null, label: t('rewards.all') }]
-    .concat(balances().map((b) => ({ id: b.id, label: b.display_name })))
-    // Kanon-Filterchip (Re-Critique 2026-09-28 P2-6): vorher `.rw-chip`, 31px
-    // hoch und ohne aria-pressed - der Screenreader hoerte nicht, wer gefiltert ist.
-    .map((c) => {
-      const on = (state.ledgerFilter ?? null) === c.id;
-      return `<button class="filter-chip filter-chip--sm${on ? ' filter-chip--active' : ''}" type="button" data-filter="${c.id ?? ''}" aria-pressed="${on}">${esc(c.label)}</button>`;
-    })
-    .join('');
+  // EINE PERSONENZEILE (personChipsHtml, utils/filter-sheet.js; Critique R24
+  // G2-Quer-P2-1): Scheibe + Vorname wie im Aufgaben-Verlauf und im Kalender.
+  // Vorher Chips mit vollem Namen ohne Scheibe (Re-Critique 2026-09-28 P2-6
+  // hatte schon `.rw-chip` durch den Kanon-Chip ersetzt).
+  const filterChips = personChipsHtml({
+    filter: 'ledger-member',
+    label: t('rewards.ledgerFilterLabel'),
+    people: balances(),
+    isActive: (b) => (state.ledgerFilter ?? null) === b.id,
+    all: { label: t('rewards.all'), active: (state.ledgerFilter ?? null) === null },
+    className: 'page-chip-row rw-chips',
+  });
   // Bonus vergeben läuft über den Kontext-FAB (Ledger-Tab, Admin); kein Inline-Button.
   const adminBar = '';
 
@@ -984,7 +988,7 @@ function renderLedger(el) {
         main: `
       <section class="rw-section">
         <div class="rw-section__head">
-          <div class="rw-chips">${filterChips}</div>
+          ${filterChips}
           ${adminBar}
         </div>
         ${state.ledger.length
@@ -998,8 +1002,8 @@ function renderLedger(el) {
     btn.addEventListener('click', () => openMemberDetail(Number(btn.dataset.member)));
   });
 
-  el.querySelectorAll('[data-filter]').forEach((chip) => chip.addEventListener('click', async () => {
-    const val = chip.dataset.filter;
+  el.querySelectorAll('[data-filter="ledger-member"]').forEach((chip) => chip.addEventListener('click', async () => {
+    const val = chip.dataset.value;
     state.ledgerFilter = val === '' ? null : Number(val);
     await loadLedger();
     renderLedger(el);

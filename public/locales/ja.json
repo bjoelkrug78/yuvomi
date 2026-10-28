@@ -6178,7 +6178,8 @@
         "ownLedger": "自分の記録",
         "toastApprovedNamed": "{{name}}さんの「{{reward}}」を承認しました。",
         "toastRejectedNamed": "{{name}}さんの「{{reward}}」を却下しました。",
-        "toastCancelledNamed": "「{{reward}}」を取り下げました。"
+        "toastCancelledNamed": "「{{reward}}」を取り下げました。",
+        "ledgerFilterLabel": "人で絞り込む"
     },
     "datepicker": {
         "openCalendar": "カレンダーを開く",

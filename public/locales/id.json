@@ -6178,7 +6178,8 @@
         "ownLedger": "Catatanmu",
         "toastApprovedNamed": "\"{{reward}}\" disetujui untuk {{name}}.",
         "toastRejectedNamed": "\"{{reward}}\" ditolak untuk {{name}}.",
-        "toastCancelledNamed": "\"{{reward}}\" ditarik."
+        "toastCancelledNamed": "\"{{reward}}\" ditarik.",
+        "ledgerFilterLabel": "Saring menurut orang"
     },
     "datepicker": {
         "openCalendar": "Buka kalender",

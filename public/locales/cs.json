@@ -6327,7 +6327,8 @@
         "ownLedger": "Tvoje záznamy",
         "toastApprovedNamed": "„{{reward}}“ schváleno pro: {{name}}.",
         "toastRejectedNamed": "„{{reward}}“ zamítnuto pro: {{name}}.",
-        "toastCancelledNamed": "„{{reward}}“ staženo."
+        "toastCancelledNamed": "„{{reward}}“ staženo.",
+        "ledgerFilterLabel": "Filtrovat podle osoby"
     },
     "datepicker": {
         "openCalendar": "Otevřít kalendář",

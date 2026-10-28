@@ -6178,7 +6178,8 @@
         "ownLedger": "你的记录",
         "toastApprovedNamed": "已为{{name}}批准“{{reward}}”。",
         "toastRejectedNamed": "已为{{name}}拒绝“{{reward}}”。",
-        "toastCancelledNamed": "“{{reward}}”已撤回。"
+        "toastCancelledNamed": "“{{reward}}”已撤回。",
+        "ledgerFilterLabel": "按成员筛选"
     },
     "datepicker": {
         "openCalendar": "打开日历",

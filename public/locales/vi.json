@@ -6178,7 +6178,8 @@
         "ownLedger": "Giao dịch của bạn",
         "toastApprovedNamed": "Đã duyệt \"{{reward}}\" cho {{name}}.",
         "toastRejectedNamed": "Đã từ chối \"{{reward}}\" cho {{name}}.",
-        "toastCancelledNamed": "Đã rút lại \"{{reward}}\"."
+        "toastCancelledNamed": "Đã rút lại \"{{reward}}\".",
+        "ledgerFilterLabel": "Lọc theo người"
     },
     "datepicker": {
         "openCalendar": "Mở lịch",

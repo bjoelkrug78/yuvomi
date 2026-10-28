@@ -2242,7 +2242,8 @@ test('Filterblatt (D2): Kalender und Aufgaben fahren EINEN Baustein - Personen a
   assert(!/function openFiltersPopover|showPopover\(\)/.test(calSrc), 'kein eigenes Kalender-Popover mehr neben dem Baustein');
   assert(!/resetLabel:/.test(calSrc + taskSrc), 'kein Modul ueberschreibt den einen Reset-Text');
   for (const [name, src] of [['Kalender', calSrc], ['Aufgaben', taskSrc]]) {
-    assert(/filterChipsHtml\(/.test(src), `${name}: Personen als Chips aus dem Baustein`);
+    // Seit R24 (G2-Quer-P2-1) die EINE Personenzeile personChipsHtml().
+    assert(/personChipsHtml\(\{/.test(src), `${name}: Personen als Chips aus dem Baustein`);
   }
   // Ebenen, Quellen und Ansichtsoptionen sind Schalter, keine Haken.
   for (const attr of ['data-filter-layer', 'data-filter-source', 'data-filter-mine', 'data-filter-schedule-display', 'data-filter-waste-type']) {
@@ -2323,7 +2324,7 @@ test('Filterblatt (D2): „Mir zugewiesen" steht in beiden Blaettern als erster 
   assert(/heading: t\('calendar\.filtersPeople'\), html: meRow \+ peopleChips/.test(calSrc)
     && /peopleChips: people\.length \? personFilterChipsHtml\(people\)/.test(calSrc),
     'Kalender: Schalter, dann Personen-Chips in EINER Gruppe');
-  assert(/heading: t\('tasks\.filterGroupPerson'\),\s*html: mine \+ chipsHtml\('assigned_to'/.test(taskSrc),
+  assert(/heading: t\('tasks\.filterGroupPerson'\),\s*html: mine \+ personChipsHtml\(\{\s*filter: 'assigned_to'/.test(taskSrc),
     'Aufgaben: Schalter, dann Personen-Chips in EINER Gruppe');
   assert(!/data-filter-person/.test(calSrc), 'keine Personen-Haken mehr im Kalender');
   const html = calendarHelpers.personFilterChipsHtml([{ id: 1, display_name: 'Linda Johnson', avatar_color: '#C2185B' }]);

@@ -6178,7 +6178,8 @@
         "ownLedger": "Hareketlerin",
         "toastApprovedNamed": "\"{{reward}}\", {{name}} için onaylandı.",
         "toastRejectedNamed": "\"{{reward}}\", {{name}} için reddedildi.",
-        "toastCancelledNamed": "\"{{reward}}\" geri çekildi."
+        "toastCancelledNamed": "\"{{reward}}\" geri çekildi.",
+        "ledgerFilterLabel": "Kişiye göre filtrele"
     },
     "datepicker": {
         "openCalendar": "Takvimi aç",

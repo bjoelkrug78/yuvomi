@@ -6178,7 +6178,8 @@
         "ownLedger": "तुम्हारी प्रविष्टियाँ",
         "toastApprovedNamed": "{{name}} के लिए \"{{reward}}\" स्वीकृत।",
         "toastRejectedNamed": "{{name}} के लिए \"{{reward}}\" अस्वीकृत।",
-        "toastCancelledNamed": "\"{{reward}}\" वापस लिया गया।"
+        "toastCancelledNamed": "\"{{reward}}\" वापस लिया गया।",
+        "ledgerFilterLabel": "व्यक्ति के अनुसार फ़िल्टर करें"
     },
     "datepicker": {
         "openCalendar": "कैलेंडर खोलें",

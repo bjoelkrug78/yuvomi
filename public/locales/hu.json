@@ -6178,7 +6178,8 @@
         "ownLedger": "Saját tételeid",
         "toastApprovedNamed": "„{{reward}}” jóváhagyva neki: {{name}}.",
         "toastRejectedNamed": "„{{reward}}” elutasítva neki: {{name}}.",
-        "toastCancelledNamed": "„{{reward}}” visszavonva."
+        "toastCancelledNamed": "„{{reward}}” visszavonva.",
+        "ledgerFilterLabel": "Szűrés személy szerint"
     },
     "datepicker": {
         "openCalendar": "Naptár megnyitása",

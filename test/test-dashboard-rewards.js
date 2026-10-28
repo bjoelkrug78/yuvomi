@@ -532,7 +532,8 @@ test('Belohnungen: Verlaufs-Chips sind Kanon-Filterchips mit aria-pressed (Re-Cr
     s.ledgerFilter = 3;
     const el = markupEl();
     rewardsPage.renderLedger(el);
-    const chips = [...el.html.matchAll(/<button[^>]*data-filter="([^"]*)"[^>]*>/g)];
+    // Seit R24 die EINE Personenzeile: Achse `ledger-member`, Person im Wert.
+    const chips = [...el.html.matchAll(/<button[^>]*data-filter="ledger-member" data-value="([^"]*)"[^>]*>/g)];
     assert.equal(chips.length, 3, 'Alle + zwei Personen');
     for (const [tag, id] of chips) {
       assert.match(tag, /class="[^"]*\bfilter-chip\b/, `Chip ${id}: .filter-chip`);

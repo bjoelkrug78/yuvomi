@@ -6464,7 +6464,8 @@
         "ownLedger": "Твої записи",
         "toastApprovedNamed": "«{{reward}}» схвалено для: {{name}}.",
         "toastRejectedNamed": "«{{reward}}» відхилено для: {{name}}.",
-        "toastCancelledNamed": "«{{reward}}» відкликано."
+        "toastCancelledNamed": "«{{reward}}» відкликано.",
+        "ledgerFilterLabel": "Фільтр за учасником"
     },
     "datepicker": {
         "openCalendar": "Відкрити календар",

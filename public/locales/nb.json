@@ -6178,7 +6178,8 @@
         "ownLedger": "Dine posteringer",
         "toastApprovedNamed": "«{{reward}}» godkjent for {{name}}.",
         "toastRejectedNamed": "«{{reward}}» avvist for {{name}}.",
-        "toastCancelledNamed": "«{{reward}}» trukket tilbake."
+        "toastCancelledNamed": "«{{reward}}» trukket tilbake.",
+        "ledgerFilterLabel": "Filtrer etter person"
     },
     "datepicker": {
         "openCalendar": "Åpne kalender",

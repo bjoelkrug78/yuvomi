@@ -6178,7 +6178,8 @@
         "ownLedger": "Deine Buchungen",
         "toastApprovedNamed": "„{{reward}}“ für {{name}} freigegeben.",
         "toastRejectedNamed": "„{{reward}}“ für {{name}} abgelehnt.",
-        "toastCancelledNamed": "„{{reward}}“ zurückgezogen."
+        "toastCancelledNamed": "„{{reward}}“ zurückgezogen.",
+        "ledgerFilterLabel": "Nach Person filtern"
     },
     "datepicker": {
         "openCalendar": "Kalender öffnen",

@@ -6178,7 +6178,8 @@
         "ownLedger": "Dina poster",
         "toastApprovedNamed": "”{{reward}}” godkänd för {{name}}.",
         "toastRejectedNamed": "”{{reward}}” avslagen för {{name}}.",
-        "toastCancelledNamed": "”{{reward}}” återkallad."
+        "toastCancelledNamed": "”{{reward}}” återkallad.",
+        "ledgerFilterLabel": "Filtrera efter person"
     },
     "datepicker": {
         "openCalendar": "Öppna kalender",

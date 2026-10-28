@@ -6300,7 +6300,8 @@
         "ownLedger": "Seus lançamentos",
         "toastApprovedNamed": "\"{{reward}}\" aprovado para {{name}}.",
         "toastRejectedNamed": "\"{{reward}}\" recusado para {{name}}.",
-        "toastCancelledNamed": "\"{{reward}}\" retirado."
+        "toastCancelledNamed": "\"{{reward}}\" retirado.",
+        "ledgerFilterLabel": "Filtrar por pessoa"
     },
     "schedule": {
         "title": "Turnos",

@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   that is not in the row stays selected as its own swatch instead of being replaced.
 - **A shift type reads like an appointment.** Start and end stand side by side in one row, and a shift
   type without a symbol shows a plus on "Choose symbol" instead of a crossed-out picture.
+- **Filtering by person looks the same in every module.** The task history, the rewards history, the
+  task filters and the calendar show one row of chips with each person's colour, initials and first
+  name, with "All" in front. On phones the task history showed only initials without names, and on
+  desktop it cut names off ("Leo Joh…").
 
 ### Fixed
 - **Sign-up mistakes show at the field on every page.** Joining from an invitation showed a problem in

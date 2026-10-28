@@ -47,13 +47,13 @@ import { packLanes } from '/utils/week-strip.js';
 import { assignLanes, assignLanesByPerson, memberRank } from '/utils/overlap-lanes.js';
 import { refresh as refreshReminders } from '/reminders.js';
 import { parseRemindAtAsUtc, naiveUtc } from '/utils/reminder-offset.js';
-import { renderUserMultiSelect, getSelectedUserIds, bindUserMultiSelect, renderAvatarStack, sharedSurname } from '/components/user-multi-select.js';
+import { renderUserMultiSelect, getSelectedUserIds, bindUserMultiSelect, renderAvatarStack } from '/components/user-multi-select.js';
 import { withChosenPeople } from '/utils/people-picker.js';
 import { othersCanRead } from '/utils/household.js';
 import { wireTablist } from '/utils/tablist.js';
 import { installPopoverMenus } from '/utils/popover-menu.js';
 import { rowActionHtml, rowMenuHtml } from '/utils/row-action.js';
-import { filterButtonHtml, openFilterSheet, filterChipsHtml, filtersAsPopover } from '/utils/filter-sheet.js';
+import { filterButtonHtml, openFilterSheet, filtersAsPopover, personChipsHtml } from '/utils/filter-sheet.js';
 import { attachSegmentIndicator, afterGlideStart } from '/utils/segment-indicator.js';
 import { wirePeriodSwipe, parkPeriodGhost } from '/utils/period-swipe.js';
 import { canChangeRecord, isNavModuleReadOnly } from '/permissions.js';
@@ -6479,31 +6479,17 @@ function availableLayers() {
  * Gegenteil und ist damit lesbarer: an ist, wonach gefiltert wird.
  */
 function personFilterChipsHtml(people) {
-  // DER GETEILTE NACHNAME STEHT NICHT IN JEDEM CHIP (Re-Kritik 2026-10-17):
-  // in der Seitenleiste ab 1600px stand jeder volle Name auf einer eigenen
-  // Zeile, "Als Naechstes" rutschte unter die Falz. Dieselbe Regel wie im
-  // Termin-Dialog (sharedSurname): der Chip zeigt den Vornamen, der volle Name
-  // bleibt sein zugaenglicher Name.
-  const surname = sharedSurname(people);
-  const items = people.map((u) => {
-    const full = String(u.display_name ?? '').trim();
-    const short = surname && full.endsWith(` ${surname}`);
-    return {
-      value: String(u.id),
-      label: short ? full.slice(0, -(surname.length + 1)) : full,
-      srSuffix: short ? surname : '',
-      active: state.people.has(u.id),
-      // ZWEI NAMEN FUER DIESELBE FARBE: `/family/members` liefert sie roh als
-      // `avatar_color`, `assigned_users` benennt sie auf `color` um
-      // (services/calendar-events.js:17).
-      swatchColor: u.avatar_color ?? u.color ?? null,
-      swatchLabel: initials(u.display_name),
-    };
+  // EINE PERSONENZEILE (personChipsHtml, utils/filter-sheet.js; Critique R24
+  // G2-Quer-P2-1): Scheibe + Vorname, der geteilte Nachname nur im
+  // zugaenglichen Namen (Re-Kritik 2026-10-17: in der Seitenleiste ab 1600px
+  // stand jeder volle Name auf einer eigenen Zeile).
+  return personChipsHtml({
+    filter: 'person',
+    label: t('calendar.filtersPeople'),
+    people,
+    isActive: (u) => state.people.has(u.id),
+    after: people.length ? [{ value: UNASSIGNED, label: t('calendar.filterUnassigned'), active: state.people.has(UNASSIGNED) }] : [],
   });
-  if (people.length) {
-    items.push({ value: UNASSIGNED, label: t('calendar.filterUnassigned'), active: state.people.has(UNASSIGNED) });
-  }
-  return filterChipsHtml('person', t('calendar.filtersPeople'), items);
 }
 
 /**

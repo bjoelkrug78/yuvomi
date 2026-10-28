@@ -6178,7 +6178,8 @@
         "ownLedger": "Jouw boekingen",
         "toastApprovedNamed": "‘{{reward}}’ goedgekeurd voor {{name}}.",
         "toastRejectedNamed": "‘{{reward}}’ afgewezen voor {{name}}.",
-        "toastCancelledNamed": "‘{{reward}}’ ingetrokken."
+        "toastCancelledNamed": "‘{{reward}}’ ingetrokken.",
+        "ledgerFilterLabel": "Filteren op persoon"
     },
     "datepicker": {
         "openCalendar": "Kalender openen",

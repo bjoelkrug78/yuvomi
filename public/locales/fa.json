@@ -6178,7 +6178,8 @@
         "ownLedger": "تراکنش‌های تو",
         "toastApprovedNamed": "«{{reward}}» برای {{name}} تأیید شد.",
         "toastRejectedNamed": "«{{reward}}» برای {{name}} رد شد.",
-        "toastCancelledNamed": "«{{reward}}» پس گرفته شد."
+        "toastCancelledNamed": "«{{reward}}» پس گرفته شد.",
+        "ledgerFilterLabel": "فیلتر بر اساس شخص"
     },
     "datepicker": {
         "openCalendar": "باز کردن تقویم",

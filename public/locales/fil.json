@@ -6178,7 +6178,8 @@
         "ownLedger": "Iyong mga entry",
         "toastApprovedNamed": "Inaprubahan ang \"{{reward}}\" para kay {{name}}.",
         "toastRejectedNamed": "Tinanggihan ang \"{{reward}}\" para kay {{name}}.",
-        "toastCancelledNamed": "Binawi ang \"{{reward}}\"."
+        "toastCancelledNamed": "Binawi ang \"{{reward}}\".",
+        "ledgerFilterLabel": "Salain ayon sa tao"
     },
     "datepicker": {
         "openCalendar": "Buksan ang kalendaryo",

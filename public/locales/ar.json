@@ -6608,7 +6608,8 @@
         "ownLedger": "معاملاتك",
         "toastApprovedNamed": "تمت الموافقة على «{{reward}}» لـ {{name}}.",
         "toastRejectedNamed": "تم رفض «{{reward}}» لـ {{name}}.",
-        "toastCancelledNamed": "تم سحب «{{reward}}»."
+        "toastCancelledNamed": "تم سحب «{{reward}}».",
+        "ledgerFilterLabel": "تصفية حسب الشخص"
     },
     "datepicker": {
         "openCalendar": "فتح التقويم",

@@ -6178,7 +6178,8 @@
         "ownLedger": "Οι κινήσεις σου",
         "toastApprovedNamed": "«{{reward}}» εγκρίθηκε για {{name}}.",
         "toastRejectedNamed": "«{{reward}}» απορρίφθηκε για {{name}}.",
-        "toastCancelledNamed": "«{{reward}}» αποσύρθηκε."
+        "toastCancelledNamed": "«{{reward}}» αποσύρθηκε.",
+        "ledgerFilterLabel": "Φιλτράρισμα κατά άτομο"
     },
     "datepicker": {
         "openCalendar": "Άνοιγμα ημερολογίου",
