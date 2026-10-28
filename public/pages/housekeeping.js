@@ -1503,8 +1503,12 @@ function wireVisitRows(content, visits, refresh, { onEdit } = {}) {
  */
 function deleteVisitWithUndo(content, visit, refresh) {
   if (readOnly()) return;
+  // Die Zeile klappt aus, die Nachbarn ruecken nach (wie beim Loeschen einer
+  // Arbeit). Zurueck kommt sie mit dem Neuzeichnen: am Server ist sie ja noch.
   const row = content.querySelector(`[data-open-visit="${CSS.escape(String(visit.id))}"]`)?.closest('.list-row') ?? null;
-  if (row) row.hidden = true;
+  // Nach der Bewegung geht sie aus dem Baum - eine ausgeblendete Zeile liesse
+  // ihren Platz im Traeger stehen (gemessen: Luecke ueber der naechsten Zeile).
+  const gone = collapseRow(row).then(() => { if (row?.isConnected) row.remove(); });
   const date = dateText(visit.check_in);
   scheduleUndoableDelete({
     message: t('housekeeping.visitDeletedNamed', { date }),
@@ -1513,8 +1517,9 @@ function deleteVisitWithUndo(content, visit, refresh) {
       await deleteUnlessGone(`/housekeeping/visits/${visit.id}`, 'housekeeping_visit_not_found');
       if (content.isConnected) await refresh();
     },
-    restore: (err) => {
-      if (row?.isConnected) row.hidden = false;
+    restore: async (err) => {
+      await gone;
+      if (content.isConnected) await refresh();
       if (err) reportWriteError(err);
     },
   });
