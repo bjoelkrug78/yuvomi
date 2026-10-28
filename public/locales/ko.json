@@ -4304,7 +4304,13 @@
         "taskDoneNamed": "'{{name}}' 완료했습니다.",
         "visitDeletedNamed": "{{date}} 방문을 삭제했습니다.",
         "visitPaidNamed": "{{date}} 방문을 지급 완료했습니다.",
-        "visitUnpaidNamed": "{{date}} 방문의 지급을 취소했습니다."
+        "visitUnpaidNamed": "{{date}} 방문의 지급을 취소했습니다.",
+        "workerMoreHint": "연락처, 생일, 색상, 메모",
+        "markPaidNamed": "{{date}} 방문을 지급 완료로 표시",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, 그중 {{pending}} 미지급",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, 모두 지급됨",
+        "taskTemplatesHint": "탭하면 추가됩니다.",
+        "markPaidShort": "지급 완료"
     },
     "splitExpenses": {
         "title": "공동 지출",

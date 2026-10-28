@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "“{{name}}”已完成。",
         "visitDeletedNamed": "{{date}} 的上门记录已删除。",
         "visitPaidNamed": "{{date}} 的上门记录已付款。",
-        "visitUnpaidNamed": "{{date}} 的上门记录付款已撤销。"
+        "visitUnpaidNamed": "{{date}} 的上门记录付款已撤销。",
+        "workerMoreHint": "联系方式、生日、颜色、备注",
+        "markPaidNamed": "将 {{date}} 的到访标记为已付款",
+        "paymentsMonthWithOpen": "{{month}}：{{total}}，其中 {{pending}} 未付",
+        "paymentsMonthAllPaid": "{{month}}：{{total}}，已全部付清",
+        "taskTemplatesHint": "轻点即可添加。",
+        "markPaidShort": "已付款"
     },
     "userMultiSelect": {
         "moreUsers": "更多",

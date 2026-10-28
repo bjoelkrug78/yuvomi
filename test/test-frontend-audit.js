@@ -10441,9 +10441,12 @@ test('audited profile, birthday, navigation, and budget controls meet mobile tou
    * Bezahlen und Loeschen sind Eintraege in `rowMenuHtml()` - dessen Ausloeser
    * traegt `.row-action` (48px). Keine Liste baut mehr eigene Besuchsknoepfe;
    * alle drei (Uebersicht, Berichte, Protokoll) rufen visitRowHtml(). */
+  /* SEIT R24 (G2-Haushaltshilfe-P2-2) steht Bezahlen als EINE sichtbare
+   * Handlung der Endzone (D10) in visitRowHtml - Bearbeiten und Loeschen
+   * bleiben im Mehr-Knopf. */
   const ownButtons = [...housekeepingPage.matchAll(/<button\b([^>]*\bdata-(?:pay|edit|delete)-visit=[^>]*)>/g)];
-  assert.deepEqual(ownButtons.map((m) => m[1]), [],
-    'Bearbeiten, Bezahlen und Loeschen eines Besuchs stehen im Mehr-Knopf, nicht als eigene Knoepfe');
+  assert.deepEqual(ownButtons.map((m) => (/housekeeping-visit-pay/.test(m[1]) ? 'pay' : m[1])), ['pay'],
+    'Bearbeiten und Loeschen eines Besuchs stehen im Mehr-Knopf; Bezahlen ist die eine Handlung der Zeile');
   const menu = functionBody(housekeepingPage, 'visitMenuHtml');
   assert.ok(menu && /rowMenuHtml\(\{/.test(menu), 'visitMenuHtml() baut den geteilten Mehr-Knopf');
   for (const attr of ['data-edit-visit', 'data-pay-visit', 'data-delete-visit']) {
@@ -22910,7 +22913,9 @@ test('R20: sichtbare Etiketten stehen im Namen, und es gibt genau einen Hauptber
   const split = read('../public/pages/split-expenses.js');
   assert.doesNotMatch(split, /class="split-expense" data-(?:expense|recurring)-id="[^"]*"[^>]*aria-label=/, 'Ausgleichszeilen ohne aria-label');
   assert.doesNotMatch(split, /<main class=/, 'kein zweites <main> im Budget-Reiter');
-  assert.match(read('../public/pages/housekeeping.js'), /<div class="metric-grid budget-glance-details housekeeping-task-summary" role="group"/, 'keine zweite Region „Aufgaben"');
+  // Die Kennzahlgruppe der Arbeiten ist seit R24 (E2) entfallen; es gibt keine
+  // zweite Region "Aufgaben" mehr, weil es gar keine Gruppe mehr gibt.
+  assert.doesNotMatch(read('../public/pages/housekeeping.js'), /<section class="metric-grid[^"]*housekeeping-task-summary"/, 'keine zweite Region „Aufgaben"');
 });
 
 // DIE !important-SPERRKLINKE (R20, Entscheidung Ulas 2026-10-18). `@layer`

@@ -4554,7 +4554,13 @@
         "taskDoneNamed": "„{{name}}” zrobione.",
         "visitDeletedNamed": "Wizyta z {{date}} usunięta.",
         "visitPaidNamed": "Wizyta z {{date}} opłacona.",
-        "visitUnpaidNamed": "Płatność za wizytę z {{date}} cofnięta."
+        "visitUnpaidNamed": "Płatność za wizytę z {{date}} cofnięta.",
+        "workerMoreHint": "Kontakt, urodziny, kolory, notatki",
+        "markPaidNamed": "Oznacz wizytę z {{date}} jako opłaconą",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, w tym {{pending}} do zapłaty",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, wszystko opłacone",
+        "taskTemplatesHint": "Dotknij, aby dodać.",
+        "markPaidShort": "Zapłacono"
     },
     "splitExpenses": {
         "title": "Wspólne wydatki",

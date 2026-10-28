@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "\"{{name}}\" tamamlandı.",
         "visitDeletedNamed": "{{date}} ziyareti silindi.",
         "visitPaidNamed": "{{date}} ziyareti ödendi.",
-        "visitUnpaidNamed": "{{date}} ziyaretinin ödemesi geri alındı."
+        "visitUnpaidNamed": "{{date}} ziyaretinin ödemesi geri alındı.",
+        "workerMoreHint": "İletişim, doğum günü, renkler, notlar",
+        "markPaidNamed": "{{date}} ziyaretini ödendi olarak işaretle",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, bunun {{pending}} kadarı bekliyor",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, tamamı ödendi",
+        "taskTemplatesHint": "Eklemek için dokunun.",
+        "markPaidShort": "Ödendi"
     },
     "userMultiSelect": {
         "moreUsers": "daha",

@@ -4304,7 +4304,13 @@
         "taskDoneNamed": "«{{name}}» انجام شد.",
         "visitDeletedNamed": "بازدید {{date}} حذف شد.",
         "visitPaidNamed": "هزینه بازدید {{date}} پرداخت شد.",
-        "visitUnpaidNamed": "پرداخت بازدید {{date}} لغو شد."
+        "visitUnpaidNamed": "پرداخت بازدید {{date}} لغو شد.",
+        "workerMoreHint": "تماس، تولد، رنگ‌ها، یادداشت‌ها",
+        "markPaidNamed": "علامت‌گذاری بازدید {{date}} به‌عنوان پرداخت‌شده",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}، که {{pending}} از آن پرداخت‌نشده است",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}، همه پرداخت شده",
+        "taskTemplatesHint": "برای افزودن ضربه بزنید.",
+        "markPaidShort": "پرداخت‌شده"
     },
     "splitExpenses": {
         "title": "هزینه‌های مشترک",

@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **Household help's visits show what is still open.** An unpaid visit carries a "Pending" label next
+  to its date and a "Paid" button at the end of the row, so marking it paid is one tap instead of a trip
+  through the "..." menu. The payments card shows a chart only once there are two months of payments;
+  with one month it says the total and how much is still open.
+- **Household help's numbers sit on top.** Reports shows the open amount as one line above the visits,
+  with the number of visits and the paid amount next to it, instead of three cards at the side; the
+  chores tab no longer repeats "Due" and "Done this month" next to the list.
+- **The household help form is shorter.** Name and billing (type, rate, payment rhythm) come first;
+  phone, e-mail, birthday, colours and notes are under "More details". Adding a chore suggests the
+  areas you already use, so "Kitchen" is not created twice, and the suggestions say that a tap adds
+  them right away.
 - **Rewards has two tabs: Points and Rewards.** The history is one level below Points: "History ›"
   opens it with the person filter, "‹ Points" (or the Points tab) goes back. Before, Points showed the
   history at its side and History showed the points at its side - the same two blocks on two tabs.

@@ -1108,6 +1108,16 @@ svg.chart {
   display: none;
 }
 
+/* IN JEDER BREITE (Critique R24, E2; `metricGlanceHtml({ everywhere })`): die
+ * Kennzahl einer Flaeche ohne Seitenspalte steht als EINE Zeile oben in der
+ * Bahn - dieselbe Kurzzeile wie mobil, keine zweite Bauart fuer den Desktop.
+ * Den Abstand zur Liste darunter traegt die Spalte (`.page-columns__main`,
+ * gap), kein eigener Rand - mit beidem standen 32px zwischen Zahl und Liste. */
+.budget-glance.budget-glance--everywhere {
+  display: block;
+  margin-block-end: 0;
+}
+
 @media (max-width: 639px) {
   .budget-glance {
     display: block;

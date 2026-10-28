@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "«{{name}}» hecho.",
         "visitDeletedNamed": "Servicio del {{date}} eliminado.",
         "visitPaidNamed": "Servicio del {{date}} pagado.",
-        "visitUnpaidNamed": "Pago del servicio del {{date}} deshecho."
+        "visitUnpaidNamed": "Pago del servicio del {{date}} deshecho.",
+        "workerMoreHint": "Contacto, cumpleaños, colores, notas",
+        "markPaidNamed": "Marcar la visita del {{date}} como pagada",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, de los cuales {{pending}} pendientes",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, todo pagado",
+        "taskTemplatesHint": "Toca una para añadirla.",
+        "markPaidShort": "Pagado"
     },
     "userMultiSelect": {
         "moreUsers": "más",

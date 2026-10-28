@@ -4562,18 +4562,24 @@ test('Personal-Tab mit `housekeeping: read`: kein Bearbeiten, die Auswahl und da
   }
 });
 
-test('Bezahlen im Mehr-Knopf der Besuchszeile: nur wo der Server es zugesteht, nie gesperrt', () => {
+// R24 (G2-Haushaltshilfe-P2-2): Bezahlen ist die sichtbare Handlung der
+// Zeile (visitRowHtml), nicht mehr ein Menueeintrag - dieselbe Regel: nur wo
+// der Server es zugesteht, nie gesperrt, bei `read` gar nicht.
+test('Bezahlen in der Besuchszeile: nur wo der Server es zugesteht, nie gesperrt', () => {
   const offen = hkBesuch();
   const bezahlt = hkBesuch({ paid_at: '2026-08-07T10:00:00Z', can_mark_paid: false });
+  const zeile = (v) => hk.visitRowHtml(v, { dateText: 'x' });
   withAccess({ housekeeping: 'read' }, () => {
     assert.equal(hk.visitMenuHtml(offen, 'x'), '');
+    assert.doesNotMatch(zeile(offen), /data-pay-visit/);
     assert.equal(hk.visitMenuHtml(bezahlt, 'x'), '', 'der Zahlstatus steht in der Metazeile, nicht an einem Knopf');
   });
   withAccess({ housekeeping: 'write' }, () => {
-    assert.match(hk.visitMenuHtml(offen, 'x'), /data-pay-visit="12"/, 'mit Schreibrecht da');
-    assert.doesNotMatch(hk.visitMenuHtml(offen, 'x'), /disabled/, 'und offen');
-    // Der Server bietet das Bezahlen nicht an: der Eintrag fehlt.
-    assert.doesNotMatch(hk.visitMenuHtml(hkBesuch({ can_mark_paid: false }), 'x'), /data-pay-visit/);
+    assert.match(zeile(offen), /class="btn btn--secondary btn--sm housekeeping-visit-pay" data-pay-visit="12"/, 'mit Schreibrecht da');
+    assert.doesNotMatch(zeile(offen), /housekeeping-visit-pay"[^>]*disabled/, 'und offen');
+    assert.doesNotMatch(hk.visitMenuHtml(offen, 'x'), /data-pay-visit/, 'nicht zweimal');
+    // Der Server bietet das Bezahlen nicht an: der Knopf fehlt.
+    assert.doesNotMatch(zeile(hkBesuch({ can_mark_paid: false })), /data-pay-visit/);
     // Seit D6 auch am bezahlten Besuch kein gesperrter Knopf mehr: ein Eintrag
     // "Als bezahlt markieren" an einem bezahlten Besuch versprache nichts.
     assert.doesNotMatch(hk.visitMenuHtml(hkBesuch({ paid_at: '2026-08-07T10:00:00Z' }), 'x'), /data-pay-visit/);

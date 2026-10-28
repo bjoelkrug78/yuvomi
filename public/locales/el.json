@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "«{{name}}» ολοκληρώθηκε.",
         "visitDeletedNamed": "Η επίσκεψη της {{date}} διαγράφηκε.",
         "visitPaidNamed": "Η επίσκεψη της {{date}} πληρώθηκε.",
-        "visitUnpaidNamed": "Η πληρωμή της επίσκεψης της {{date}} αναιρέθηκε."
+        "visitUnpaidNamed": "Η πληρωμή της επίσκεψης της {{date}} αναιρέθηκε.",
+        "workerMoreHint": "Επικοινωνία, γενέθλια, χρώματα, σημειώσεις",
+        "markPaidNamed": "Σήμανση της επίσκεψης της {{date}} ως πληρωμένης",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, από τα οποία {{pending}} σε εκκρεμότητα",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, όλα πληρωμένα",
+        "taskTemplatesHint": "Πατήστε για προσθήκη.",
+        "markPaidShort": "Πληρώθηκε"
     },
     "userMultiSelect": {
         "moreUsers": "ακόμη",

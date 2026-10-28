@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "”{{name}}” klar.",
         "visitDeletedNamed": "Besöket {{date}} raderat.",
         "visitPaidNamed": "Besöket {{date}} betalt.",
-        "visitUnpaidNamed": "Betalningen för besöket {{date}} har ångrats."
+        "visitUnpaidNamed": "Betalningen för besöket {{date}} har ångrats.",
+        "workerMoreHint": "Kontakt, födelsedag, färger, anteckningar",
+        "markPaidNamed": "Markera besöket {{date}} som betalt",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, varav {{pending}} obetalt",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, allt betalt",
+        "taskTemplatesHint": "Tryck för att lägga till.",
+        "markPaidShort": "Betalt"
     },
     "userMultiSelect": {
         "moreUsers": "mer",

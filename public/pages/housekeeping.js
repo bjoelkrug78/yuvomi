@@ -14,7 +14,7 @@ import { metricGlanceHtml, wireMetricGlance } from '/utils/metric-glance.js';
 import { initials } from '/utils/initials.js';
 import { renderSkeletonList } from '/utils/skeleton.js';
 import { emptyStateHTML, mountLoadError } from '/utils/empty-state.js';
-import { openModal, closeModal, captureModalContext, confirmOverModal, refocusAfterRender, reportFieldErrors, constraintErrors } from '/components/modal.js';
+import { openModal, closeModal, captureModalContext, confirmOverModal, refocusAfterRender, reportFieldErrors, constraintErrors, advancedSection, dialogInitialFocus } from '/components/modal.js';
 import { createPageFab, setPageFabAction } from '/utils/fab.js';
 import { wireTablist } from '/utils/tablist.js';
 import { attachSegmentIndicator } from '/utils/segment-indicator.js';
@@ -761,6 +761,17 @@ function renderDashboard(content) {
     `;
   }).join('');
 
+  // EIN DIAGRAMM ERST AB ZWEI MONATEN (Critique R24, G2-Haushaltshilfe-P2-2):
+  // mit einem Monat Daten zeigte es fuenf leere Grundlinien und eine Saeule -
+  // ein Verlauf ohne Verlauf. Dann sagt ein Satz, was die eine Saeule sagte.
+  const paidMonths = (data.monthly_payments || []).filter((row) => row.total > 0);
+  const paymentsSentence = paidMonths.length === 1
+    ? t(paidMonths[0].pending > 0 ? 'housekeeping.paymentsMonthWithOpen' : 'housekeeping.paymentsMonthAllPaid', {
+      month: formatMonthLabel(paidMonths[0].month),
+      total: money(paidMonths[0].total),
+      pending: money(paidMonths[0].pending || 0),
+    })
+    : '';
   const recentVisits = (state.recentVisits || []).slice(0, 5);
   // EIN DATUMSFORMAT IM MODUL (R23, D11): die letzten Besuche trugen
   // "23.10.2026", die Berichte "23.10." - jetzt Wochentag und Tag, das Jahr
@@ -847,13 +858,14 @@ function renderDashboard(content) {
         <span>${esc(t('housekeeping.pendingPayments'))}: ${esc(money(data.pending_payments || 0))}</span>
       </div>
       <div class="housekeeping-card">
-      <div class="housekeeping-chart"${bars ? ' role="list"' : ''} aria-label="${esc(t('housekeeping.monthlyPayments'))}">
-        ${bars || `<p class="housekeeping-muted">${esc(t('housekeeping.noPaymentData'))}</p>`}
+      ${paidMonths.length >= 2 ? `
+      <div class="housekeeping-chart" role="list" aria-label="${esc(t('housekeeping.monthlyPayments'))}">
+        ${bars}
       </div>
-      ${bars ? `<ul class="housekeeping-chart__legend" aria-hidden="true">
+      <ul class="housekeeping-chart__legend" aria-hidden="true">
         <li><span class="housekeeping-chart__swatch"></span>${esc(t('housekeeping.paymentPaid'))}</li>
         <li><span class="housekeeping-chart__swatch housekeeping-chart__swatch--pending"></span>${esc(t('housekeeping.paymentPending'))}</li>
-      </ul>` : ''}
+      </ul>` : `<p class="housekeeping-payments-sentence${paymentsSentence ? '' : ' housekeeping-muted'}">${esc(paymentsSentence || t('housekeeping.noPaymentData'))}</p>`}
       </div>
     </section>`}
     </div>
@@ -984,6 +996,30 @@ function taskRowHtml(task) {
  * Beide Wege legen nur an; bei `housekeeping: read` oeffnet der Dialog gar
  * nicht (der FAB ist dann ohnehin weg, und der `n`-Kurzbefehl fragt dasselbe).
  */
+/**
+ * DER BEREICH IST EINE AUSWAHL MIT FREITEXT (Critique R24, G2-Haushaltshilfe-P3-1).
+ * Ein reines Textfeld legte bei jedem Tippfehler einen neuen Bereich an
+ * ("Kueche" neben "Kuche"). Die Liste nennt die Bereiche, die es schon gibt -
+ * aus den Arbeiten und den Vorlagen, ohne Dubletten in Gross/klein -, und
+ * laesst einen neuen trotzdem zu (`<datalist>`: Vorschlag, kein Zwang).
+ */
+const AREA_LIST_ID = 'housekeeping-area-options';
+
+function knownAreas() {
+  const seen = new Map();
+  const add = (raw) => {
+    const area = String(raw ?? '').trim();
+    if (area && !seen.has(area.toLocaleLowerCase())) seen.set(area.toLocaleLowerCase(), area);
+  };
+  state.tasks.forEach((task) => add(task.area));
+  state.templates.forEach((template) => add(templateLabel(template, 'area')));
+  return [...seen.values()].sort((a, b) => a.localeCompare(b));
+}
+
+function areaDatalistHtml() {
+  return `<datalist id="${AREA_LIST_ID}">${knownAreas().map((area) => `<option value="${esc(area)}"></option>`).join('')}</datalist>`;
+}
+
 function openTaskCreateModal(content) {
   if (readOnly()) return;
   // Eine Vorlage, die schon als Aufgabe in der Liste steht, schlaegt nichts
@@ -996,6 +1032,7 @@ function openTaskCreateModal(content) {
           <button class="housekeeping-template" type="button" data-template-index="${index}">
             <span class="housekeeping-template__name">${esc(templateLabel(template, 'name'))}</span>
             <small>${esc(templateLabel(template, 'area'))} · ${esc(t('housekeeping.everyDays', { days: template.frequency_days }))}</small>
+            <i data-lucide="plus" class="housekeeping-template__add" aria-hidden="true"></i>
           </button>`)).join('');
   openModal({
     staged: true, // Buehne zuerst, Felder nach dem ersten Bild (modal.js, R21 a6)
@@ -1006,7 +1043,11 @@ function openTaskCreateModal(content) {
         ${templateButtons ? `
         <section class="housekeeping-create__templates" aria-labelledby="housekeeping-templates-title">
           <h3 class="housekeeping-create__heading" id="housekeeping-templates-title">${esc(t('housekeeping.taskTemplates'))}</h3>
-          <div class="housekeeping-template-list">${templateButtons}
+          ${/* SAGEN, WAS EIN TIPP TUT (R24, G2-Haushaltshilfe-P3-1): die Kacheln
+                sahen aus wie eine Auswahl fuer das Formular darunter, legten aber
+                sofort an. Der Satz und das Plus an jeder Kachel sagen es. */ ''}
+          <p class="housekeeping-create__hint" id="housekeeping-templates-hint">${esc(t('housekeeping.taskTemplatesHint'))}</p>
+          <div class="housekeeping-template-list" aria-describedby="housekeeping-templates-hint">${templateButtons}
           </div>
         </section>` : ''}
         <form id="housekeeping-task-form" class="housekeeping-task-form" novalidate aria-labelledby="housekeeping-custom-title">
@@ -1018,7 +1059,8 @@ function openTaskCreateModal(content) {
           <div class="housekeeping-form-grid housekeeping-form-grid--pair">
             <label class="housekeeping-field">
               <span>${esc(t('housekeeping.taskArea'))}${REQUIRED_MARK}</span>
-              <input name="area" required maxlength="100" autocomplete="off" placeholder="${esc(t('housekeeping.taskAreaPlaceholder'))}">
+              <input name="area" required maxlength="100" autocomplete="off" list="${AREA_LIST_ID}" placeholder="${esc(t('housekeeping.taskAreaPlaceholder'))}">
+              ${areaDatalistHtml()}
             </label>
             <div class="housekeeping-field">
               <span id="housekeeping-create-frequency-label">${esc(t('housekeeping.taskFrequency'))}${REQUIRED_MARK}</span>
@@ -1152,37 +1194,6 @@ function renderTasks(content) {
   redrawList(content, () => drawTasks(content), { selector: TASK_ROW, keyAttr: 'data-swipe-id' });
 }
 
-/**
- * DIE SEITENSPALTE DER AUFGABEN (Critique R17). Der Reiter liess sie leer
- * (1280: 612 von 996px genutzt, 384px frei), obwohl es seine zwei Kennzahlen
- * gibt: „Faellig" und „Erledigt im Monat" standen nur auf der Uebersicht.
- * Dieselben Zahlen aus demselben Bestand (`state.dashboard`, nach jedem
- * Erledigen neu geladen), dieselbe Karte, dieselben Worte.
- *
- * Unter 640px bleibt sie aus (`budget-glance-details`, panel.css): dort
- * stuenden zwei Kacheln als 190px unter der Liste, und die Kurzzeile der
- * Uebersicht nennt die Faelligen schon. Dazwischen steht sie unter der Liste,
- * ab der Split-Schwelle daneben (`.page-columns`).
- */
-function taskSummaryHtml() {
-  const data = state.dashboard || {};
-  const pending = data.pending_tasks ?? 0;
-  const finished = data.finished_tasks_this_month ?? 0;
-  return `
-    ${/* EINE GRUPPE, KEINE ZWEITE REGION „Aufgaben" (R20, axe landmark-unique):
-         die Liste daneben ist schon die Region dieses Namens. */ ''}
-    <div class="metric-grid budget-glance-details housekeeping-task-summary" role="group" aria-label="${esc(t('housekeeping.tasks'))}">
-      <article class="metric-card${pending > 0 ? '' : ' metric-card--empty'}">
-        <div class="metric-card__label">${esc(t('housekeeping.pendingChores'))}</div>
-        <div class="metric-card__value">${esc(pending)}</div>
-      </article>
-      <article class="metric-card${finished > 0 ? '' : ' metric-card--empty'}">
-        <div class="metric-card__label">${esc(t('housekeeping.finishedChores'))}</div>
-        <div class="metric-card__value">${esc(finished)}</div>
-      </article>
-    </div>`;
-}
-
 function drawTasks(content) {
   content.replaceChildren();
   const taskRows = state.tasks.map(taskRowHtml).join('');
@@ -1192,12 +1203,15 @@ function drawTasks(content) {
     ...(readOnly() ? {} : { action: { tone: 'secondary', label: t('housekeeping.addTask'), icon: 'plus', attrs: { 'data-create-task': '' } } }),
   });
 
+  // KEINE KENNZAHLSPALTE (Critique R24, E2): "Faellig" und "Erledigt im Monat"
+  // standen hier als zwei grosse Karten fuer zwei Ziffern - dieselben wie auf
+  // "Besuche". Die Liste sagt selbst, was faellig ist (die ueberfaelligen
+  // stehen oben, rot benannt); die Spur bleibt leer, statt Zahlen zu doppeln.
   content.insertAdjacentHTML('beforeend', renderPageColumns({
     main: `
     <section class="housekeeping-task-list row-carrier" aria-label="${esc(t('housekeeping.tasks'))}">
       ${taskRows || empty}
     </section>`,
-    rail: taskSummaryHtml(),
   }));
   if (window.lucide) window.lucide.createIcons({ el: content });
   // Jede Verdrahtung darunter schreibt - bei `read` haengt keine.
@@ -1425,17 +1439,30 @@ async function unpayVisit(visit, onUnpaid) {
 function visitRowHtml(visit, { dateText, visitDate = dateText, showWorker = true, paymentText, className = '' } = {}) {
   // Ohne Betragsrecht (R20) nennt die Zeile die Zeit statt Betrag und Zahlstatus.
   const hidden = amountsHidden(visit.total_amount);
+  // OFFEN IST EIN ETIKETT, BEZAHLEN DIE HANDLUNG DER ZEILE (Critique R24,
+  // G2-Haushaltshilfe-P2-2). "Ausstehend" stand als drittes Wort im
+  // Metatext und Bezahlen im Mehr-Menue - der haeufigste Schritt nach einem
+  // Besuch lag zwei Tipps tief. Jetzt traegt ein offener Besuch das Etikett
+  // (`.tag`) neben dem Datum - die Titelzeile ist kurz, die Metazeile mit
+  // Person und Betrag bricht bei 390px sonst um - und, wo der Server es
+  // zugesteht, "Bezahlt" als EINE sichtbare Handlung der Endzone (D10);
+  // bezahlt bleibt es ein leises Wort in der Metazeile.
+  const pending = !hidden && !visit.paid_at;
   const meta = [
     showWorker ? (visit.worker_name || t('housekeeping.unnamedWorker')) : null,
     hidden ? visitTimeText(visit) : money(visit.total_amount),
-    hidden ? null : (paymentText ?? visitPaymentMeta(visit)),
+    hidden || pending ? null : (paymentText ?? visitPaymentMeta(visit)),
   ].filter(Boolean).join(' · ');
+  const tag = pending ? `<span class="tag housekeeping-visit-tag">${esc(t('housekeeping.paymentPending'))}</span>` : '';
+  const pay = pending && visit.can_mark_paid && !readOnly() ? `
+      <button type="button" class="btn btn--secondary btn--sm housekeeping-visit-pay" data-pay-visit="${esc(visit.id)}"
+              aria-label="${esc(t('housekeeping.markPaidNamed', { date: visitDate }))}">${esc(t('housekeeping.markPaidShort'))}</button>` : '';
   return `
     <article class="list-row housekeeping-visit-row${className ? ` ${className}` : ''}">
       <button type="button" class="list-row__main list-row__main--interactive" data-open-visit="${esc(visit.id)}">
-        <span class="list-row__name">${esc(dateText)}</span>
+        <span class="list-row__name">${esc(dateText)}${tag}</span>
         <span class="list-row__meta">${esc(meta)}</span>
-      </button>
+      </button>${pay}
       ${visitMenuHtml(visit, visitDate)}
     </article>`;
 }
@@ -1451,7 +1478,9 @@ function visitMenuHtml(visit, visitDate) {
       visit.can_edit
         ? { action: 'edit-visit', icon: 'pencil', label: t('common.edit'), attrs: { 'data-edit-visit': visit.id } }
         : null,
-      !visit.paid_at && visit.can_mark_paid
+      // Bezahlen steht als sichtbare Handlung in der Zeile (visitRowHtml) -
+      // im Menue nur noch, wo die Zeile keine Betraege zeigt.
+      !visit.paid_at && visit.can_mark_paid && amountsHidden(visit.total_amount)
         ? { action: 'pay-visit', icon: 'banknote', label: t('housekeeping.markPaid'), attrs: { 'data-pay-visit': visit.id } }
         : null,
       visit.can_delete
@@ -1776,41 +1805,28 @@ function renderReports(content) {
     });
   }).join('');
 
-  // MOBIL DIE KURZZEILE WIE IN DER UEBERSICHT (Critique 2026-10-16): die drei
-  // Kacheln standen unter 640px als 2+1-Raster - die dritte allein in ihrer
-  // Reihe. Die Zeile nennt alle drei, ein Aufklapper haette nichts mehr zu
-  // zeigen; ab 640px stehen die Karten (`budget-glance-details`) in der Spalte.
-  // Kennzahlen | Besuche: mobil stehen die Kennzahlen ueber der Liste (DOM-
-  // Reihenfolge), ab der Split-Schwelle ruecken sie als Zusammenfassung in die
-  // Seitenspalte neben die Liste (`railFirst`).
-  // Ohne Betragsrecht (R20) bleibt nur die Zahl der Besuche.
+  // EINE KENNZAHLKARTE OBEN (Critique R24, E2): drei Karten standen als Turm in
+  // der Seitenspalte (Besuche, Offen, Bezahlt) - mobil schon als Kurzzeile.
+  // Jetzt in jeder Breite die Kurzzeile ueber der Liste (`everywhere`): die
+  // offene Summe fuehrt (sie ist, was man hier nachsieht), Besuche und
+  // Bezahltes stehen leise daneben. Ohne Betragsrecht (R20) fuehrt die Zahl
+  // der Besuche.
   const noAmounts = amountsHidden(state.visitReport?.totals ?? null);
+  const glance = noAmounts
+    ? metricGlanceHtml({ label: t('housekeeping.reportVisitsCount'), value: String(visits.length), everywhere: true })
+    : metricGlanceHtml({
+      label: t('housekeeping.pendingPayments'),
+      value: money(totals.pending || 0),
+      lead: true,
+      everywhere: true,
+      flows: [
+        { label: t('housekeeping.reportVisitsCount'), amount: String(visits.length) },
+        { label: t('housekeeping.paymentPaid'), amount: money(totals.paid || 0) },
+      ],
+    });
   content.insertAdjacentHTML('beforeend', renderPageColumns({
-    railFirst: true,
-    rail: `
-    ${metricGlanceHtml({
-    label: t('housekeeping.reportVisitsCount'),
-    value: String(visits.length),
-    flows: noAmounts ? [] : [
-      { label: t('housekeeping.pendingPayments'), amount: money(totals.pending || 0) },
-      { label: t('housekeeping.paymentPaid'), amount: money(totals.paid || 0) },
-    ],
-  })}
-    <section class="metric-grid budget-glance-details" aria-label="${esc(t('housekeeping.visitReports'))}">
-      <article class="metric-card">
-        <div class="metric-card__label">${esc(t('housekeeping.reportVisitsCount'))}</div>
-        <div class="metric-card__value">${esc(visits.length)}</div>
-      </article>
-      ${noAmounts ? '' : `<article class="metric-card">
-        <div class="metric-card__label">${esc(t('housekeeping.pendingPayments'))}</div>
-        <div class="metric-card__value">${esc(money(totals.pending || 0))}</div>
-      </article>
-      <article class="metric-card">
-        <div class="metric-card__label">${esc(t('housekeeping.paymentPaid'))}</div>
-        <div class="metric-card__value">${esc(money(totals.paid || 0))}</div>
-      </article>`}
-    </section>`,
     main: `
+    ${glance}
     <section class="housekeeping-reports${rows ? ' row-carrier' : ''}" aria-label="${esc(t('housekeeping.recentReports'))}">
       ${rows || `<p class="housekeeping-muted">${esc(isCurrentMonth
     ? t('housekeeping.noVisitReports')
@@ -2122,7 +2138,8 @@ function openTaskEditModal(task, content) {
         </label>
         <label class="housekeeping-field">
           <span>${esc(t('housekeeping.taskArea'))}${REQUIRED_MARK}</span>
-          <input name="area" required maxlength="100" value="${esc(task.area)}">
+          <input name="area" required maxlength="100" autocomplete="off" list="${AREA_LIST_ID}" value="${esc(task.area)}">
+          ${areaDatalistHtml()}
         </label>
         <div class="housekeeping-field">
           <span id="housekeeping-edit-frequency-label">${esc(t('housekeeping.taskFrequency'))}${REQUIRED_MARK}</span>
@@ -2465,6 +2482,7 @@ function openStaffModal(worker, content, options = {}) {
   state.workerAvatar = item.avatar_data ?? null;
   openModal({
     title: item.id ? t('housekeeping.editWorker') : t('housekeeping.addWorker'),
+    initialFocus: dialogInitialFocus(Boolean(item.id)),
     size: 'lg',
     content: `
       <form id="housekeeping-worker-form" class="housekeeping-worker-form" novalidate>
@@ -2487,23 +2505,15 @@ function openStaffModal(worker, content, options = {}) {
             </label>
           </div>
         </div>
-        <div class="housekeeping-form-grid housekeeping-form-grid--wide">
-          <label class="housekeeping-field">
-            <span>${esc(t('housekeeping.workerPhone'))}</span>
-            <input name="phone" type="tel" autocomplete="tel" value="${esc(item.phone || '')}">
-          </label>
-          <label class="housekeeping-field">
-            <span>${esc(t('housekeeping.workerEmail'))}</span>
-            <input name="email" type="email" autocomplete="email" value="${esc(item.email || '')}">
-          </label>
-          <div class="housekeeping-field">
-            <span id="housekeeping-worker-birth-date-label">${esc(t('housekeeping.workerBirthDate'))}</span>
-            ${birthDateControlHtml({
-              id: 'housekeeping-worker-birth-date',
-              value: item.birth_date || '',
-              yearUnknown: item.birth_year_unknown,
-            })}
-          </div>
+        ${/* NAME UND ABRECHNUNG OBEN, DER REST BENANNT DAHINTER (Critique R24,
+              G2-Haushaltshilfe-P2-1). Fuenfzehn Felder standen offen in drei
+              Spalten mit versetzten Zeilen (Telefon/E-Mail gegen Geburtstag),
+              829 von 900px hoch. Was eine Haushaltshilfe ausmacht, ist wer sie
+              ist und wie sie bezahlt wird - das steht oben. Kontakt,
+              Geburtstag, Farben und Notizen liegen hinter "Weitere Angaben",
+              beim Bearbeiten offen, sobald eines davon einen Wert traegt
+              (DESIGN.md D4, dieselbe Regel wie die Buchung im Budget). */ ''}
+        <div class="housekeeping-form-grid housekeeping-form-grid--wide housekeeping-billing">
           <label class="housekeeping-field">
             <span>${esc(t('housekeeping.rateType'))}</span>
             <select name="rate_type">
@@ -2519,10 +2529,6 @@ function openStaffModal(worker, content, options = {}) {
             <span>${esc(t('housekeeping.hourlyRate'))}</span>
             <input name="hourly_rate"${amountInputAttrs(state.currency, item.hourly_rate ?? 0)}>
           </label>
-          <div class="housekeeping-field housekeeping-field--color">
-            <span id="housekeeping-calendar-color-label">${esc(t('housekeeping.calendarColor'))}</span>
-            ${colorPickerHtml({ name: 'calendar_color', value: item.calendar_color || USER_COLOR_DEFAULT, labelledBy: 'housekeeping-calendar-color-label' })}
-          </div>
           <label class="housekeeping-field">
             <span>${esc(t('housekeeping.paymentSchedule'))}</span>
             <select name="payment_schedule">
@@ -2531,15 +2537,41 @@ function openStaffModal(worker, content, options = {}) {
               <option value="monthly"${!item.payment_schedule || item.payment_schedule === 'monthly' ? ' selected' : ''}>${esc(t('housekeeping.scheduleMonthly'))}</option>
             </select>
           </label>
-          <div class="housekeeping-field housekeeping-field--color">
-            <span id="housekeeping-profile-color-label">${esc(t('housekeeping.profileColor'))}</span>
-            ${colorPickerHtml({ name: 'avatar_color', value: item.avatar_color || USER_COLOR_DEFAULT, labelledBy: 'housekeeping-profile-color-label' })}
-          </div>
+        </div>
+        ${advancedSection(`
+        <div class="housekeeping-form-grid housekeeping-form-grid--pair">
+          <label class="housekeeping-field">
+            <span>${esc(t('housekeeping.workerPhone'))}</span>
+            <input name="phone" type="tel" autocomplete="tel" value="${esc(item.phone || '')}">
+          </label>
+          <label class="housekeeping-field">
+            <span>${esc(t('housekeeping.workerEmail'))}</span>
+            <input name="email" type="email" autocomplete="email" value="${esc(item.email || '')}">
+          </label>
+        </div>
+        <div class="housekeeping-field">
+          <span id="housekeeping-worker-birth-date-label">${esc(t('housekeeping.workerBirthDate'))}</span>
+          ${birthDateControlHtml({
+            id: 'housekeeping-worker-birth-date',
+            value: item.birth_date || '',
+            yearUnknown: item.birth_year_unknown,
+          })}
+        </div>
+        <div class="housekeeping-field housekeeping-field--color">
+          <span id="housekeeping-calendar-color-label">${esc(t('housekeeping.calendarColor'))}</span>
+          ${colorPickerHtml({ name: 'calendar_color', value: item.calendar_color || USER_COLOR_DEFAULT, labelledBy: 'housekeeping-calendar-color-label' })}
+        </div>
+        <div class="housekeeping-field housekeeping-field--color">
+          <span id="housekeeping-profile-color-label">${esc(t('housekeeping.profileColor'))}</span>
+          ${colorPickerHtml({ name: 'avatar_color', value: item.avatar_color || USER_COLOR_DEFAULT, labelledBy: 'housekeeping-profile-color-label' })}
         </div>
         <label class="housekeeping-field">
           <span>${esc(t('housekeeping.workerNotes'))}</span>
           <textarea name="notes" rows="3" maxlength="5000">${esc(item.notes || '')}</textarea>
-        </label>
+        </label>`, {
+          hint: t('housekeeping.workerMoreHint'),
+          open: Boolean(item.id && (item.phone || item.email || item.birth_date || item.notes)),
+        })}
         <div class="modal-panel__footer">
           <button class="btn btn--secondary" type="button" data-action="close-modal">${esc(t('common.cancel'))}</button>
           <button class="btn btn--primary" type="submit">${esc(item.id ? t('common.save') : t('common.add'))}</button>
@@ -2780,6 +2812,8 @@ export async function render(container, { signal } = {}) {
 // die Seite laeuft dort ohne DOM.
 export const __test = {
   amountsHidden, visitTimeText, visitRowHtml, visitWorkDetailsHtml,
+  // R24 (G2-Haushaltshilfe-P3-1): Bereich als Auswahl der vorhandenen.
+  knownAreas, areaDatalistHtml,
   describeDeepLinkError,
   openVisitFromDeepLink,
   loadData,

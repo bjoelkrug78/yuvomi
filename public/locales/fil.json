@@ -4304,7 +4304,13 @@
         "taskDoneNamed": "Tapos na ang \"{{name}}\".",
         "visitDeletedNamed": "Natanggal ang pagbisita noong {{date}}.",
         "visitPaidNamed": "Bayad na ang pagbisita noong {{date}}.",
-        "visitUnpaidNamed": "Binawi ang bayad sa pagbisita noong {{date}}."
+        "visitUnpaidNamed": "Binawi ang bayad sa pagbisita noong {{date}}.",
+        "workerMoreHint": "Contact, kaarawan, kulay, tala",
+        "markPaidNamed": "Markahan bilang bayad ang pagbisita noong {{date}}",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, {{pending}} dito ang hindi pa bayad",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, bayad na lahat",
+        "taskTemplatesHint": "I-tap para idagdag.",
+        "markPaidShort": "Bayad na"
     },
     "splitExpenses": {
         "title": "Mga hinating gastos",

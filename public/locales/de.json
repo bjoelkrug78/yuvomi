@@ -4304,7 +4304,13 @@
         "taskDoneNamed": "„{{name}}“ erledigt.",
         "visitDeletedNamed": "Besuch vom {{date}} gelöscht.",
         "visitPaidNamed": "Besuch vom {{date}} bezahlt.",
-        "visitUnpaidNamed": "Zahlung für den Besuch vom {{date}} zurückgenommen."
+        "visitUnpaidNamed": "Zahlung für den Besuch vom {{date}} zurückgenommen.",
+        "workerMoreHint": "Kontakt, Geburtstag, Farben, Notizen",
+        "markPaidNamed": "Besuch vom {{date}} als bezahlt markieren",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, davon {{pending}} offen",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, alles bezahlt",
+        "taskTemplatesHint": "Ein Tipp fügt die Aufgabe hinzu.",
+        "markPaidShort": "Bezahlt"
     },
     "splitExpenses": {
         "title": "Gemeinsame Ausgaben",

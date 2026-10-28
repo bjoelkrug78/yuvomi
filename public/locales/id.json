@@ -4304,7 +4304,13 @@
         "taskDoneNamed": "\"{{name}}\" selesai.",
         "visitDeletedNamed": "Kunjungan {{date}} dihapus.",
         "visitPaidNamed": "Kunjungan {{date}} dibayar.",
-        "visitUnpaidNamed": "Pembayaran kunjungan {{date}} dibatalkan."
+        "visitUnpaidNamed": "Pembayaran kunjungan {{date}} dibatalkan.",
+        "workerMoreHint": "Kontak, ulang tahun, warna, catatan",
+        "markPaidNamed": "Tandai kunjungan {{date}} sebagai lunas",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, {{pending}} di antaranya belum dibayar",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, semua lunas",
+        "taskTemplatesHint": "Ketuk untuk menambahkan.",
+        "markPaidShort": "Terbayar"
     },
     "splitExpenses": {
         "title": "Pengeluaran Bersama",

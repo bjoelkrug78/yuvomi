@@ -34,9 +34,13 @@ import { esc } from '/utils/html.js';
  *        hoechstens zwei Nebenwerte rechts; `amount` optional (z.B. „8 aktiv")
  * @param {boolean} [o.lead]   die Zahl FUEHRT den Bildschirm (R18): Display-Stufe,
  *        die Nebenwerte stehen als ruhige Zeile darunter (`glanceLeadClass`)
+ * @param {boolean} [o.everywhere] die Zeile steht in JEDER Breite, nicht nur unter
+ *        640px (Critique R24, E2 "eine Kennzahlkarte oben"): fuer Flaechen, deren
+ *        Kennzahlen keine Seitenspalte mehr tragen. Nur statisch (ohne `controls`) -
+ *        es gibt dann keine Karten, die sie aufklappen koennte.
  */
-export function metricGlanceHtml({ id, controls, expanded, label, value, tone = 'neutral', flows = [], lead: leads = false }) {
-  const carrier = `row-carrier budget-glance${leads ? ` ${glanceLeadClass(value)}` : ''}`;
+export function metricGlanceHtml({ id, controls, expanded, label, value, tone = 'neutral', flows = [], lead: leads = false, everywhere = false }) {
+  const carrier = `row-carrier budget-glance${leads ? ` ${glanceLeadClass(value)}` : ''}${everywhere && !controls ? ' budget-glance--everywhere' : ''}`;
   const side = flows.filter(Boolean).slice(0, 2);
   const flowsHtml = side.length ? `
         <span class="budget-glance__flows">${side.map((f) => `

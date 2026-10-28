@@ -3933,7 +3933,13 @@
         "taskDoneNamed": "„{{name}}“ hotovo.",
         "visitDeletedNamed": "Návštěva z {{date}} smazána.",
         "visitPaidNamed": "Návštěva z {{date}} zaplacena.",
-        "visitUnpaidNamed": "Zaplacení návštěvy z {{date}} zrušeno."
+        "visitUnpaidNamed": "Zaplacení návštěvy z {{date}} zrušeno.",
+        "workerMoreHint": "Kontakt, narozeniny, barvy, poznámky",
+        "markPaidNamed": "Označit návštěvu z {{date}} jako zaplacenou",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, z toho {{pending}} nezaplaceno",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, vše zaplaceno",
+        "taskTemplatesHint": "Klepnutím ji přidáte.",
+        "markPaidShort": "Zaplaceno"
     },
     "splitExpenses": {
         "title": "Společné výdaje",

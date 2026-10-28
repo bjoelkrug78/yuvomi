@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "„{{name}}” kész.",
         "visitDeletedNamed": "A(z) {{date}} látogatás törölve.",
         "visitPaidNamed": "A(z) {{date}} látogatás kifizetve.",
-        "visitUnpaidNamed": "A(z) {{date}} látogatás fizetése visszavonva."
+        "visitUnpaidNamed": "A(z) {{date}} látogatás fizetése visszavonva.",
+        "workerMoreHint": "Elérhetőség, születésnap, színek, jegyzetek",
+        "markPaidNamed": "A {{date}} látogatás megjelölése fizetettként",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, ebből {{pending}} függőben",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, minden kifizetve",
+        "taskTemplatesHint": "Koppints rá a hozzáadáshoz.",
+        "markPaidShort": "Fizetve"
     },
     "userMultiSelect": {
         "moreUsers": "továbbiak",

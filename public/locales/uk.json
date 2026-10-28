@@ -4550,7 +4550,13 @@
         "taskDoneNamed": "«{{name}}» виконано.",
         "visitDeletedNamed": "Відвідування {{date}} видалено.",
         "visitPaidNamed": "Відвідування {{date}} оплачено.",
-        "visitUnpaidNamed": "Оплату відвідування {{date}} скасовано."
+        "visitUnpaidNamed": "Оплату відвідування {{date}} скасовано.",
+        "workerMoreHint": "Контакти, день народження, кольори, нотатки",
+        "markPaidNamed": "Позначити візит {{date}} як оплачений",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, з них {{pending}} не оплачено",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, усе оплачено",
+        "taskTemplatesHint": "Торкніться, щоб додати.",
+        "markPaidShort": "Платний"
     },
     "userMultiSelect": {
         "moreUsers": "інші",

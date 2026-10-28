@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "“{{name}}” done.",
         "visitDeletedNamed": "Visit on {{date}} deleted.",
         "visitPaidNamed": "Visit on {{date}} paid.",
-        "visitUnpaidNamed": "Payment for the visit on {{date}} undone."
+        "visitUnpaidNamed": "Payment for the visit on {{date}} undone.",
+        "workerMoreHint": "Contact, birthday, colors, notes",
+        "markPaidNamed": "Mark visit on {{date}} as paid",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, {{pending}} of it pending",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, all paid",
+        "taskTemplatesHint": "Tap one to add it.",
+        "markPaidShort": "Mark paid"
     },
     "userMultiSelect": {
         "moreUsers": "more",

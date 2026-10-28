@@ -4676,7 +4676,13 @@
         "taskDoneNamed": "تم إنجاز «{{name}}».",
         "visitDeletedNamed": "تم حذف زيارة {{date}}.",
         "visitPaidNamed": "تم دفع زيارة {{date}}.",
-        "visitUnpaidNamed": "تم التراجع عن دفع زيارة {{date}}."
+        "visitUnpaidNamed": "تم التراجع عن دفع زيارة {{date}}.",
+        "workerMoreHint": "التواصل، عيد الميلاد، الألوان، الملاحظات",
+        "markPaidNamed": "تحديد زيارة {{date}} كمدفوعة",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}، منها {{pending}} معلّقة",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}، تم دفع الكل",
+        "taskTemplatesHint": "اضغط لإضافتها.",
+        "markPaidShort": "مدفوع"
     },
     "userMultiSelect": {
         "moreUsers": "آخرون",

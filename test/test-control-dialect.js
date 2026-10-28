@@ -2164,7 +2164,7 @@ const PENDING = {
   'edit-autofocus': {
     'public/components/quick-links-manager.js': 1, 'public/pages/birthdays.js': 1, 'public/pages/budget.js': 2,
     'public/pages/calendar.js': 1, 'public/pages/documents.js': 1, 'public/pages/health.js': 7,
-    'public/pages/housekeeping.js': 1, 'public/pages/notes.js': 1, 'public/pages/pantry.js': 1,
+    'public/pages/notes.js': 1, 'public/pages/pantry.js': 1,
     'public/pages/recipes.js': 1, 'public/pages/schedule.js': 1,
     'public/pages/split-expenses.js': 3, 'public/pages/subscriptions.js': 1,
     'public/pages/waste.js': 3, 'public/settings/pages/modules-health.js': 1, 'public/settings/pages/sync-contacts.js': 1,

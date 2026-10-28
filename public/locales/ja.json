@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "「{{name}}」を完了しました。",
         "visitDeletedNamed": "{{date}}の訪問を削除しました。",
         "visitPaidNamed": "{{date}}の訪問を支払い済みにしました。",
-        "visitUnpaidNamed": "{{date}}の訪問の支払いを取り消しました。"
+        "visitUnpaidNamed": "{{date}}の訪問の支払いを取り消しました。",
+        "workerMoreHint": "連絡先、誕生日、色、メモ",
+        "markPaidNamed": "{{date}}の訪問を支払い済みにする",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}（うち未払い {{pending}}）",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}（すべて支払い済み）",
+        "taskTemplatesHint": "タップすると追加されます。",
+        "markPaidShort": "支払い済み"
     },
     "userMultiSelect": {
         "moreUsers": "他",

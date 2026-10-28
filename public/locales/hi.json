@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "\"{{name}}\" पूरा हुआ।",
         "visitDeletedNamed": "{{date}} की विज़िट हटाई गई।",
         "visitPaidNamed": "{{date}} की विज़िट का भुगतान हुआ।",
-        "visitUnpaidNamed": "{{date}} की विज़िट का भुगतान वापस लिया गया।"
+        "visitUnpaidNamed": "{{date}} की विज़िट का भुगतान वापस लिया गया।",
+        "workerMoreHint": "संपर्क, जन्मदिन, रंग, नोट्स",
+        "markPaidNamed": "{{date}} की विज़िट को भुगतान किया गया चिह्नित करें",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, जिसमें {{pending}} बाकी",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, सब भुगतान हो गया",
+        "taskTemplatesHint": "जोड़ने के लिए टैप करें।",
+        "markPaidShort": "भुगतान हुआ"
     },
     "userMultiSelect": {
         "moreUsers": "और",

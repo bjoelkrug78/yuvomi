@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "Đã xong \"{{name}}\".",
         "visitDeletedNamed": "Đã xóa lượt đến ngày {{date}}.",
         "visitPaidNamed": "Đã trả tiền lượt đến ngày {{date}}.",
-        "visitUnpaidNamed": "Đã hoàn tác thanh toán lượt đến ngày {{date}}."
+        "visitUnpaidNamed": "Đã hoàn tác thanh toán lượt đến ngày {{date}}.",
+        "workerMoreHint": "Liên hệ, sinh nhật, màu sắc, ghi chú",
+        "markPaidNamed": "Đánh dấu lượt đến ngày {{date}} là đã thanh toán",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, trong đó {{pending}} chưa thanh toán",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, đã thanh toán hết",
+        "taskTemplatesHint": "Chạm để thêm.",
+        "markPaidShort": "Đã trả"
     },
     "userMultiSelect": {
         "moreUsers": "thêm",

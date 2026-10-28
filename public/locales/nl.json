@@ -4300,7 +4300,13 @@
         "taskDoneNamed": "‘{{name}}’ gedaan.",
         "visitDeletedNamed": "Bezoek van {{date}} verwijderd.",
         "visitPaidNamed": "Bezoek van {{date}} betaald.",
-        "visitUnpaidNamed": "Betaling voor het bezoek van {{date}} teruggedraaid."
+        "visitUnpaidNamed": "Betaling voor het bezoek van {{date}} teruggedraaid.",
+        "workerMoreHint": "Contact, verjaardag, kleuren, notities",
+        "markPaidNamed": "Bezoek van {{date}} als betaald markeren",
+        "paymentsMonthWithOpen": "{{month}}: {{total}}, waarvan {{pending}} openstaand",
+        "paymentsMonthAllPaid": "{{month}}: {{total}}, alles betaald",
+        "taskTemplatesHint": "Tik erop om hem toe te voegen.",
+        "markPaidShort": "Betaald"
     },
     "userMultiSelect": {
         "moreUsers": "meer",
