@@ -39,6 +39,12 @@
 @media (min-width: 1024px) {
   .dashboard {
     padding: var(--space-6) var(--page-inline-pad);
+    /* DIE WERKZEUGE STEHEN AUF DER HOEHE JEDES MODULKOPFS (R24, Critique
+     * G0 Inv-1): oben 12px wie das Polster der Titelzeile (`.page-toolbar`),
+     * die Werkzeugzeile ein Ziel hoch (unten) - Suche, Wand, Anpassen und
+     * „+ Neu" stehen bei y14 wie jedes „+ Nomen". Vorher 24 + 8 Kopfband:
+     * y32, und beim Wechsel Uebersicht -> Modul sprang die Pille um 18px. */
+    padding-block-start: var(--space-3);
   }
 }
 
@@ -4230,7 +4236,9 @@ button.today-cockpit__more--link {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding: var(--space-2) 0 0;
+  /* Ohne eigenes Polster oben (R24, G0 Inv-1): die Seite traegt es, so steht
+   * der Kopf wie jeder Modulkopf. */
+  padding: 0;
 }
 
 /* Legacy-Zeitklassen bleiben als No-Op bestehen (router setzt sie weiter). */
@@ -4416,6 +4424,16 @@ button.today-cockpit__more--link {
   flex-wrap: wrap;
   gap: var(--space-2);
   min-width: 0;
+}
+
+/* Am Desktop ist die Werkzeugzeile ein Ziel hoch und ihre Knoepfe stehen
+ * mittig darin - wie die Titelzeile eines Modulkopfs (R24, G0 Inv-1, siehe
+ * `.dashboard` oben): „+ Neu" bei y14 wie jedes „+ Nomen". */
+@media (min-width: 1024px) {
+  .dashboard-overview__tools {
+    min-block-size: var(--target-base);
+    align-items: center;
+  }
 }
 
 /* DAS ANPASSEN-MENUE (R19, Entscheidung Ulas 2026-10-16). Unter 768px stehen
@@ -6686,6 +6704,9 @@ button.today-cockpit__more--link {
   .dashboard {
     padding-left: var(--space-3);
     padding-right: var(--space-3);
+    /* KOPF WIE JEDER MODULKOPF (R24, Critique G0 P2-5): 8px bis zur
+     * Werkzeugzeile wie das Polster der Titelzeile, nicht 16 + 4. */
+    padding-top: var(--space-2);
   }
 
   /* EIN RHYTHMUS: zwischen Blatt und Raster derselbe Abstand wie zwischen
@@ -6713,7 +6734,7 @@ button.today-cockpit__more--link {
     border-left: 0;
     border-right: 0;
     gap: var(--space-3);
-    padding: var(--space-1) var(--space-3) 0;
+    padding: 0 var(--space-3);
   }
 
   /* DER KACHELKOPF MOBIL: 44 statt 52px, und die erste Zeile steht 4px
@@ -6741,9 +6762,14 @@ button.today-cockpit__more--link {
     align-items: stretch;
   }
 
+  /* DER ERSTE INHALT BEI Y <= 120 (R24, Critique G0 P2-5; R23 S-P3-5). Vom
+   * Gruss zum Blatt standen 16 (Luecke des Kopfbands) + 12 (dieses Polster)
+   * = 28px, dazu 20 ueber der Werkzeugzeile: das Blatt begann bei 390x844 auf
+   * y141 - 30 % Chrome gegen 17 % in den Listenmodulen. Den Abstand zum Blatt
+   * traegt jetzt allein die Luecke des Kopfbands (16): erster Inhalt y117. */
   .today-cockpit {
     gap: var(--space-2);
-    padding: var(--space-3) 0 0;
+    padding: 0;
   }
 
   .today-cockpit__header {

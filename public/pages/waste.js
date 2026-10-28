@@ -25,7 +25,7 @@ import {
   renderPageActions, renderListSection, renderPageColumns,
 } from '/utils/page-layout.js';
 import { findPageFab, setPageFabAction } from '/utils/fab.js';
-import { popoverMenuHtml, installPopoverMenus } from '/utils/popover-menu.js';
+import { pageToolsMenuHtml, installPopoverMenus } from '/utils/popover-menu.js';
 import { isNavModuleReadOnly } from '/permissions.js';
 import { createPageController } from '/utils/page-lifecycle.js';
 import { colorPickerHtml, setColorPickerValue, wireColorPicker } from '/utils/color-picker.js';
@@ -2516,7 +2516,11 @@ function renderPage() {
       // Mit der Klasse waere „Abholung" am Desktop ersatzlos verschwunden -
       // ein groesserer Schaden als der, den dieser Knopf behebt.
       actions: readOnly() ? '' : renderPageActions([
-        popoverMenuHtml({
+        // DAS WERKZEUGMENUE DES KOPFS (R24, G0 Inv-3): `pageToolsMenuHtml`
+        // wie jedes Modul, nicht der nackte Menue-Ausloeser - so traegt der
+        // Knopf die Kennklasse `page-tools-btn`, an der Shell und Guards das
+        // eine „..." eines Kopfs erkennen.
+        pageToolsMenuHtml({
           id: 'waste-page-menu',
           label: t('waste.moreActions'),
           items: [

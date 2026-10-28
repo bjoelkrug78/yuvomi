@@ -177,9 +177,15 @@
 }
 
 /* Die Icon-Variante (Aufgaben Liste/Brett, Dokumente Liste/Raster): ein
- * quadratisches Segment je Ansicht, der Name steht im aria-label und title. */
+ * quadratisches Segment je Ansicht, der Name steht im aria-label und title.
+ *
+ * MINDESTENS SO BREIT WIE HOCH (R24, Critique G0 P3-2 / P2-1). Mit 8px
+ * Polster um ein 16px-Zeichen mass das Segment 32px breit neben 40px-Knoepfen
+ * - unter der Zielgroesse, die jeder Kopfknopf haelt. Jetzt `--target-md` als
+ * Mindestbreite: am Zeiger 40x36, nie schmaler als ein Kopfknopf. */
 .segmented--icons .segmented__item {
   padding-inline: var(--space-2);
+  min-inline-size: var(--target-md);
 }
 
 /* --------------------------------------------------------

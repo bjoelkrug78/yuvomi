@@ -719,10 +719,14 @@ function documentsToolsMenuHtml() {
     ['desc', t('documents.sortDescending'), 'arrow-down-wide-narrow'],
   ];
   return `
-    <button type="button" class="btn btn--secondary btn--icon documents-tools-btn popover-menu__trigger"
+    <button type="button" class="btn btn--secondary btn--icon page-tools-btn documents-tools-btn popover-menu__trigger"
             popovertarget="documents-tools-menu" aria-haspopup="menu" aria-expanded="false"
             aria-label="${esc(label)}" title="${esc(label)}">
-      <i data-lucide="arrow-up-down" class="icon-md" aria-hidden="true"></i>
+      ${/* EIN ZEICHEN FUER DAS MENUE DES KOPFS (R24, G4-Quer-P2-1): die
+           Ellipse wie in jedem anderen Modul. Die Pfeile nannten nur einen der
+           drei Inhalte (Ansicht, Sortierung, Auswahl) und standen am selben
+           Platz wie das „..." von Inventar und Kontakten. */ ''}
+      <i data-lucide="ellipsis" class="icon-md" aria-hidden="true"></i>
     </button>
     <div class="popover-menu documents-tools-menu" id="documents-tools-menu" popover role="menu" aria-label="${esc(label)}">
       ${/* ANSICHT IM MENUE, NUR UNTER 768px (R16, Kopfregel mobil 1a). Der

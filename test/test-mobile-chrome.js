@@ -861,3 +861,55 @@ test('R24: jeder mobile Kopf mit Bar-Zeile hat denselben Zeilenabstand wie der Z
     && r.at.some((a) => /max-width:\s*1023px/.test(a)) && decl(r.body, 'row-gap'));
   assert.equal(decl(large.body, 'row-gap'), 'var(--space-2)', 'die Large-Title-Regel selbst bleibt (Koepfe ohne Bar-Zeile)');
 });
+
+// R24 (Critique G4-Quer-P2-1, G0 Inv-3): das Werkzeugmenue eines Modulkopfs
+// hat EIN Zeichen, die Ellipse. Die Dokumente zeigten am selben Platz zwei
+// Pfeile (Inhalt: Ansicht, Sortierung, Auswahl), die Entsorgung baute ihr
+// Menue am Baustein vorbei (ohne `page-tools-btn`). Ein einzelner Eintrag
+// bleibt nach R16 ein direkter Knopf mit eigenem Zeichen (pageToolsMenuHtml).
+test('R24: das Werkzeugmenue eines Kopfs ist ueberall die Ellipse mit page-tools-btn', () => {
+  const pages = new URL('../public/pages/', import.meta.url);
+  const offenders = [];
+  for (const file of readdirSync(pages).filter((f) => f.endsWith('.js'))) {
+    const src = readFileSync(new URL(file, pages), 'utf8');
+    for (const m of src.matchAll(/\bpopoverMenuHtml\(\{\s*id:\s*'([\w-]+-(?:page|tools)-menu)'/g)) {
+      if (m[1] === 'dashboard-tools-menu') continue; // „Anpassen" der Uebersicht, kein Werkzeugmenue eines Modulkopfs
+      offenders.push(`${file}: ${m[1]}`);
+    }
+  }
+  assert.deepEqual(offenders, [], 'Kopf-Menues nehmen pageToolsMenuHtml (Kennklasse page-tools-btn, Ellipse)');
+  const docs = read('../public/pages/documents.js');
+  const trigger = docs.match(/<button[^>]*documents-tools-btn[\s\S]*?<\/button>/)?.[0] ?? '';
+  assert.match(trigger, /page-tools-btn/, 'Dokumente: Kennklasse des Kopf-Menues');
+  assert.match(trigger, /data-lucide="ellipsis"/, 'Dokumente: die Ellipse, nicht die Sortierpfeile');
+});
+
+// R24 (Critique G0 P2-1/P3-2): die Ansichtswahl im Kopf hat ZWEI Formen, Wort
+// (Kalender, Aufgaben ab 1440) oder Zeichen (Aufgaben darunter, Dokumente) -
+// nie Zeichen + Wort. Und ein Zeichen-Segment ist nie schmaler als ein
+// Kopfknopf (Dokumente massen 32px breit).
+test('R24: Zeichen-Segmente sind mindestens --target-md breit, Aufgaben zeigt breit nur das Wort', () => {
+  const panel = rules(read('../public/styles/panel.css')).find((r) => r.at.length === 0 && r.selector === '.segmented--icons .segmented__item');
+  assert.equal(decl(panel.body, 'min-inline-size'), 'var(--target-md)');
+  const wide = rules(read('../public/styles/tasks.css')).filter((r) => r.at.some((a) => /min-width:\s*1440px/.test(a)) && /tasks-view-toggle \.segmented__item > \[data-lucide\]/.test(r.selector));
+  assert.ok(wide.length && decl(wide[0].body, 'display') === 'none', 'ab 1440 weicht das Zeichen dem Wort');
+});
+
+// R24 (Critique G0 P2-5, Inv-1): die Uebersicht hat keinen hoeheren Kopf als
+// ein Modul. Mobil stand das Heute-Blatt bei 390x844 auf y141 (Ziel <= 120),
+// am Desktop „+ Neu" auf y32 statt y14 wie jedes „+ Nomen". Gemessen nach dem
+// Fix: Blatt y117, „+ Neu" y14. Hier die Rechnung, die das traegt.
+test('R24: der Kopf der Uebersicht steht wie ein Modulkopf (Werkzeuge y14, Blatt mobil <= 120)', () => {
+  const dash = rules(read('../public/styles/dashboard.css'));
+  const at = (r, re) => r.at.some((a) => re.test(a));
+  const desk = dash.find((r) => r.selector === '.dashboard' && at(r, /min-width:\s*1024px/) && decl(r.body, 'padding-block-start'));
+  assert.equal(decl(desk?.body ?? '', 'padding-block-start'), 'var(--space-3)', 'Desktop: oben das Polster der Titelzeile');
+  const tools = dash.find((r) => r.selector === '.dashboard-overview__tools' && at(r, /min-width:\s*1024px/));
+  assert.equal(decl(tools?.body ?? '', 'min-block-size'), 'var(--target-base)', 'Werkzeugzeile ein Ziel hoch');
+  assert.equal(decl(tools.body, 'align-items'), 'center');
+  const base = dash.filter((r) => r.selector === '.dashboard-masthead' && !r.at.length);
+  assert.ok(base.every((r) => !decl(r.body, 'padding') || decl(r.body, 'padding') === '0'), 'das Kopfband polstert oben nicht');
+  const phone = (sel) => dash.find((r) => r.selector === sel && at(r, /max-width:\s*639px/) && /padding/.test(r.body));
+  assert.equal(decl(phone('.dashboard').body, 'padding-top'), 'var(--space-2)', 'mobil 8px bis zur Werkzeugzeile');
+  assert.equal(decl(phone('.today-cockpit').body, 'padding'), '0', 'den Abstand zum Blatt traegt allein die Luecke des Kopfbands');
+});

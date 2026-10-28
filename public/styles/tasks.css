@@ -257,6 +257,17 @@
   }
 }
 
+/* ZEICHEN ODER WORT, NIE BEIDES (R24, Critique G0 P2-1). Ab 1440 stand das
+ * Segment als Zeichen + Wort - eine dritte Form neben dem Text-Segment des
+ * Kalenders und dem Zeichen-Segment der Dokumente. Wo das Wort Platz hat,
+ * steht es allein wie im Kalender; darunter bleibt das Zeichen. */
+@media (min-width: 1440px) {
+  .tasks-view-toggle .segmented__item > [data-lucide],
+  .tasks-view-toggle .segmented__item > svg {
+    display: none;
+  }
+}
+
 @media (max-width: 767px) {
   .tasks-view-toggle {
     display: none;
