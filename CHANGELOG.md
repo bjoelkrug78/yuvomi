@@ -37,6 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   invitation, and a toast covered the link's label. The dialog starts at the display name instead of the
   optional user name, an invitation without a name is listed as "Open invitation" with its role below,
   and member and invitation names share one size.
+- **The install hint waits for the tour to end.** The two "Next" taps of the welcome tour counted as the
+  clicks the hint waits for, so it popped up over the step that explains the tab bar; taps in the tour no
+  longer count.
 
 ## [2.82.0] - 2026-10-28
 

@@ -76,6 +76,7 @@ const STUBS = {
       return key + JSON.stringify(values);
     };
     export const initI18n = async () => {};
+    export const whenI18nReady = async () => {};
     export const setLocale = async () => {};
     // Wie __formatLocale: Tests, die lokalisierte Monatsnamen pruefen, setzen
     // globalThis.__locale; ohne das bleibt es bei 'de'.
