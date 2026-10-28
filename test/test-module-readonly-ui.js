@@ -4462,7 +4462,8 @@ test('Erledigen: der Toast nimmt es zurueck - auf den VORHERIGEN Zeitpunkt, nich
   const anfragen = await mitHkApi(async () => {
     globalThis.window.yuvomi.showToast = (...args) => toasts.push(args);
     await withAccess({ housekeeping: 'write' }, () => hk.completeTask({ id: 3, last_completed: '2026-09-07T07:00:00Z' }, hkContainer()));
-    const undo = toasts.find((args) => args[0] === 'housekeeping.taskDoneToast')?.[3];
+    // Seit R24 nennt die Quittung die Arbeit (housekeeping.taskDoneNamed) und steht vor der Antwort.
+    const undo = toasts.find((args) => String(args[0]).startsWith('housekeeping.taskDoneNamed'))?.[3];
     assert.equal(typeof undo, 'function', 'der Erledigt-Toast traegt einen Rueckweg');
     await withAccess({ housekeeping: 'write' }, () => undo());
   });
