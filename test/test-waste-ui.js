@@ -1028,9 +1028,9 @@ function openScheduleDialog(recurrenceKind) {
 // Seit Critique R24 ist das Intervall ein Satz (utils/interval-sentence.js):
 // "Alle [2] Wochen" - das Feld steht im Satz, die Gruppe heisst "Abstand".
 const intervalSentenceAtOpen = (content) => {
-  const m = content.match(/<div class="interval-sentence wsm-interval-sentence" role="group" aria-labelledby="wsm-interval-label" data-interval-key="([\w.]+)">([\s\S]*?)<\/div><\/div>/);
+  const m = content.match(/<div class="interval-sentence wsm-interval-sentence" role="group" aria-labelledby="wsm-interval-label" data-interval-key="([\w.]+)">([\s\S]*?)<\/div>\s*<\/div>/);
   assert.ok(m, 'das Intervall steht als Satz-Gruppe');
-  assert.match(m[2], /id="wsm-interval"[^>]*aria-labelledby="wsm-interval-label"/, 'das Feld traegt den Namen der Gruppe');
+  assert.match(m[2], /<div class="waste-interval-stepper">[\s\S]*id="wsm-interval"[^>]*aria-labelledby="wsm-interval-label"/, 'der Stepper steht im Satz, das Feld traegt den Namen der Gruppe');
   assert.match(content, /<span class="form-label" id="wsm-interval-label">waste\.intervalLabel<\/span>/);
   return m[1];
 };

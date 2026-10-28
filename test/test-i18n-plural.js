@@ -286,6 +286,13 @@ const PLURAL_EXCEPTIONS = {
   // R23 S10: "Freie Tage: 9" - die Notiz der Schicht-Kennzahl.
   'schedule.freeDaysCount': 'PARENTHETICAL',
 
+  // R24 S3: der Intervall-Satz (utils/interval-sentence.js) - `{{count}}` ist
+  // die Stelle, an die das Zahlfeld tritt, t() bekommt einen Platzhalter,
+  // keine Zahl. Bei 1 liest er "Alle 1 Wochen" (offene Frage F1, handoff-3).
+  'common.everyNDays': 'NOT_A_COUNT',
+  'common.everyNWeeks': 'NOT_A_COUNT',
+  'common.everyNMonths': 'NOT_A_COUNT',
+
   // --- numerusneutrale Abkuerzung ----------------------------------------
   'settings.calendarDurationMinutes': 'ABBREV',
 

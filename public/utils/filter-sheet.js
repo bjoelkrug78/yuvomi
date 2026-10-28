@@ -32,8 +32,7 @@ import { t } from '/i18n.js';
 import { openModal, closeModal } from '/components/modal.js';
 import { durationToken } from '/utils/ux.js';
 import { getReadableTextColor, AVATAR_FALLBACK_COLOR } from '/utils/color.js';
-import { initials } from '/utils/initials.js';
-import { sharedSurname } from '/components/user-multi-select.js';
+import { initials, sharedSurname } from '/utils/initials.js';
 
 /**
  * @typedef {object} FilterLabels
