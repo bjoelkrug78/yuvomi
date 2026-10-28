@@ -3877,8 +3877,10 @@
   transition: background-color var(--transition-fast);
 }
 
-.schedule-time-block:hover {
-  background: color-mix(in srgb, var(--ev-color) var(--tint-raised), var(--color-surface-work));
+@media (hover: hover) {
+  .schedule-time-block:hover {
+    background: color-mix(in srgb, var(--ev-color) var(--tint-raised), var(--color-surface-work));
+  }
 }
 
 .schedule-time-block:focus-visible {
