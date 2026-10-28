@@ -2850,7 +2850,7 @@
         "pageCalendarDefaults": "日程默认值",
         "pageCalendarDefaultsDescription": "设置自己新建日程的默认提醒和负责人。",
         "pageNavigation": "导航",
-        "pageNavigationDescription": "顺序与个人视图",
+        "pageNavigationDescription": "顺序与个人视图。",
         "pageFeeds": "Feed subscriptions",
         "pageFeedsDescription": "在你自己的日历应用中订阅家庭日历。",
         "pageCalendarSubscriptions": "Calendar subscriptions",

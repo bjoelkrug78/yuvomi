@@ -21529,8 +21529,11 @@ test('R17 E6: Anlegen heisst "Hinzufuegen", Bearbeiten "Speichern" - in jedem Di
 
 test('R17 E6: im Dialogfuss misst ein Icon-Knopf am Zeiger so hoch wie seine Nachbarn', () => {
   const rule = [...eachRule(read('../public/styles/layout.css'))]
-    .find((r) => r.selector.trim() === '.modal-panel__footer .btn--icon');
-  assert.ok(rule, '.modal-panel__footer .btn--icon fehlt');
+    .find((r) => r.selector.split(',').map((s) => s.trim()).includes('.modal-panel__footer .btn--icon')
+      && r.selector.split(',').map((s) => s.trim()).includes('.detail-view__footer .btn--icon'));
+  // Seit R24 steht in derselben Regel der Fuss der Detailspalte: das Mehr-Menue
+  // des Fusses (detailFooterEl `more`) mass dort 44 neben 40er Knoepfen.
+  assert.ok(rule, '.modal-panel__footer .btn--icon (mit .detail-view__footer .btn--icon) fehlt');
   assert.ok(rule.at.some((a) => /min-width:\s*1024px/.test(a)), 'nur am Zeiger - auf Touch bleiben 44px');
   assert.match(rule.body, /min-height:\s*var\(--target-md\)/);
 });

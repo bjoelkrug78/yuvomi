@@ -2850,7 +2850,7 @@
         "pageCalendarDefaults": "予定の既定値",
         "pageCalendarDefaultsDescription": "自分の新しい予定のリマインダーと担当の既定値を設定します。",
         "pageNavigation": "ナビゲーション",
-        "pageNavigationDescription": "並び順と自分用の表示",
+        "pageNavigationDescription": "並び順と自分用の表示。",
         "pageFeeds": "Feed subscriptions",
         "pageFeedsDescription": "家族のカレンダーを自分のカレンダーアプリで購読します。",
         "pageCalendarSubscriptions": "Calendar subscriptions",
