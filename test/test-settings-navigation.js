@@ -25,6 +25,7 @@ import {
   markSettingsOverviewEntry,
   resolveSettingsDestination,
   searchSettings,
+  orderSettingsHits,
   settingsOptionUrl,
   settingsOverviewUrl,
 } from '../public/settings/registry.js';
@@ -1291,8 +1292,38 @@ test('die Navigation laesst sich ueber alle Blaetter durchsuchen', async () => {
   assert.match(registry, /descriptionKey/, 'gefiltert wird ueber Label UND Beschreibung');
   assert.match(registry, /normalize\('NFD'\)/, 'die Suche muss Gross-/Kleinschreibung und Diakritika ignorieren');
   assert.match(navSearch, /setAttribute\('role',\s*'status'\)/, 'die Trefferzahl gehoert in eine Live-Region');
-  // Ohne Treffer greift der bestehende Leerzustand, statt stumm zu bleiben.
-  assert.match(navSearch, /t\('search\.noResults'\)/);
+  // Ohne Treffer der Leerzustand der App (R24, G6-Einst-P3-5): Begriff als
+  // Chip und "Suche zuruecksetzen" - nicht mehr der nackte Satz
+  // "Keine Ergebnisse gefunden.". Seitenleiste UND Wurzel.
+  assert.doesNotMatch(source, /t\('search\.noResults'\)/, 'kein nackter Satz mehr');
+  assert.match(navSearch, /searchEmptyEl\(\{\s*query,/);
+  const overview = source.slice(source.indexOf('function filterOverview('), source.indexOf('function emptyOf('));
+  assert.match(overview, /searchEmptyEl\(\{\s*query,/);
+  assert.match(source, /function resetSearchField\(input\) \{[\s\S]{0,200}dispatchEvent\(new Event\('input'/, 'Zuruecksetzen wie das X des Felds');
+  // Die Reihenfolge der Treffer kommt aus EINER Funktion, an beiden Orten.
+  assert.match(navSearch, /orderSettingsHits\(hits, query, t\)/);
+  assert.match(overview, /orderSettingsHits\(hits, query, t\)/);
+});
+
+/* DER TREFFER, DER SO HEISST, STEHT VORN (Critique R24, G6-Einst-P3-5): "passwort"
+ * reihte die Option "Passwort aendern" HINTER die Blaetter Konto und E-Mail
+ * (SMTP), die nur ihre Beschreibung traf (gemessen 1440 und 390). */
+test('R24: die Einstellungssuche stellt den Treffer mit dem gesuchten Namen vor die Beschreibungs-Treffer', async () => {
+  const de = JSON.parse(await readFile(new URL('../public/locales/de.json', import.meta.url), 'utf8'));
+  const translate = (key) => key.split('.').reduce((value, segment) => value?.[segment], de) ?? key;
+  const admin = { role: 'admin' };
+  const order = (query) => orderSettingsHits(searchSettings(query, { user: admin, translate }), query, translate);
+  const passwort = order('passwort');
+  assert.equal(passwort[0].label, 'Passwort ändern', 'die Option, die so heisst, zuerst');
+  assert.equal(passwort[0].kind, 'option');
+  assert.ok(passwort.slice(1).some((hit) => hit.kind === 'leaf' && hit.leaf.id === 'personal-account'), 'Konto bleibt Treffer, dahinter');
+  // Ein Blatt, das so heisst, bleibt vorn.
+  const wetter = order('Wetter');
+  assert.equal(wetter[0].kind, 'leaf');
+  assert.equal(wetter[0].leaf.id, 'personal-weather');
+  // Gleicher Rang: die Reihenfolge der Suche bleibt (Blatt, Abschnitt, Option).
+  const ranks = order('kalender').map((hit) => hit.rank);
+  assert.deepEqual(ranks, [...ranks].sort((a, b) => a - b), 'aufsteigend nach Rang');
 });
 
 /**
@@ -2460,7 +2491,8 @@ test('die Wurzel sucht ueber das Such-Icon im geteilten Kopf, in jeder Breite', 
   // Dieselbe Suche wie in der Seitenleiste (searchSettings); ein Abschnitt ohne
   // Treffer faellt weg, und fruehere Blaetter und Optionen bekommen einen
   // eigenen Abschnitt.
-  assert.match(shell, /function filterOverview[\s\S]*?searchSettings\(query[\s\S]*?section\.hidden = visible === 0[\s\S]*?hits\.sections\.map[\s\S]*?hits\.options\.map[\s\S]*?extra\.map\(createOptionRow\)/);
+  // Seit R24 in der Rangfolge von orderSettingsHits (Abschnitte und Optionen aus EINER Liste).
+  assert.match(shell, /function filterOverview[\s\S]*?searchSettings\(query[\s\S]*?section\.hidden = visible === 0[\s\S]*?orderSettingsHits\(hits, query, t\)[\s\S]*?kind === 'section' \? settingsSectionUrl[\s\S]*?settingsOptionUrl[\s\S]*?extra\.map\(createOptionRow\)/);
 });
 
 /**

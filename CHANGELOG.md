@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **The settings search puts the setting you named first.** Searching "password" listed the Account and
+  Email (SMTP) pages before "Change password"; a hit whose name matches now comes first. A search without
+  hits shows the usual "No matches" with your term and "Reset search" instead of a bare sentence.
 - **Ticking something off confirms it at once, and only where you are.** The note "“Water the plants”
   done" with Undo came up to 1.5 seconds after the tap, and if you switched to another module in the
   meantime it appeared there instead. Tasks and the household help's chores, check-in and check-out now
