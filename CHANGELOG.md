@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **The weather is under the date on the desktop too.** The overview shows the current weather below
+  the greeting in every width, as it already did on phones. The weather card stays optional for the
+  forecast.
 - **Shifts in the calendar's week and day are narrow bands.** A shift with a time now shows as a slim
   coloured band at the edge of the day, with its short label running along it, instead of a block across
   the whole column. Appointments during the shift start right next to the band and stay readable;

@@ -4450,14 +4450,11 @@ button.today-cockpit__more--link {
   }
 }
 
-/* DIE WETTERZEILE STEHT MOBIL AUCH NEBEN DER KARTE (R19): die Karte liegt dort
- * weit unten (390px: y 1438), die Zeile unterm Gruss sagt das Jetzt sofort.
- * Ab 768px schliessen sich beide aus wie bisher. */
-@media (min-width: 768px) {
-  .dashboard-overview__weather--card {
-    display: none;
-  }
-}
+/* DIE WETTERZEILE STEHT IN JEDER BREITE IM KOPF (R24, Entscheidung E7 a;
+ * Critique G1-Uebersicht-P3-5). Seit R19 stand sie mobil auch neben der Karte,
+ * ab 768px schlossen sich beide aus - am Desktop lag das Jetzt dann nur in der
+ * Karte unter der Falz (1440: y 952). Jetzt dieselbe Zeile an derselben Stelle
+ * in beiden Breiten; die Karte bleibt das Opt-in fuer die Vorhersage. */
 
 /* DIE KOPF-ICON-HAUT DER SHELL (D1, Critique 2026-10-16): Haut, Tinte und
  * Hover kommen aus `.btn.btn--secondary.btn--icon` im Markup, wie Lupe,

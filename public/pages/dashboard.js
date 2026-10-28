@@ -7975,11 +7975,9 @@ function weatherTempBand(temp, units) {
 function mastheadWeatherHtml(weather, { card = false } = {}) {
   if (!weather?.current) return '';
   const desc = weatherDescText(weather, weather.current.desc);
-  // MIT KARTE NUR MOBIL (R19, Entscheidung Ulas 2026-10-16): die Wetterkarte
-  // stand auf dem Telefon bei y 1438 - die Kurzzeile unterm Gruss sagt das
-  // Jetzt sofort, die Karte weiter unten behaelt die Vorhersage. Ab 768px,
-  // wo die Karte neben dem Kopf im Bild steht, schliessen sich beide weiter
-  // aus (`--card`, dashboard.css).
+  // AUCH NEBEN DER KARTE (R19 mobil, seit R24 E7 in jeder Breite): die
+  // Kurzzeile unterm Gruss sagt das Jetzt sofort, die Karte weiter unten
+  // behaelt die Vorhersage. `--card` markiert nur noch, dass die Karte steht.
   return `
     <p class="dashboard-overview__weather${card ? ' dashboard-overview__weather--card' : ''}"${weatherToneAttr(weather.current.icon)}>
       ${weatherIconHtml(weather, weather.current.icon, 'dashboard-overview__weather-icon', 18, desc)}

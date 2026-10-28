@@ -4832,10 +4832,11 @@ abgeschaltetes Modul; ist es eingerichtet und der Anbieter scheitert, bleibt die
 `.widget__empty` und dem Aktualisieren-Knopf, und die automatische Aktualisierung laeuft weiter.
 Ein unbekannter Grund zaehlt als eingerichtet: im Zweifel bleibt die Kachel.
 
-**DIE UEBERSICHT AUF DEM TELEFON (R19, Entscheidung Ulas 2026-10-16).** Unter 768px steht die
-Wetterzeile im Masthead auch dann, wenn die Karte im Raster steht - die Karte lag bei 390px erst
-bei y 1438 und behaelt die Vorhersage; ab 768px schliessen sich beide aus wie bisher
-(`.dashboard-overview__weather--card`). Die Familie ist unter 640px EINE Avatar-Reihe: Gesicht,
+**DIE UEBERSICHT AUF DEM TELEFON (R19, Entscheidung Ulas 2026-10-16).** Die Wetterzeile steht
+im Masthead auch dann, wenn die Karte im Raster steht - die Karte lag bei 390px erst bei y 1438
+und behaelt die Vorhersage. Seit R24 (Entscheidung E7 a) in JEDER Breite: ab 768px schlossen
+sich Zeile und Karte bis dahin aus, und am Desktop lag das Jetzt nur in der Karte unter der
+Falz (1440: y 952). `.dashboard-overview__weather--card` markiert nur noch, dass die Karte steht. Die Familie ist unter 640px EINE Avatar-Reihe: Gesicht,
 Zahl offener Aufgaben als Marke im Akzent, Vorname darunter, der naechste gemeinsame Termin als
 Textzeile unter der Reihe (Karte 427 -> 166px); Name und Satz jeder Person bleiben geclippt im
 Baum, die Tagesbilanz der Fusszeile entfaellt (sie steht in den Marken). Der Wand-Modus steht
