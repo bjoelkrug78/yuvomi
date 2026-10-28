@@ -217,7 +217,7 @@ test('im Sheet steht Bearbeiten als Hauptaktion unten, Löschen zurückgenommen 
   // Der Kalender: sein Löschen bleibt zurückgenommen.
   const cal = await calendarJs();
   const detail = cal.slice(cal.indexOf('async function openEventDetail('), cal.indexOf('async function loadReminderForEvent('));
-  assert.match(detail, /id: 'detail-delete',[\s\S]{0,80}variant: 'danger-ghost',[\s\S]{0,40}align: 'start'/,
+  assert.match(detail, /id: 'detail-delete',[\s\S]{0,80}variant: 'danger-outline',[\s\S]{0,40}align: 'start'/,
     'Löschen bleibt destruktiv gestylt und am Anfang, nicht an der Primärposition');
 });
 

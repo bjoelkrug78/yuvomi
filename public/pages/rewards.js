@@ -666,8 +666,18 @@ function renderPendingPanel() {
       ${readOnly() ? '' : `
       <div class="rw-pending__actions">
         ${isAdmin() ? `
-          <button class="btn btn--primary btn--sm" type="button" data-decide="fulfill" data-id="${r.id}">${esc(t('rewards.approve'))}</button>
-          <button class="btn btn--ghost btn--sm" type="button" data-decide="reject" data-id="${r.id}">${esc(t('rewards.reject'))}</button>
+          ${/* EINE SICHTBARE HANDLUNG, NIE GEFUELLT (R24, G2-Belohnungen-P2-1, D10
+                Zeilen-Endzone): zwei Anfragen trugen zwei gefuellte "Freigeben" -
+                zwei Primaere in einer Ansicht, deren Primaer der FAB ist -, und
+                "Ablehnen" stand als Ghost daneben. Freigeben ist die Zeilenhandlung
+                (sekundaer), Ablehnen steht im Mehr-Knopf der Zeile; der Eintrag
+                traegt `data-decide`, wireOverview() findet ihn wie den Knopf. */ ''}
+          <button class="btn btn--secondary btn--sm" type="button" data-decide="fulfill" data-id="${r.id}">${esc(t('rewards.approve'))}</button>
+          ${rowMenuHtml({
+            id: `rw-pending-menu-${r.id}`,
+            label: t('common.moreActionsNamed', { name: isMoneyRequest(r) ? t(r.kind === 'deposit' ? 'rewards.money.ledgerDeposit' : 'rewards.money.ledgerWithdrawal') : r.reward_name }),
+            items: [{ action: 'reject-redemption', icon: 'x', label: t('rewards.reject'), attrs: { 'data-decide': 'reject', 'data-id': r.id } }],
+          })}
         ` : `
           <button class="btn btn--secondary btn--sm" type="button" data-decide="cancel" data-id="${r.id}">${esc(t('common.cancel'))}</button>
         `}

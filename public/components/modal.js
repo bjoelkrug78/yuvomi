@@ -1764,12 +1764,12 @@ export function collapseEmptyBody(panel) {
 
 /**
  * Woran der Fuß sein Löschen erkennt. Die Module schreiben es seit Jahren als
- * `.btn--danger-outline` (einige als `.btn--danger-ghost`) - die Klasse IST
- * die Auszeichnung, kein Modul muss etwas nachtragen. `data-footer-delete`
+ * `.btn--danger-outline` (seit R24 alle; `.btn--danger-ghost` ist entfallen) -
+ * die Klasse IST die Auszeichnung, kein Modul muss etwas nachtragen. `data-footer-delete`
  * nimmt einen Knopf auf, der anders aussieht; `data-footer-delete="off"` nimmt
  * einen heraus, bei dem Löschen die Primäraktion des Dialogs ist.
  */
-export const FOOTER_DELETE_SELECTOR = '.btn--danger-outline, .btn--danger-ghost, [data-footer-delete]';
+export const FOOTER_DELETE_SELECTOR = '.btn--danger-outline, [data-footer-delete]';
 
 /**
  * Der Name des Objekts, das der Knopf löscht: ausdrücklich gesetzt
@@ -1832,9 +1832,11 @@ export function decorateFooterDelete(footer) {
   const leseFuss = footer.classList.contains('detail-view__footer') && Boolean(footer.querySelector(':scope > .btn--primary'));
   const faltetZumSymbol = (b) => leseFuss && b.classList.contains('btn--ghost')
     && Boolean(b.querySelector(':scope > svg, :scope > i')) && Boolean(b.querySelector(':scope > .btn__label'));
+  // Die Eintraege eines Mehr-Menues im Fuss (R24, detailFooterEl `more`)
+  // stehen nicht im Fuss, sondern im Popover darueber - sie zaehlen nicht.
   const labelled = [...footer.querySelectorAll('button')]
     .filter((b) => !found.includes(b) && !b.classList.contains('btn--icon') && !b.hidden && b.style?.display !== 'none'
-      && !faltetZumSymbol(b));
+      && !faltetZumSymbol(b) && !b.classList.contains('popover-menu__item'));
   footer.classList.toggle('modal-panel__footer--one-row', found.length > 0 && labelled.length <= 2);
   // DAS WORT BLEIBT, WO PLATZ IST (R23, Critique G3/G5). Der Papierkorb ist
   // die Antwort auf die DREIHEIT, die bei 390px nicht in eine Zeile passt. Die

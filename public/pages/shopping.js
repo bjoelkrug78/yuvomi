@@ -1590,9 +1590,9 @@ function renderItemTags(tags) {
   if (!tags?.length) return '';
   const shown = tags.slice(0, ITEM_TAGS_VISIBLE);
   const rest  = tags.length - shown.length;
-  const chips = shown.map((tag) => `<span class="list-row__tag">${esc(tag)}</span>`);
+  const chips = shown.map((tag) => `<span class="tag list-row__tag">${esc(tag)}</span>`);
   if (rest > 0) {
-    chips.push(`<span class="list-row__tag list-row__tag--more"
+    chips.push(`<span class="tag list-row__tag list-row__tag--more"
                       title="${esc(tags.slice(ITEM_TAGS_VISIBLE).join(', '))}">+${rest}</span>`);
   }
   // KEIN eigener Block mehr: die Etiketten stehen in der Metazeile neben der

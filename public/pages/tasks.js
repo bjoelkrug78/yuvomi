@@ -900,7 +900,7 @@ function renderTagChips(container) {
   modalTags.forEach((tag, index) => {
     const chip = document.createElement('button');
     chip.type = 'button';
-    chip.className = 'task-tag task-tag--editable';
+    chip.className = 'tag task-tag task-tag--editable';
     chip.dataset.tagIndex = String(index);
     chip.setAttribute('aria-label', t('tasks.tagRemove', { tag }));
     chip.appendChild(document.createTextNode(tag));
@@ -1008,12 +1008,12 @@ function renderTagBadges(tags, limit = TAG_BADGES_VISIBLE, priority = null) {
   const shown = tags.slice(0, limit);
   const rest  = tags.length - shown.length;
   const chips = shown.map((tag) => `
-    <button type="button" class="task-tag task-tag--filter" data-tag-filter="${esc(tag)}"
+    <button type="button" class="tag task-tag task-tag--filter" data-tag-filter="${esc(tag)}"
             aria-label="${esc(t('tasks.tagFilterBy', { tag }))}">${esc(tag)}</button>`);
   // Der Rest bleibt lesbar statt anklickbar: er benennt keinen einzelnen Tag,
   // also gäbe es auch nichts, worauf ein Klick filtern könnte.
   if (rest > 0) {
-    chips.push(`<span class="task-tag task-tag--more"
+    chips.push(`<span class="tag task-tag task-tag--more"
                       title="${esc(tags.slice(limit).join(', '))}">+${rest}</span>`);
   }
   return chips.join('');

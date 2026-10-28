@@ -8942,16 +8942,18 @@ test('das Etikett einer Listenzeile haelt 4.5:1 in jedem Zustand, der es zurueck
     .filter((entry) => entry.endsWith('.css') && entry !== 'tokens.css')
     .flatMap((file) => [...eachRule(readFileSync(new URL(file, styles), 'utf8'))].map((rule) => ({ ...rule, file })));
 
-  const base = rules.find((rule) => rule.selector.trim() === '.list-row__tag');
-  assert.ok(base, 'Keine Basisregel `.list-row__tag` gefunden - der Guard misst nichts.');
+  // Seit R24 ist die Pille das geteilte Etikett `.tag` (list-row.css); der
+  // Einkauf setzt `tag list-row__tag`, die Zustandsregel greift am `.tag`.
+  const base = rules.find((rule) => rule.selector.trim() === '.tag');
+  assert.ok(base, 'Keine Basisregel `.tag` gefunden - der Guard misst nichts.');
   const baseColor = declOf(base.body, 'color');
   const baseBg = declOf(base.body, 'background-color') ?? declOf(base.body, 'background');
 
   const states = rules.filter((rule) => rule !== base
-    && /\.list-row__tag\s*$/.test(rule.selector.trim())
+    && /\.tag\s*$/.test(rule.selector.trim())
     && (declOf(rule.body, 'opacity') !== null || declOf(rule.body, 'color') !== null));
   assert.ok(states.some((rule) => rule.selector.includes('--checked')),
-    'Die Zustandsregel des abgehakten Postens (`…--checked .list-row__tag`) fehlt - '
+    'Die Zustandsregel des abgehakten Postens (`…--checked .tag`) fehlt - '
     + 'umbenannt? Dann prueft dieser Guard seit dem Umbenennen nichts mehr.');
 
   const findings = [];
@@ -10381,11 +10383,9 @@ test('audited profile, birthday, navigation, and budget controls meet mobile tou
   const housekeeping = read('../public/styles/housekeeping.css');
   const subTabs = read('../public/styles/sub-tabs.css');
 
-  assert.match(settings, /\.settings-avatar-action\s*\{[\s\S]*width:\s*var\(--target-md\)[\s\S]*height:\s*var\(--target-md\)/);
-  assert.match(
-    settings,
-    /@media \(max-width:\s*639px\)[\s\S]*\.settings-avatar-action\s*\{[\s\S]*width:\s*var\(--target-lg\)[\s\S]*height:\s*var\(--target-lg\)/,
-  );
+  // Die Symbolknoepfe neben dem Profilbild sind seit R24 entfallen
+  // (`.media-picker`: die Scheibe ist die Wahl, Entfernen ein `.btn--sm`).
+  assert.doesNotMatch(settings, /\.settings-avatar-action\b/);
   // Das Auf/Ab-Paar der Navigation (`.settings-module-move`) ist mit #2180 ins
   // Mehr-Menue gewandert; Griff und Mehr-Knopf sind `.row-action` (unten).
   assert.doesNotMatch(settings, /\.settings-module-move\b/);
@@ -12993,7 +12993,7 @@ test('Tag-Chips auf Karten sind Filter-Buttons, keine Beschriftungen', () => {
   const fn = source.slice(source.indexOf('function renderTagBadges'),
                           source.indexOf('function wireTagBadgeFilter'));
 
-  assert.match(fn, /<button type="button" class="task-tag task-tag--filter"/,
+  assert.match(fn, /<button type="button" class="tag task-tag task-tag--filter"/,
     'Ein Tag anzuklicken und danach zu filtern ist die erwartete Geste - als <span> gibt es sie nicht');
   assert.match(fn, /data-tag-filter="\$\{esc\(tag\)\}"/, 'Der Wert muss escaped am Chip haengen');
   assert.match(fn, /aria-label="\$\{esc\(t\('tasks\.tagFilterBy'/,

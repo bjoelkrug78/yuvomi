@@ -1477,20 +1477,14 @@
   margin-top: var(--space-1);
 }
 
+/* Kategorie und Rest-Knopf sind das geteilte Etikett (`.tag`, list-row.css,
+ * R24). */
 .note-item__category,
 .note-item__categories-more {
   flex: 0 0 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-full);
-  background: var(--color-fill-well);
-  color: var(--color-text-secondary);
 }
 
 .note-item__categories-more {
-  border: 0;
   min-height: var(--space-6);
   min-width: var(--target-base);
   cursor: pointer;

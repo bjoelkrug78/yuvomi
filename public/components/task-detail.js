@@ -220,7 +220,7 @@ function chipListNode(items, toLabel) {
   wrap.className = 'detail-chips';
   items.forEach((item) => {
     const chip = document.createElement('span');
-    chip.className = 'task-tag';
+    chip.className = 'tag task-tag';
     chip.textContent = toLabel(item);
     wrap.appendChild(chip);
   });
@@ -1146,7 +1146,7 @@ export function openTaskDetail({
   const actions = canEdit ? [{
     id: 'task-detail-delete',
     label: t('common.delete'),
-    variant: 'danger-ghost',
+    variant: 'danger-outline',
     icon: 'trash-2',
     align: 'start',
     // Siehe closeDetailView: nach dem Löschen gibt es nichts mehr zu verwerfen,
@@ -1284,7 +1284,7 @@ function wireDetailMoreMenu(task, overflowIds, pane = null) {
     const item = document.createElement('button');
     item.type = 'button';
     // Loeschen bleibt im Menue als destruktiv erkennbar.
-    item.className = target.classList.contains('btn--danger-ghost')
+    item.className = target.classList.contains('btn--danger-outline')
       ? 'popover-menu__item popover-menu__item--danger' : 'popover-menu__item';
     item.setAttribute('role', 'menuitem');
     const icon = document.createElement('i');

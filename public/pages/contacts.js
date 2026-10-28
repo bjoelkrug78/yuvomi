@@ -1194,8 +1194,9 @@ function openContactDetail(contact, { inPane = null } = {}) {
   const actions = [{
     id: 'contact-detail-export',
     label: t('contacts.exportLabel'),
-    variant: 'ghost',
     icon: 'download',
+    // Selten gesucht, darum im Mehr-Menue des Fusses mit Wort (R24).
+    more: true,
     onClick: () => window.open(`/api/v1/contacts/${contact.id}/vcard`, '_blank', 'noopener'),
   }];
 
@@ -1208,7 +1209,7 @@ function openContactDetail(contact, { inPane = null } = {}) {
     actions.unshift({
       id: 'contact-detail-delete',
       label: t('common.delete'),
-      variant: 'danger-ghost',
+      variant: 'danger-outline',
       icon: 'trash-2',
       align: 'start',
       // force + await wie überall in dieser Grammatik: Löschen entscheidet über

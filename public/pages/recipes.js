@@ -766,7 +766,7 @@ function renderRecipePane(id, body) {
 
 /**
  * Die Aktionen eines Rezepts im Fuss von Leseblatt und Detailspalte: Loeschen
- * zurueckgenommen am Anfang, Duplizieren leise, Bearbeiten als Primaerknopf
+ * am Anfang, Duplizieren im Mehr-Menue (R24), Bearbeiten als Primaerknopf
  * am Ende (withPrimaryEdit). Ein gespiegeltes Rezept ist schreibgeschuetzt:
  * nur Duplizieren (legt eine eigene Kopie an).
  */
@@ -775,9 +775,9 @@ function recipeActions(recipe, { edit, duplicate, remove }) {
   return withPrimaryEdit([
     !isMirrored && {
       id: 'recipe-detail-delete', label: t('common.delete'), icon: 'trash-2',
-      variant: 'danger-ghost', align: 'start', onClick: remove,
+      variant: 'danger-outline', align: 'start', onClick: remove,
     },
-    { id: 'recipe-detail-duplicate', label: t('recipes.duplicate'), icon: 'copy', variant: 'ghost', onClick: duplicate },
+    { id: 'recipe-detail-duplicate', label: t('recipes.duplicate'), icon: 'copy', more: true, onClick: duplicate },
   ], isMirrored ? null : { label: t('common.edit'), ...edit });
 }
 

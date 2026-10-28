@@ -162,6 +162,9 @@ function* domButtons(src) {
 const isHeadTools = (cls) => /\bpopover-menu__trigger\b/.test(cls) && /-tools\b|tools-btn\b/.test(cls);
 const isPhotoOverlay = (cls) => /photo-action|avatar-action/.test(cls);
 const isFooterDelete = (cls) => /\bbtn--danger(?![\w-])/.test(cls) && /\bbtn--icon\b/.test(cls);
+// Das Mehr-Menue im Fuss eines Leseblatts (R24, detailFooterEl `more: true`):
+// eine Blatt-Aktion wie das Kopf-Werkzeug, keine Zeilenaktion.
+const isFooterMore = (cls) => /\bdetail-view__more-btn\b/.test(cls) && /\bpopover-menu__trigger\b/.test(cls);
 
 /**
  * Punkt 1: ein Bedienelement, das Bearbeiten/Loeschen/Mehr an einer ZEILE
@@ -186,7 +189,7 @@ export function scanRowAction(src) {
     // Aktionen in einem 148px-Slot, 48px-Knoepfe passen dort nicht; die
     // Trefferflaeche spannt ein ::before auf 40px.
     if (/\bmeal-card__action-btn\b/.test(cls)) return;
-    if (isHeadTools(cls) || isPhotoOverlay(cls) || isFooterDelete(cls)) return;
+    if (isHeadTools(cls) || isPhotoOverlay(cls) || isFooterDelete(cls) || isFooterMore(cls)) return;
     found.push({ line: lineOf(src, index), what: `${cls || '(ohne Klasse)'} [${icon}${action ? ` ${action}` : ''}]` });
   };
   for (const c of templateControls(src)) judge(c);
@@ -2406,13 +2409,25 @@ test('R22 D12: die Dialog-Fuesse der Gesundheit und ihres Einstellungsblatts tra
   assert.deepEqual(offenders, []);
 });
 
-test('R22 D20: der Notiz-Lesedialog wechselt das Gewicht von Loeschen mit der Ansicht (Detail-Fuss-Kanon)', () => {
-  // Leseansicht wie das Leseblatt der Kontakte (danger-ghost), Editor wie
-  // jeder Dialogfuss (danger-outline) - derselbe Knopf, syncFooter() schaltet.
+test('R24 Loeschen: EINE Form app-weit - `btn--danger-outline` mit Wort, kein `danger-ghost` mehr (G0-Shell-P3-1)', () => {
+  // Bis R24 stand Loeschen in Leseblatt, Detailspalte, Popover und
+  // Notiz-Lesedialog als `danger-ghost` (roter Text ohne Kante), im
+  // Dialogfuss als `danger-outline`: dieselbe Handlung in zwei Gewichten.
+  const offenders = [];
+  for (const { file, src } of JS) {
+    src.split('\n').forEach((line, i) => {
+      if (/danger-ghost/.test(line) && !/^\s*(?:\/\/|\*)/.test(line)) offenders.push(`${file}:${i + 1}`);
+    });
+  }
+  assert.deepEqual(offenders, []);
+  const css = readdirSync(new URL('../public/styles/', import.meta.url)).filter((f) => f.endsWith('.css'))
+    .flatMap((f) => [...eachRule(readFileSync(new URL(`../public/styles/${f}`, import.meta.url), 'utf8'))].map((r) => r.selector));
+  assert.ok(!css.some((sel) => /\.btn--danger-ghost\b/.test(sel)), 'keine Regel fuer `.btn--danger-ghost`');
+  // Der Notiz-Lesedialog schaltet das Gewicht nicht mehr um.
   const notes = JS.find(({ file }) => file.endsWith('pages/notes.js')).src;
   const sync = notes.slice(notes.indexOf('function syncFooter(view)'), notes.indexOf('function animatePane('));
-  assert.match(sync, /classList\.toggle\('btn--danger-ghost', view === 'read'\)/);
-  assert.match(sync, /classList\.toggle\('btn--danger-outline', view !== 'read'\)/);
+  assert.doesNotMatch(sync, /classList\.toggle\('btn--danger/);
+  assert.match(notes, /<button type="button" class="btn btn--danger-outline" id="note-modal-delete">/);
 });
 
 test('Auswahlkreis: EIN Baustein in der Shell (layout.css), jede Mehrfachauswahl nutzt ihn (R8 H14)', () => {
@@ -2805,4 +2820,97 @@ test('R23 D14: ein Leerzustand neben dem FAB hat keine zweite Primaeraktion', ()
   const empty = docs.slice(docs.indexOf('function emptyStateFor()'), docs.indexOf('function renderEmptyState('));
   assert.doesNotMatch(empty, /variant: 'primary'/, 'Dokumente: kein Primaerknopf im Leerzustand');
   assert.match(empty, /t\('documents\.emptyFolderTitle', \{ name: folder\.name \}\)/, 'ein leerer Ordner ist ein Ort, kein Filter ohne Treffer');
+});
+
+// ---------------------------------------------------------------------------
+// R24 S6: Knoepfe, Zeilen, Auswahl (Critique 2026-10-26)
+// ---------------------------------------------------------------------------
+const cssOf = (name) => CSS.find(({ file }) => file === `public/styles/${name}`).src;
+const jsOf = (name) => JS.find(({ file }) => file === name).src;
+const ruleOf = (css, selector, at = null) => [...eachRule(css)]
+  .filter((r) => r.selector.replace(/\/\*[\s\S]*?\*\//g, '').trim() === selector && (at === null || r.at.some((a) => at.test(a))));
+
+test('R24 G0-Shell-P3-2: am Zeiger misst jedes Kopf- und Abschnittswerkzeug 40px, nicht 44 oder 48', () => {
+  const pointer = /min-width:\s*1024px\)\s*and\s*\(hover:\s*hover/;
+  // Der kleine Icon-Knopf (Abschnittskopf Punktestaende/Ausgleich) wie `.btn--sm`.
+  const small = ruleOf(cssOf('layout.css'), '.btn--icon.btn--sm', pointer);
+  assert.equal(small.length, 1, '`.btn--icon.btn--sm` hat am Zeiger eine eigene Hoehe');
+  assert.match(small[0].body, /min-height:\s*var\(--target-md\)/);
+  assert.match(small[0].body, /min-width:\s*var\(--target-md\)/);
+  // Die Personenwahl im Gesundheitskopf.
+  const person = ruleOf(cssOf('health.css'), '.health-toolbar__person .health-person-switcher__trigger', pointer);
+  assert.equal(person.length, 1, 'Personenwahl im Kopf: eigene Zeiger-Hoehe');
+  assert.match(person[0].body, /min-height:\s*var\(--target-md\)/);
+  // "Auschecken" der Haushaltshilfe nimmt die Hoehe von `.btn`, keine eigene.
+  const check = ruleOf(cssOf('housekeeping.css'), '.housekeeping-check-small');
+  assert.ok(check.length && check.every((r) => !/min-height/.test(r.body)), 'kein fester --target-lg am Auschecken-Knopf');
+  // Personen vergleichen im Schichtplan: kein Polster ueber der Untergrenze.
+  const people = ruleOf(cssOf('schedule.css'), '.schedule-overview__people', /hover:\s*hover/);
+  assert.match(people[0]?.body ?? '', /padding-block:\s*0/);
+});
+
+test('R24 G2-Aufgaben-P2-3 / G3-Einkauf-P3-2: die Kapseln der Sammel-Pille messen --target-md, die Pille bleibt', () => {
+  const layout = cssOf('layout.css');
+  const action = ruleOf(layout, '.list-bulkbar__action');
+  assert.equal(action.length, 1);
+  assert.match(action[0].body, /min-height:\s*var\(--target-md\)/);
+  assert.match(action[0].body, /font-size:\s*var\(--text-sm\)/);
+  const pill = ruleOf(layout, '.list-bulkbar')[0];
+  assert.match(pill.body, /min-height:\s*var\(--bulk-pill-height\)/, 'die Pille haelt die Sicherheitszone');
+  assert.match(pill.body, /padding:\s*calc\(\(var\(--bulk-pill-height\) - var\(--target-md\)\) \/ 2 - var\(--space-px\)\)/,
+    'das senkrechte Polster ist der Rest bis zur Pillenhoehe (abzueglich der Glaskante)');
+});
+
+test('R24 G2-Belohnungen-P2-1: eine Anfrage traegt EINE sichtbare Handlung, nie gefuellt; Ablehnen steht im Mehr', () => {
+  const src = jsOf('public/pages/rewards.js');
+  const fn = src.slice(src.indexOf('const rows = state.redemptions.map('), src.indexOf('DER KOPF STEHT AUF DEM GRUND'));
+  assert.match(fn, /<button class="btn btn--secondary btn--sm" type="button" data-decide="fulfill"/);
+  assert.doesNotMatch(fn, /btn--primary/, 'kein Primaerknopf in der Zeile - der Primaer ist der FAB');
+  assert.match(fn, /rowMenuHtml\(\{[\s\S]*?attrs: \{ 'data-decide': 'reject'/, 'Ablehnen ist ein Eintrag im Zeilenmenue');
+  assert.doesNotMatch(fn, /<button class="btn btn--ghost btn--sm" type="button" data-decide="reject"/);
+});
+
+test('R24 G2-Entsorgung-P3-1: eine Vorlage ist ein kleiner Sekundaerknopf, ihre Farbe eine Variable', () => {
+  const src = jsOf('public/pages/waste.js');
+  const fn = src.slice(src.indexOf('function presetButtonHtml('), src.indexOf('function remainingPresetsHtml('));
+  assert.match(fn, /class="btn btn--secondary btn--sm waste-onboarding__preset"/);
+  assert.match(fn, /style="--waste-type-color:\$\{esc\(preset\.color\)\}"/);
+  assert.doesNotMatch(src, /filter-chip waste-onboarding__preset/, 'keine Filter-Optik fuer eine Anlegen-Handlung');
+  assert.doesNotMatch(fn, /style="color:/, 'keine Farbe als Inline-Stil am Zeichen');
+  assert.match(ruleOf(cssOf('waste.css'), '.waste-onboarding__preset svg')[0]?.body ?? '', /color:\s*var\(--waste-type-color/);
+});
+
+test('R24 G5-Kontakte-P3-2 / G3-Rezepte-P3-3: Seltenes steht im Mehr-Menue des Fusses, mit Wort', () => {
+  const view = jsOf('public/components/detail-view.js');
+  assert.match(view, /function footerMoreMenuEl\(actions, close\)/);
+  assert.match(view, /if \(action\.more && folds\)/, 'nur falten, wenn daneben noch etwas steht');
+  assert.match(jsOf('public/pages/contacts.js'), /id: 'contact-detail-export',[\s\S]{0,200}more: true/);
+  assert.match(jsOf('public/pages/recipes.js'), /id: 'recipe-detail-duplicate'[^}]*more: true/);
+});
+
+test('R24 G0-Inv-5 / G4-Notizen-P3-2: die Notizkarte hat den Kartenradius, ihr Checklisten-Ring 20px', () => {
+  const notes = cssOf('notes.css');
+  assert.match(ruleOf(notes, '.note-card')[0].body, /border-radius:\s*var\(--radius-lg\)/);
+  const ring = [...eachRule(notes)].find((r) => /\.note-card \.note-md-box/.test(r.selector));
+  assert.match(ring?.body ?? '', /font-size:\s*var\(--space-5\)/, 'der Ring misst 20px (Haken in em waechst mit)');
+});
+
+test('R24 G0-Shell-P3-3: EIN Etikett (`.tag`) fuer Aufgaben-Tags, Einkaufs-Etiketten, Notiz-Kategorien und Medikamenten-Abzeichen', () => {
+  const tag = ruleOf(cssOf('list-row.css'), '.tag');
+  assert.equal(tag.length, 1);
+  assert.match(tag[0].body, /background:\s*var\(--color-fill-well\)/);
+  assert.match(tag[0].body, /color:\s*var\(--color-text-secondary\)/);
+  assert.match(tag[0].body, /border-radius:\s*var\(--radius-full\)/);
+  const uses = [
+    ['public/pages/tasks.js', /class="tag task-tag task-tag--filter"/],
+    ['public/pages/shopping.js', /class="tag list-row__tag"/],
+    ['public/pages/notes.js', /class="tag note-category-badge/],
+    ['public/pages/dashboard.js', /class="tag note-item__category"/],
+    ['public/pages/health.js', /<span class="tag">/],
+  ];
+  for (const [file, re] of uses) assert.match(jsOf(file), re, file);
+  // Die Module tragen keine eigene Pillenform mehr.
+  for (const [css, sel] of [['tasks.css', '.task-tag'], ['list-row.css', '.list-row__tag'], ['health.css', '.health-med-badge']]) {
+    assert.deepEqual(ruleOf(cssOf(css), sel), [], `${sel}: keine eigene Pillenregel neben .tag`);
+  }
 });

@@ -2530,8 +2530,8 @@ function renderPinnedNotes(allNotes, size, total = null) {
       <div class="note-item__content">${renderMarkdownLight(excerpt(n.content))}</div>
       </div>
       ${(n.categories || []).length ? `<div class="note-item__categories" role="group" aria-label="${esc(t('noteCategories.categories'))}">
-        ${n.categories.map((category) => `<span class="note-item__category u-badge">${esc(noteCategoryName(category))}<span class="sr-only"> (${esc(noteCategoryScope(category))})</span></span>`).join('')}
-        <button type="button" class="note-item__categories-more u-badge" aria-label="${esc(t('noteCategories.categories'))}" hidden></button>
+        ${n.categories.map((category) => `<span class="tag note-item__category">${esc(noteCategoryName(category))}<span class="sr-only"> (${esc(noteCategoryScope(category))})</span></span>`).join('')}
+        <button type="button" class="tag note-item__categories-more" aria-label="${esc(t('noteCategories.categories'))}" hidden></button>
       </div>` : ''}
     </div>
   `).join('');

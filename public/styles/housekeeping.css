@@ -11,8 +11,10 @@
  * Die Tab-Reihe füllt die Restbreite und bleibt rechtsbündig (wie zuvor die
  * 1fr-Grid-Spalte). */
 
+/* DIE HOEHE KOMMT AUS `.btn` (R24, G0-Shell-P3-2): `--target-lg` am Finger,
+ * `--target-md` am Zeiger. Hier stand `--target-lg` fest - "Auschecken" mass
+ * am Desktop 48 neben 40er Knoepfen in jedem anderen Modul. */
 .housekeeping-check-small {
-  min-height: var(--target-lg);
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);

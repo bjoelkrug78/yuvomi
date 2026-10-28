@@ -8014,7 +8014,7 @@ async function openEventDetail(ev, anchor = null, { pane = null, formReady: form
   const actions = locked ? [] : [{
     id: 'detail-delete',
     label: t('common.delete'),
-    variant: 'danger-ghost',
+    variant: 'danger-outline',
     icon: 'trash-2',
     align: 'start',
     // force + await: Löschen entscheidet über die Eingaben mit, eine

@@ -592,13 +592,13 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--space-2);
-  max-inline-size: 32rem;
+  /* Sechs Vorlagen als kleine Knoepfe brauchen 628px; bei 32rem stand
+   * "Sperrmuell" allein in Zeile zwei (Critique G2-Entsorgung-P3-1). */
+  max-inline-size: 40rem;
 }
 
 .waste-onboarding__preset svg {
-  inline-size: var(--icon-md);
-  block-size: var(--icon-md);
-  flex-shrink: 0;
+  color: var(--waste-type-color, currentColor);
 }
 
 /* Die Abschnitte stehen im Spaltenraster der Seite (`.page-columns`,

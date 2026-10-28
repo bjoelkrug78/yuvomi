@@ -1365,7 +1365,7 @@ async function openItemDetail(item, { pane = null, signal = null } = {}) {
     actions: ro ? [] : [{
       id: 'inventory-detail-delete',
       label: t('common.delete'),
-      variant: 'danger-ghost',
+      variant: 'danger-outline',
       icon: 'trash-2',
       align: 'start',
       onClick: async ({ close }) => {
@@ -2055,7 +2055,7 @@ function buildItemForm({ mode, item = null }) {
           || item.odometer != null || categoryTracksOdometer(item.category)),
       })}
       <div class="modal-panel__footer modal-panel__footer--plain">
-        ${isEdit ? `<button type="button" class="btn btn--danger-ghost" id="inv-delete">${esc(t('common.delete'))}</button>` : ''}
+        ${isEdit ? `<button type="button" class="btn btn--danger-outline" id="inv-delete"><i data-lucide="trash-2" class="icon-md" aria-hidden="true"></i>${esc(t('common.delete'))}</button>` : ''}
         <button type="button" class="btn btn--secondary" data-action="close-modal">${esc(t('common.cancel'))}</button>
         <button type="button" class="btn btn--primary" id="inv-save">${esc(isEdit ? t('common.save') : t('common.add'))}</button>
       </div>`;

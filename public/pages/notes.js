@@ -852,7 +852,7 @@ function categoryScopeLabel(category) {
 }
 
 function renderCategoryBadge(category) {
-  return `<span class="note-category-badge note-category-badge--${category.scope} u-badge">
+  return `<span class="tag note-category-badge note-category-badge--${category.scope}">
     <i data-lucide="${category.scope === 'personal' ? 'user' : 'home'}" aria-hidden="true"></i><span class="note-category-badge__name">${esc(category.name)}</span>
     <span class="sr-only"> (${esc(categoryScopeLabel(category))})</span>
   </span>`;
@@ -1109,7 +1109,7 @@ function openNoteModal({ mode, note = null }) {
       </div>
 
       <div class="modal-panel__footer modal-panel__footer--plain note-modal__footer">
-        ${isEdit ? `<button type="button" class="btn ${initialView === 'read' ? 'btn--danger-ghost' : 'btn--danger-outline'}" id="note-modal-delete">
+        ${isEdit ? `<button type="button" class="btn btn--danger-outline" id="note-modal-delete">
           <i data-lucide="trash-2" class="icon-md" aria-hidden="true"></i>${t('common.delete')}
         </button>` : ''}
         <button type="button" class="btn btn--secondary" id="note-modal-cancel" data-editor-only>${t('common.cancel')}</button>
@@ -1157,16 +1157,15 @@ function openNoteModal({ mode, note = null }) {
       const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       // DER FUSS FOLGT DEM DETAIL-FUSS-KANON (Critique R22, D20): in der
-      // Leseansicht wie das Leseblatt der Kontakte - Loeschen leise
-      // (`danger-ghost`) am Anfang, Bearbeiten gefuellt mit Stift am Ende; im
-      // Editor wie jeder Dialogfuss - Loeschen umrandet, Abbrechen, Speichern.
-      // Der Knopf bleibt derselbe (Fokus, Verdrahtung), nur sein Gewicht wechselt.
+      // Leseansicht wie das Leseblatt der Kontakte - Loeschen am Anfang,
+      // Bearbeiten gefuellt mit Stift am Ende; im Editor wie jeder Dialogfuss -
+      // Loeschen, Abbrechen, Speichern. Loeschen ist in beiden Ansichten
+      // derselbe umrandete Knopf mit Wort (R24, G0-Shell-P3-1: EINE
+      // Loeschen-Form app-weit, `danger-ghost` ist entfallen).
       const deleteBtn = panel.querySelector('#note-modal-delete');
       function syncFooter(view) {
         editorOnly.forEach((el) => { el.style.display = view === 'read' ? 'none' : ''; });
         readerOnly.forEach((el) => { el.style.display = view === 'read' ? '' : 'none'; });
-        deleteBtn?.classList.toggle('btn--danger-ghost', view === 'read');
-        deleteBtn?.classList.toggle('btn--danger-outline', view !== 'read');
         // Lesend steht Loeschen mobil mit Wort, im Editor als Papierkorb neben
         // Abbrechen/Speichern (R23, modal.js `--delete-worded`).
         decorateFooterDelete(deleteBtn?.closest('.modal-panel__footer') ?? null);

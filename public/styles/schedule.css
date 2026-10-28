@@ -849,9 +849,13 @@
     min-height: calc(var(--target-md) - 4 * var(--space-px));
   }
 
+  /* `padding-block: 0` (R24, G0-Shell-P3-2): Polster plus Gesichterstapel
+   * ergaben 42px ueber der Untergrenze - neben dem 40er Segment derselben
+   * Zeile. */
   .schedule-overview__people {
     min-height: var(--target-md);
     min-width: var(--target-md);
+    padding-block: 0;
   }
 }
 

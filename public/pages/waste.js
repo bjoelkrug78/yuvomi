@@ -518,13 +518,28 @@ function remainingTypePresets(types = state.types) {
     && !looks.has(`${preset.icon}|${preset.color.toUpperCase()}`));
 }
 
+/**
+ * EINE VORLAGE IST EINE ANLEGEN-HANDLUNG, KEIN FILTER (R24, G2-Entsorgung-P3-1).
+ * Sie stand als `.filter-chip` da - Filter-Optik fuer einen Knopf, der sofort
+ * eine Abfallart anlegt, und darum 48px am Desktop, wo jeder Filterchip `--sm`
+ * traegt. Jetzt der kleine Sekundaerknopf mit der Glyphe der Art; ihre Farbe
+ * kommt als Variable (`--waste-type-color`, waste.css), nicht als Farbe am
+ * Zeichen.
+ */
+function presetButtonHtml(preset) {
+  return `
+      <button type="button" class="btn btn--secondary btn--sm waste-onboarding__preset" data-action="create-preset-type" data-preset="${preset.key}" style="--waste-type-color:${esc(preset.color)}">
+        <i data-lucide="${esc(preset.icon)}" class="icon-md" aria-hidden="true"></i>
+        <span>${esc(presetLabel(preset))}</span>
+      </button>`;
+}
+
 function remainingPresetsHtml() {
   if (readOnly()) return '';
   const presets = remainingTypePresets();
   if (!presets.length) return '';
   return `<div class="waste-type-presets-more" role="group" aria-label="${esc(t('waste.typePresetLabel'))}">`
-    + presets.map((preset) => `<button type="button" class="filter-chip waste-onboarding__preset" data-action="create-preset-type" data-preset="${preset.key}">`
-      + `<i data-lucide="${esc(preset.icon)}" style="color:${esc(preset.color)}" aria-hidden="true"></i><span>${esc(presetLabel(preset))}</span></button>`).join('')
+    + presets.map(presetButtonHtml).join('')
     + '</div>';
 }
 
@@ -652,11 +667,7 @@ function onboardingHtml({ readOnly: ro, emptyHtml = null }) {
     description: ro ? '' : t('waste.emptyTypesDescription'),
   });
   if (ro) return `<div class="waste-onboarding">${empty}</div>`;
-  const chips = TYPE_PRESETS.map((preset) => `
-      <button type="button" class="filter-chip waste-onboarding__preset" data-action="create-preset-type" data-preset="${preset.key}">
-        <i data-lucide="${esc(preset.icon)}" style="color:${esc(preset.color)}" aria-hidden="true"></i>
-        <span>${esc(presetLabel(preset))}</span>
-      </button>`).join('');
+  const chips = TYPE_PRESETS.map(presetButtonHtml).join('');
   return `
     <div class="waste-onboarding">
       ${empty}

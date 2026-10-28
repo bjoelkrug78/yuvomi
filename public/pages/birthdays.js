@@ -1679,7 +1679,7 @@ function renderBirthdayPane(id, body) {
     actions: ro ? [] : [{
       id: 'birthday-detail-delete',
       label: t('common.delete'),
-      variant: 'danger-ghost',
+      variant: 'danger-outline',
       icon: 'trash-2',
       align: 'start',
       onClick: () => deleteBirthday(birthday.id),
@@ -1733,7 +1733,7 @@ function openBirthdaySheet(birthday) {
     actions: [{
       id: 'birthday-detail-delete',
       label: t('common.delete'),
-      variant: 'danger-ghost',
+      variant: 'danger-outline',
       icon: 'trash-2',
       align: 'start',
       onClick: async ({ close }) => {

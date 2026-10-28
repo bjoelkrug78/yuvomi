@@ -8,6 +8,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **Taking a medicine is a tick.** Due doses and as-needed medicines now have a circle in front of the
+  name, like a task: tap it and the dose is taken, with Undo in the message. A taken dose shows a full
+  circle. Before, every due dose carried a filled "Take" button, so a Health page could show three main
+  buttons at once; "Skip" stays in the row's "..." menu.
+- **Approving a reward request is one quiet button.** Each open request shows "Approve" as an outlined
+  button and "Reject" in its "..." menu, like the pocket money row next to it. Before, two requests meant
+  two filled buttons on the page.
+- **Delete looks the same everywhere.** Recipes, inventory, contacts, birthdays, notes, tasks and
+  appointments show Delete as the red outlined button with its word, like every other dialog. Exporting a
+  contact as vCard and duplicating a recipe moved into the "..." menu at the bottom of the sheet, where
+  they keep their names instead of showing a bare icon on phones.
+- **Selecting several items has bigger buttons.** The bar at the bottom ("Done", "Delete", "Finish")
+  uses buttons as tall as the other small buttons, with larger text, in tasks, shopping and every list
+  with multiple selection.
+- **Labels look alike.** Task tags, the shopping list's synced labels, note categories and the badges on
+  medicine cards share one quiet label style. Note cards have the same rounded corners as other cards,
+  and their checklist circles are the size of the task circle.
+- **Controls on the desktop have one size.** The person picker in Health, the section menu in Rewards,
+  "Check out" in Household help and "Compare people" in the shift plan now match the other buttons
+  instead of standing a few pixels taller.
+- **Waste type templates are buttons.** The quick templates for a new waste type look like small buttons
+  with their symbol in the type's colour and fit on one line on the desktop, instead of looking like
+  filters.
+- **"In my navigation" is a switch.** Settings > Navigation shows a switch per module instead of a
+  crossed-out eye; on means the module stays in your navigation. The page description now reads "Order
+  and your own view".
+- **The profile picture is chosen with one control.** In your account and when editing a member, the
+  picture itself is the button with a small pencil badge; "Remove picture" and "Use my Gravatar" are text
+  buttons below, and Remove only appears when there is a picture. Setting up two-factor sign-in is a
+  secondary button, so the account page has one main button per card.
 - **Every Health view has its add button.** The overview's "+ Record" opens a short menu at the button
   (measurement, workout, dose, cycle), and the cycle area's "+ Day" logs today. Before, both views had
   no button and phones showed an empty spot at the end of the tab bar. "Period started" in the cycle's

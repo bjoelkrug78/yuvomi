@@ -717,35 +717,16 @@
    als die Prioritäts-Badges: Tags ordnen, sie warnen nicht.
    -------------------------------------------------------- */
 
-.task-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-0h) var(--space-2);
-  border: var(--space-px) solid var(--color-border-subtle);
-  border-radius: var(--radius-full);
-  background: var(--color-surface-2);
-  color: var(--color-text-secondary);
-  font-size: var(--text-xs);
-  line-height: 1.4;
-  /* Ein sehr langer Fremd-Tag darf die Zeile nicht sprengen. */
-  max-width: 14rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Auf den Karten ist das Chip ein Button (Klick filtert). Die Button-Herkunft
- * abräumen, damit es wie ein Etikett aussieht und nicht wie eine Schaltfläche -
- * es ordnet, es ruft nicht zur Handlung auf. */
+/* Die Form ist das geteilte Etikett (`.tag`, list-row.css, R24). Auf den
+ * Karten ist es ein Button (Klick filtert): es sieht aus wie ein Etikett und
+ * nicht wie eine Schaltflaeche - es ordnet, es ruft nicht zur Handlung auf. */
 .task-tag--filter {
   cursor: pointer;
-  font-family: inherit;
-  transition: border-color var(--transition-fast), color var(--transition-fast);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .task-tag--filter:hover {
-  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) var(--tint-state), var(--color-fill-well));
   color: var(--color-text-primary);
 }
 
@@ -759,12 +740,10 @@
  * Bedeutung, daher die abweichende Hover-Farbe. */
 .task-tag--editable {
   cursor: pointer;
-  font-family: inherit;
-  transition: border-color var(--transition-fast), color var(--transition-fast);
+  transition: color var(--transition-fast);
 }
 
 .task-tag--editable:hover {
-  border-color: var(--color-danger);
   color: var(--color-danger);
 }
 

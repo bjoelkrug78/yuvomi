@@ -1758,7 +1758,7 @@ test('M8: der Loeschen-Knopf im Fuss wird erkannt, bekommt Symbol, Wortspanne un
   global.document.createElement = (tag) => el(tag);
   try {
     const titel = el('input', { attrs: { type: 'text', value: 'Wocheneinkauf' } });
-    const del = withText(el('button', { cls: ['btn', 'btn--danger-ghost'] }), '\n  ', 'Loeschen', '\n');
+    const del = withText(el('button', { cls: ['btn', 'btn--danger-outline'] }), '\n  ', 'Loeschen', '\n');
     const cancel = withText(el('button', { cls: ['btn', 'btn--secondary'] }), 'Abbrechen');
     const save = withText(el('button', { cls: ['btn', 'btn--primary'] }), 'Speichern');
     const footer = el('div', { cls: ['modal-panel__footer'], kids: [del, cancel, save] });
@@ -1809,7 +1809,7 @@ test('M8: data-delete-name und ein vorhandenes aria-label gewinnen; off und die 
     assert.equal(f3.classList.contains('modal-panel__footer--has-delete'), false);
 
     const detail = el('div', { cls: ['modal-panel__footer'], kids: [
-      withText(el('button', { cls: ['btn', 'btn--danger-ghost'] }), 'Loeschen'),
+      withText(el('button', { cls: ['btn', 'btn--danger-outline'] }), 'Loeschen'),
       withText(el('button', { cls: ['btn', 'btn--secondary'] }), 'Erledigen'),
       withText(el('button', { cls: ['btn', 'btn--ghost'] }), 'Starten'),
       withText(el('button', { cls: ['btn', 'btn--ghost'] }), 'Aufgabe archivieren'),
@@ -1834,7 +1834,7 @@ test('M8: data-delete-name und ein vorhandenes aria-label gewinnen; off und die 
     // R23 (Critique G3/G5): die Leseansicht [Loeschen][Duplizieren-Icon][Bearbeiten]
     // hat Platz - Loeschen behaelt mobil sein Wort.
     const lese = el('div', { cls: ['modal-panel__footer'], kids: [
-      withText(el('button', { cls: ['btn', 'btn--danger-ghost'] }), 'Loeschen'),
+      withText(el('button', { cls: ['btn', 'btn--danger-outline'] }), 'Loeschen'),
       el('button', { cls: ['btn', 'btn--ghost', 'btn--icon'] }),
       withText(el('button', { cls: ['btn', 'btn--primary'] }), 'Bearbeiten'),
     ] });
@@ -1907,7 +1907,7 @@ test('F3: in jedem Fuss liegt das Wort des Loeschen-Knopfs in der ausgeblendeten
   try {
     const cases = {
       // Die Form aus detail-view.js: Symbol + .btn__label.
-      detailansicht: () => el('button', { cls: ['btn', 'btn--danger-ghost'], kids: [
+      detailansicht: () => el('button', { cls: ['btn', 'btn--danger-outline'], kids: [
         el('i', { data: { lucide: 'trash-2' } }),
         el('span', { cls: ['btn__label'], text: 'Loeschen' }),
       ] }),
