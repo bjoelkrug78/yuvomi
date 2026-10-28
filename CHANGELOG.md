@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **German settings say "Zurzeit:" for what applies now.** The hint under Language of stored entries,
+  Region, Time zone and Currency began with "Gerade Englisch.", which next to a German interface read
+  like "even English"; it now reads "Zurzeit: Englisch.".
 - **The settings search puts the setting you named first.** Searching "password" listed the Account and
   Email (SMTP) pages before "Change password"; a hit whose name matches now comes first. A search without
   hits shows the usual "No matches" with your term and "Reset search" instead of a bare sentence.

@@ -1305,6 +1305,14 @@ test('die Navigation laesst sich ueber alle Blaetter durchsuchen', async () => {
   assert.match(overview, /orderSettingsHits\(hits, query, t\)/);
 });
 
+/* "GERADE ENGLISCH" (Critique R24, G6-Einst-P3-6): neben deutscher Oberflaeche las
+ * sich das Automatik-Ergebnis der Datensprache wie "sogar Englisch". Der Wert
+ * steht wie in jeder anderen Sprache als "Zurzeit: <Wert>." vorn im Hinweis. */
+test('R24: die Hinweiszeile nennt den geltenden Wert als "Zurzeit:", nicht "Gerade"', async () => {
+  const de = JSON.parse(await readFile(new URL('../public/locales/de.json', import.meta.url), 'utf8'));
+  assert.equal(de.settings.hintWithCurrent, 'Zurzeit: {{value}}. {{hint}}');
+});
+
 /* DER TREFFER, DER SO HEISST, STEHT VORN (Critique R24, G6-Einst-P3-5): "passwort"
  * reihte die Option "Passwort aendern" HINTER die Blaetter Konto und E-Mail
  * (SMTP), die nur ihre Beschreibung traf (gemessen 1440 und 390). */

@@ -2314,7 +2314,7 @@
         "dataLanguageLabel": "Sprache gespeicherter Einträge",
         "dataLanguageHint": "Sprache, in der Yuvomi selbst erzeugte Einträge speichert, etwa Geburtstags-Termine. Wirkt auf API, Kalender-Feed und Synchronisierung, nicht auf die Anzeige hier.",
         "dataLanguageAuto": "Automatisch",
-        "hintWithCurrent": "Gerade {{value}}. {{hint}}",
+        "hintWithCurrent": "Zurzeit: {{value}}. {{hint}}",
         "dataLanguageAdminOnly": "Die Sprache gespeicherter Einträge legen Administratoren fest.",
         "dataLanguageSaved": "Sprache gespeicherter Einträge aktualisiert",
         "sectionMeals": "Essensplan",
