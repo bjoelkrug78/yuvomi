@@ -110,7 +110,9 @@
         "errorNotOwner": "Ezt valaki más hozta létre - megnézheted, de nem módosíthatod.",
         "foreignReadOnlyHint": "Létrehozta: {{name}} - megnézheted, de nem módosíthatod.",
         "deletedNamed": "„{{name}}” törölve.",
-        "sortMode": "Sorrend módosítása"
+        "sortMode": "Sorrend módosítása",
+        "createdNamed": "„{{name}}” létrehozva.",
+        "savedNamed": "„{{name}}” mentve."
     },
     "kitchen": {
         "noShoppingLists": "Még nincs bevásárlólista.",
@@ -4130,7 +4132,6 @@
         "noTasks": "Még nincsenek takarítási feladatok.",
         "everyDays": "Minden {{days}} nap",
         "completeTask": "Befejezés {{name}}",
-        "taskDoneToast": "Feladat teljesítve.",
         "editTask": "Feladat szerkesztése",
         "deleteTask": "Feladat törlése",
         "undoTask": "Teljesítés visszavonása",
@@ -4212,9 +4213,6 @@
         "filterMonth": "Hónap",
         "editVisit": "Látogatás szerkesztése",
         "deleteVisit": "Látogatás törlése",
-        "deleteVisitConfirm": "Törli ezt a látogatást? A kapcsolódó naptári esemény és fizetési feladat is törlésre kerül.",
-        "deleteVisitConfirmDetail": "A havi elszámolás mostantól e látogatás nélkül számol, a feltöltött bizonylat pedig a Dokumentumokban marad, de többé nem tartozik ehhez a látogatáshoz. Az időpont a csatlakoztatott naptárszolgáltatásból is törlődik, hacsak az oda irányuló szinkron nem csak olvasható.",
-        "visitDeletedToast": "Látogatás törölve.",
         "visitSavedToast": "Látogatás frissítve.",
         "visitDate": "Látogatás dátuma",
         "markPaid": "Megjelölés fizetettként",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "Fizetés visszavonása",
         "markUnpaidConfirm": "Visszavonod ezt a fizetést?",
         "markUnpaidConfirmDetail": "A látogatás ismét függőben lesz. A kapcsolódó fizetési feladat újra megnyílik.",
-        "visitPaidToast": "Kifizetettként jelölés.",
-        "visitUnpaidToast": "Fizetés visszavonva.",
         "receiptUploadTitle": "Fizetési bizonylat feltöltése",
         "receiptUploadHint": "Csatoljon egy fizetési bizonylatot. Megjelenik a Dokumentumok között.",
         "receiptLabel": "Fizetési bizonylat",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}} kijelentkezett.",
         "visitToday": "Ma itt: {{from}} - {{to}}",
         "checkInAgain": "Újra bejelentkezés",
-        "checkedInNamed": "{{name}} bejelentkezett."
+        "checkedInNamed": "{{name}} bejelentkezett.",
+        "taskDoneNamed": "„{{name}}” kész.",
+        "visitDeletedNamed": "A(z) {{date}} látogatás törölve.",
+        "visitPaidNamed": "A(z) {{date}} látogatás kifizetve.",
+        "visitUnpaidNamed": "A(z) {{date}} látogatás fizetése visszavonva."
     },
     "userMultiSelect": {
         "moreUsers": "továbbiak",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Lomtalanítás",
         "newType": "Új típus",
         "editType": "Típus szerkesztése",
-        "typeSavedToast": "Típus mentve",
-        "typeDeletedToast": "Típus törölve",
         "typeArchivedToast": "Típus archiválva",
         "typeRestoredToast": "Típus visszaállítva",
         "typeDeleteConfirm": "Törli ezt a hulladéktípust?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Hulladékszállítás",
         "icsPickupSummary": "Elszállítás: {{name}}",
         "intervalDecrease": "Időköz csökkentése",
-        "intervalIncrease": "Időköz növelése"
+        "intervalIncrease": "Időköz növelése",
+        "scheduleSavedNamed": "„{{name}}” ütemezése mentve.",
+        "pickupSavedNamed": "„{{name}}” elszállítása mentve."
     },
     "rewards": {
         "title": "Jutalmak",

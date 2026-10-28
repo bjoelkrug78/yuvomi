@@ -113,7 +113,9 @@
         "errorNotOwner": "أنشأ هذا شخص آخر - يمكنك عرضه لكن لا يمكنك تغييره.",
         "foreignReadOnlyHint": "أنشأه {{name}} - يمكنك عرضه لكن لا يمكنك تغييره.",
         "deletedNamed": "تم حذف «{{name}}».",
-        "sortMode": "تغيير الترتيب"
+        "sortMode": "تغيير الترتيب",
+        "createdNamed": "تم إنشاء «{{name}}».",
+        "savedNamed": "تم حفظ «{{name}}»."
     },
     "kitchen": {
         "noShoppingLists": "لا توجد قائمة مشتريات بعد.",
@@ -4494,7 +4496,6 @@
         "noTasks": "لا توجد مهام تدبير منزلي بعد.",
         "everyDays": "كل {{days}} أيام",
         "completeTask": "إنجاز {{name}}",
-        "taskDoneToast": "تم إنجاز المهمة.",
         "editTask": "تعديل المهمة",
         "deleteTask": "حذف المهمة",
         "undoTask": "التراجع عن الإنجاز",
@@ -4576,9 +4577,6 @@
         "filterMonth": "الشهر",
         "editVisit": "تعديل الزيارة",
         "deleteVisit": "حذف الزيارة",
-        "deleteVisitConfirm": "حذف هذه الزيارة؟ سيُحذف أيضًا حدث التقويم ومهمة الدفع المرتبطان بها.",
-        "deleteVisitConfirmDetail": "يُحسب كشف الشهر من الآن فصاعدًا بدون هذه الزيارة، ويبقى الإيصال المرفوع في المستندات لكنه لم يعد مرتبطًا بهذه الزيارة. ويُحذف الموعد كذلك في خدمة التقويم المتصلة، ما لم تكن المزامنة إليها للقراءة فقط.",
-        "visitDeletedToast": "تم حذف الزيارة.",
         "visitSavedToast": "تم تحديث الزيارة.",
         "visitDate": "تاريخ الزيارة",
         "markPaid": "وضع علامة مدفوع",
@@ -4588,8 +4586,6 @@
         "markUnpaid": "التراجع عن الدفع",
         "markUnpaidConfirm": "هل تريد التراجع عن هذا الدفع؟",
         "markUnpaidConfirmDetail": "ستعود الزيارة معلقة من جديد. وسيُعاد فتح مهمة الدفع المرتبطة.",
-        "visitPaidToast": "تم وضع علامة مدفوع على الدفعة.",
-        "visitUnpaidToast": "تم التراجع عن الدفع.",
         "receiptUploadTitle": "رفع إيصال الدفع",
         "receiptUploadHint": "أرفق إيصال دفع. سيظهر بعد ذلك في المستندات.",
         "receiptLabel": "إيصال الدفع",
@@ -4658,7 +4654,11 @@
         "checkedOutNamed": "تم تسجيل خروج {{name}}.",
         "visitToday": "الحضور اليوم: {{from}} - {{to}}",
         "checkInAgain": "تسجيل الدخول مجددًا",
-        "checkedInNamed": "تم تسجيل دخول {{name}}."
+        "checkedInNamed": "تم تسجيل دخول {{name}}.",
+        "taskDoneNamed": "تم إنجاز «{{name}}».",
+        "visitDeletedNamed": "تم حذف زيارة {{date}}.",
+        "visitPaidNamed": "تم دفع زيارة {{date}}.",
+        "visitUnpaidNamed": "تم التراجع عن دفع زيارة {{date}}."
     },
     "userMultiSelect": {
         "moreUsers": "آخرون",
@@ -6266,8 +6266,6 @@
         "presetBulky": "نفايات كبيرة الحجم",
         "newType": "نوع جديد",
         "editType": "تعديل النوع",
-        "typeSavedToast": "تم حفظ النوع",
-        "typeDeletedToast": "تم حذف النوع",
         "typeArchivedToast": "تمت أرشفة النوع",
         "typeRestoredToast": "تمت استعادة النوع",
         "typeDeleteConfirm": "حذف هذا النوع من النفايات؟",
@@ -6470,7 +6468,9 @@
         "icsCalendarName": "مواعيد جمع النفايات",
         "icsPickupSummary": "جمع {{name}}",
         "intervalDecrease": "تقليل الفاصل",
-        "intervalIncrease": "زيادة الفاصل"
+        "intervalIncrease": "زيادة الفاصل",
+        "scheduleSavedNamed": "تم حفظ جدول «{{name}}».",
+        "pickupSavedNamed": "تم حفظ عملية جمع «{{name}}»."
     },
     "rewards": {
         "title": "المكافآت",

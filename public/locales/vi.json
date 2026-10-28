@@ -110,7 +110,9 @@
         "errorNotOwner": "Người khác đã tạo mục này - bạn có thể xem nhưng không thể sửa.",
         "foreignReadOnlyHint": "Do {{name}} tạo - bạn có thể xem nhưng không thể sửa.",
         "deletedNamed": "Đã xóa \"{{name}}\".",
-        "sortMode": "Sắp xếp lại"
+        "sortMode": "Sắp xếp lại",
+        "createdNamed": "Đã tạo \"{{name}}\".",
+        "savedNamed": "Đã lưu \"{{name}}\"."
     },
     "kitchen": {
         "noShoppingLists": "Chưa có danh sách mua sắm.",
@@ -4130,7 +4132,6 @@
         "noTasks": "Chưa có nhiệm vụ dọn dẹp nào.",
         "everyDays": "Mỗi {{days}} ngày",
         "completeTask": "Hoàn thành {{name}}",
-        "taskDoneToast": "Nhiệm vụ đã hoàn thành.",
         "editTask": "Sửa nhiệm vụ",
         "deleteTask": "Xóa nhiệm vụ",
         "undoTask": "Hoàn tác hoàn thành",
@@ -4212,9 +4213,6 @@
         "filterMonth": "Tháng",
         "editVisit": "Sửa lượt đến",
         "deleteVisit": "Xóa lượt đến",
-        "deleteVisitConfirm": "Xóa lượt đến này? Sự kiện lịch và nhiệm vụ thanh toán được liên kết cũng sẽ bị xóa.",
-        "deleteVisitConfirmDetail": "Bảng tính tháng từ nay không còn buổi làm này, và hoá đơn đã tải lên vẫn nằm trong Tài liệu nhưng không còn gắn với buổi làm này. Lịch hẹn cũng bị xoá ở dịch vụ lịch đã kết nối, trừ khi việc đồng bộ sang đó đang ở chế độ chỉ đọc.",
-        "visitDeletedToast": "Lượt đến đã bị xóa.",
         "visitSavedToast": "Lượt đến đã cập nhật.",
         "visitDate": "Ngày đến",
         "markPaid": "Đánh dấu đã trả",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "Hoàn tác thanh toán",
         "markUnpaidConfirm": "Hoàn tác khoản thanh toán này?",
         "markUnpaidConfirmDetail": "Lượt đến sẽ trở lại trạng thái đang chờ. Nhiệm vụ thanh toán liên kết sẽ được mở lại.",
-        "visitPaidToast": "Thanh toán đã được đánh dấu là đã trả.",
-        "visitUnpaidToast": "Đã hoàn tác thanh toán.",
         "receiptUploadTitle": "Tải lên biên lai thanh toán",
         "receiptUploadHint": "Đính kèm một biên lai thanh toán. Nó sẽ xuất hiện trong Tài liệu.",
         "receiptLabel": "Biên lai thanh toán",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}} đã trang xuất.",
         "visitToday": "Có mặt hôm nay: {{from}} - {{to}}",
         "checkInAgain": "Điểm danh lại",
-        "checkedInNamed": "{{name}} đã điểm danh."
+        "checkedInNamed": "{{name}} đã điểm danh.",
+        "taskDoneNamed": "Đã xong \"{{name}}\".",
+        "visitDeletedNamed": "Đã xóa lượt đến ngày {{date}}.",
+        "visitPaidNamed": "Đã trả tiền lượt đến ngày {{date}}.",
+        "visitUnpaidNamed": "Đã hoàn tác thanh toán lượt đến ngày {{date}}."
     },
     "userMultiSelect": {
         "moreUsers": "thêm",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Rác cồng kềnh",
         "newType": "Loại mới",
         "editType": "Sửa loại",
-        "typeSavedToast": "Đã lưu loại",
-        "typeDeletedToast": "Đã xóa loại",
         "typeArchivedToast": "Đã lưu trữ loại",
         "typeRestoredToast": "Đã khôi phục loại",
         "typeDeleteConfirm": "Xóa loại rác này?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Thu gom rác",
         "icsPickupSummary": "Thu gom: {{name}}",
         "intervalDecrease": "Giảm khoảng cách",
-        "intervalIncrease": "Tăng khoảng cách"
+        "intervalIncrease": "Tăng khoảng cách",
+        "scheduleSavedNamed": "Đã lưu lịch trình \"{{name}}\".",
+        "pickupSavedNamed": "Đã lưu lần thu gom \"{{name}}\"."
     },
     "rewards": {
         "title": "Phần thưởng",

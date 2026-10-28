@@ -110,7 +110,9 @@
         "errorNotOwner": "Iba ang gumawa nito - makikita mo ito pero hindi mo mababago.",
         "foreignReadOnlyHint": "Ginawa ni {{name}} - makikita mo ito pero hindi mo mababago.",
         "deletedNamed": "Nabura ang \"{{name}}\".",
-        "sortMode": "Baguhin ang pagkakasunod"
+        "sortMode": "Baguhin ang pagkakasunod",
+        "createdNamed": "Nagawa ang \"{{name}}\".",
+        "savedNamed": "Na-save ang \"{{name}}\"."
     },
     "kitchen": {
         "noShoppingLists": "Wala pang listahan ng pamimili.",
@@ -4134,7 +4136,6 @@
         "noTasks": "Wala pang gawaing-bahay.",
         "everyDays": "Tuwing {{days}} araw",
         "completeTask": "Tapusin ang {{name}}",
-        "taskDoneToast": "Natapos ang gawain.",
         "editTask": "I-edit ang gawain",
         "deleteTask": "Tanggalin ang gawain",
         "undoTask": "I-undo ang pagkakatapos",
@@ -4216,9 +4217,6 @@
         "filterMonth": "Buwan",
         "editVisit": "I-edit ang pagbisita",
         "deleteVisit": "Tanggalin ang pagbisita",
-        "deleteVisitConfirm": "Tanggalin ang pagbisitang ito? Aalisin din ang naka-link na kaganapan sa kalendaryo at ang gawain sa pagbabayad.",
-        "deleteVisitConfirmDetail": "Kakalkulahin na ang buwanang pahayag nang wala ang pagbisitang ito, at mananatili sa Mga Dokumento ang na-upload na resibo pero hindi na ito nakalakip sa pagbisitang ito. Tatanggalin din ang appointment sa nakakonektang serbisyo ng kalendaryo, maliban kung nakatakda roon ang pag-sync na read-only lamang.",
-        "visitDeletedToast": "Natanggal ang pagbisita.",
         "visitSavedToast": "Na-update ang pagbisita.",
         "visitDate": "Petsa ng pagbisita",
         "markPaid": "Markahang bayad na",
@@ -4228,8 +4226,6 @@
         "markUnpaid": "Bawiin ang pagbabayad",
         "markUnpaidConfirm": "Bawiin ang pagbabayad na ito?",
         "markUnpaidConfirmDetail": "Ang pagbisita ay muling nakabinbin. Ang kaugnay na gawain sa pagbabayad ay muling bubuksan.",
-        "visitPaidToast": "Namarkahang bayad na.",
-        "visitUnpaidToast": "Binawi ang pagbabayad.",
         "receiptUploadTitle": "Mag-upload ng resibo ng bayad",
         "receiptUploadHint": "Maglakip ng resibo ng bayad. Lalabas ito sa Mga Dokumento.",
         "receiptLabel": "Resibo ng bayad",
@@ -4298,7 +4294,11 @@
         "checkedOutNamed": "Naka-check out na si {{name}}.",
         "visitToday": "Narito ngayon: {{from}} - {{to}}",
         "checkInAgain": "Mag-check in ulit",
-        "checkedInNamed": "Naka-check in na si {{name}}."
+        "checkedInNamed": "Naka-check in na si {{name}}.",
+        "taskDoneNamed": "Tapos na ang \"{{name}}\".",
+        "visitDeletedNamed": "Natanggal ang pagbisita noong {{date}}.",
+        "visitPaidNamed": "Bayad na ang pagbisita noong {{date}}.",
+        "visitUnpaidNamed": "Binawi ang bayad sa pagbisita noong {{date}}."
     },
     "splitExpenses": {
         "title": "Mga hinating gastos",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Malalaking basura",
         "newType": "Bagong uri",
         "editType": "I-edit ang uri",
-        "typeSavedToast": "Na-save ang uri",
-        "typeDeletedToast": "Na-delete ang uri",
         "typeArchivedToast": "Na-archive ang uri",
         "typeRestoredToast": "Na-restore ang uri",
         "typeDeleteConfirm": "Burahin ang uri ng basurang ito?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Kolekta ng basura",
         "icsPickupSummary": "Kolekta: {{name}}",
         "intervalDecrease": "Bawasan ang pagitan",
-        "intervalIncrease": "Dagdagan ang pagitan"
+        "intervalIncrease": "Dagdagan ang pagitan",
+        "scheduleSavedNamed": "Na-save ang iskedyul ng \"{{name}}\".",
+        "pickupSavedNamed": "Na-save ang kolekta ng \"{{name}}\"."
     },
     "rewards": {
         "title": "Mga Gantimpala",

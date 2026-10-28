@@ -688,7 +688,9 @@ async function createPresetType(key, button) {
   try {
     await api.post('/waste/types', { name: presetLabel(preset), icon: preset.icon, color: preset.color });
     await reloadAfterSave(() => reloadAndRender());
-    window.yuvomi?.showToast(t('waste.typeSavedToast'), 'success');
+    // "Restmuell angelegt." statt dreimal "Abfallart gespeichert" mit
+    // Zaehler (Critique R24, G2-Quer-P2-2): jede Vorlage ist ein anderer Satz.
+    window.yuvomi?.showToast(t('common.createdNamed', { name: presetLabel(preset) }), 'success');
   } catch (err) {
     if (button) button.disabled = false;
     reportError(err);
@@ -1257,7 +1259,7 @@ function openTypeModal(type = null) {
           closeModal({ force: true, context: modalContext });
           await reloadAndRender();
           refocusAfterRender();
-          window.yuvomi?.showToast(t('waste.typeDeletedToast'), 'success');
+          window.yuvomi?.showToast(t('common.deletedNamed', { name: type.name }), 'success');
         } catch (err) {
           reportError(err);
         }
@@ -1281,7 +1283,7 @@ function openTypeModal(type = null) {
           closeModal({ force: true, context: modalContext });
           await reloadAfterSave(() => reloadAndRender());
           refocusAfterRender();
-          window.yuvomi?.showToast(t('waste.typeSavedToast'), 'success');
+          window.yuvomi?.showToast(t(isEdit ? 'common.savedNamed' : 'common.createdNamed', { name: body.name }), 'success');
         } catch (err) {
           reportError(err);
         }
@@ -1533,7 +1535,7 @@ function openScheduleModal(type, schedule = null) {
           closeModal({ force: true, context: modalContext });
           await reloadAfterSave(() => reloadAndRender());
           refocusAfterRender();
-          window.yuvomi?.showToast(t('waste.scheduleSavedToast'), 'success');
+          window.yuvomi?.showToast(scheduleSavedSentence(typeById(body.type_id)?.name), 'success');
         } catch (err) {
           if (await keepDialogForMissingType(err, typeSelect)) return;
           // Dieselbe Absage vom Server (z. B. eine aeltere Seite): ans Feld.
@@ -1617,7 +1619,9 @@ function openPickupModal(pickup = null) {
           closeModal({ force: true, context: modalContext });
           await reloadAfterSave(() => reloadAndRender());
           refocusAfterRender();
-          window.yuvomi?.showToast(t('waste.pickupSavedToast'), 'success');
+          window.yuvomi?.showToast(typeById(body.type_id)?.name
+            ? t('waste.pickupSavedNamed', { name: typeById(body.type_id).name })
+            : t('waste.pickupSavedToast'), 'success');
         } catch (err) {
           if (await keepDialogForMissingType(err, typeSelect, ownTypeId)) return;
           reportError(err);
@@ -2457,6 +2461,16 @@ async function openReminderSettingsModal() {
 // Occurrence move / skip / restore
 // -------------------------------------------------------------------------
 
+/**
+ * "Termin fuer „Restmuell“ gespeichert." (Critique R24, G2-Quer-P2-2): der Satz
+ * nennt die Abfallart, um deren Termin es ging - "Termin gespeichert" sagte
+ * nach Anlegen, Verschieben und Auslassen dasselbe. Ohne Namen bleibt er kurz.
+ * @param {string|null|undefined} name
+ */
+function scheduleSavedSentence(name) {
+  return name ? t('waste.scheduleSavedNamed', { name }) : t('waste.scheduleSavedToast');
+}
+
 function findScheduleOrigin(occurrenceKey, occurrences = state.occurrences) {
   const occ = occurrences.find((o) => o.key === occurrenceKey);
   const origin = occ?.origins.find((o) => o.kind === 'schedule');
@@ -2495,7 +2509,7 @@ async function moveOccurrence(occurrenceKey) {
           closeModal({ force: true, context: modalContext });
           await reloadAfterSave(() => reloadAndRender());
           refocusAfterRender();
-          window.yuvomi?.showToast(t('waste.scheduleSavedToast'), 'success');
+          window.yuvomi?.showToast(scheduleSavedSentence(found.occ.type_name), 'success');
         } catch (err) {
           reportError(err);
         }
@@ -2513,7 +2527,7 @@ async function skipOccurrence(occurrenceKey) {
     await api.put(`/waste/schedules/${found.scheduleId}/overrides/${found.originalDate}`, { replacement_date: null });
     await reloadAfterSave(() => reloadAndRender());
     refocusAfterRender();
-    window.yuvomi?.showToast(t('waste.scheduleSavedToast'), 'success');
+    window.yuvomi?.showToast(scheduleSavedSentence(found.occ.type_name), 'success');
   } catch (err) {
     reportError(err);
   }
@@ -2525,7 +2539,7 @@ async function restoreOccurrence(occurrenceKey) {
   try {
     await deleteOrAlreadyGone(`/waste/schedules/${found.scheduleId}/overrides/${found.originalDate}`, 'waste_override_not_found');
     await reloadAndRender();
-    window.yuvomi?.showToast(t('waste.scheduleSavedToast'), 'success');
+    window.yuvomi?.showToast(scheduleSavedSentence(found.occ.type_name), 'success');
   } catch (err) {
     reportError(err);
   }

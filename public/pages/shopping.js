@@ -2112,6 +2112,9 @@ function wireQuickAdd(container) {
     if (!name) { nameInput.focus(); return; }
 
     submitting = true;
+    // Die Quittung des Zurueckholens kommt nach der Anfrage - nie im
+    // naechsten Modul (Modul-Marke, R24).
+    const scope = window.yuvomi?.feedbackScope?.() ?? null;
     try {
       // Steht der Name abgehakt auf dieser Liste, kommt DIESE Zeile zurueck
       // (#1816) - gewaehlt aus dem Vorschlag oder von Hand getippt, verglichen
@@ -2124,7 +2127,7 @@ function wireQuickAdd(container) {
         if (!back) return;
         // Die Zeile taucht irgendwo in der Liste auf, nicht unter dem Feld:
         // ein Satz sagt, was aus der Eingabe geworden ist.
-        window.yuvomi.showToast(t('shopping.itemBackToast', { name: revive.name }), 'info');
+        window.yuvomi.showToast(t('shopping.itemBackToast', { name: revive.name }), 'info', 3000, null, { scope });
       } else {
         const data = await api.post(`/shopping/${state.activeListId}/items`, { name, quantity, category });
         acknowledgeOwnChange(data);

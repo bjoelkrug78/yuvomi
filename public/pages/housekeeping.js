@@ -14,7 +14,7 @@ import { metricGlanceHtml, wireMetricGlance } from '/utils/metric-glance.js';
 import { initials } from '/utils/initials.js';
 import { renderSkeletonList } from '/utils/skeleton.js';
 import { emptyStateHTML, mountLoadError } from '/utils/empty-state.js';
-import { openModal, closeModal, captureModalContext, confirmModal, confirmOverModal, refocusAfterRender, reportFieldErrors, constraintErrors } from '/components/modal.js';
+import { openModal, closeModal, captureModalContext, confirmOverModal, refocusAfterRender, reportFieldErrors, constraintErrors } from '/components/modal.js';
 import { createPageFab, setPageFabAction } from '/utils/fab.js';
 import { wireTablist } from '/utils/tablist.js';
 import { attachSegmentIndicator } from '/utils/segment-indicator.js';
@@ -551,25 +551,33 @@ async function toggleSession(container, workerId) {
     return;
   }
   if (!worker) return;
+  // DIE QUITTUNG KOMMT MIT DEM TIPP (Critique R24, G0-Shell-P1-2): Ein- und
+  // Auschecken stehen fest, sobald getippt ist. Vorher kam der Satz nach dem
+  // Roundtrip (gemessen 300-700 ms) und nach einem Modulwechsel im naechsten
+  // Modul. Scheitert die Anfrage, ersetzt der Fehler-Toast die Quittung.
   try {
     if (current) {
-      const out = await api.post('/housekeeping/work-sessions/check-out', { worker_id: worker.id });
+      const pending = api.post('/housekeeping/work-sessions/check-out', { worker_id: worker.id });
       // "<Person> ausgecheckt." mit Rueckweg (Critique R23, D6): ein Fehlgriff
       // auf "Auschecken" war endgueltig, und der Primaerknopf danach hiess
       // "Einchecken" - der naechste Tipp legte einen zweiten Einsatz an.
-      // Rueckgaengig oeffnet dieselbe Sitzung am Server wieder.
-      const sessionId = out?.data?.id ?? current.id;
+      // Rueckgaengig oeffnet dieselbe Sitzung am Server wieder; es wartet
+      // auf das Auschecken (`pending`), dessen Antwort die Sitzung nennt.
       offerUndo({
         message: t('housekeeping.checkedOutNamed', { name: worker.display_name }),
+        pending,
         undo: async () => {
+          const out = await pending;
+          const sessionId = out?.data?.id ?? current.id;
           await api.post(`/housekeeping/work-sessions/${sessionId}/reopen`, {});
           await reloadAfterSave(() => loadData());
           renderCurrentTab(container);
         },
         onError: (err) => { reportWriteError(err); },
       });
+      await pending;
     } else {
-      await api.post('/housekeeping/work-sessions/check-in', {
+      const pending = api.post('/housekeeping/work-sessions/check-in', {
         worker_id: worker.id,
         daily_rate: worker.rate_type === 'hourly' ? 0 : (worker.daily_rate || 0),
         extras: 0,
@@ -579,6 +587,7 @@ async function toggleSession(container, workerId) {
       // Dieselbe Form wie das Auschecken (D6, "<Objekt> <Verb>"), vorher
       // "Check-in gespeichert." - ein drittes Wort fuer dieselbe Handlung.
       window.yuvomi?.showToast(t('housekeeping.checkedInNamed', { name: worker.display_name }), 'success');
+      await pending;
     }
     await reloadAfterSave(() => loadData());
     // Nur den Tab neu zeichnen, nicht die Schale: ein neuer Kopf verloere den
@@ -1090,9 +1099,17 @@ async function completeTask(task, content, button = null) {
   button?.classList.add('housekeeping-task__check--done');
   button?.setAttribute('aria-busy', 'true');
   const settled = acknowledgeCheck(button, { checked: true });
+  // Die Quittung steht mit dem Tipp und nennt die Arbeit (Critique R24,
+  // G0-Shell-P1-2 und G2-Quer-P2-2): vorher "Aufgabe erledigt." nach dem
+  // Roundtrip. "Rueckgaengig" wartet auf das Erledigen (offerUndo `pending`).
+  const pending = api.post(`/housekeeping/decay-tasks/${task.id}/complete`, {});
+  offerUndo({
+    message: t('housekeeping.taskDoneNamed', { name: task.name }),
+    pending,
+    undo: () => undoCompleteTask(task.id, previous, content),
+  });
   try {
-    await api.post(`/housekeeping/decay-tasks/${task.id}/complete`, {});
-    window.yuvomi?.showToast(t('housekeeping.taskDoneToast'), 'success', 5000, () => undoCompleteTask(task.id, previous, content));
+    await pending;
     await settled;
     await reloadAfterSave(() => loadData());
     if (content?.isConnected && state.tab === 'tasks') renderTasks(content);
@@ -1345,7 +1362,8 @@ async function payVisit(visit, onPaid) {
   if (!confirmed) return;
   try {
     await api.post(`/housekeeping/visits/${visit.id}/pay`, {});
-    window.yuvomi?.showToast(t('housekeeping.visitPaidToast'), 'success');
+    // Der Satz nennt den Besuch (R24, G2-Quer-P2-2), nicht nur "Zahlung".
+    window.yuvomi?.showToast(t('housekeeping.visitPaidNamed', { date: dateText(visit.check_in) }), 'success');
     await onPaid();
     refocusAfterRender();
   } catch (err) {
@@ -1366,7 +1384,7 @@ async function unpayVisit(visit, onUnpaid) {
   if (!confirmed) return;
   try {
     await api.post(`/housekeeping/visits/${visit.id}/unpay`, {});
-    window.yuvomi?.showToast(t('housekeeping.visitUnpaidToast'), 'success');
+    window.yuvomi?.showToast(t('housekeeping.visitUnpaidNamed', { date: dateText(visit.check_in) }), 'success');
     await onUnpaid();
     refocusAfterRender();
   } catch (err) {
@@ -1466,21 +1484,39 @@ function wireVisitRows(content, visits, refresh, { onEdit } = {}) {
     });
   });
   content.querySelectorAll('[data-delete-visit]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', () => {
       const visit = find(btn.dataset.deleteVisit);
-      if (!visit) return;
-      if (!await confirmModal(t('housekeeping.deleteVisitConfirm'),
-        { danger: true, confirmLabel: t('common.delete'), detail: t('housekeeping.deleteVisitConfirmDetail') })) return;
-      try {
-        // Schon geloescht (eine andere Person war schneller) ist erledigt.
-        await deleteUnlessGone(`/housekeeping/visits/${visit.id}`, 'housekeeping_visit_not_found');
-        window.yuvomi?.showToast(t('housekeeping.visitDeletedToast'), 'success');
-        await refresh();
-        refocusAfterRender();
-      } catch (err) {
-        await reportWriteError(err);
-      }
+      if (visit) deleteVisitWithUndo(content, visit, refresh);
     });
+  });
+}
+
+/**
+ * BESUCH LOESCHEN MIT RUECKWEG (Critique R24, G2-Quer-P2-2; DESIGN.md "Es gibt
+ * zwei Rueckwege"). Bis hierher fragte ein Dialog vorher und der Toast sagte
+ * danach "Besuch geloescht." ohne Rueckgaengig. Ein Besuch ist kein BEHAELTER:
+ * Kalendereintrag und Zahlungsaufgabe sind seine Ableitungen, kein Inhalt, den
+ * jemand angelegt hat - also der Normalfall. Die Zeile geht sofort, der Toast
+ * nennt den Tag, und am Server geschieht bis zum Ende der Frist nichts
+ * (`scheduleUndoableDelete`); erst dann gehen Termin, Zahlungsaufgabe und die
+ * Kopie beim Kalenderdienst mit.
+ */
+function deleteVisitWithUndo(content, visit, refresh) {
+  if (readOnly()) return;
+  const row = content.querySelector(`[data-open-visit="${CSS.escape(String(visit.id))}"]`)?.closest('.list-row') ?? null;
+  if (row) row.hidden = true;
+  const date = dateText(visit.check_in);
+  scheduleUndoableDelete({
+    message: t('housekeeping.visitDeletedNamed', { date }),
+    commit: async () => {
+      // Schon geloescht (eine andere Person war schneller) ist erledigt.
+      await deleteUnlessGone(`/housekeeping/visits/${visit.id}`, 'housekeeping_visit_not_found');
+      if (content.isConnected) await refresh();
+    },
+    restore: (err) => {
+      if (row?.isConnected) row.hidden = false;
+      if (err) reportWriteError(err);
+    },
   });
 }
 

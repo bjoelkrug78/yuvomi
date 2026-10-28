@@ -110,7 +110,9 @@
         "errorNotOwner": "Das hat jemand anderes angelegt - du kannst es ansehen, aber nicht ändern.",
         "foreignReadOnlyHint": "Von {{name}} angelegt - du kannst es ansehen, aber nicht ändern.",
         "deletedNamed": "„{{name}}“ gelöscht.",
-        "sortMode": "Reihenfolge ändern"
+        "sortMode": "Reihenfolge ändern",
+        "createdNamed": "„{{name}}“ angelegt.",
+        "savedNamed": "„{{name}}“ gespeichert."
     },
     "kitchen": {
         "noShoppingLists": "Es gibt noch keine Einkaufsliste.",
@@ -4134,7 +4136,6 @@
         "noTasks": "Noch keine Aufgaben für die Haushaltshilfe.",
         "everyDays": "Alle {{days}} Tage",
         "completeTask": "{{name}} erledigen",
-        "taskDoneToast": "Aufgabe erledigt.",
         "editTask": "Aufgabe bearbeiten",
         "deleteTask": "Aufgabe löschen",
         "undoTask": "Erledigt rückgängig",
@@ -4216,9 +4217,6 @@
         "filterMonth": "Monat",
         "editVisit": "Besuch bearbeiten",
         "deleteVisit": "Besuch löschen",
-        "deleteVisitConfirm": "Diesen Besuch löschen? Der verknüpfte Kalendereintrag und die Zahlungsaufgabe werden ebenfalls entfernt.",
-        "deleteVisitConfirmDetail": "Die Monatsabrechnung rechnet ab sofort ohne diesen Besuch, und ein hochgeladener Beleg bleibt zwar in den Dokumenten, ist aber nicht mehr diesem Besuch zugeordnet. Der Termin wird beim verbundenen Kalenderdienst mitgelöscht, sofern der Abgleich dorthin nicht auf Nur-Lesen steht.",
-        "visitDeletedToast": "Besuch gelöscht.",
         "visitSavedToast": "Besuch aktualisiert.",
         "visitDate": "Besuchsdatum",
         "markPaid": "Als bezahlt markieren",
@@ -4228,8 +4226,6 @@
         "markUnpaid": "Zahlung zurücknehmen",
         "markUnpaidConfirm": "Zahlung zurücknehmen?",
         "markUnpaidConfirmDetail": "Der Besuch gilt wieder als ausstehend. Eine zugehörige Zahlungsaufgabe wird wieder geöffnet.",
-        "visitPaidToast": "Zahlung als bezahlt markiert.",
-        "visitUnpaidToast": "Zahlung zurückgenommen.",
         "receiptUploadTitle": "Zahlungsbeleg hochladen",
         "receiptUploadHint": "Füge einen Zahlungsbeleg hinzu. Er erscheint anschließend in Dokumente.",
         "receiptLabel": "Zahlungsbeleg",
@@ -4298,7 +4294,11 @@
         "checkedOutNamed": "{{name}} ausgecheckt.",
         "visitToday": "Heute da: {{from}} - {{to}}",
         "checkInAgain": "Erneut einchecken",
-        "checkedInNamed": "{{name}} eingecheckt."
+        "checkedInNamed": "{{name}} eingecheckt.",
+        "taskDoneNamed": "„{{name}}“ erledigt.",
+        "visitDeletedNamed": "Besuch vom {{date}} gelöscht.",
+        "visitPaidNamed": "Besuch vom {{date}} bezahlt.",
+        "visitUnpaidNamed": "Zahlung für den Besuch vom {{date}} zurückgenommen."
     },
     "splitExpenses": {
         "title": "Gemeinsame Ausgaben",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Sperrmüll",
         "newType": "Neue Abfallart",
         "editType": "Abfallart bearbeiten",
-        "typeSavedToast": "Abfallart gespeichert",
-        "typeDeletedToast": "Abfallart gelöscht",
         "typeArchivedToast": "Abfallart archiviert",
         "typeRestoredToast": "Abfallart wiederhergestellt",
         "typeDeleteConfirm": "Diese Abfallart löschen?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Abfuhrtermine",
         "icsPickupSummary": "Abholung: {{name}}",
         "intervalDecrease": "Abstand verringern",
-        "intervalIncrease": "Abstand erhöhen"
+        "intervalIncrease": "Abstand erhöhen",
+        "scheduleSavedNamed": "Termin für „{{name}}“ gespeichert.",
+        "pickupSavedNamed": "Abholung für „{{name}}“ gespeichert."
     },
     "rewards": {
         "title": "Belohnungen",

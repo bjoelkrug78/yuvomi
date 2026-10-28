@@ -110,7 +110,9 @@
         "errorNotOwner": "Iemand anders heeft dit gemaakt - je kunt het bekijken, maar niet wijzigen.",
         "foreignReadOnlyHint": "Gemaakt door {{name}} - je kunt het bekijken, maar niet wijzigen.",
         "deletedNamed": "‘{{name}}’ verwijderd.",
-        "sortMode": "Volgorde wijzigen"
+        "sortMode": "Volgorde wijzigen",
+        "createdNamed": "‘{{name}}’ aangemaakt.",
+        "savedNamed": "‘{{name}}’ opgeslagen."
     },
     "kitchen": {
         "noShoppingLists": "Er is nog geen boodschappenlijst.",
@@ -4130,7 +4132,6 @@
         "noTasks": "Nog geen huishoudtaken.",
         "everyDays": "Elke {{days}} dagen",
         "completeTask": "{{name}} voltooien",
-        "taskDoneToast": "Taak voltooid.",
         "editTask": "Taak bewerken",
         "deleteTask": "Taak verwijderen",
         "undoTask": "Voltooiing ongedaan maken",
@@ -4212,9 +4213,6 @@
         "filterMonth": "Maand",
         "editVisit": "Bezoek bewerken",
         "deleteVisit": "Bezoek verwijderen",
-        "deleteVisitConfirm": "Dit bezoek verwijderen? De gekoppelde agendagebeurtenis en betalingstaak worden ook verwijderd.",
-        "deleteVisitConfirmDetail": "De maandafrekening rekent voortaan zonder deze inzet, en een geüpload bonnetje blijft in Documenten maar hoort niet meer bij deze inzet. De afspraak wordt ook in de gekoppelde agendadienst verwijderd, tenzij de synchronisatie daarheen op alleen-lezen staat.",
-        "visitDeletedToast": "Bezoek verwijderd.",
         "visitSavedToast": "Bezoek bijgewerkt.",
         "visitDate": "Bezoekdatum",
         "markPaid": "Als betaald markeren",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "Betaling terugdraaien",
         "markUnpaidConfirm": "Deze betaling terugdraaien?",
         "markUnpaidConfirmDetail": "Het bezoek staat weer als openstaand. Een gekoppelde betalingstaak wordt heropend.",
-        "visitPaidToast": "Betaling als betaald gemarkeerd.",
-        "visitUnpaidToast": "Betaling teruggedraaid.",
         "receiptUploadTitle": "Betalingsbewijs uploaden",
         "receiptUploadHint": "Voeg een betalingsbewijs toe. Het verschijnt in Documenten.",
         "receiptLabel": "Betalingsbewijs",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}} uitgecheckt.",
         "visitToday": "Vandaag hier: {{from}} - {{to}}",
         "checkInAgain": "Opnieuw inchecken",
-        "checkedInNamed": "{{name}} ingecheckt."
+        "checkedInNamed": "{{name}} ingecheckt.",
+        "taskDoneNamed": "‘{{name}}’ gedaan.",
+        "visitDeletedNamed": "Bezoek van {{date}} verwijderd.",
+        "visitPaidNamed": "Bezoek van {{date}} betaald.",
+        "visitUnpaidNamed": "Betaling voor het bezoek van {{date}} teruggedraaid."
     },
     "userMultiSelect": {
         "moreUsers": "meer",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Grofvuil",
         "newType": "Nieuwe soort",
         "editType": "Soort bewerken",
-        "typeSavedToast": "Soort opgeslagen",
-        "typeDeletedToast": "Soort verwijderd",
         "typeArchivedToast": "Soort gearchiveerd",
         "typeRestoredToast": "Soort hersteld",
         "typeDeleteConfirm": "Deze afvalsoort verwijderen?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Afvalophaling",
         "icsPickupSummary": "Ophaling: {{name}}",
         "intervalDecrease": "Interval verkleinen",
-        "intervalIncrease": "Interval vergroten"
+        "intervalIncrease": "Interval vergroten",
+        "scheduleSavedNamed": "Schema voor ‘{{name}}’ opgeslagen.",
+        "pickupSavedNamed": "Ophaling voor ‘{{name}}’ opgeslagen."
     },
     "rewards": {
         "title": "Beloningen",

@@ -110,7 +110,9 @@
         "errorNotOwner": "Ini dibuat orang lain - kamu bisa melihatnya, tetapi tidak bisa mengubahnya.",
         "foreignReadOnlyHint": "Dibuat oleh {{name}} - kamu bisa melihatnya, tetapi tidak bisa mengubahnya.",
         "deletedNamed": "\"{{name}}\" dihapus.",
-        "sortMode": "Ubah urutan"
+        "sortMode": "Ubah urutan",
+        "createdNamed": "\"{{name}}\" dibuat.",
+        "savedNamed": "\"{{name}}\" disimpan."
     },
     "kitchen": {
         "noShoppingLists": "Belum ada daftar belanja.",
@@ -4134,7 +4136,6 @@
         "noTasks": "Belum ada tugas asisten rumah tangga.",
         "everyDays": "Setiap {{days}} hari",
         "completeTask": "Selesaikan {{name}}",
-        "taskDoneToast": "Tugas selesai.",
         "editTask": "Ubah tugas",
         "deleteTask": "Hapus tugas",
         "undoTask": "Batalkan penyelesaian",
@@ -4216,9 +4217,6 @@
         "filterMonth": "Bulan",
         "editVisit": "Ubah kunjungan",
         "deleteVisit": "Hapus kunjungan",
-        "deleteVisitConfirm": "Hapus kunjungan ini? Entri kalender terkait dan tugas pembayaran juga akan dihapus.",
-        "deleteVisitConfirmDetail": "Perhitungan bulanan kini tanpa kunjungan ini, dan struk yang diunggah tetap ada di Dokumen tetapi tidak lagi terkait dengan kunjungan ini. Janji temunya juga dihapus di layanan kalender yang terhubung, kecuali sinkronisasi ke sana disetel hanya-baca.",
-        "visitDeletedToast": "Kunjungan dihapus.",
         "visitSavedToast": "Kunjungan diperbarui.",
         "visitDate": "Tanggal kunjungan",
         "markPaid": "Tandai terbayar",
@@ -4228,8 +4226,6 @@
         "markUnpaid": "Batalkan pembayaran",
         "markUnpaidConfirm": "Batalkan pembayaran ini?",
         "markUnpaidConfirmDetail": "Kunjungan kembali berstatus tertunda. Tugas pembayaran terkait dibuka kembali.",
-        "visitPaidToast": "Pembayaran ditandai terbayar.",
-        "visitUnpaidToast": "Pembayaran dibatalkan.",
         "receiptUploadTitle": "Unggah bukti pembayaran",
         "receiptUploadHint": "Tambahkan bukti pembayaran. Bukti akan muncul di Dokumen.",
         "receiptLabel": "Bukti pembayaran",
@@ -4298,7 +4294,11 @@
         "checkedOutNamed": "{{name}} sudah check-out.",
         "visitToday": "Hadir hari ini: {{from}} - {{to}}",
         "checkInAgain": "Check-in lagi",
-        "checkedInNamed": "{{name}} sudah check-in."
+        "checkedInNamed": "{{name}} sudah check-in.",
+        "taskDoneNamed": "\"{{name}}\" selesai.",
+        "visitDeletedNamed": "Kunjungan {{date}} dihapus.",
+        "visitPaidNamed": "Kunjungan {{date}} dibayar.",
+        "visitUnpaidNamed": "Pembayaran kunjungan {{date}} dibatalkan."
     },
     "splitExpenses": {
         "title": "Pengeluaran Bersama",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Sampah besar",
         "newType": "Jenis baru",
         "editType": "Edit jenis",
-        "typeSavedToast": "Jenis disimpan",
-        "typeDeletedToast": "Jenis dihapus",
         "typeArchivedToast": "Jenis diarsipkan",
         "typeRestoredToast": "Jenis dipulihkan",
         "typeDeleteConfirm": "Hapus jenis sampah ini?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Pengangkutan sampah",
         "icsPickupSummary": "Pengangkutan: {{name}}",
         "intervalDecrease": "Kurangi interval",
-        "intervalIncrease": "Tambah interval"
+        "intervalIncrease": "Tambah interval",
+        "scheduleSavedNamed": "Jadwal \"{{name}}\" disimpan.",
+        "pickupSavedNamed": "Pengambilan \"{{name}}\" disimpan."
     },
     "rewards": {
         "title": "Hadiah",

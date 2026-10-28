@@ -112,7 +112,9 @@
         "errorNotOwner": "Это создал кто-то другой - вы можете смотреть, но не изменять.",
         "foreignReadOnlyHint": "Создал(а) {{name}} - вы можете смотреть, но не изменять.",
         "deletedNamed": "«{{name}}» удалено.",
-        "sortMode": "Изменить порядок"
+        "sortMode": "Изменить порядок",
+        "createdNamed": "«{{name}}» создано.",
+        "savedNamed": "«{{name}}» сохранено."
     },
     "kitchen": {
         "noShoppingLists": "Списка покупок ещё нет.",
@@ -4372,7 +4374,6 @@
         "noTasks": "Задач по уборке пока нет.",
         "everyDays": "Каждые {{days}} дн.",
         "completeTask": "Выполнить: {{name}}",
-        "taskDoneToast": "Задача выполнена.",
         "editTask": "Редактировать задачу",
         "deleteTask": "Удалить задачу",
         "undoTask": "Отменить выполнение",
@@ -4454,9 +4455,6 @@
         "filterMonth": "Месяц",
         "editVisit": "Изменить визит",
         "deleteVisit": "Удалить визит",
-        "deleteVisitConfirm": "Удалить этот визит? Связанное событие календаря и задача на оплату тоже будут удалены.",
-        "deleteVisitConfirmDetail": "Месячный расчёт теперь идёт без этого визита, а загруженный чек остаётся в Документах, но больше не привязан к визиту. Встреча удаляется и в подключённом календарном сервисе, если синхронизация туда не в режиме только для чтения.",
-        "visitDeletedToast": "Визит удалён.",
         "visitSavedToast": "Визит обновлён.",
         "visitDate": "Дата визита",
         "markPaid": "Отметить как оплаченное",
@@ -4466,8 +4464,6 @@
         "markUnpaid": "Отменить оплату",
         "markUnpaidConfirm": "Отменить эту оплату?",
         "markUnpaidConfirmDetail": "Визит снова будет ожидать оплаты. Связанная задача на оплату откроется снова.",
-        "visitPaidToast": "Платёж отмечен как оплаченный.",
-        "visitUnpaidToast": "Оплата отменена.",
         "receiptUploadTitle": "Загрузить чек об оплате",
         "receiptUploadHint": "Прикрепите чек об оплате. Он появится в разделе «Документы».",
         "receiptLabel": "Чек об оплате",
@@ -4536,7 +4532,11 @@
         "checkedOutNamed": "{{name}}: уход отмечен.",
         "visitToday": "Сегодня: {{from}} - {{to}}",
         "checkInAgain": "Отметить приход снова",
-        "checkedInNamed": "{{name}}: приход отмечен."
+        "checkedInNamed": "{{name}}: приход отмечен.",
+        "taskDoneNamed": "«{{name}}» выполнено.",
+        "visitDeletedNamed": "Визит {{date}} удалён.",
+        "visitPaidNamed": "Визит {{date}} оплачен.",
+        "visitUnpaidNamed": "Оплата визита {{date}} отменена."
     },
     "userMultiSelect": {
         "moreUsers": "ещё",
@@ -6127,8 +6127,6 @@
         "presetBulky": "Крупногабаритные отходы",
         "newType": "Новый вид",
         "editType": "Изменить вид",
-        "typeSavedToast": "Вид сохранён",
-        "typeDeletedToast": "Вид удалён",
         "typeArchivedToast": "Вид archived",
         "typeRestoredToast": "Вид восстановлен",
         "typeDeleteConfirm": "Удалить этот вид отходов?",
@@ -6326,7 +6324,9 @@
         "icsCalendarName": "Вывоз мусора",
         "icsPickupSummary": "Вывоз: {{name}}",
         "intervalDecrease": "Уменьшить интервал",
-        "intervalIncrease": "Увеличить интервал"
+        "intervalIncrease": "Увеличить интервал",
+        "scheduleSavedNamed": "График «{{name}}» сохранён.",
+        "pickupSavedNamed": "Вывоз «{{name}}» сохранён."
     },
     "rewards": {
         "title": "Награды",

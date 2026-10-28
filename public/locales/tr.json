@@ -110,7 +110,9 @@
         "errorNotOwner": "Bunu başka biri oluşturdu - görebilirsin ama değiştiremezsin.",
         "foreignReadOnlyHint": "{{name}} oluşturdu - görebilirsin ama değiştiremezsin.",
         "deletedNamed": "\"{{name}}\" silindi.",
-        "sortMode": "Sırayı değiştir"
+        "sortMode": "Sırayı değiştir",
+        "createdNamed": "\"{{name}}\" oluşturuldu.",
+        "savedNamed": "\"{{name}}\" kaydedildi."
     },
     "kitchen": {
         "noShoppingLists": "Henüz alışveriş listesi yok.",
@@ -4130,7 +4132,6 @@
         "noTasks": "Henüz ev işi görevi yok.",
         "everyDays": "Her {{days}} günde bir",
         "completeTask": "{{name}} görevini tamamla",
-        "taskDoneToast": "Görev tamamlandı.",
         "editTask": "Görevi düzenle",
         "deleteTask": "Görevi sil",
         "undoTask": "Tamamlamayı geri al",
@@ -4212,9 +4213,6 @@
         "filterMonth": "Ay",
         "editVisit": "Ziyareti düzenle",
         "deleteVisit": "Ziyareti sil",
-        "deleteVisitConfirm": "Bu ziyaret silinsin mi? Bağlı takvim kaydı ve ödeme görevi de kaldırılır.",
-        "deleteVisitConfirmDetail": "Aylık hesap bundan böyle bu ziyaret olmadan hesaplanır ve yüklenen fiş Belgeler’de kalır ama artık bu ziyarete bağlı değildir. Randevu bağlı takvim hizmetinde de silinir, oraya yapılan eşitleme salt okunur değilse.",
-        "visitDeletedToast": "Ziyaret silindi.",
         "visitSavedToast": "Ziyaret güncellendi.",
         "visitDate": "Ziyaret tarihi",
         "markPaid": "Ödendi olarak işaretle",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "Ödemeyi geri al",
         "markUnpaidConfirm": "Bu ödeme geri alınsın mı?",
         "markUnpaidConfirmDetail": "Ziyaret yeniden bekliyor olarak görünür. Bağlı ödeme görevi yeniden açılır.",
-        "visitPaidToast": "Ödeme, ödendi olarak işaretlendi.",
-        "visitUnpaidToast": "Ödeme geri alındı.",
         "receiptUploadTitle": "Ödeme makbuzu yükle",
         "receiptUploadHint": "Bir ödeme makbuzu ekleyin. Ardından Belgeler bölümünde görünür.",
         "receiptLabel": "Ödeme makbuzu",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}} çıkış yaptı.",
         "visitToday": "Bugün burada: {{from}} - {{to}}",
         "checkInAgain": "Yeniden giriş yap",
-        "checkedInNamed": "{{name}} giriş yaptı."
+        "checkedInNamed": "{{name}} giriş yaptı.",
+        "taskDoneNamed": "\"{{name}}\" tamamlandı.",
+        "visitDeletedNamed": "{{date}} ziyareti silindi.",
+        "visitPaidNamed": "{{date}} ziyareti ödendi.",
+        "visitUnpaidNamed": "{{date}} ziyaretinin ödemesi geri alındı."
     },
     "userMultiSelect": {
         "moreUsers": "daha",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Hacimli atık",
         "newType": "Yeni tür",
         "editType": "Türü düzenle",
-        "typeSavedToast": "Tür kaydedildi",
-        "typeDeletedToast": "Tür silindi",
         "typeArchivedToast": "Tür arşivlendi",
         "typeRestoredToast": "Tür geri yüklendi",
         "typeDeleteConfirm": "Bu atık türü silinsin mi?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Atık toplama",
         "icsPickupSummary": "Toplama: {{name}}",
         "intervalDecrease": "Aralığı azalt",
-        "intervalIncrease": "Aralığı artır"
+        "intervalIncrease": "Aralığı artır",
+        "scheduleSavedNamed": "\"{{name}}\" programı kaydedildi.",
+        "pickupSavedNamed": "\"{{name}}\" alımı kaydedildi."
     },
     "rewards": {
         "title": "Ödüller",

@@ -8462,10 +8462,12 @@ function cycleTodayActionsMarkup(pregnant = false) {
 async function cycleStartPeriodToday() {
   if (readOnly()) return;  // #1265, dritte Linie: auch ein Aufruf ohne Knopf endet hier
   const today = todayKey();
+  // Die Quittung kommt nach der Anfrage - nie im naechsten Modul (R24).
+  const scope = window.yuvomi?.feedbackScope?.() ?? null;
   try {
     await api.post('/health/cycle/periods', { start_date: today });
     cycle.anchor = today;
-    window.yuvomi?.showToast(t('health.cycle.today.startedToast'), 'success');
+    window.yuvomi?.showToast(t('health.cycle.today.startedToast'), 'success', 3000, null, { scope });
     await reloadAfterSave(() => reloadCycle());
   } catch (err) {
     console.error('[Health] cycle start error:', err);
@@ -8477,9 +8479,10 @@ async function cycleEndPeriodToday() {
   if (readOnly()) return;  // #1265, dritte Linie: auch ein Aufruf ohne Knopf endet hier
   const open = cycleOpenPeriod();
   if (!open) { window.yuvomi?.showToast(t('health.cycle.today.noOpenPeriod'), 'info'); return; }
+  const scope = window.yuvomi?.feedbackScope?.() ?? null;
   try {
     await api.patch(`/health/cycle/periods/${open.id}`, { end_date: todayKey() });
-    window.yuvomi?.showToast(t('health.cycle.today.endedToast'), 'success');
+    window.yuvomi?.showToast(t('health.cycle.today.endedToast'), 'success', 3000, null, { scope });
     await reloadAfterSave(() => reloadCycle());
   } catch (err) {
     console.error('[Health] cycle end error:', err);

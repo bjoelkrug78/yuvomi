@@ -112,7 +112,9 @@
         "errorNotOwner": "Це створив хтось інший - ви можете переглядати, але не змінювати.",
         "foreignReadOnlyHint": "Створив(ла) {{name}} - ви можете переглядати, але не змінювати.",
         "deletedNamed": "«{{name}}» видалено.",
-        "sortMode": "Змінити порядок"
+        "sortMode": "Змінити порядок",
+        "createdNamed": "«{{name}}» створено.",
+        "savedNamed": "«{{name}}» збережено."
     },
     "kitchen": {
         "noShoppingLists": "Списку покупок ще немає.",
@@ -4372,7 +4374,6 @@
         "noTasks": "Поки немає домашніх завдань.",
         "everyDays": "Кожні {{days}} днів",
         "completeTask": "Завершити {{name}}",
-        "taskDoneToast": "Завдання виконано.",
         "editTask": "Редагувати завдання",
         "deleteTask": "Видалити завдання",
         "undoTask": "Скасувати виконання",
@@ -4454,9 +4455,6 @@
         "filterMonth": "місяць",
         "editVisit": "Редагувати візит",
         "deleteVisit": "Видалити візит",
-        "deleteVisitConfirm": "Видалити цей візит? Пов’язану подію календаря та платіжне завдання також буде видалено.",
-        "deleteVisitConfirmDetail": "Місячний розрахунок відтепер іде без цього візиту, а завантажений чек залишається в Документах, але більше не прив’язаний до візиту. Зустріч видаляється і в під’єднаному календарному сервісі, якщо синхронізація туди не в режимі лише для читання.",
-        "visitDeletedToast": "Відвідування видалено.",
         "visitSavedToast": "Відвідування оновлено.",
         "visitDate": "Дата візиту",
         "markPaid": "Позначка оплачена",
@@ -4466,8 +4464,6 @@
         "markUnpaid": "Скасувати оплату",
         "markUnpaidConfirm": "Скасувати цю оплату?",
         "markUnpaidConfirmDetail": "Візит знову очікуватиме оплати. Пов'язане платіжне завдання буде знову відкрито.",
-        "visitPaidToast": "Платіж позначено як оплачений.",
-        "visitUnpaidToast": "Оплату скасовано.",
         "receiptUploadTitle": "Завантажте квитанцію про оплату",
         "receiptUploadHint": "Додайте квитанцію про оплату. Він з’явиться в Документах.",
         "receiptLabel": "Квитанція про оплату",
@@ -4536,7 +4532,11 @@
         "checkedOutNamed": "{{name}}: виїзд зареєстровано.",
         "visitToday": "Сьогодні: {{from}} - {{to}}",
         "checkInAgain": "Зареєструвати заїзд знову",
-        "checkedInNamed": "{{name}}: прибуття зареєстровано."
+        "checkedInNamed": "{{name}}: прибуття зареєстровано.",
+        "taskDoneNamed": "«{{name}}» виконано.",
+        "visitDeletedNamed": "Відвідування {{date}} видалено.",
+        "visitPaidNamed": "Відвідування {{date}} оплачено.",
+        "visitUnpaidNamed": "Оплату відвідування {{date}} скасовано."
     },
     "userMultiSelect": {
         "moreUsers": "інші",
@@ -6127,8 +6127,6 @@
         "presetBulky": "Великогабаритні відходи",
         "newType": "Новий вид",
         "editType": "Редагувати вид",
-        "typeSavedToast": "Вид збережено",
-        "typeDeletedToast": "Вид видалено",
         "typeArchivedToast": "Вид заархівовано",
         "typeRestoredToast": "Вид відновлено",
         "typeDeleteConfirm": "Видалити цей вид сміття?",
@@ -6326,7 +6324,9 @@
         "icsCalendarName": "Вивіз сміття",
         "icsPickupSummary": "Вивіз: {{name}}",
         "intervalDecrease": "Зменшити інтервал",
-        "intervalIncrease": "Збільшити інтервал"
+        "intervalIncrease": "Збільшити інтервал",
+        "scheduleSavedNamed": "Графік «{{name}}» збережено.",
+        "pickupSavedNamed": "Вивезення «{{name}}» збережено."
     },
     "rewards": {
         "title": "Нагороди",

@@ -1896,26 +1896,42 @@ async function toggleTaskStatus(id, currentStatus, doneByUserId = null) {
  * jede Locale-Datei fuer eine Namensschuld, die kein Nutzer sieht - vermerkt
  * statt bezahlt.
  *
+ * DIE QUITTUNG KOMMT MIT DEM TIPP (Critique R24, G0-Shell-P1-2). Sie stand
+ * hinter `await toggleTaskStatus` UND `await reloadWithRowMotion` - 700 bis
+ * 1500 ms nach dem Haken, und wer in der Zeit das Modul wechselte, las sie im
+ * Kalender. Das Ergebnis eines Hakens steht fest (DESIGN.md "Eine Geste, deren
+ * Ergebnis feststeht, wartet nicht auf den Server"): Haken und Wisch reichen
+ * die LAUFENDE Anfrage herein, die Quittung steht sofort, "Rueckgaengig"
+ * wartet auf die Anfrage (offerUndo `pending`). Die naechste Faelligkeit einer
+ * Serie kennt erst die Antwort - sie traegt den Satz nach, statt einen zweiten
+ * Toast zu zeigen. Eine schon fertige Antwort (Tests, Personenwahl) gilt
+ * sofort.
+ *
  * @param {HTMLElement|null} container
  * @param {number|string} taskId
  * @param {string} nextStatus der Status NACH dem Wechsel
- * @param {object} response die Antwort von `toggleTaskStatus`
+ * @param {object|Promise<object>} answer die Antwort von `toggleTaskStatus` oder die laufende Anfrage
  */
-function acknowledgeStatusToggle(container, taskId, nextStatus, response, before = null) {
+function acknowledgeStatusToggle(container, taskId, nextStatus, answer, before = null) {
+  const pending = typeof answer?.then === 'function' ? answer : null;
+  const response = pending ? null : answer;
   // DIE QUITTUNG NENNT DIE AUFGABE AUCH NACH DEM AUSTRITT (Critique R23, N1).
   // `before` ist der Stand von VOR dem Haken: nach `reloadWithRowMotion` steht
   // eine erledigte Aufgabe, die der Filter ausblendet, nicht mehr in
   // `state.tasks`, und der Satz fiel auf das titellose "Als erledigt markiert."
   // zurueck - R22-D17 griff genau dort nicht, wo die Zeile geht.
   const snap = before ?? taskSnapshot(taskId);
+  const seriesText = seriesDoneText(response);
   // ELTERNAUFGABE MIT OFFENEN TEILAUFGABEN (R23, D6): sie schloss still, die
   // offenen Teilaufgaben blieben unsichtbar zurueck. Der Toast sagt es und
-  // bietet "Alle abhaken" an; zurueck geht es ueber den Haken der Zeile.
-  if (nextStatus === 'done' && snap?.openSubtaskIds.length && !seriesDoneText(response)) {
+  // bietet "Alle abhaken" an; zurueck geht es ueber den Haken der Zeile. Eine
+  // Serie sagt stattdessen ihr naechstes Mal (wie bisher die Antwort).
+  if (nextStatus === 'done' && snap?.openSubtaskIds.length && !seriesText && !snap.recurring) {
     const ids = snap.openSubtaskIds;
     offerUndo({
       message: t('tasks.doneSubtasksOpen', { title: snap.title, count: ids.length }),
       label: t('tasks.checkAllSubtasks'),
+      pending,
       undo: async () => {
         for (const id of ids) await api.patch(`/tasks/${id}/status`, { status: 'done' });
         await reloadWithRowMotion(container, taskId);
@@ -1928,8 +1944,9 @@ function acknowledgeStatusToggle(container, taskId, nextStatus, response, before
     });
     return;
   }
-  offerUndo({
-    message: seriesDoneText(response) ?? statusToggleSentence(taskId, nextStatus, snap?.title),
+  const receipt = offerUndo({
+    message: seriesText ?? statusToggleSentence(taskId, nextStatus, snap?.title),
+    pending,
     undo: async () => {
       await toggleTaskStatus(taskId, nextStatus);
       await reloadWithRowMotion(container, taskId);
@@ -1939,12 +1956,18 @@ function acknowledgeStatusToggle(container, taskId, nextStatus, response, before
       await reloadIfTaskGone(err, container);
     },
   });
+  if (pending && nextStatus === 'done') {
+    pending.then((res) => {
+      const text = seriesDoneText(res);
+      if (text) receipt?.update?.(text);
+    }, () => {});
+  }
 }
 
 /**
  * Was die Quittung von einer Aufgabe braucht, gelesen VOR dem Statuswechsel:
  * Titel und die offenen Teilaufgaben, die man sehen darf.
- * @returns {{ title: string, openSubtaskIds: number[] } | null}
+ * @returns {{ title: string, recurring: boolean, openSubtaskIds: number[] } | null}
  */
 function taskSnapshot(taskId) {
   const task = state.tasks.find((x) => String(x.id) === String(taskId));
@@ -1952,6 +1975,7 @@ function taskSnapshot(taskId) {
   const subs = Array.isArray(task.subtasks) ? task.subtasks : [];
   return {
     title: task.title,
+    recurring: Boolean(task.is_recurring),
     openSubtaskIds: subs.filter((sub) => sub && sub.status !== 'done' && sub.id != null).map((sub) => sub.id),
   };
 }
@@ -3076,6 +3100,7 @@ async function runColumnMove(task, column, container) {
   applyColumnLocally(task, column);
   renderKanban(container);
   let seriesText = null;
+  const scope = window.yuvomi?.feedbackScope?.() ?? null;
   try {
     const response = await moveTaskToColumn(before, column);
     if (column === 'done') seriesText = seriesDoneText(response);
@@ -3087,7 +3112,7 @@ async function runColumnMove(task, column, container) {
   // „Offen" ist im selben Moment eine gleich aussehende aufgetaucht. Der Satz
   // sagt, dass das die naechste ist und nicht dieselbe (#1603). Ohne Serie
   // bleibt das Brett still - die gewanderte Karte ist dort die Quittung.
-  if (seriesText) window.yuvomi.showToast(seriesText, 'default', 5000);
+  if (seriesText) window.yuvomi.showToast(seriesText, 'default', 5000, null, { scope });
 }
 
 function renderKanbanCard(task) {
@@ -4725,10 +4750,12 @@ function wireSwipeGestures(container) {
         const card = row.querySelector('.task-card');
         if (card) card.style.visibility = 'hidden';
         const before = taskSnapshot(taskId);
+        // Die Quittung steht mit dem Wisch, nicht nach dem Roundtrip (R24).
+        const pending = toggleTaskStatus(taskId, capturedStatus);
+        acknowledgeStatusToggle(container, taskId, nextStatus, pending, before);
         try {
-          const response = await toggleTaskStatus(taskId, capturedStatus);
+          await pending;
           await reloadWithRowMotion(container, taskId);
-          acknowledgeStatusToggle(container, taskId, nextStatus, response, before);
         } catch (err) {
           window.yuvomi.showToast(toggleFailedSentence(err, taskId, nextStatus), 'danger');
           await loadTasks(container);
@@ -5343,11 +5370,12 @@ async function runBulkAction(action, container) {
     return;
   }
 
+  const scope = window.yuvomi?.feedbackScope?.() ?? null;
   try {
     if (action === 'mark-done' || action === 'mark-open') {
       const status = action === 'mark-done' ? 'done' : 'open';
       await Promise.all(taskIds.map(id => api.patch(`/tasks/${id}/status`, { status })));
-      window.yuvomi.showToast(t('tasks.bulkStatusChanged'), 'success');
+      window.yuvomi.showToast(t('tasks.bulkStatusChanged'), 'success', 3000, null, { scope });
     }
 
     state.selectedTaskIds.clear();
@@ -5436,6 +5464,7 @@ const ARCHIVE_BATCH = 500;
  */
 async function archiveTaskIds(taskIds, container) {
   let skipped = 0;
+  const scope = window.yuvomi?.feedbackScope?.() ?? null;
   try {
     for (let i = 0; i < taskIds.length; i += ARCHIVE_BATCH) {
       const res = await api.post('/tasks/archive', { ids: taskIds.slice(i, i + ARCHIVE_BATCH) });
@@ -5445,7 +5474,7 @@ async function archiveTaskIds(taskIds, container) {
       skipped
         ? `${t('tasks.bulkArchived')} ${t('tasks.tagsSkippedLocked', { count: skipped })}`
         : t('tasks.bulkArchived'),
-      'success');
+      'success', 3000, null, { scope });
   } catch (err) {
     window.yuvomi.showToast(errorSentence(err), 'danger');
   }
@@ -5537,6 +5566,9 @@ async function completeTaskFor(container, taskId, userId) {
   // „Erledigt von ." statt zu scheitern.
   const quelle = actingAsDisplay() ? (state.displayPeople ?? []) : (state.users ?? []);
   const person = quelle.find((u) => u.id === userId);
+  // Die Quittung braucht die Antwort (Serie, #1603) - sie kommt nach dem
+  // Roundtrip, aber nie im naechsten Modul (Modul-Marke, R24).
+  const scope = window.yuvomi?.feedbackScope?.() ?? null;
   try {
     const response = await toggleTaskStatus(taskId, 'open', userId);
     await reloadWithRowMotion(container, taskId);
@@ -5557,6 +5589,7 @@ async function completeTaskFor(container, taskId, userId) {
           await reloadIfTaskGone(err, container);
         }
       },
+      { scope },
     );
   } catch (err) {
     window.yuvomi.showToast(errorSentence(err), 'danger');
@@ -5748,12 +5781,14 @@ function wireTaskList(container) {
       // Netz verlaengert sie nicht noch einmal (EXIT_HOLD_MS).
       const holdUntil = performance.now() + EXIT_HOLD_MS;
       const before = taskSnapshot(id);
+      // Derselbe Rückweg wie beim Wischen - und dieselbe Quittung, mit dem
+      // Tipp (R24): sie wartet weder auf den Server noch auf den Austritt.
+      const pending = toggleTaskStatus(id, status);
+      acknowledgeStatusToggle(container, id, nextStatus, pending, before);
       try {
-        const response = await toggleTaskStatus(id, status);
+        await pending;
         await settled;
         await reloadWithRowMotion(container, id, { holdUntil });
-        // Derselbe Rückweg wie beim Wischen - und dieselbe Quittung.
-        acknowledgeStatusToggle(container, id, nextStatus, response, before);
       } catch (err) {
         window.yuvomi.showToast(toggleFailedSentence(err, id, nextStatus), 'danger');
         await loadTasks(container);
@@ -5817,9 +5852,10 @@ function wireTaskList(container) {
 
     if (action === 'archive-task' || action === 'unarchive-task') {
       const archive = action === 'archive-task';
+      const scope = window.yuvomi?.feedbackScope?.() ?? null;
       try {
         await setTaskArchived(id, archive);
-        window.yuvomi.showToast(archive ? t('tasks.archivedToast') : t('tasks.unarchivedToast'), 'success');
+        window.yuvomi.showToast(archive ? t('tasks.archivedToast') : t('tasks.unarchivedToast'), 'success', 3000, null, { scope });
         await loadTasks(container);
       } catch (err) {
         window.yuvomi.showToast(errorSentence(err), 'danger');

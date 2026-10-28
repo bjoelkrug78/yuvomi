@@ -212,12 +212,36 @@ test('Liste: Haken und Wisch reichen die ANTWORT ihres Schreibvorgangs an die Qu
   const src = readFileSync(new URL('../public/pages/tasks.js', import.meta.url), 'utf8');
   // Je Aufrufstelle: im Abschnitt davor steht der Schreibvorgang, dessen
   // Antwort in `response` landet - und genau die geht in die Quittung.
-  const sites = [...src.matchAll(/(?<!function )acknowledgeStatusToggle\(container, \w+, nextStatus, response(?:, before)?\)/g)];
+  // Seit R24 (G0-Shell-P1-2) die LAUFENDE Anfrage: die Quittung steht im Tipp,
+  // die Serie traegt ihren Satz nach, sobald die Antwort da ist (Test unten).
+  const sites = [...src.matchAll(/(?<!function )acknowledgeStatusToggle\(container, \w+, nextStatus, pending, before\)/g)];
   assert.equal(sites.length, 2, 'Haken und Wisch rufen beide die geteilte Quittung');
   for (const site of sites) {
     const before = src.slice(Math.max(0, site.index - 600), site.index);
-    assert.match(before, /const response = await toggleTaskStatus\(\w+, \w+\);/,
-      'die Quittung bekommt die Antwort von toggleTaskStatus');
+    assert.match(before, /const pending = toggleTaskStatus\(\w+, \w+\);/,
+      'die Quittung bekommt die Anfrage von toggleTaskStatus');
+  }
+});
+
+test('Liste, Haken im Tipp: die Quittung steht sofort und traegt das naechste Mal der Serie nach', async () => {
+  tasks.state.tasks = [{ id: 7, title: 'Muell rausbringen', is_recurring: 1 }];
+  const updates = [];
+  globalThis.__offerUndoUpdate = (text) => updates.push(text);
+  try {
+    let resolve;
+    const pending = new Promise((r) => { resolve = r; });
+    tasks.acknowledgeStatusToggle(null, 7, 'done', pending);
+    assert.deepEqual(toasts.map((x) => x.message), [`tasks.checkedDoneNamed${JSON.stringify({ title: 'Muell rausbringen' })}`],
+      'vor der Antwort: der Satz mit dem Titel, sofort');
+    assert.equal(typeof toasts[0].onUndo, 'function', 'Rueckgaengig steht schon da');
+    resolve(answer(THIS_YEAR));
+    await pending;
+    await new Promise((r) => setImmediate(r));
+    assert.deepEqual(updates, [SERIES], 'die Antwort traegt das naechste Mal in DENSELBEN Toast nach');
+    assert.equal(toasts.length, 1, 'kein zweiter Toast');
+  } finally {
+    tasks.state.tasks = [];
+    delete globalThis.__offerUndoUpdate;
   }
 });
 

@@ -18,7 +18,7 @@ import { emptyHintEl, emptyStateEl } from '/utils/empty-state.js';
 import { wireScrollFade, wireCollapsingHeader, watchNavCapsuleHeight, bindNavMinimize } from '/utils/ux.js';
 import { TOAST_SURFACES } from '/utils/toast-surface.js';
 import { inertOutside } from '/utils/background-inert.js';
-import { showToast, endFeedbackToasts } from '/utils/toast-show.js';
+import { showToast, endModuleFeedback, feedbackScope } from '/utils/toast-show.js';
 import { unknownPathDetour, publicPathDetour, detourPaths } from '/utils/unknown-route.js';
 import { createNavigate, prefetchPathOf, focusMainAfterNavigation, unlessAborted, isCurrentAddress } from '/utils/router-navigate.js';
 import { pageMountTarget } from '/utils/page-mount.js';
@@ -1921,8 +1921,10 @@ async function renderPage(route, previousPath = null, scrollTarget = 0, { signal
       // DIE RUECKMELDUNG ENDET MIT IHREM MODUL (Critique R22, D18): der Toast
       // "Aufgabe erledigt - Rueckgaengig" wanderte in den Einkauf mit (a2,
       // Casey). Ihre Handlung gilt (utils/toast-show.js); zwischen den Reitern
-      // der Kueche bleibt sie - die Kueche ist EIN Modul der Navigation.
-      if (moduleSectionOf(previousPath) !== moduleSectionOf(route.path)) endFeedbackToasts();
+      // der Kueche bleibt sie - die Kueche ist EIN Modul der Navigation. Seit
+      // R24 (G0-Shell-P1-2) auch die, die erst NACH dem Wechsel kaeme: der
+      // Wechsel macht jede vorher genommene Modul-Marke alt (feedbackScope).
+      if (moduleSectionOf(previousPath) !== moduleSectionOf(route.path)) endModuleFeedback();
       style.cleanup();
       // Lebenszyklus-Vertrag (#976): der Router besitzt EIN AbortController je
       // Seitenaufbau und bricht ihn hier ab, wo die Route ersetzt wird. Die
@@ -5710,6 +5712,9 @@ window.yuvomi = {
   // Seitenleiste, Mehr-Blatt und Cmd-K.
   openSearch: () => _openSearch?.(),
   showToast,
+  // Die Modul-Marke einer Quittung, die erst nach einer Anfrage kommt (R24,
+  // utils/toast-show.js): VOR dem `await` nehmen, als `{ scope }` reichen.
+  feedbackScope,
   setThemeColor,
   setDisabledModules,
   setHiddenModules,

@@ -2051,7 +2051,8 @@ test('R18: jeder Abhak-Handler quittiert selbst - die Zeilen-Auffrischung nicht'
 
   const tasks = pageSource('tasks');
   assert.match(tasks, /const settled = acknowledgeCheck\(target, \{ checked: nextStatus === 'done' \}\);/, 'Aufgabe: Quittung laeuft neben dem Roundtrip');
-  assert.match(tasks, /await toggleTaskStatus\(id, status\);\s*await settled;/, 'und das Neuzeichnen wartet auf sie');
+  // Seit R24 laeuft die Anfrage neben der Quittung (`pending`), das Neuzeichnen wartet auf beide.
+  assert.match(tasks, /const pending = toggleTaskStatus\(id, status\);[\s\S]{0,200}await pending;\s*await settled;/, 'und das Neuzeichnen wartet auf sie');
   assert.match(tasks, /const settled = acknowledgeCheck\(target, \{ checked: subtaskDone \}\);[\s\S]{0,200}await toggleSubtaskStatus\(id, target\.dataset\.status\);\s*await settled;/, 'Teilaufgabe ebenso');
   assert.match(pageSource('housekeeping'), /const settled = acknowledgeCheck\(button, \{ checked: true \}\);/);
   assert.match(pageSource('notes'), /paintCheck\(noteId, line, checked\);\s*acknowledgeCheck\(box, \{ checked \}\);/, 'Notiz-Checkliste: am angetippten Kasten, nicht an jeder Ansicht');

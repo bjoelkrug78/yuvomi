@@ -111,7 +111,9 @@
         "errorNotOwner": "Tohle vytvořil někdo jiný - můžete to zobrazit, ale ne změnit.",
         "foreignReadOnlyHint": "Vytvořil(a) {{name}} - můžete to zobrazit, ale ne změnit.",
         "deletedNamed": "„{{name}}“ smazáno.",
-        "sortMode": "Změnit pořadí"
+        "sortMode": "Změnit pořadí",
+        "createdNamed": "„{{name}}“ vytvořeno.",
+        "savedNamed": "„{{name}}“ uloženo."
     },
     "kitchen": {
         "noShoppingLists": "Nákupní seznam ještě neexistuje.",
@@ -3759,7 +3761,6 @@
         "noTasks": "Zatím žádné úkoly domácí péče.",
         "everyDays": "Každých {{days}} dní",
         "completeTask": "Splnit {{name}}",
-        "taskDoneToast": "Úkol splněn.",
         "editTask": "Upravit úkol",
         "deleteTask": "Smazat úkol",
         "undoTask": "Zrušit splnění",
@@ -3841,9 +3842,6 @@
         "filterMonth": "Měsíc",
         "editVisit": "Upravit návštěvu",
         "deleteVisit": "Smazat návštěvu",
-        "deleteVisitConfirm": "Smazat tuto návštěvu? Propojená událost v kalendáři a platební úkol budou také odstraněny.",
-        "deleteVisitConfirmDetail": "Měsíční vyúčtování se od teď počítá bez této návštěvy a nahraný doklad zůstane v Dokumentech, ale už nepatří k této návštěvě. Termín se smaže i v připojené kalendářové službě, pokud tam synchronizace není jen pro čtení.",
-        "visitDeletedToast": "Návštěva smazána.",
         "visitSavedToast": "Návštěva aktualizována.",
         "visitDate": "Datum návštěvy",
         "markPaid": "Označit jako zaplaceno",
@@ -3853,8 +3851,6 @@
         "markUnpaid": "Zrušit zaplacení",
         "markUnpaidConfirm": "Zrušit zaplacení?",
         "markUnpaidConfirmDetail": "Návštěva bude opět čekat na zaplacení. Související platební úkol se znovu otevře.",
-        "visitPaidToast": "Platba označena jako zaplacená.",
-        "visitUnpaidToast": "Zaplacení zrušeno.",
         "receiptUploadTitle": "Nahrát doklad o platbě",
         "receiptUploadHint": "Přiložte doklad o platbě. Zobrazí se v dokumentech.",
         "receiptLabel": "Doklad o platbě",
@@ -3923,7 +3919,11 @@
         "checkedOutNamed": "{{name}} - odhlášeno.",
         "visitToday": "Dnes přítomnost: {{from}} - {{to}}",
         "checkInAgain": "Znovu přihlásit",
-        "checkedInNamed": "{{name}} - přihlášeno."
+        "checkedInNamed": "{{name}} - přihlášeno.",
+        "taskDoneNamed": "„{{name}}“ hotovo.",
+        "visitDeletedNamed": "Návštěva z {{date}} smazána.",
+        "visitPaidNamed": "Návštěva z {{date}} zaplacena.",
+        "visitUnpaidNamed": "Zaplacení návštěvy z {{date}} zrušeno."
     },
     "splitExpenses": {
         "title": "Společné výdaje",
@@ -5995,8 +5995,6 @@
         "presetBulky": "Objemný odpad",
         "newType": "Nový druh",
         "editType": "Upravit druh",
-        "typeSavedToast": "Druh uložen",
-        "typeDeletedToast": "Druh smazán",
         "typeArchivedToast": "Druh archivován",
         "typeRestoredToast": "Druh obnoven",
         "typeDeleteConfirm": "Smazat tento druh odpadu?",
@@ -6189,7 +6187,9 @@
         "icsCalendarName": "Svoz odpadu",
         "icsPickupSummary": "Svoz: {{name}}",
         "intervalDecrease": "Zkrátit interval",
-        "intervalIncrease": "Prodloužit interval"
+        "intervalIncrease": "Prodloužit interval",
+        "scheduleSavedNamed": "Rozvrh pro „{{name}}“ uložen.",
+        "pickupSavedNamed": "Svoz „{{name}}“ uložen."
     },
     "rewards": {
         "title": "Odměny",

@@ -110,7 +110,9 @@
         "errorNotOwner": "Någon annan har skapat det här - du kan se det men inte ändra det.",
         "foreignReadOnlyHint": "Skapad av {{name}} - du kan se det men inte ändra det.",
         "deletedNamed": "”{{name}}” raderad.",
-        "sortMode": "Ändra ordning"
+        "sortMode": "Ändra ordning",
+        "createdNamed": "”{{name}}” skapad.",
+        "savedNamed": "”{{name}}” sparad."
     },
     "kitchen": {
         "noShoppingLists": "Det finns ingen inköpslista än.",
@@ -4130,7 +4132,6 @@
         "noTasks": "Inga städuppgifter ännu.",
         "everyDays": "Var {{days}} dag",
         "completeTask": "Slutför {{name}}",
-        "taskDoneToast": "Uppgift slutförd.",
         "editTask": "Redigera uppgift",
         "deleteTask": "Ta bort uppgift",
         "undoTask": "Ångra slutförande",
@@ -4212,9 +4213,6 @@
         "filterMonth": "Månad",
         "editVisit": "Redigera besök",
         "deleteVisit": "Ta bort besök",
-        "deleteVisitConfirm": "Vill du ta bort det här besöket? Den länkade kalenderhändelsen och betalningsuppgiften kommer också att tas bort.",
-        "deleteVisitConfirmDetail": "Månadsavräkningen räknas hädanefter utan detta besök, och ett uppladdat kvitto ligger kvar i Dokument men hör inte längre till besöket. Tiden raderas även i den anslutna kalendertjänsten, om inte synkroniseringen dit står på skrivskyddad.",
-        "visitDeletedToast": "Besök raderade.",
         "visitSavedToast": "Besök uppdaterat.",
         "visitDate": "Besöksdatum",
         "markPaid": "Markera betalt",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "Ångra betalning",
         "markUnpaidConfirm": "Ångra betalningen?",
         "markUnpaidConfirmDetail": "Besöket räknas som väntande igen. En kopplad betalningsuppgift öppnas igen.",
-        "visitPaidToast": "Betalning markerad som betald.",
-        "visitUnpaidToast": "Betalningen har ångrats.",
         "receiptUploadTitle": "Ladda upp betalningskvitto",
         "receiptUploadHint": "Bifoga ett betalningskvitto. Det kommer att visas i Dokument.",
         "receiptLabel": "Betalningskvitto",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}} utcheckad.",
         "visitToday": "Här i dag: {{from}} - {{to}}",
         "checkInAgain": "Checka in igen",
-        "checkedInNamed": "{{name}} incheckad."
+        "checkedInNamed": "{{name}} incheckad.",
+        "taskDoneNamed": "”{{name}}” klar.",
+        "visitDeletedNamed": "Besöket {{date}} raderat.",
+        "visitPaidNamed": "Besöket {{date}} betalt.",
+        "visitUnpaidNamed": "Betalningen för besöket {{date}} har ångrats."
     },
     "userMultiSelect": {
         "moreUsers": "mer",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Grovavfall",
         "newType": "Ny typ",
         "editType": "Redigera typ",
-        "typeSavedToast": "Typ sparad",
-        "typeDeletedToast": "Typ borttagen",
         "typeArchivedToast": "Typ arkiverad",
         "typeRestoredToast": "Typ återställd",
         "typeDeleteConfirm": "Ta bort den här avfallstypen?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Sophämtning",
         "icsPickupSummary": "Hämtning: {{name}}",
         "intervalDecrease": "Minska intervallet",
-        "intervalIncrease": "Öka intervallet"
+        "intervalIncrease": "Öka intervallet",
+        "scheduleSavedNamed": "Schema för ”{{name}}” sparat.",
+        "pickupSavedNamed": "Hämtning av ”{{name}}” sparad."
     },
     "rewards": {
         "title": "Belöningar",

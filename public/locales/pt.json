@@ -110,7 +110,9 @@
         "errorNotOwner": "Outra pessoa criou isto - pode ver, mas não alterar.",
         "foreignReadOnlyHint": "Criado por {{name}} - pode ver, mas não alterar.",
         "deletedNamed": "«{{name}}» eliminado.",
-        "sortMode": "Reordenar"
+        "sortMode": "Reordenar",
+        "createdNamed": "«{{name}}» criado.",
+        "savedNamed": "«{{name}}» guardado."
     },
     "kitchen": {
         "noShoppingLists": "Ainda não existe lista de compras.",
@@ -4130,7 +4132,6 @@
         "noTasks": "Nenhuma tarefa de faxina cadastrada.",
         "everyDays": "A cada {{days}} dias",
         "completeTask": "Concluir {{name}}",
-        "taskDoneToast": "Tarefa concluída.",
         "editTask": "Editar tarefa",
         "deleteTask": "Excluir tarefa",
         "undoTask": "Desfazer conclusão",
@@ -4212,9 +4213,6 @@
         "filterMonth": "Mês",
         "editVisit": "Editar visita",
         "deleteVisit": "Excluir visita",
-        "deleteVisitConfirm": "Excluir esta visita? O evento do calendário e a tarefa de pagamento vinculados também serão removidos.",
-        "deleteVisitConfirmDetail": "O resumo mensal passa a ser calculado sem esta visita, e um comprovativo carregado fica nos Documentos mas deixa de estar associado a esta visita. O compromisso é apagado também no serviço de calendário ligado, a não ser que a sincronização aí esteja só de leitura.",
-        "visitDeletedToast": "Visita excluída.",
         "visitSavedToast": "Visita atualizada.",
         "visitDate": "Data da visita",
         "markPaid": "Marcar pago",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "Desfazer pagamento",
         "markUnpaidConfirm": "Desfazer este pagamento?",
         "markUnpaidConfirmDetail": "A visita volta a ficar pendente. A tarefa de pagamento associada é reaberta.",
-        "visitPaidToast": "Pagamento marcado como pago.",
-        "visitUnpaidToast": "Pagamento desfeito.",
         "receiptUploadTitle": "Enviar comprovante de pagamento",
         "receiptUploadHint": "Anexe um comprovante de pagamento. Ele aparecerá em Documentos.",
         "receiptLabel": "Comprovante de pagamento",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "Saída de {{name}} registada.",
         "visitToday": "Hoje cá: {{from}} - {{to}}",
         "checkInAgain": "Registar entrada de novo",
-        "checkedInNamed": "Entrada de {{name}} registada."
+        "checkedInNamed": "Entrada de {{name}} registada.",
+        "taskDoneNamed": "«{{name}}» concluído.",
+        "visitDeletedNamed": "Visita de {{date}} eliminada.",
+        "visitPaidNamed": "Visita de {{date}} paga.",
+        "visitUnpaidNamed": "Pagamento da visita de {{date}} desfeito."
     },
     "userMultiSelect": {
         "moreUsers": "mais",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Volumosos",
         "newType": "Novo tipo",
         "editType": "Editar tipo",
-        "typeSavedToast": "Tipo guardado",
-        "typeDeletedToast": "Tipo eliminado",
         "typeArchivedToast": "Tipo arquivado",
         "typeRestoredToast": "Tipo restaurado",
         "typeDeleteConfirm": "Eliminar este tipo de lixo?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Recolha de resíduos",
         "icsPickupSummary": "Recolha: {{name}}",
         "intervalDecrease": "Diminuir intervalo",
-        "intervalIncrease": "Aumentar intervalo"
+        "intervalIncrease": "Aumentar intervalo",
+        "scheduleSavedNamed": "Horário de «{{name}}» guardado.",
+        "pickupSavedNamed": "Recolha de «{{name}}» guardada."
     },
     "rewards": {
         "title": "Recompensas",

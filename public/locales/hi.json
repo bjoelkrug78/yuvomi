@@ -110,7 +110,9 @@
         "errorNotOwner": "इसे किसी और ने बनाया है - आप इसे देख सकते हैं, पर बदल नहीं सकते।",
         "foreignReadOnlyHint": "{{name}} ने बनाया - आप इसे देख सकते हैं, पर बदल नहीं सकते।",
         "deletedNamed": "\"{{name}}\" हटाया गया।",
-        "sortMode": "क्रम बदलें"
+        "sortMode": "क्रम बदलें",
+        "createdNamed": "\"{{name}}\" बनाया गया।",
+        "savedNamed": "\"{{name}}\" सहेजा गया।"
     },
     "kitchen": {
         "noShoppingLists": "अभी कोई खरीद सूची नहीं है.",
@@ -4130,7 +4132,6 @@
         "noTasks": "अभी तक कोई गृहकार्य कार्य नहीं।",
         "everyDays": "हर {{days}} दिन",
         "completeTask": "{{name}} पूरा करें",
-        "taskDoneToast": "कार्य पूरा हुआ।",
         "editTask": "कार्य संपादित करें",
         "deleteTask": "कार्य हटाएं",
         "undoTask": "पूर्णता पूर्ववत करें",
@@ -4212,9 +4213,6 @@
         "filterMonth": "महीना",
         "editVisit": "विज़िट संपादित करें",
         "deleteVisit": "विज़िट हटाएँ",
-        "deleteVisitConfirm": "यह विज़िट हटाएँ? जुड़ी कैलेंडर प्रविष्टि और भुगतान कार्य भी हटा दिए जाएँगे।",
-        "deleteVisitConfirmDetail": "मासिक हिसाब अब इस दौरे के बिना बनता है, और अपलोड की गई रसीद दस्तावेज़ों में बनी रहती है पर इस दौरे से जुड़ी नहीं रहती। जुड़ी कैलेंडर सेवा में भी यह अपॉइंटमेंट हट जाता है, बशर्ते वहाँ का तालमेल केवल-पढ़ने पर न हो।",
-        "visitDeletedToast": "विज़िट हटाई गई।",
         "visitSavedToast": "विज़िट अपडेट हुई।",
         "visitDate": "विज़िट की तारीख",
         "markPaid": "भुगतान हुआ चिह्नित करें",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "भुगतान वापस लें",
         "markUnpaidConfirm": "यह भुगतान वापस लें?",
         "markUnpaidConfirmDetail": "विज़िट फिर से लंबित मानी जाएगी। जुड़ा हुआ भुगतान कार्य फिर से खुल जाएगा।",
-        "visitPaidToast": "भुगतान को भुगतान हुआ चिह्नित किया गया।",
-        "visitUnpaidToast": "भुगतान वापस लिया गया।",
         "receiptUploadTitle": "भुगतान रसीद अपलोड करें",
         "receiptUploadHint": "भुगतान रसीद जोड़ें। यह इसके बाद दस्तावेज़ में दिखेगी।",
         "receiptLabel": "भुगतान रसीद",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}} का चेक-आउट हुआ।",
         "visitToday": "आज यहाँ: {{from}} - {{to}}",
         "checkInAgain": "फिर से चेक-इन करें",
-        "checkedInNamed": "{{name}} का चेक-इन हुआ।"
+        "checkedInNamed": "{{name}} का चेक-इन हुआ।",
+        "taskDoneNamed": "\"{{name}}\" पूरा हुआ।",
+        "visitDeletedNamed": "{{date}} की विज़िट हटाई गई।",
+        "visitPaidNamed": "{{date}} की विज़िट का भुगतान हुआ।",
+        "visitUnpaidNamed": "{{date}} की विज़िट का भुगतान वापस लिया गया।"
     },
     "userMultiSelect": {
         "moreUsers": "और",
@@ -5851,8 +5851,6 @@
         "presetBulky": "भारी कचरा",
         "newType": "नया प्रकार",
         "editType": "प्रकार संपादित करें",
-        "typeSavedToast": "प्रकार सहेजा गया",
-        "typeDeletedToast": "प्रकार हटाया गया",
         "typeArchivedToast": "प्रकार संग्रहीत किया गया",
         "typeRestoredToast": "प्रकार पुनर्स्थापित किया गया",
         "typeDeleteConfirm": "इस कचरा प्रकार को हटाएं?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "कचरा संग्रहण",
         "icsPickupSummary": "संग्रहण: {{name}}",
         "intervalDecrease": "अंतराल घटाएँ",
-        "intervalIncrease": "अंतराल बढ़ाएँ"
+        "intervalIncrease": "अंतराल बढ़ाएँ",
+        "scheduleSavedNamed": "\"{{name}}\" का शेड्यूल सहेजा गया।",
+        "pickupSavedNamed": "\"{{name}}\" का संग्रहण सहेजा गया।"
     },
     "rewards": {
         "title": "पुरस्कार",

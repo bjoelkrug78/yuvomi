@@ -110,7 +110,9 @@
         "errorNotOwner": "Dette har noen andre laget - du kan se det, men ikke endre det.",
         "foreignReadOnlyHint": "Laget av {{name}} - du kan se det, men ikke endre det.",
         "deletedNamed": "«{{name}}» slettet.",
-        "sortMode": "Endre rekkefølge"
+        "sortMode": "Endre rekkefølge",
+        "createdNamed": "«{{name}}» opprettet.",
+        "savedNamed": "«{{name}}» lagret."
     },
     "kitchen": {
         "noShoppingLists": "Det finnes ingen handleliste ennå.",
@@ -4130,7 +4132,6 @@
         "noTasks": "Ingen husarbeidsoppgaver ennå.",
         "everyDays": "Hver {{days}} dager",
         "completeTask": "Fullfør {{name}}",
-        "taskDoneToast": "Oppgave fullført.",
         "editTask": "Rediger oppgave",
         "deleteTask": "Slett oppgave",
         "undoTask": "Angre fullføring",
@@ -4212,9 +4213,6 @@
         "filterMonth": "Måned",
         "editVisit": "Rediger besøk",
         "deleteVisit": "Slett besøk",
-        "deleteVisitConfirm": "Slettke dette besøket? Den tilknyttede kalenderhendelsen og betalingsoppgaven vil også bli fjernet.",
-        "deleteVisitConfirmDetail": "Den månedlige oversikten vil fra nå av bli beregnet uten dette besøket, og en opplastet kvittering blir værende i Dokumenter, men er ikke lenger knyttet til dette besøket. Avtalen slettes også i den tilknyttede kalendertjenesten, med mindre synkronisering der er satt til kun lesing.",
-        "visitDeletedToast": "Besøk slettet.",
         "visitSavedToast": "Besøk oppdatert.",
         "visitDate": "Besøksdato",
         "markPaid": "Marker som betalt",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "Angre betaling",
         "markUnpaidConfirm": "Angre denne betalingen?",
         "markUnpaidConfirmDetail": "Besøket regnes som utestående igjen. En tilknyttet betalingsoppgave åpnes på nytt.",
-        "visitPaidToast": "Betaling markert som betalt.",
-        "visitUnpaidToast": "Betaling angret.",
         "receiptUploadTitle": "Last opp betalingskvittering",
         "receiptUploadHint": "Legg ved en betalingskvittering. Den vil vises i Dokumenter.",
         "receiptLabel": "Betalingskvittering",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}} sjekket ut.",
         "visitToday": "Her i dag: {{from}} - {{to}}",
         "checkInAgain": "Sjekk inn igjen",
-        "checkedInNamed": "{{name}} sjekket inn."
+        "checkedInNamed": "{{name}} sjekket inn.",
+        "taskDoneNamed": "«{{name}}» fullført.",
+        "visitDeletedNamed": "Besøket {{date}} slettet.",
+        "visitPaidNamed": "Besøket {{date}} betalt.",
+        "visitUnpaidNamed": "Betalingen for besøket {{date}} angret."
     },
     "userMultiSelect": {
         "moreUsers": "mer",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Bulkavfall",
         "newType": "Ny type",
         "editType": "Rediger type",
-        "typeSavedToast": "Type lagret",
-        "typeDeletedToast": "Type slettet",
         "typeArchivedToast": "Type arkivert",
         "typeRestoredToast": "Type gjenopprettet",
         "typeDeleteConfirm": "Slettke denne avfallstypen?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Avfallshenting",
         "icsPickupSummary": "Henting av {{name}}",
         "intervalDecrease": "Reduser intervallet",
-        "intervalIncrease": "Øk intervallet"
+        "intervalIncrease": "Øk intervallet",
+        "scheduleSavedNamed": "Tidsplan for «{{name}}» lagret.",
+        "pickupSavedNamed": "Henting av «{{name}}» lagret."
     },
     "rewards": {
         "title": "Belønninger",

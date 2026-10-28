@@ -110,7 +110,9 @@
         "errorNotOwner": "這是其他人建立的，你可以檢視，但不能修改。",
         "foreignReadOnlyHint": "由 {{name}} 建立，你可以檢視，但不能修改。",
         "deletedNamed": "「{{name}}」已刪除。",
-        "sortMode": "調整順序"
+        "sortMode": "調整順序",
+        "createdNamed": "「{{name}}」已建立。",
+        "savedNamed": "「{{name}}」已儲存。"
     },
     "kitchen": {
         "noShoppingLists": "還沒有購物清單。",
@@ -4130,7 +4132,6 @@
         "noTasks": "暫無家務任務。",
         "everyDays": "每 {{days}} 天",
         "completeTask": "完成 {{name}}",
-        "taskDoneToast": "任務已完成。",
         "editTask": "編輯任務",
         "deleteTask": "刪除任務",
         "undoTask": "撤銷完成",
@@ -4212,9 +4213,6 @@
         "filterMonth": "月份",
         "editVisit": "編輯上門記錄",
         "deleteVisit": "刪除上門記錄",
-        "deleteVisitConfirm": "刪除此上門記錄？關聯的日曆事件和付款任務也會一併移除。",
-        "deleteVisitConfirmDetail": "月度結算從此不再計入這次上門，上傳的憑證仍留在文件中，但不再歸屬於這次上門。該日程在已連線的日曆服務中也會一併刪除，除非那邊的同步設為唯讀。",
-        "visitDeletedToast": "上門記錄已刪除。",
         "visitSavedToast": "上門記錄已更新。",
         "visitDate": "上門日期",
         "markPaid": "標記為已付",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "撤銷付款",
         "markUnpaidConfirm": "撤銷這筆付款？",
         "markUnpaidConfirmDetail": "此次上門將重新變為待付款。關聯的付款任務會重新開啟。",
-        "visitPaidToast": "付款已標記為已付。",
-        "visitUnpaidToast": "付款已撤銷。",
         "receiptUploadTitle": "上傳付款憑證",
         "receiptUploadHint": "新增付款憑證，之後會顯示在「文件」中。",
         "receiptLabel": "付款憑證",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}}已簽退。",
         "visitToday": "今日在場：{{from}} - {{to}}",
         "checkInAgain": "再次簽到",
-        "checkedInNamed": "{{name}}已簽到。"
+        "checkedInNamed": "{{name}}已簽到。",
+        "taskDoneNamed": "「{{name}}」已完成。",
+        "visitDeletedNamed": "{{date}} 的上門記錄已刪除。",
+        "visitPaidNamed": "{{date}} 的上門記錄已付款。",
+        "visitUnpaidNamed": "{{date}} 的上門記錄付款已撤銷。"
     },
     "userMultiSelect": {
         "moreUsers": "更多",
@@ -5851,8 +5851,6 @@
         "presetBulky": "大件垃圾",
         "newType": "新建類型",
         "editType": "編輯類型",
-        "typeSavedToast": "類型已儲存",
-        "typeDeletedToast": "類型已刪除",
         "typeArchivedToast": "類型已歸檔",
         "typeRestoredToast": "類型已恢復",
         "typeDeleteConfirm": "刪除此垃圾類型？",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "垃圾收運",
         "icsPickupSummary": "收運：{{name}}",
         "intervalDecrease": "縮短間隔",
-        "intervalIncrease": "延長間隔"
+        "intervalIncrease": "延長間隔",
+        "scheduleSavedNamed": "「{{name}}」的計劃已儲存。",
+        "pickupSavedNamed": "「{{name}}」的收運已儲存。"
     },
     "rewards": {
         "title": "獎勵",

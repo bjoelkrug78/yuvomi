@@ -110,7 +110,9 @@
         "errorNotOwner": "다른 사람이 만든 항목입니다. 볼 수는 있지만 바꿀 수는 없습니다.",
         "foreignReadOnlyHint": "{{name}}님이 만듦 - 볼 수는 있지만 바꿀 수는 없습니다.",
         "deletedNamed": "'{{name}}' 삭제했습니다.",
-        "sortMode": "순서 변경"
+        "sortMode": "순서 변경",
+        "createdNamed": "'{{name}}' 만들었습니다.",
+        "savedNamed": "'{{name}}' 저장했습니다."
     },
     "kitchen": {
         "noShoppingLists": "아직 장보기 목록이 없습니다.",
@@ -4134,7 +4136,6 @@
         "noTasks": "아직 가사 관리 작업이 없습니다.",
         "everyDays": "{{days}}일마다",
         "completeTask": "{{name}} 완료",
-        "taskDoneToast": "작업이 완료되었습니다.",
         "editTask": "작업 편집",
         "deleteTask": "작업 삭제",
         "undoTask": "완료 취소",
@@ -4216,9 +4217,6 @@
         "filterMonth": "월",
         "editVisit": "방문 편집",
         "deleteVisit": "방문 삭제",
-        "deleteVisitConfirm": "이 방문을 삭제할까요? 연결된 캘린더 항목과 결제 작업도 함께 제거됩니다.",
-        "deleteVisitConfirmDetail": "월별 정산은 이제 이 방문을 빼고 계산되며, 업로드한 영수증은 문서에 남지만 더 이상 이 방문에 연결되지 않습니다. 연결된 캘린더 서비스에서도 일정이 삭제되지만, 그쪽 동기화가 읽기 전용이면 남습니다.",
-        "visitDeletedToast": "방문이 삭제되었습니다.",
         "visitSavedToast": "방문이 업데이트되었습니다.",
         "visitDate": "방문 날짜",
         "markPaid": "지급 완료로 표시",
@@ -4228,8 +4226,6 @@
         "markUnpaid": "지급 취소",
         "markUnpaidConfirm": "이 지급을 취소할까요?",
         "markUnpaidConfirmDetail": "방문이 다시 대기 중 상태가 됩니다. 연결된 결제 작업은 다시 열립니다.",
-        "visitPaidToast": "결제가 지급 완료로 표시되었습니다.",
-        "visitUnpaidToast": "지급이 취소되었습니다.",
         "receiptUploadTitle": "결제 영수증 업로드",
         "receiptUploadHint": "결제 영수증을 추가하세요. 이후 문서에 표시됩니다.",
         "receiptLabel": "결제 영수증",
@@ -4298,7 +4294,11 @@
         "checkedOutNamed": "{{name}} 님이 체크아웃했습니다.",
         "visitToday": "오늘 근무: {{from}} - {{to}}",
         "checkInAgain": "다시 체크인",
-        "checkedInNamed": "{{name}} 님이 체크인했습니다."
+        "checkedInNamed": "{{name}} 님이 체크인했습니다.",
+        "taskDoneNamed": "'{{name}}' 완료했습니다.",
+        "visitDeletedNamed": "{{date}} 방문을 삭제했습니다.",
+        "visitPaidNamed": "{{date}} 방문을 지급 완료했습니다.",
+        "visitUnpaidNamed": "{{date}} 방문의 지급을 취소했습니다."
     },
     "splitExpenses": {
         "title": "공동 지출",
@@ -5851,8 +5851,6 @@
         "presetBulky": "대형 폐기물",
         "newType": "새 종류",
         "editType": "종류 편집",
-        "typeSavedToast": "종류가 저장되었습니다",
-        "typeDeletedToast": "종류가 삭제되었습니다",
         "typeArchivedToast": "종류가 보관되었습니다",
         "typeRestoredToast": "종류가 복원되었습니다",
         "typeDeleteConfirm": "이 쓰레기 종류를 삭제하시겠습니까?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "쓰레기 수거",
         "icsPickupSummary": "수거: {{name}}",
         "intervalDecrease": "간격 줄이기",
-        "intervalIncrease": "간격 늘리기"
+        "intervalIncrease": "간격 늘리기",
+        "scheduleSavedNamed": "'{{name}}' 일정을 저장했습니다.",
+        "pickupSavedNamed": "'{{name}}' 수거를 저장했습니다."
     },
     "rewards": {
         "title": "보상",

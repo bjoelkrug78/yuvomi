@@ -110,7 +110,9 @@
         "errorNotOwner": "این را شخص دیگری ساخته است - می‌توانید آن را ببینید اما نه تغییر دهید.",
         "foreignReadOnlyHint": "ساخته‌شده توسط {{name}} - می‌توانید آن را ببینید اما نه تغییر دهید.",
         "deletedNamed": "«{{name}}» حذف شد.",
-        "sortMode": "تغییر ترتیب"
+        "sortMode": "تغییر ترتیب",
+        "createdNamed": "«{{name}}» ایجاد شد.",
+        "savedNamed": "«{{name}}» ذخیره شد."
     },
     "kitchen": {
         "noShoppingLists": "هنوز فهرست خریدی وجود ندارد.",
@@ -4134,7 +4136,6 @@
         "noTasks": "هنوز کار نظافتی نیست.",
         "everyDays": "هر {{days}} روز",
         "completeTask": "انجام {{name}}",
-        "taskDoneToast": "کار انجام شد.",
         "editTask": "ویرایش کار",
         "deleteTask": "حذف کار",
         "undoTask": "لغو انجام",
@@ -4216,9 +4217,6 @@
         "filterMonth": "ماه",
         "editVisit": "ویرایش بازدید",
         "deleteVisit": "حذف بازدید",
-        "deleteVisitConfirm": "این بازدید حذف شود؟ مدخل تقویم پیوندشده و کار پرداخت نیز حذف می‌شوند.",
-        "deleteVisitConfirmDetail": "صورت‌حساب ماهانه از این پس بدون این مراجعه محاسبه می‌شود و رسید بارگذاری‌شده در اسناد می‌ماند اما دیگر به این مراجعه پیوند ندارد. این قرار در سرویس تقویم متصل هم حذف می‌گردد، مگر آنکه همگام‌سازی به آن فقط‌خواندنی باشد.",
-        "visitDeletedToast": "بازدید حذف شد.",
         "visitSavedToast": "بازدید به‌روزرسانی شد.",
         "visitDate": "تاریخ بازدید",
         "markPaid": "علامت‌گذاری به عنوان پرداخت‌شده",
@@ -4228,8 +4226,6 @@
         "markUnpaid": "لغو پرداخت",
         "markUnpaidConfirm": "این پرداخت لغو شود؟",
         "markUnpaidConfirmDetail": "بازدید دوباره در انتظار پرداخت قرار می‌گیرد. کار پرداخت مرتبط دوباره باز می‌شود.",
-        "visitPaidToast": "پرداخت به عنوان پرداخت‌شده علامت‌گذاری شد.",
-        "visitUnpaidToast": "پرداخت لغو شد.",
         "receiptUploadTitle": "بارگذاری رسید پرداخت",
         "receiptUploadHint": "یک رسید پرداخت اضافه کنید. سپس در اسناد نمایش داده می‌شود.",
         "receiptLabel": "رسید پرداخت",
@@ -4298,7 +4294,11 @@
         "checkedOutNamed": "خروج {{name}} ثبت شد.",
         "visitToday": "حضور امروز: {{from}} - {{to}}",
         "checkInAgain": "ورود دوباره",
-        "checkedInNamed": "ورود {{name}} ثبت شد."
+        "checkedInNamed": "ورود {{name}} ثبت شد.",
+        "taskDoneNamed": "«{{name}}» انجام شد.",
+        "visitDeletedNamed": "بازدید {{date}} حذف شد.",
+        "visitPaidNamed": "هزینه بازدید {{date}} پرداخت شد.",
+        "visitUnpaidNamed": "پرداخت بازدید {{date}} لغو شد."
     },
     "splitExpenses": {
         "title": "هزینه‌های مشترک",
@@ -5851,8 +5851,6 @@
         "presetBulky": "زباله حجیم",
         "newType": "نوع جدید",
         "editType": "ویرایش نوع",
-        "typeSavedToast": "نوع ذخیره شد",
-        "typeDeletedToast": "نوع حذف شد",
         "typeArchivedToast": "نوع بایگانی شد",
         "typeRestoredToast": "نوع بازیابی شد",
         "typeDeleteConfirm": "این نوع زباله حذف شود؟",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "جمع‌آوری زباله",
         "icsPickupSummary": "جمع‌آوری: {{name}}",
         "intervalDecrease": "کاهش فاصله",
-        "intervalIncrease": "افزایش فاصله"
+        "intervalIncrease": "افزایش فاصله",
+        "scheduleSavedNamed": "برنامه «{{name}}» ذخیره شد.",
+        "pickupSavedNamed": "جمع‌آوری «{{name}}» ذخیره شد."
     },
     "rewards": {
         "title": "پاداش‌ها",

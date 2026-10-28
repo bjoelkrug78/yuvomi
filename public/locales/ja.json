@@ -110,7 +110,9 @@
         "errorNotOwner": "これは他の人が作成しました。表示はできますが、変更はできません。",
         "foreignReadOnlyHint": "{{name}} が作成 - 表示はできますが、変更はできません。",
         "deletedNamed": "「{{name}}」を削除しました。",
-        "sortMode": "並べ替え"
+        "sortMode": "並べ替え",
+        "createdNamed": "「{{name}}」を作成しました。",
+        "savedNamed": "「{{name}}」を保存しました。"
     },
     "kitchen": {
         "noShoppingLists": "買い物リストがまだありません。",
@@ -4130,7 +4132,6 @@
         "noTasks": "家事タスクはまだありません。",
         "everyDays": "{{days}} 日ごと",
         "completeTask": "{{name}} を完了する",
-        "taskDoneToast": "タスクを完了しました。",
         "editTask": "タスクを編集",
         "deleteTask": "タスクを削除",
         "undoTask": "完了を取り消す",
@@ -4212,9 +4213,6 @@
         "filterMonth": "月",
         "editVisit": "訪問を編集",
         "deleteVisit": "訪問を削除",
-        "deleteVisitConfirm": "この訪問を削除しますか? リンクされたカレンダーの予定と支払いタスクも削除されます。",
-        "deleteVisitConfirmDetail": "月次の精算は今後この訪問を含めずに計算され、アップロードした領収書は書類に残りますが、この訪問とは紐づかなくなります。連携中のカレンダーサービスでも予定は削除されます。ただしそちらへの同期が読み取り専用の場合は残ります。",
-        "visitDeletedToast": "訪問を削除しました。",
         "visitSavedToast": "訪問を更新しました。",
         "visitDate": "訪問日",
         "markPaid": "支払い済みにする",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "支払いを取り消す",
         "markUnpaidConfirm": "この支払いを取り消しますか？",
         "markUnpaidConfirmDetail": "訪問は再び未払いになります。関連する支払いタスクは未完了に戻ります。",
-        "visitPaidToast": "支払い済みにしました。",
-        "visitUnpaidToast": "支払いを取り消しました。",
         "receiptUploadTitle": "支払い領収書をアップロード",
         "receiptUploadHint": "支払い領収書を添付します。その後ドキュメントに表示されます。",
         "receiptLabel": "支払い領収書",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}}さんがチェックアウトしました。",
         "visitToday": "本日の在室: {{from}} - {{to}}",
         "checkInAgain": "もう一度チェックイン",
-        "checkedInNamed": "{{name}}さんがチェックインしました。"
+        "checkedInNamed": "{{name}}さんがチェックインしました。",
+        "taskDoneNamed": "「{{name}}」を完了しました。",
+        "visitDeletedNamed": "{{date}}の訪問を削除しました。",
+        "visitPaidNamed": "{{date}}の訪問を支払い済みにしました。",
+        "visitUnpaidNamed": "{{date}}の訪問の支払いを取り消しました。"
     },
     "userMultiSelect": {
         "moreUsers": "他",
@@ -5851,8 +5851,6 @@
         "presetBulky": "粗大ごみ",
         "newType": "新しい種類",
         "editType": "種類を編集",
-        "typeSavedToast": "種類を保存しました",
-        "typeDeletedToast": "種類を削除しました",
         "typeArchivedToast": "種類をアーカイブしました",
         "typeRestoredToast": "種類を復元しました",
         "typeDeleteConfirm": "このゴミの種類を削除しますか？",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "ゴミ収集",
         "icsPickupSummary": "収集: {{name}}",
         "intervalDecrease": "間隔を短くする",
-        "intervalIncrease": "間隔を長くする"
+        "intervalIncrease": "間隔を長くする",
+        "scheduleSavedNamed": "「{{name}}」のスケジュールを保存しました。",
+        "pickupSavedNamed": "「{{name}}」の収集を保存しました。"
     },
     "rewards": {
         "title": "ごほうび",

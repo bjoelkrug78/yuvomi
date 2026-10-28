@@ -378,7 +378,8 @@ test('Ein scheiterndes Nachladen meldet sich nicht und loest kein weiteres aus',
 // -------------------------------------------------------------------------
 
 for (const [name, reason, erfolg, pfad, oeffne] of [
-  ['Abfallart (Dialog)', 'waste_type_not_found', 'waste.typeDeletedToast', '/waste/types/1',
+  // Der Satz nennt die Abfallart (R24, G2-Quer-P2-2).
+  ['Abfallart (Dialog)', 'waste_type_not_found', 'common.deletedNamed{"name":"Restmuell"}', '/waste/types/1',
     async () => (await dialog(() => waste.openTypeModal(TYPE()))).klick('#wtm-delete')],
   ['Termin (Dialog)', 'waste_schedule_not_found', 'waste.scheduleDeletedToast', '/waste/schedules/7',
     async () => (await terminDialog()).klick('#wsm-delete')],

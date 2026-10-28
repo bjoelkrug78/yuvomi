@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Ticking something off confirms it at once, and only where you are.** The note "“Water the plants”
+  done" with Undo came up to 1.5 seconds after the tap, and if you switched to another module in the
+  meantime it appeared there instead. Tasks and the household help's chores, check-in and check-out now
+  confirm with the tap, and a confirmation that would only arrive after you left a module no longer
+  follows you. Undo still works while the change is on its way.
+- **Notes name what they are about.** The household help says which chore was done and which visit was
+  paid or deleted, and a deleted visit can be brought back with Undo instead of a question beforehand;
+  waste collection names the bin type it created, saved or deleted, and the schedule or pickup it saved.
 - **The read and write boxes of a new API token are easy to hit.** Each box only answered on its
   own 14 px square; now the whole cell of its column does, as tall as any other control.
 - **The cycle figures are readable on a phone again.** Below 640 px the four figure tiles shrank to a

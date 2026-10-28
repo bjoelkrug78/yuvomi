@@ -356,9 +356,15 @@ const STUBS = {
     export const scheduleUndoableDelete = (opts) => { globalThis.__undoStub?.(opts); };
     // Die Quittung einer Statusaktion (R23, D6): dieselbe Form wie das Original,
     // damit ein Test am showToast-Stub Satz und Rueckgaengig in die Hand bekommt.
-    export const offerUndo = ({ message, undo, onError, label, duration = 5000 }) => {
-      const run = async () => { try { await undo(); } catch (err) { onError?.(err); } };
-      return globalThis.window?.yuvomi?.showToast?.(message, 'default', duration, label ? { label, onClick: run } : run) === true;
+    // Seit R24 mit pending (Quittung im Tipp) und update (Satz nachtragen).
+    export const offerUndo = ({ message, undo, onError, label, duration = 5000, pending = null, scope = null }) => {
+      const run = async () => {
+        if (pending) { try { await pending; } catch { return; } }
+        try { await undo(); } catch (err) { onError?.(err); }
+      };
+      const handle = {};
+      const shown = globalThis.window?.yuvomi?.showToast?.(message, 'default', duration, label ? { label, onClick: run } : run, { scope, handle }) === true;
+      return { shown, update: (text) => { handle.setMessage?.(text); globalThis.__offerUndoUpdate?.(text); } };
     };
     // Im Test gibt es keine Animation, die ausspielen koennte - der Aufrufer
     // awaitet das Ergebnis, also loest der Stub sofort auf.

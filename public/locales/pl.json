@@ -112,7 +112,9 @@
         "errorNotOwner": "Utworzył to ktoś inny - możesz to oglądać, ale nie zmieniać.",
         "foreignReadOnlyHint": "Utworzone przez {{name}} - możesz to oglądać, ale nie zmieniać.",
         "deletedNamed": "„{{name}}” usunięte.",
-        "sortMode": "Zmień kolejność"
+        "sortMode": "Zmień kolejność",
+        "createdNamed": "„{{name}}” utworzone.",
+        "savedNamed": "„{{name}}” zapisane."
     },
     "kitchen": {
         "noShoppingLists": "Nie ma jeszcze listy zakupów.",
@@ -4376,7 +4378,6 @@
         "noTasks": "Brak zadań sprzątania.",
         "everyDays": "Co {{days}} dni",
         "completeTask": "Wykonaj {{name}}",
-        "taskDoneToast": "Zadanie ukończone.",
         "editTask": "Edytuj zadanie",
         "deleteTask": "Usuń zadanie",
         "undoTask": "Cofnij ukończenie",
@@ -4458,9 +4459,6 @@
         "filterMonth": "Miesiąc",
         "editVisit": "Edytuj wizytę",
         "deleteVisit": "Usuń wizytę",
-        "deleteVisitConfirm": "Usunąć tę wizytę? Powiązane wydarzenie kalendarza i zadanie płatności zostaną również usunięte.",
-        "deleteVisitConfirmDetail": "Rozliczenie miesięczne liczone jest od teraz bez tej wizyty, a wgrany rachunek zostaje w Dokumentach, ale nie jest już przypisany do tej wizyty. Termin zostaje usunięty także w podłączonej usłudze kalendarza, chyba że synchronizacja tam działa tylko do odczytu.",
-        "visitDeletedToast": "Wizyta usunięta.",
         "visitSavedToast": "Wizyta zaktualizowana.",
         "visitDate": "Data wizyty",
         "markPaid": "Oznacz jako zapłaconą",
@@ -4470,8 +4468,6 @@
         "markUnpaid": "Cofnij płatność",
         "markUnpaidConfirm": "Cofnąć tę płatność?",
         "markUnpaidConfirmDetail": "Wizyta znów będzie oczekiwać na zapłatę. Powiązane zadanie płatności zostanie ponownie otwarte.",
-        "visitPaidToast": "Płatność oznaczona jako zapłacona.",
-        "visitUnpaidToast": "Płatność cofnięta.",
         "receiptUploadTitle": "Prześlij paragon płatności",
         "receiptUploadHint": "Dołącz paragon płatności. Pojawi się w dokumentach.",
         "receiptLabel": "Paragon płatności",
@@ -4540,7 +4536,11 @@
         "checkedOutNamed": "{{name}} - wymeldowano.",
         "visitToday": "Dziś obecność: {{from}} - {{to}}",
         "checkInAgain": "Zamelduj ponownie",
-        "checkedInNamed": "{{name}} - zameldowano."
+        "checkedInNamed": "{{name}} - zameldowano.",
+        "taskDoneNamed": "„{{name}}” zrobione.",
+        "visitDeletedNamed": "Wizyta z {{date}} usunięta.",
+        "visitPaidNamed": "Wizyta z {{date}} opłacona.",
+        "visitUnpaidNamed": "Płatność za wizytę z {{date}} cofnięta."
     },
     "splitExpenses": {
         "title": "Wspólne wydatki",
@@ -6127,8 +6127,6 @@
         "presetBulky": "Odpady wielkogabarytowe",
         "newType": "Nowy rodzaj",
         "editType": "Edytuj rodzaj",
-        "typeSavedToast": "Rodzaj zapisany",
-        "typeDeletedToast": "Rodzaj usunięty",
         "typeArchivedToast": "Rodzaj zarchiwizowany",
         "typeRestoredToast": "Rodzaj przywrócony",
         "typeDeleteConfirm": "Usunąć ten rodzaj odpadów?",
@@ -6326,7 +6324,9 @@
         "icsCalendarName": "Odbiór odpadów",
         "icsPickupSummary": "Odbiór: {{name}}",
         "intervalDecrease": "Zmniejsz odstęp",
-        "intervalIncrease": "Zwiększ odstęp"
+        "intervalIncrease": "Zwiększ odstęp",
+        "scheduleSavedNamed": "Harmonogram „{{name}}” zapisany.",
+        "pickupSavedNamed": "Odbiór „{{name}}” zapisany."
     },
     "rewards": {
         "title": "Nagrody",

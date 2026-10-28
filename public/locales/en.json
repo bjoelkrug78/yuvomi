@@ -110,7 +110,9 @@
         "errorNotOwner": "Someone else created this - you can view it but not change it.",
         "foreignReadOnlyHint": "Created by {{name}} - you can view it but not change it.",
         "deletedNamed": "“{{name}}” deleted.",
-        "sortMode": "Reorder"
+        "sortMode": "Reorder",
+        "createdNamed": "“{{name}}” created.",
+        "savedNamed": "“{{name}}” saved."
     },
     "kitchen": {
         "noShoppingLists": "There is no shopping list yet.",
@@ -4130,7 +4132,6 @@
         "noTasks": "No housekeeping tasks yet.",
         "everyDays": "Every {{days}} days",
         "completeTask": "Complete {{name}}",
-        "taskDoneToast": "Task completed.",
         "editTask": "Edit task",
         "deleteTask": "Delete task",
         "undoTask": "Undo completion",
@@ -4212,9 +4213,6 @@
         "filterMonth": "Month",
         "editVisit": "Edit visit",
         "deleteVisit": "Delete visit",
-        "deleteVisitConfirm": "Delete this visit? The linked calendar event and payment task will also be removed.",
-        "deleteVisitConfirmDetail": "The monthly statement is calculated without this visit from now on, and an uploaded receipt stays in Documents but is no longer attached to this visit. The appointment is deleted at the connected calendar service too, unless syncing there is set to read-only.",
-        "visitDeletedToast": "Visit deleted.",
         "visitSavedToast": "Visit updated.",
         "visitDate": "Visit date",
         "markPaid": "Mark paid",
@@ -4224,8 +4222,6 @@
         "markUnpaid": "Undo payment",
         "markUnpaidConfirm": "Undo this payment?",
         "markUnpaidConfirmDetail": "The visit counts as pending again. A linked payment task is reopened.",
-        "visitPaidToast": "Payment marked as paid.",
-        "visitUnpaidToast": "Payment undone.",
         "receiptUploadTitle": "Upload payment receipt",
         "receiptUploadHint": "Attach a payment receipt. It will appear in Documents.",
         "receiptLabel": "Payment receipt",
@@ -4294,7 +4290,11 @@
         "checkedOutNamed": "{{name}} checked out.",
         "visitToday": "Here today: {{from}} - {{to}}",
         "checkInAgain": "Check in again",
-        "checkedInNamed": "{{name}} checked in."
+        "checkedInNamed": "{{name}} checked in.",
+        "taskDoneNamed": "“{{name}}” done.",
+        "visitDeletedNamed": "Visit on {{date}} deleted.",
+        "visitPaidNamed": "Visit on {{date}} paid.",
+        "visitUnpaidNamed": "Payment for the visit on {{date}} undone."
     },
     "userMultiSelect": {
         "moreUsers": "more",
@@ -5851,8 +5851,6 @@
         "presetBulky": "Bulky waste",
         "newType": "New type",
         "editType": "Edit type",
-        "typeSavedToast": "Type saved",
-        "typeDeletedToast": "Type deleted",
         "typeArchivedToast": "Type archived",
         "typeRestoredToast": "Type restored",
         "typeDeleteConfirm": "Delete this waste type?",
@@ -6040,7 +6038,9 @@
         "icsCalendarName": "Waste pickups",
         "icsPickupSummary": "{{name}} pickup",
         "intervalDecrease": "Decrease interval",
-        "intervalIncrease": "Increase interval"
+        "intervalIncrease": "Increase interval",
+        "scheduleSavedNamed": "Schedule for “{{name}}” saved.",
+        "pickupSavedNamed": "Pickup for “{{name}}” saved."
     },
     "rewards": {
         "title": "Rewards",

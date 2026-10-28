@@ -898,19 +898,34 @@ export function scheduleUndoableDelete({
  * baut ihn ueber t(), dieser Helfer nur die eine Form: kein Haekchen (der Toast
  * traegt eine Aktion, toast-show.js), fuenf Sekunden, ein Knopf.
  *
+ * QUITTUNG IM TIPP (Critique R24, G0-Shell-P1-2): wer das Ergebnis kennt, ehe
+ * der Server antwortet (Abhaken, Erledigen, Auschecken), quittiert sofort und
+ * reicht die laufende Anfrage als `pending` herein. "Rueckgaengig" wartet dann
+ * auf sie und nimmt erst danach zurueck; scheitert sie, tut es nichts - den
+ * Fehler meldet der Aufrufer, und sein Fehler-Toast ersetzt diesen. Vorher
+ * kam die Quittung 700-1500 ms nach dem Tipp und erschien nach einem
+ * Modulwechsel im naechsten Modul.
+ *
  * @param {Object} opts
  * @param {string} opts.message
  * @param {() => Promise<void>} opts.undo  der Gegenweg am Server; wirft er, kommt `onError`
  * @param {(err: Error) => void} [opts.onError]  Fehlersatz zeigen, Ansicht neu laden
  * @param {string} [opts.label]  ein anderer Knopf als "Rueckgaengig" ("Alle abhaken")
  * @param {number} [opts.duration=5000]
- * @returns {boolean} ob ein Toast steht
+ * @param {Promise<unknown>} [opts.pending]  die Anfrage, die quittiert wird, wenn sie noch laeuft
+ * @param {number} [opts.scope]  die Modul-Marke von vor der Anfrage (feedbackScope, toast-show.js)
+ * @returns {{ shown: boolean, update: (message: string) => void }} ob ein Toast
+ *          steht, und der Weg, seinen Satz nachzutragen (die naechste
+ *          Faelligkeit einer Serie kennt erst die Antwort)
  */
-export function offerUndo({ message, undo, onError, label, duration = 5000 }) {
+export function offerUndo({ message, undo, onError, label, duration = 5000, pending = null, scope = null }) {
   let running = false;
   const run = async () => {
     if (running) return;
     running = true;
+    if (pending) {
+      try { await pending; } catch { return; }
+    }
     try {
       await undo();
     } catch (err) {
@@ -918,7 +933,9 @@ export function offerUndo({ message, undo, onError, label, duration = 5000 }) {
     }
   };
   const action = label ? { label, onClick: run } : run;
-  return window.yuvomi?.showToast(message, 'default', duration, action) === true;
+  const handle = {};
+  const shown = window.yuvomi?.showToast(message, 'default', duration, action, { scope, handle }) === true;
+  return { shown, update: (text) => handle.setMessage?.(text) };
 }
 
 /**

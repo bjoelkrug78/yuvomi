@@ -2036,8 +2036,11 @@ Breite und Mitte (`listColumnDock`), Spalte samt Kopf und Fuss bleiben frei; die
 weicht ihr nicht. Vorher richtete er sich an der Spalte aus wie an einem Dialog und stand mittig
 ueber ihrem Inhalt (Aufgaben 1440: y 371-424 in x 883-1263). **Hoechstens EINE Rueckmeldung
 (R22, D18):** ein neuer Toast ersetzt den stehenden, fuer den alten gilt seine Handlung (sein
-`onExpire` laeuft wie nach der Frist); beim Modulwechsel endet sie ebenso (`endFeedbackToasts`,
-die Kueche zaehlt als ein Modul). Dauerhafte Toasts (Erinnerungen) sind keine Rueckmeldung und
+`onExpire` laeuft wie nach der Frist); beim Modulwechsel endet sie ebenso (`endModuleFeedback`,
+die Kueche zaehlt als ein Modul). **Auch die, die erst noch kaeme (R24):** der Wechsel macht die
+Modul-Marke alt (`feedbackScope`, utils/toast-show.js); eine Quittung hinter einem `await` nimmt
+die Marke vor der Anfrage und erscheint mit alter Marke gar nicht (gemessen vorher: "erledigt"
+300 ms nach dem Wechsel im Kalender). Fehler und Warnung erscheinen trotzdem. Dauerhafte Toasts (Erinnerungen) sind keine Rueckmeldung und
 bleiben. **Erinnerungen sind ein eigener Kanal (R22, S10):** zeitgebunden, 30 s, mit eigenem
 Verwerfen - sie stehen im selben Stapel neben der einen Rueckmeldung, nie auf ihr (gemessen
 390, 1280 mit Detailspalte, 1440: keine Ueberlappung, die Rueckmeldung behaelt ihre Lage).
@@ -2884,7 +2887,8 @@ App, an der eine Geste sofort und endgueltig loeschte.
 Normalfall ist der Undo-Toast: er unterbricht nicht und haelt den Weg fuenf Sekunden offen.
 Beim Loeschen geschieht am Server bis zum Ende der Frist nichts (`scheduleUndoableDelete`) -
 Geburtstag, Einkaufszeile, Buchung, Abo, Gegenstand, leeres Konto, geteilte Ausgabe, jede
-Zeile der Gesundheit. Die Bestaetigung (`confirmModal` mit `danger: true`) bleibt nur dem
+Zeile der Gesundheit, seit R24 der Besuch der Haushaltshilfe (Termin und Zahlungsaufgabe sind
+seine Ableitungen, kein Inhalt). Die Bestaetigung (`confirmModal` mit `danger: true`) bleibt nur dem
 BEHAELTER mit Inhalt, dessen Inhalt die Tat mitnimmt und den der Dialog benennen muss:
 Medikament mit Protokoll, Laborbefund mit Werten, Konto mit Buchungen, Ordner, Gruppe. Bis
 R23 fragte auch das Abo (Erinnerungen, naechste Buchung) - das tut die aufgeschobene
@@ -2906,7 +2910,11 @@ Freigeben/Ablehnen, Auschecken, Einnehmen/Auslassen, Abo bezahlen: der Toast sag
 Rueckgaengig, das die Tat am Server ECHT zuruecknimmt - Bestand, Buchungen, Punkte
 (`reopen` der Belohnungen, `work-sessions/:id/reopen`, `logs/:id/undo` mit der Gutschrift aus
 `stock_deducted`, `renew/undo` per Marke des Servers). Ein Baustein: `offerUndo()`
-(utils/ux.js). Ein Toast mit Aktion traegt kein Haekchen (toast-show.js), das Haekchen
+(utils/ux.js). **Die Quittung kommt mit dem Tipp (R24):** wessen Ergebnis feststeht (Abhaken,
+Erledigen, Ein-/Auschecken), quittiert vor dem ersten `await` und reicht die laufende Anfrage als
+`pending`; "Rueckgaengig" wartet auf sie, ihr Fehler-Toast ersetzt die Quittung, und was erst die
+Antwort weiss (das naechste Mal einer Serie), traegt sie in denselben Toast nach (gemessen 700-1500
+-> 13-44 ms). Ein Toast mit Aktion traegt kein Haekchen (toast-show.js), das Haekchen
 bleibt der Bestaetigung ohne Rueckweg. Bis R23 fragte ausgerechnet das harmlosere Ablehnen
 nach, und das Freigeben lief ohne Rueckweg durch (N4). Die Elternaufgabe mit offenen
 Teilaufgaben sagt es im Toast und bietet "Alle abhaken" statt Rueckgaengig (zurueck geht
